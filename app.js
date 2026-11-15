@@ -6,8 +6,10 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-15.4';
-const REPO_PREDEFINITO = 'gerardo-paternoster/rajasthan-dati';
+const VERSIONE = '2026-11-16.1';
+// Identificativo dell'app presso Google (non è un segreto). Finché è vuoto, l'opzione Google Drive resta nascosta.
+const GOOGLE_CLIENT_ID = '';
+const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
 const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
 const LISTE = {
   scadenze: { nome: 'Scadenze', spunta: 'fatto', conData: true },
@@ -270,7 +272,8 @@ async function scaricaFoto() {
 
 /* ---------- Sincronizzazione con GitHub ---------- */
 function token() { return LS.get('rj.token', ''); }
-function repo() { return LS.get('rj.repo', REPO_PREDEFINITO); }
+function repo() { return LS.get('rj.repo', ''); }
+function modoSync() { return token() ? 'github' : (LS.get('rj.drive', null) ? 'drive' : ''); }
 let statoSync = { fase: 'fermo', errore: '', ultima: LS.get('rj.ultimaSync', 0) };
 let inCorso = false, daRifare = false, timerSync = null;
 
@@ -284,11 +287,113 @@ function testoDaB64(b64) {
   for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i);
   return new TextDecoder().decode(b);
 }
+
+/* GitHub: un file per sezione in un repository privato. */
 async function gh(percorso, opzioni) {
   const o = Object.assign({ cache: 'no-store' }, opzioni || {});
   o.headers = Object.assign({ Authorization: 'Bearer ' + token(), Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, o.headers || {});
   return fetch('https://api.github.com/repos/' + repo() + percorso, o);
 }
+const SU_GITHUB = {
+  async leggi(s) {
+    const r = await gh('/contents/' + s + '.json?ref=main');
+    if (r.status === 200) {
+      const j = await r.json();
+      try { return { items: (JSON.parse(testoDaB64(j.content || '')).items) || {}, rif: j.sha }; }
+      catch (e) { throw new Error('Il file ' + s + '.json nel repository non è leggibile.'); }
+    }
+    if (r.status === 404) return { items: {}, rif: null };
+    if (r.status === 401) throw new Error('Token non valido o scaduto.');
+    if (r.status === 403) throw new Error('Accesso negato da GitHub (permessi del token o limite di richieste).');
+    throw new Error('GitHub ha risposto ' + r.status + '.');
+  },
+  async scrivi(s, items, rif) {
+    const corpo = { message: 'Aggiornamento ' + s + ' dall\'app', branch: 'main', content: b64DaTesto(JSON.stringify({ v: 1, items }, null, 1)) };
+    if (rif) corpo.sha = rif;
+    const p = await gh('/contents/' + s + '.json', { method: 'PUT', body: JSON.stringify(corpo) });
+    if (p.status === 409 || p.status === 422) return 'conflitto';
+    if (p.status === 404) throw new Error('Repository non trovato o token senza permesso di scrittura.');
+    if (!p.ok) throw new Error('Salvataggio non riuscito (' + p.status + ').');
+    return 'ok';
+  }
+};
+
+/* Google Drive: gli stessi file, in una cartella del Drive di chi accede.
+   L'app vede solo i file che ha creato lei (permesso "drive.file"). */
+function driveToken() { const t = LS.get('rj.driveTok', null); return t && t.scade > Date.now() ? t.t : ''; }
+function caricaGoogle() {
+  return new Promise((ok, ko) => {
+    if (window.google && google.accounts && google.accounts.oauth2) return ok();
+    const s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = () => ok(); s.onerror = () => ko(new Error('Rete non raggiungibile.'));
+    document.head.appendChild(s);
+  });
+}
+function driveAccedi() {
+  return new Promise((ok, ko) => {
+    if (!(window.google && google.accounts && google.accounts.oauth2)) return ko(new Error('Accesso a Google non ancora pronto: riprova tra un momento.'));
+    const c = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID, scope: 'https://www.googleapis.com/auth/drive.file',
+      callback: (r) => {
+        if (r && r.access_token) { LS.set('rj.driveTok', { t: r.access_token, scade: Date.now() + ((Number(r.expires_in) || 3600) - 120) * 1000 }); ok(); }
+        else ko(new Error('Accesso non completato.'));
+      },
+      error_callback: (e) => ko(new Error(e && e.type === 'popup_closed' ? 'Finestra di accesso chiusa.' : 'Accesso non riuscito: controlla che le finestre a comparsa non siano bloccate.'))
+    });
+    c.requestAccessToken();
+  });
+}
+async function gd(url, opzioni) {
+  const o = Object.assign({ cache: 'no-store' }, opzioni || {});
+  o.headers = Object.assign({ Authorization: 'Bearer ' + driveToken() }, o.headers || {});
+  const r = await fetch(url, o);
+  if (r.status === 401) { LS.del('rj.driveTok'); throw new Error('ACCESSO'); }
+  return r;
+}
+async function driveCerca(q) {
+  const r = await gd('https://www.googleapis.com/drive/v3/files?spaces=drive&fields=files(id)&q=' + encodeURIComponent(q));
+  if (!r.ok) throw new Error('Google Drive ha risposto ' + r.status + '.');
+  const j = await r.json(); return j.files && j.files[0] ? j.files[0].id : null;
+}
+async function driveCartella() {
+  const st = LS.get('rj.drive', {}); if (st.cartella) return st.cartella;
+  let id = await driveCerca("name='" + CARTELLA_DRIVE + "' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+  if (!id) {
+    const r = await gd('https://www.googleapis.com/drive/v3/files?fields=id', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: CARTELLA_DRIVE, mimeType: 'application/vnd.google-apps.folder' }) });
+    if (!r.ok) throw new Error('Non riesco a creare la cartella su Drive (' + r.status + ').');
+    id = (await r.json()).id;
+  }
+  st.cartella = id; st.file = st.file || {}; LS.set('rj.drive', st); return id;
+}
+function driveRicorda(s, id) { const st = LS.get('rj.drive', {}); st.file = st.file || {}; if (id) st.file[s] = id; else delete st.file[s]; LS.set('rj.drive', st); }
+const SU_DRIVE = {
+  async leggi(s) {
+    let id = (LS.get('rj.drive', {}).file || {})[s];
+    if (!id) { const c = await driveCartella(); id = await driveCerca("name='" + s + ".json' and '" + c + "' in parents and trashed=false"); if (id) driveRicorda(s, id); }
+    if (!id) return { items: {}, rif: null };
+    const r = await gd('https://www.googleapis.com/drive/v3/files/' + id + '?alt=media');
+    if (r.status === 404) { driveRicorda(s, null); return { items: {}, rif: null }; }
+    if (!r.ok) throw new Error('Google Drive ha risposto ' + r.status + '.');
+    try { const j = await r.json(); return { items: (j && j.items) || {}, rif: id }; }
+    catch (e) { throw new Error('Il file ' + s + '.json su Drive non è leggibile.'); }
+  },
+  async scrivi(s, items, rif) {
+    const testo = JSON.stringify({ v: 1, items }, null, 1);
+    let r;
+    if (rif) {
+      r = await gd('https://www.googleapis.com/upload/drive/v3/files/' + rif + '?uploadType=media', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: testo });
+    } else {
+      const c = await driveCartella(), lim = 'rj' + Date.now();
+      const corpo = '--' + lim + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n' + JSON.stringify({ name: s + '.json', parents: [c], mimeType: 'application/json' }) + '\r\n--' + lim + '\r\nContent-Type: application/json\r\n\r\n' + testo + '\r\n--' + lim + '--';
+      r = await gd('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', { method: 'POST', headers: { 'Content-Type': 'multipart/related; boundary=' + lim }, body: corpo });
+      if (r.ok) driveRicorda(s, (await r.clone().json()).id);
+    }
+    if (!r.ok) throw new Error('Salvataggio su Drive non riuscito (' + r.status + ').');
+    return 'ok';
+  }
+};
+function archivio() { return modoSync() === 'drive' ? SU_DRIVE : SU_GITHUB; }
+
 function unisci(locale, remoto) {
   const uniti = Object.assign({}, remoto); let daInviare = false, daLocale = false;
   for (const id of Object.keys(locale)) {
@@ -302,28 +407,15 @@ function unisci(locale, remoto) {
   return { uniti, daInviare, daLocale };
 }
 async function sincronizzaSezione(s, tentativo) {
-  const contatore = modifiche[s];
-  const r = await gh('/contents/' + s + '.json?ref=main');
-  let remoto = {}, sha = null;
-  if (r.status === 200) {
-    const j = await r.json(); sha = j.sha;
-    try { remoto = (JSON.parse(testoDaB64(j.content || '')).items) || {}; }
-    catch (e) { throw new Error('Il file ' + s + '.json nel repository non è leggibile.'); }
-  } else if (r.status === 401) { throw new Error('Token non valido o scaduto.');
-  } else if (r.status === 403) { throw new Error('Accesso negato da GitHub (permessi del token o limite di richieste).');
-  } else if (r.status !== 404) { throw new Error('GitHub ha risposto ' + r.status + '.'); }
-
-  const esito = unisci(DB[s].items, remoto);
+  const contatore = modifiche[s], dove = archivio();
+  const rem = await dove.leggi(s);
+  const esito = unisci(DB[s].items, rem.items);
   if (esito.daInviare) {
-    const corpo = { message: 'Aggiornamento ' + s + ' dall\'app', branch: 'main', content: b64DaTesto(JSON.stringify({ v: 1, items: esito.uniti }, null, 1)) };
-    if (sha) corpo.sha = sha;
-    const p = await gh('/contents/' + s + '.json', { method: 'PUT', body: JSON.stringify(corpo) });
-    if (p.status === 409 || p.status === 422) {
+    const fatto = await dove.scrivi(s, esito.uniti, rem.rif);
+    if (fatto === 'conflitto') {
       if (tentativo) throw new Error('Conflitto nel salvataggio di ' + s + '. Riprova.');
       return sincronizzaSezione(s, true);
     }
-    if (p.status === 404) throw new Error('Repository non trovato o token senza permesso di scrittura.');
-    if (!p.ok) throw new Error('Salvataggio non riuscito (' + p.status + ').');
   }
   // Se nel frattempo ci sono state altre modifiche, si tengono quelle e si riprova dopo.
   if (modifiche[s] === contatore) {
@@ -335,8 +427,10 @@ async function sincronizzaSezione(s, tentativo) {
   return esito.daLocale;
 }
 async function sincronizza(tutte) {
-  if (!token()) { aggiornaStato(); return; }
+  const modo = modoSync();
+  if (!modo) { aggiornaStato(); return; }
   if (!navigator.onLine) { statoSync.fase = 'offline'; aggiornaStato(); return; }
+  if (modo === 'drive' && !driveToken()) { statoSync.fase = 'accesso'; aggiornaStato(); return; }
   if (inCorso) { daRifare = true; return; }
   inCorso = true; statoSync.fase = 'sync'; statoSync.errore = ''; aggiornaStato();
   let cambiato = false;
@@ -346,9 +440,12 @@ async function sincronizza(tutte) {
     }
     statoSync.fase = 'ok'; statoSync.ultima = Date.now(); LS.set('rj.ultimaSync', statoSync.ultima);
   } catch (e) {
-    statoSync.fase = navigator.onLine ? 'errore' : 'offline';
     statoSync.errore = e && e.message ? e.message : 'Errore di rete.';
-    if (/Failed to fetch|NetworkError|Load failed/i.test(statoSync.errore)) { statoSync.errore = 'Rete non raggiungibile.'; }
+    if (statoSync.errore === 'ACCESSO') { statoSync.fase = 'accesso'; statoSync.errore = ''; }
+    else {
+      statoSync.fase = navigator.onLine ? 'errore' : 'offline';
+      if (/Failed to fetch|NetworkError|Load failed/i.test(statoSync.errore)) statoSync.errore = 'Rete non raggiungibile.';
+    }
   }
   inCorso = false; aggiornaStato();
   if (cambiato) disegnaSePossibile();
@@ -358,11 +455,12 @@ function programmaSync() { clearTimeout(timerSync); timerSync = setTimeout(() =>
 
 function aggiornaStato() {
   const p = $('#punto'); if (!p) return;
-  const attesa = Object.keys(inAttesa).length;
+  const attesa = Object.keys(inAttesa).length, modo = modoSync();
   let c = 'grigio', t = 'Dati solo su questo dispositivo';
-  if (token()) {
+  if (modo) {
     if (statoSync.fase === 'sync') { c = 'blu'; t = 'Sincronizzazione in corso'; }
     else if (statoSync.fase === 'errore') { c = 'rosso'; t = 'Errore di sincronizzazione'; }
+    else if (statoSync.fase === 'accesso' || (modo === 'drive' && !driveToken())) { c = 'ambra'; t = 'Accesso a Google da rinnovare'; }
     else if (attesa) { c = 'ambra'; t = 'Modifiche in attesa di sincronizzazione'; }
     else { c = 'verde'; t = 'Sincronizzato'; }
   }
@@ -370,11 +468,12 @@ function aggiornaStato() {
   const box = $('#statoDett'); if (box) box.innerHTML = htmlStatoSync();
 }
 function htmlStatoSync() {
-  const attesa = Object.keys(inAttesa);
-  if (!token()) return '<p>Nessun token: i dati restano su questo dispositivo.</p>';
-  let h = '';
+  const attesa = Object.keys(inAttesa), modo = modoSync();
+  if (!modo) return '<p>Per ora i dati stanno solo su questo dispositivo.</p>';
+  let h = '<p><b>' + (modo === 'drive' ? 'Sincronizzazione con Google Drive attiva.' : 'Sincronizzazione con GitHub attiva.') + '</b></p>';
   if (statoSync.fase === 'sync') h += '<p>Sincronizzazione in corso…</p>';
   else if (statoSync.fase === 'errore') h += '<p class="err">' + esc(statoSync.errore) + '</p>';
+  else if (modo === 'drive' && !driveToken()) h += '<p class="err">L\'accesso a Google è scaduto: rinnovalo per riprendere la sincronizzazione. Intanto i dati restano al sicuro su questo dispositivo.</p>';
   else if (!navigator.onLine) h += '<p>Senza rete: la sincronizzazione riprende da sola.</p>';
   h += '<p>' + (attesa.length ? 'In attesa: ' + esc(attesa.join(', ')) + '.' : 'Nessuna modifica in attesa.') + '</p>';
   h += '<p class="tenue">Ultima sincronizzazione: ' + (statoSync.ultima ? esc(fmtOra.format(new Date(statoSync.ultima))) : 'mai') + '</p>';
@@ -530,7 +629,7 @@ function vistaListe(arg) {
   let h = '<div class="sotto">' + Object.keys(LISTE).map((k) => '<a href="#liste/' + k + '"' + (k === sez ? ' class="qui" aria-current="true"' : '') + '>' + esc(LISTE[k].nome) + '</a>').join('') + '</div>';
   const tutte = voci(sez);
   if (!tutte.length) {
-    h += '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Ancora nessuna voce</h3><p class="tenue">' + (token() ? 'Aggiungine una qui sotto, o attendi la sincronizzazione.' : 'Aggiungi le tue: restano su questo dispositivo.') + '</p></div>';
+    h += '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Ancora nessuna voce</h3><p class="tenue">' + (modoSync() ? 'Aggiungine una qui sotto, o attendi la sincronizzazione.' : 'Aggiungi le tue: restano su questo dispositivo.') + '</p></div>';
   } else {
     if (cfg.spunta) { const f = tutte.filter((v) => v.fatto).length; h += '<p class="progresso"><span style="--p:' + Math.round(100 * f / tutte.length) + '%"></span>' + f + ' di ' + tutte.length + ' ' + esc(cfg.spunta) + '</p>'; }
     const gruppi = {};
@@ -631,23 +730,40 @@ function vistaDiario(arg) {
 
 let installa = null;
 function vistaImpostazioni() {
-  let h = '<h2 class="sez">Sincronizzazione</h2><section class="pannello pieno"><div id="statoDett">' + htmlStatoSync() + '</div>';
-  if (token()) {
-    h += '<p class="tenue">Repository: ' + esc(repo()) + '</p><div class="azioni larghe"><button class="btn" data-az="sync">Sincronizza ora</button><button class="btn chiaro" data-az="togliToken">Rimuovi il token</button></div>';
-  } else {
-    h += '<p>Con un token di accesso GitHub i dati vengono salvati anche in un repository privato e ritrovati sugli altri dispositivi. Senza token l\'app funziona lo stesso e i dati restano qui.</p>' +
-      '<label>Repository dei dati<input id="fRepo" value="' + esc(repo()) + '" autocapitalize="off" autocomplete="off" spellcheck="false"></label>' +
-      '<label>Token<input id="fToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>' +
-      '<p class="err" id="errToken" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaToken">Salva e sincronizza</button></div>';
-  }
+  const modo = modoSync();
+  let h = '<h2 class="sez">Dove stanno i tuoi dati</h2><section class="pannello pieno"><div id="statoDett">' + htmlStatoSync() + '</div>';
+  if (modo === 'github') h += '<p class="tenue">Repository: ' + esc(repo()) + '</p><div class="azioni larghe"><button class="btn" data-az="sync">Sincronizza ora</button><button class="btn chiaro" data-az="togliToken">Scollega GitHub</button></div>';
+  else if (modo === 'drive') h += '<p class="tenue">Cartella "' + esc(CARTELLA_DRIVE) + '" nel tuo Drive.</p><p class="err" id="errDrive" hidden></p><div class="azioni larghe">' + (driveToken() ? '<button class="btn" data-az="sync">Sincronizza ora</button>' : '<button class="btn" data-az="driveAccedi">Rinnova l\'accesso a Google</button>') + '<button class="btn chiaro" data-az="driveEsci">Scollega Google Drive</button></div>';
+  else h += '<p class="tenue">Liste, spunte e diario si salvano da soli qui. Per non perderli se cambi o perdi il telefono, scegli uno dei modi qui sotto.</p>';
   h += '</section>';
-  h += '<h2 class="sez">Copia di sicurezza</h2><section class="pannello pieno"><p>Salva tutti i tuoi dati in un file, o ricaricali da un file salvato.</p><div class="azioni larghe"><button class="btn chiaro" data-az="esporta">Esporta</button><label class="btn chiaro file">Importa<input type="file" id="fImporta" accept="application/json,.json" hidden></label></div><p class="tenue" id="msgCopia"></p></section>';
+
+  h += '<h2 class="sez">Copia di sicurezza</h2><section class="pannello pieno"><p>Il modo più semplice: salvi una copia di tutti i tuoi dati dove vuoi (Google Drive, email, WhatsApp a te stesso) e la ripristini quando serve. Non è automatica: falla ogni tanto.</p><div class="azioni larghe"><button class="btn" data-az="copia">Salva una copia</button><label class="btn chiaro file">Ripristina da una copia<input type="file" id="fImporta" accept="application/json,text/plain,.json,.txt" hidden></label></div><p class="tenue" id="msgCopia"></p></section>';
+
+  if (!modo) {
+    if (GOOGLE_CLIENT_ID) h += '<h2 class="sez">Google Drive</h2><section class="pannello pieno"><p>Sincronizzazione automatica con il tuo Drive: accedi con Google e ritrovi i dati sugli altri tuoi dispositivi. L\'app vede solo i file che crea lei, nella cartella "' + esc(CARTELLA_DRIVE) + '".</p><p class="tenue" style="margin-top:8px">L\'accesso dura circa un\'ora: quando scade, il pallino in alto diventa giallo e basta un tocco per rinnovarlo.</p><p class="err" id="errDrive" hidden></p><div class="azioni larghe"><button class="btn" data-az="driveAccedi">Accedi con Google</button></div></section>';
+    h += '<h2 class="sez">GitHub</h2><section class="pannello pieno"><p>Sincronizzazione automatica con un tuo repository privato, per chi lo preferisce. L\'accesso non scade finché il token è valido.</p>' +
+      '<details class="guida"><summary>Come si fa, passo per passo</summary><ol>' +
+      '<li>Crea un account gratuito su <a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>, se non lo hai.</li>' +
+      '<li>Crea un repository nuovo: dagli un nome (per esempio <b>rajasthan-dati</b>), scegli <b>Private</b> e spunta <b>Add a README file</b>.</li>' +
+      '<li>Nelle impostazioni del tuo account apri <b>Developer settings</b>, poi <b>Personal access tokens</b>, <b>Fine-grained tokens</b>, e scegli <b>Generate new token</b>.</li>' +
+      '<li>In <b>Repository access</b> scegli <b>Only select repositories</b> e seleziona il repository appena creato.</li>' +
+      '<li>In <b>Permissions</b>, sotto <b>Repository permissions</b>, imposta <b>Contents</b> su <b>Read and write</b>. Non serve altro.</li>' +
+      '<li>Scegli una scadenza successiva al rientro, genera il token e copialo subito: GitHub lo mostra una volta sola.</li>' +
+      '<li>Qui sotto scrivi il repository nella forma <b>utente/nome</b>, incolla il token e salva. Ripeti l\'ultimo passo su ogni dispositivo.</li>' +
+      '</ol><p class="tenue">I nomi dei menu sono quelli del sito di GitHub, che è in inglese e può cambiarli leggermente.</p></details>' +
+      '<label>Repository dei dati<input id="fRepo" value="' + esc(repo()) + '" placeholder="utente/nome" autocapitalize="off" autocomplete="off" spellcheck="false"></label>' +
+      '<label>Token<input id="fToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>' +
+      '<p class="err" id="errToken" hidden></p><div class="azioni larghe"><button class="btn chiaro" data-az="salvaToken">Salva e sincronizza</button></div></section>';
+  }
+
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
   h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
   h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
   h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
+      // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
+      if (GOOGLE_CLIENT_ID && modo !== 'github' && navigator.onLine) caricaGoogle().catch(() => {});
       const el = $('#infoMemoria');
       if (!memoriaOk) { el.textContent = 'La memoria del dispositivo non è disponibile.'; return; }
       if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then((p) => { el.textContent = p ? 'Memoria protetta: il sistema non cancellerà i dati per fare spazio.' : 'Memoria non protetta: installa l\'app sulla schermata Home per proteggerla.'; });
@@ -715,7 +831,7 @@ $('#vista').addEventListener('change', (e) => {
         const it = j.dati[s] && j.dati[s].items; if (!it) continue;
         if (unisci(DB[s].items, it).daLocale) { DB[s].items = unisci(it, DB[s].items).uniti; modifiche[s]++; salvaSezione(s); segnaAttesa(s, true); n++; }
       }
-      if (msg) msg.textContent = n ? 'Importazione completata.' : 'Nel file non c\'è niente di più recente.';
+      if (msg) msg.textContent = n ? 'Dati ripristinati.' : 'Nella copia non c\'è niente di più recente di quello che hai già.';
       programmaSync();
     } catch (err) { if (msg) msg.textContent = 'Questo file non è una copia dei dati dell\'app.'; }
   };
@@ -747,12 +863,27 @@ $('#vista').addEventListener('click', async (e) => {
       disegna(); sincronizza(true);
     } catch (x) { LS.del('rj.token'); el.disabled = false; mostra(/fetch|Network|Load failed/i.test(x.message) ? 'Rete non raggiungibile.' : x.message); aggiornaStato(); }
   }
-  else if (az === 'esporta') {
+  else if (az === 'driveAccedi') {
+    const err = $('#errDrive'); el.disabled = true;
+    try { await driveAccedi(); if (!LS.get('rj.drive', null)) LS.set('rj.drive', { file: {} }); statoSync.fase = 'fermo'; disegna(); sincronizza(true); }
+    catch (x) { el.disabled = false; if (err) { err.textContent = x.message; err.hidden = false; } }
+  }
+  else if (az === 'driveEsci') { LS.del('rj.drive'); LS.del('rj.driveTok'); statoSync.fase = 'fermo'; disegna(); }
+  else if (az === 'copia') {
     const dati = {}; for (const s of SEZIONI) dati[s] = DB[s];
-    const url = URL.createObjectURL(new Blob([JSON.stringify({ app: 'rajasthan', v: 1, esportato: new Date().toISOString(), dati }, null, 1)], { type: 'application/json' }));
-    const a = document.createElement('a'); a.href = url; a.download = 'rajasthan-dati-' + oggiIso() + '.json'; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-    const msg = $('#msgCopia'); if (msg) msg.textContent = 'File salvato tra i download.';
+    const testo = JSON.stringify({ app: 'rajasthan', v: 1, esportato: new Date().toISOString(), dati }, null, 1);
+    const nome = 'rajasthan-copia-' + oggiIso() + '.txt', msg = $('#msgCopia');
+    let fatto = false;
+    try {
+      const file = new File([testo], nome, { type: 'text/plain' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Copia dei dati di Tutto Rajasthan' }); fatto = true; if (msg) msg.textContent = 'Copia consegnata all\'app che hai scelto.'; }
+    } catch (x) { if (x && x.name === 'AbortError') { fatto = true; if (msg) msg.textContent = 'Nessuna copia salvata.'; } }
+    if (!fatto) {
+      const url = URL.createObjectURL(new Blob([testo], { type: 'text/plain' }));
+      const a = document.createElement('a'); a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      if (msg) msg.textContent = 'File salvato tra i download: spostalo dove preferisci.';
+    }
   }
   else if (az === 'installa' && installa) { installa.prompt(); installa = null; }
 });
