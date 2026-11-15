@@ -5,6 +5,8 @@
      come file JSON in un repository GitHub privato (un file per sezione).
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
+// A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
+const VERSIONE = '2026-11-15.3';
 const REPO_PREDEFINITO = 'gerardo-paternoster/rajasthan-dati';
 const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
 const LISTE = {
@@ -175,6 +177,97 @@ async function aggiornaMeteo(forza) {
 }
 function gradi(n) { return n == null ? '' : Math.round(n) + '°'; }
 
+/* ---------- Grafici del meteo ---------- */
+const T_MIN = 0, T_MAX = 32;
+function pctT(t) { return Math.max(0, Math.min(100, (t - T_MIN) / (T_MAX - T_MIN) * 100)); }
+function barraT(min, max, adesso) {
+  return '<div class="scala-t" role="img" aria-label="Da ' + Math.round(min) + ' a ' + Math.round(max) + ' gradi"><span>' + gradi(min) + '</span><div class="traccia"><i style="left:' + pctT(min) + '%;width:' + (pctT(max) - pctT(min)) + '%"></i>' + (adesso != null ? '<b style="left:' + pctT(adesso) + '%" title="Adesso ' + gradi(adesso) + '"></b>' : '') + '</div><span>' + gradi(max) + '</span></div>';
+}
+function icoCielo(c) {
+  const sole = '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>';
+  const nuvola = '<path d="M7 18h10a4 4 0 00.6-7.96A5.5 5.5 0 007 10.7 3.7 3.7 0 007 18z"/>';
+  const nuvolaAlta = '<path d="M7 15h10a4 4 0 00.6-7.96A5.5 5.5 0 007 7.7 3.7 3.7 0 007 15z"/>';
+  let d;
+  if (c === 0) d = sole;
+  else if (c <= 2) d = '<circle cx="8" cy="8" r="3"/><path d="M8 2v1.3M2 8h1.3M3.8 3.8l.9.9M12.2 3.8l-.9.9"/><path d="M9.5 19.5h8a3.5 3.5 0 00.5-6.96A4.8 4.8 0 009.3 13 3.3 3.3 0 009.5 19.5z"/>';
+  else if (c === 3) d = nuvola;
+  else if (c === 45 || c === 48) d = '<path d="M5 8h14M3 12h18M5 16h14M8 20h8"/>';
+  else if (c <= 82 && !(c >= 71 && c <= 77)) d = nuvolaAlta + '<path d="M8.5 18v2.5M12 18v3.5M15.5 18v2.5"/>';
+  else if (c <= 77) d = nuvolaAlta + '<path d="M8.5 19.5h.01M12 21h.01M15.5 19.5h.01"/>';
+  else d = nuvolaAlta + '<path d="M12.5 16l-2.5 3.5h3.5L11.5 23"/>';
+  return '<svg class="cielo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+}
+const FASCE_ARIA = [[50, '#2e9e5b'], [100, '#e6c229'], [150, '#f08c2e'], [200, '#d64545'], [300, '#8e4ba8'], [500, '#7a2b3a']];
+function scalaAria(aqi) {
+  let pos = 100, da = 0;
+  for (let i = 0; i < FASCE_ARIA.length; i++) { const a = FASCE_ARIA[i][0]; if (aqi <= a) { pos = (i + (aqi - da) / (a - da)) / FASCE_ARIA.length * 100; break; } da = a; }
+  return '<div class="scala-aria" role="img" aria-label="Qualità dell\'aria ' + esc(aria(aqi)) + ', indice ' + Math.round(aqi) + ' su una scala da 0 a 500"><div class="fasce">' + FASCE_ARIA.map((f) => '<i style="background:' + f[1] + '"></i>').join('') + '<b style="left:' + pos + '%"></b></div><div class="estremi"><span>buona</span><span>pericolosa</span></div></div>';
+}
+function graficoViaggio() {
+  const W = 360, H = 178, x0 = 34, passo = 19, y0 = 14, ph = 112, oggi = oggiIso();
+  const y = (t) => y0 + ph - (Math.max(T_MIN, Math.min(T_MAX, t)) - T_MIN) / (T_MAX - T_MIN) * ph;
+  let s = '<svg class="grafico" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Temperature minime e massime per ogni giorno del viaggio">';
+  [0, 10, 20, 30].forEach((g) => { s += '<line class="griglia" x1="' + (x0 - 4) + '" x2="' + (W - 2) + '" y1="' + y(g) + '" y2="' + y(g) + '"/><text class="asse" x="' + (x0 - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end">' + g + '°</text>'; });
+  let prec = null, previsioni = 0;
+  CONT.giorni.forEach((g, i) => {
+    const cx = x0 + i * passo + passo / 2;
+    s += '<text class="asse' + (g.data === oggi ? ' oggi' : '') + '" x="' + cx + '" y="' + (y0 + ph + 16) + '" text-anchor="middle">' + (i + 1) + '</text>';
+    const t = g.tappe.length ? tappa(g.tappe[0]) : null;
+    if (!t) { prec = null; return; }
+    const m = METEO && METEO.per[t.id], p = m && m.giorni[g.data] && m.giorni[g.data].max != null ? m.giorni[g.data] : null;
+    const mn = p ? p.min : t.clima.min, mx = p ? p.max : t.clima.max; if (p) previsioni++;
+    const yy = y(mx), hh = Math.max(9, y(mn) - y(mx));
+    s += '<a href="#tappa/' + esc(t.id) + '"><title>' + esc(fmtBreve.format(dataDa(g.data)) + ', ' + t.nome + ': da ' + Math.round(mn) + '° a ' + Math.round(mx) + '° (' + (p ? 'previsione' : 'media del periodo') + ')') + '</title><rect x="' + (cx - passo / 2) + '" y="' + y0 + '" width="' + passo + '" height="' + (ph + 22) + '" fill="transparent"/>';
+    s += p ? '<rect x="' + (cx - 5.5) + '" y="' + yy + '" width="11" height="' + hh + '" rx="5.5" fill="' + esc(t.colore) + '"/>' : '<rect x="' + (cx - 4.25) + '" y="' + (yy + 1.25) + '" width="8.5" height="' + (hh - 2.5) + '" rx="4.25" fill="none" stroke="' + esc(t.colore) + '" stroke-width="2.5"/>';
+    s += '</a>';
+    if (prec !== t.id) s += '<text class="asse nome" x="' + (cx - 6) + '" y="' + (y0 + ph + 32) + '">' + esc(t.sigla || '') + '</text>';
+    prec = t.id;
+  });
+  s += '</svg><p class="legenda">' + (previsioni ? '<span><i class="q piena"></i>Previsione</span>' : '') + '<span><i class="q vuota"></i>Media del periodo</span></p>';
+  if (!previsioni) s += '<p class="piccolo">Le previsioni sostituiscono le medie da circa due settimane prima di ogni giorno.</p>';
+  return s;
+}
+
+/* ---------- Versione e aggiornamento dell'app ---------- */
+let versioneNuova = null;
+async function controllaVersione() {
+  if (!navigator.onLine) return;
+  try {
+    const r = await fetch('versione.json?fresco=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    versioneNuova = j && j.v && j.v !== VERSIONE ? j.v : null;
+    const b = $('#bannerVersione'); if (b) b.hidden = !versioneNuova;
+  } catch (e) { /* senza rete non si controlla */ }
+}
+async function aggiornaApp(messaggio) {
+  const dire = (t) => { if (messaggio) messaggio.textContent = t; };
+  if (!navigator.onLine) { dire('Serve la rete per aggiornare.'); return; }
+  try {
+    // Prima si verifica che il sito risponda: solo dopo si butta la copia locale.
+    const r = await fetch('versione.json?fresco=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('sito');
+    dire('Scarico la versione nuova…');
+    const nomi = await caches.keys();
+    await Promise.all(nomi.filter((n) => /^rajasthan-v/.test(n)).map((n) => caches.delete(n)));
+    if ('serviceWorker' in navigator) { const reg = await navigator.serviceWorker.getRegistration(); if (reg) { try { await reg.update(); } catch (e) { /* si ricarica comunque */ } } }
+    location.reload();
+  } catch (e) { dire('Il sito non risponde: riprova più tardi. Non è stato cambiato nulla.'); }
+}
+
+/* ---------- Foto delle tappe: scaricate una volta e tenute sul dispositivo ---------- */
+async function scaricaFoto() {
+  if (!CONT || !navigator.onLine || !('caches' in window)) return;
+  try {
+    const cache = await caches.open('rajasthan-foto');
+    for (const t of CONT.tappe) {
+      if (!t.foto || !t.foto.url) continue;
+      if (await cache.match(t.foto.url)) continue;
+      try { const r = await fetch(t.foto.url, { mode: 'cors' }); if (r.ok) await cache.put(t.foto.url, r); } catch (e) { /* si riprova alla prossima apertura */ }
+    }
+  } catch (e) { /* le foto sono un di più */ }
+}
+
 /* ---------- Sincronizzazione con GitHub ---------- */
 function token() { return LS.get('rj.token', ''); }
 function repo() { return LS.get('rj.repo', REPO_PREDEFINITO); }
@@ -342,7 +435,7 @@ function vistaViaggio() {
   if (m && m.ora) h += '<a class="oggi-meteo" href="#tappa/' + esc(tOggi.id) + '"' + stileCitta(tOggi) + '><span class="gradi">' + gradi(m.ora.t) + '</span><span><b>' + esc(tOggi.nome) + ', ' + esc(cielo(m.ora.c)) + '</b><br>' + (m.aria && m.aria.aqi != null ? 'Aria ' + esc(aria(m.aria.aqi)) : '') + '</span></a>';
   const ps = oggi <= r ? prossimaScadenza() : null;
   if (ps) h += '<a class="prossima" href="#liste/scadenze">' + ICO.campana + '<div><b>' + esc(ps.titolo) + '</b><span>' + (ps.data ? esc(fmtBreve.format(dataDa(ps.data))) + ', ' + esc(quantoManca(ps.data)) : 'Prossima cosa da fare') + '</span></div></a>';
-  h += '</section><h2 class="sez">Giorno per giorno</h2>';
+  h += '</section><h2 class="sez">Temperature del viaggio</h2><div class="pannello pieno">' + graficoViaggio() + '</div><h2 class="sez">Giorno per giorno</h2>';
   if (CONT.calendarioStimato) h += '<p class="tenue" style="margin-bottom:22px">Calendario stimato: fa fede il programma del coordinatore.</p>';
   h += '<ol class="filo">';
   CONT.giorni.forEach((g, i) => {
@@ -363,7 +456,7 @@ function vistaTappe() {
   CONT.tappe.forEach((t) => {
     const tutti = t.vedere.map((x) => 'v/' + slug(x.t)).concat(t.mangiare.map((x) => 'm/' + slug(x.t)));
     const fatti = tutti.filter((k) => { const s = voce('segni', t.id + '/' + k); return s && s.fatto; }).length;
-    h += '<li><a href="#tappa/' + esc(t.id) + '">' + arco(t.colore, 46) + '<div><h3>' + esc(t.nome) + '</h3><p class="tenue">' + esc(t.quando) + (fatti ? ', ' + fatti + ' di ' + tutti.length + ' spuntati' : '') + '</p></div><div class="gradi"><b>' + t.clima.max + '°</b>min ' + t.clima.min + '°</div></a></li>';
+    h += '<li' + stileCitta(t) + '><a href="#tappa/' + esc(t.id) + '">' + arco(t.colore, 46) + '<div><h3>' + esc(t.nome) + '</h3><p class="tenue">' + esc(t.quando) + (fatti ? ', ' + fatti + ' di ' + tutti.length + ' spuntati' : '') + '</p>' + barraT(t.clima.min, t.clima.max) + '</div>' + ICO.freccia + '</a></li>';
   });
   h += '</ul><p class="pie">' + esc(CONT.avviso) + ' Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '.</p>';
   return { titolo: 'Tappe', html: h };
@@ -379,18 +472,31 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
   return h + '</ul></div>';
 }
 function htmlMeteo(t) {
-  const gg = giorniDi(t.id), m = METEO && METEO.per[t.id];
-  let h = '<dl class="meteo"><div><dt>Di solito</dt><dd><b>' + t.clima.max + '°</b> di giorno, <b>' + t.clima.min + '°</b> di notte. ' + esc(t.clima.nota) + '</dd></div>';
-  if (m && m.ora) h += '<div><dt>' + (Date.now() - METEO.t < 2 * 3600e3 ? 'Adesso' : 'Ultimo dato') + '</dt><dd><b>' + gradi(m.ora.t) + '</b>, ' + esc(cielo(m.ora.c)) + (m.aria && m.aria.aqi != null ? '. Aria <b>' + esc(aria(m.aria.aqi)) + '</b> (indice ' + Math.round(m.aria.aqi) + ')' : '') + '</dd></div>';
-  const prev = m ? gg.filter((g) => m.giorni[g.data]) : [];
-  if (prev.length) h += '<div><dt>Previsioni</dt><dd><div class="previsioni">' + prev.map((g) => { const p = m.giorni[g.data]; return '<span>' + esc(fmtBreve.format(dataDa(g.data))) + '<b>' + gradi(p.max) + ' / ' + gradi(p.min) + '</b>' + esc(cielo(p.c)) + '</span>'; }).join('') + '</div></dd></div>';
-  else if (gg.length && giorniTra(oggiIso(), gg[0].data) > 15) h += '<div><dt>Previsioni</dt><dd class="tenue">Disponibili da circa due settimane prima, dal ' + esc(fmtBreve.format(new Date(dataDa(gg[0].data).getTime() - 15 * 864e5))) + '.</dd></div>';
-  if (gg.length) { const a = sole(gg[0].data, t.lat, t.lon, true), s = sole(gg[0].data, t.lat, t.lon, false); if (a && s) h += '<div><dt>Sole</dt><dd>Alba alle <b>' + a + '</b>, tramonto alle <b>' + s + '</b> (ora indiana, ' + esc(fmtBreve.format(dataDa(gg[0].data))) + ')</dd></div>'; }
-  return h + '</dl>';
+  const gg = giorniDi(t.id), m = METEO && METEO.per[t.id], fresco = METEO && Date.now() - METEO.t < 2 * 3600e3;
+  let h = '<div class="meteo">';
+  if (m && m.ora) {
+    h += '<div class="adesso">' + icoCielo(m.ora.c) + '<div><span class="k">' + (fresco ? 'Adesso' : 'Ultimo dato, ' + esc(fmtOra.format(new Date(METEO.t)))) + '</span><b class="grande">' + gradi(m.ora.t) + '</b><span>' + esc(cielo(m.ora.c)) + '</span></div></div>';
+    if (m.aria && m.aria.aqi != null) h += '<div class="blocco"><span class="k">Qualità dell\'aria</span><p><b>' + esc(aria(m.aria.aqi)) + '</b>, indice ' + Math.round(m.aria.aqi) + '</p>' + scalaAria(m.aria.aqi) + '</div>';
+  }
+  h += '<div class="blocco"><span class="k">Di solito in questo periodo</span>' + barraT(t.clima.min, t.clima.max, m && m.ora && fresco ? m.ora.t : null) + '<p class="tenue">' + esc(t.clima.nota) + (m && m.ora && fresco ? ' Il pallino è la temperatura di adesso.' : '') + '</p></div>';
+  const prev = m ? gg.filter((g) => m.giorni[g.data] && m.giorni[g.data].max != null) : [];
+  if (prev.length) {
+    h += '<div class="blocco"><span class="k">Previsioni per i tuoi giorni</span><div class="colonne">' + prev.map((g) => {
+      const p = m.giorni[g.data];
+      return '<div class="col" role="img" aria-label="' + esc(fmtBreve.format(dataDa(g.data)) + ': ' + cielo(p.c) + ', da ' + Math.round(p.min) + ' a ' + Math.round(p.max) + ' gradi') + '">' + icoCielo(p.c) + '<span class="v">' + gradi(p.max) + '</span><div class="asta"><i style="top:' + (100 - pctT(p.max)) + '%;height:' + Math.max(8, pctT(p.max) - pctT(p.min)) + '%"></i></div><span class="v">' + gradi(p.min) + '</span><span class="d">' + esc(fmtBreve.format(dataDa(g.data))) + '</span><span class="d">' + esc(cielo(p.c)) + '</span></div>';
+    }).join('') + '</div></div>';
+  } else if (gg.length && giorniTra(oggiIso(), gg[0].data) > 15) {
+    h += '<div class="blocco"><span class="k">Previsioni per i tuoi giorni</span><p class="tenue">Disponibili da circa due settimane prima, dal ' + esc(fmtBreve.format(new Date(dataDa(gg[0].data).getTime() - 15 * 864e5))) + '.</p></div>';
+  }
+  if (gg.length) {
+    const a = sole(gg[0].data, t.lat, t.lon, true), s = sole(gg[0].data, t.lat, t.lon, false);
+    if (a && s) h += '<div class="blocco soli"><div><span class="k">Alba</span><b class="grande">' + a + '</b></div><div><span class="k">Tramonto</span><b class="grande">' + s + '</b></div><p class="tenue">Ora indiana, ' + esc(fmtBreve.format(dataDa(gg[0].data))) + '</p></div>';
+  }
+  return h + '</div>';
 }
 function vistaTappa(id) {
   const t = tappa(id); if (!t) return vistaTappe();
-  let h = '<div' + stileCitta(t) + '><section class="fascia">' + arco(suColore(t.colore), 210, 'sfondo') + '<h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></section>' + htmlMeteo(t);
+  let h = '<div' + stileCitta(t) + '><section class="fascia">' + (t.foto && t.foto.url ? '<img class="foto" crossorigin="anonymous" src="' + esc(t.foto.url) + '" alt="' + esc(t.foto.soggetto || t.nome) + '">' : '') + arco(suColore(t.colore), 210, 'sfondo') + '<div class="scritta"><h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></div></section>' + htmlMeteo(t);
   h += htmlSegni(t, t.vedere, 'v', 'Cosa vedere', 'Visto');
   h += htmlSegni(t, t.mangiare, 'm', 'Cosa mangiare', 'Assaggiato');
   h += '<h2 class="sez">' + arco(t.colore, 18) + 'Consigli pratici</h2><div class="pannello"><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></div>';
@@ -398,9 +504,19 @@ function vistaTappa(id) {
   if (sit.length) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
   const gg = giorniDi(t.id);
   if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
-  if (METEO) h += '<p class="pie">Meteo aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '.</p>';
+  let pie = METEO ? 'Meteo di Open-Meteo, aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '. ' : '';
+  if (t.foto && t.foto.url) pie += 'Foto: ' + esc(t.foto.soggetto || '') + ', di ' + esc(t.foto.autore) + ', <a href="' + esc(t.foto.pagina) + '" target="_blank" rel="noopener">' + esc(t.foto.licenza) + ', Wikimedia Commons</a>.';
+  if (pie) h += '<p class="pie">' + pie + '</p>';
   h += '</div>';
-  return { titolo: t.nome, html: h, indietro: '#tappe' };
+  return {
+    titolo: t.nome, html: h, indietro: '#tappe', dopo() {
+      const img = $('.fascia .foto'); if (!img) return;
+      const ok = () => img.closest('.fascia').classList.add('con-foto');
+      const ko = () => img.remove();
+      if (img.complete) { if (img.naturalWidth) ok(); else ko(); }
+      else { img.addEventListener('load', ok); img.addEventListener('error', ko); }
+    }
+  };
 }
 function vistaGenerali() {
   const h = '<div class="pannello"><ul class="voci-testo">' + CONT.generali.map((g) => '<li><h3>' + esc(g.t) + '</h3><p>' + esc(g.d) + '</p></li>').join('') + '</ul></div>';
@@ -527,8 +643,8 @@ function vistaImpostazioni() {
   h += '</section>';
   h += '<h2 class="sez">Copia di sicurezza</h2><section class="pannello pieno"><p>Salva tutti i tuoi dati in un file, o ricaricali da un file salvato.</p><div class="azioni larghe"><button class="btn chiaro" data-az="esporta">Esporta</button><label class="btn chiaro file">Importa<input type="file" id="fImporta" accept="application/json,.json" hidden></label></div><p class="tenue" id="msgCopia"></p></section>';
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
-  if (installa) h += '<div class="azioni" style="margin:0 0 12px"><button class="btn" data-az="installa">Installa sul dispositivo</button></div>';
-  h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Gli aggiornamenti si scaricano da soli con la rete e compaiono alla riapertura.</p>';
+  h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
+  h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
   h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
@@ -614,6 +730,7 @@ $('#vista').addEventListener('click', async (e) => {
   else if (az === 'modifica') apriModifica(sez, id);
   else if (az === 'nuova') apriModifica(sez, null);
   else if (az === 'sync') sincronizza(true);
+  else if (az === 'aggiornaApp') { el.disabled = true; await aggiornaApp($('#msgApp')); el.disabled = false; }
   else if (az === 'meteo') { el.disabled = true; await aggiornaMeteo(true); disegna(); }
   else if (az === 'togliToken') { LS.del('rj.token'); statoSync.fase = 'fermo'; disegna(); }
   else if (az === 'salvaToken') {
@@ -641,10 +758,11 @@ $('#vista').addEventListener('click', async (e) => {
 });
 $('#back').addEventListener('click', () => { location.hash = $('#back').dataset.dove || '#viaggio'; });
 $('#stato').addEventListener('click', () => { location.hash = '#impostazioni'; });
+$('#btnVersione').addEventListener('click', (e) => { e.target.disabled = true; aggiornaApp($('#msgVersione')).then(() => { e.target.disabled = false; }); });
 window.addEventListener('hashchange', () => { leggiRotta(); disegna(); window.scrollTo(0, 0); });
 window.addEventListener('online', () => { sincronizza(false); aggiornaMeteo(false); });
 window.addEventListener('offline', aggiornaStato);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { sincronizza(true); aggiornaMeteo(false); } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { sincronizza(true); aggiornaMeteo(false); controllaVersione(); } });
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installa = e; if (rotta.nome === 'impostazioni') disegna(); });
 setInterval(() => sincronizza(false), 5 * 60 * 1000);
 
@@ -658,4 +776,6 @@ setInterval(() => sincronizza(false), 5 * 60 * 1000);
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
   sincronizza(true);
   aggiornaMeteo(false);
+  controllaVersione();
+  scaricaFoto();
 })();

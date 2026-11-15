@@ -140,7 +140,7 @@ h3 { font: 600 18px/1.3 var(--testo); }
 .chip.scritto { border-color: var(--foglia); color: var(--foglia); }
 
 /* ---------- Tappe ---------- */
-.tappe li a { display: grid; grid-template-columns: 54px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--linea); }
+.tappe li a { display: grid; grid-template-columns: 54px 1fr auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--linea); }
 .tappe h3 { font: 400 22px/1.15 var(--display); }
 .tappe .gradi { font: 600 15.5px/1.2 var(--testo); color: var(--tenue); text-align: right; white-space: nowrap; }
 .tappe .gradi b { display: block; font: 400 22px/1 var(--display); color: var(--inchiostro); }
@@ -152,15 +152,61 @@ h3 { font: 600 18px/1.3 var(--testo); }
 .fascia .titolone { position: relative; }
 .fascia p { position: relative; opacity: .92; }
 .fascia .sfondo { position: absolute; right: -30px; bottom: -64px; width: 210px; height: auto; opacity: .16; }
-.meteo { display: grid; gap: 0; background: var(--foglio); border-radius: 0 0 18px 18px; margin: 0 -16px; padding: 4px 16px; }
-.meteo > div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 11px 0; border-top: 1px solid var(--linea); align-items: baseline; }
-.meteo > div:first-child { border-top: 0; }
-.meteo dt { font-size: 14px; font-weight: 600; color: var(--tenue); }
-.meteo b { font-weight: 700; }
-.previsioni { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-.previsioni::-webkit-scrollbar { display: none; }
-.previsioni span { flex: none; min-width: 74px; text-align: center; border: 1.5px solid var(--linea); border-radius: 12px; padding: 6px 8px; font-size: 14px; line-height: 1.3; }
-.previsioni b { display: block; font-size: 16px; }
+.fascia .scritta { position: relative; }
+.fascia .foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.fascia.con-foto { min-height: 230px; display: flex; align-items: flex-end; color: #fff; background: #10122a; }
+.fascia.con-foto .foto { opacity: 1; }
+.fascia.con-foto .sfondo { display: none; }
+.fascia.con-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 12, 34, 0) 30%, rgba(10, 12, 34, .82) 100%); }
+.fascia.con-foto .scritta { z-index: 1; text-shadow: 0 1px 10px rgba(0, 0, 0, .55); }
+@media (prefers-reduced-motion: no-preference) { .fascia .foto { transition: opacity .35s; } }
+
+.meteo { background: var(--foglio); border-radius: 0 0 18px 18px; margin: 0 -16px; padding: 4px 16px 8px; }
+.meteo .k { display: block; font-size: 14px; font-weight: 600; color: var(--tenue); }
+.meteo .grande { font: 400 34px/1.1 var(--display); display: block; }
+.meteo .blocco { padding: 14px 0; border-top: 1px solid var(--linea); }
+.meteo .adesso { display: flex; align-items: center; gap: 16px; padding: 14px 0 12px; }
+.meteo .adesso .cielo { width: 58px; height: 58px; color: var(--calendula); flex: none; }
+.meteo .soli { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.meteo .soli p { grid-column: 1 / -1; }
+.cielo { width: 26px; height: 26px; }
+
+.scala-t { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; font-weight: 700; font-size: 15.5px; margin: 6px 0 4px; }
+.scala-t .traccia { position: relative; height: 10px; border-radius: 5px; background: var(--linea); }
+.scala-t .traccia i { position: absolute; top: 0; bottom: 0; border-radius: 5px; background: var(--citta); }
+.scala-t .traccia b { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--inchiostro); border: 3px solid var(--foglio); }
+.tappe .scala-t { margin: 6px 0 0; font-size: 14.5px; }
+
+.scala-aria { margin-top: 10px; }
+.scala-aria .fasce { position: relative; display: flex; gap: 2px; height: 10px; }
+.scala-aria .fasce i { flex: 1; border-radius: 3px; }
+.scala-aria .fasce i:first-child { border-radius: 5px 3px 3px 5px; }
+.scala-aria .fasce i:last-of-type { border-radius: 3px 5px 5px 3px; }
+.scala-aria .fasce b { position: absolute; top: -5px; width: 8px; height: 20px; margin-left: -4px; border-radius: 4px; background: var(--inchiostro); box-shadow: 0 0 0 2px var(--foglio); }
+.scala-aria .estremi { display: flex; justify-content: space-between; font-size: 13px; color: var(--tenue); margin-top: 6px; }
+
+.colonne { display: flex; gap: 18px; margin-top: 10px; }
+.colonne .col { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 62px; }
+.colonne .cielo { color: var(--tenue); margin-bottom: 2px; }
+.colonne .v { font-weight: 700; font-size: 15.5px; line-height: 1.2; }
+.colonne .asta { position: relative; width: 12px; height: 86px; border-radius: 6px; background: var(--linea); }
+.colonne .asta i { position: absolute; left: 0; right: 0; border-radius: 6px; background: var(--citta); }
+.colonne .d { font-size: 13.5px; color: var(--tenue); line-height: 1.25; text-align: center; }
+
+.grafico { width: 100%; height: auto; overflow: visible; }
+.grafico .griglia { stroke: var(--linea); stroke-width: 1; }
+.grafico .asse { font: 600 10.5px var(--testo); fill: var(--tenue); }
+.grafico .asse.oggi { fill: var(--inchiostro); font-weight: 700; }
+.grafico .asse.nome { font-size: 10px; }
+.grafico a:focus-visible rect:first-of-type { fill: color-mix(in srgb, var(--calendula) 30%, transparent); }
+.legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--tenue); margin-top: 8px; }
+.legenda span { display: inline-flex; align-items: center; gap: 7px; }
+.legenda .q { width: 10px; height: 16px; border-radius: 5px; border: 2.5px solid var(--tenue); }
+.legenda .q.piena { background: var(--tenue); }
+
+.nuova { display: flex; align-items: center; gap: 12px; justify-content: space-between; background: var(--calendula); color: var(--su-calendula); padding: 10px 14px; }
+.nuova p { font-size: 15.5px; line-height: 1.3; }
+.nuova button { flex: none; min-height: 42px; padding: 8px 16px; border-radius: 21px; border: 0; background: var(--su-calendula); color: #fff; font-weight: 700; }
 
 .segni li, .lista li { display: flex; gap: 14px; padding: 13px 0; border-top: 1px solid var(--linea); align-items: flex-start; }
 .segni li:first-child, .lista li:first-child { border-top: 0; }

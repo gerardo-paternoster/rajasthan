@@ -1,6 +1,7 @@
 // Service worker: tiene app e contenuti sul dispositivo, così l'app si apre senza rete.
 // Strategia: si risponde subito dalla copia locale e, se c'è rete, la si aggiorna in background.
-const CACHE = 'rajasthan-v2';
+const CACHE = 'rajasthan-v3';
+const FOTO = 'rajasthan-foto';
 const SHELL = [
   './',
   'index.html',
@@ -25,7 +26,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== FOTO).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -34,8 +35,28 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  // Le chiamate a GitHub per la sincronizzazione non passano mai dalla cache.
+
+  // Foto delle tappe (Wikimedia Commons): prima la copia sul dispositivo, poi la rete.
+  if (/(^|\.)wikimedia\.org$/.test(url.hostname)) {
+    e.respondWith((async () => {
+      const cache = await caches.open(FOTO);
+      const cached = await cache.match(req.url);
+      if (cached) return cached;
+      const res = await fetch(req);
+      if (res && res.ok) cache.put(req.url, res.clone());
+      return res;
+    })());
+    return;
+  }
+
+  // Meteo e sincronizzazione con GitHub non passano mai dalla cache.
   if (url.origin !== self.location.origin) return;
+
+  // Controllo della versione e richieste "fresche": sempre dalla rete.
+  if (url.pathname.endsWith('/versione.json') || url.searchParams.has('fresco')) {
+    e.respondWith(fetch(req, { cache: 'no-store' }));
+    return;
+  }
 
   e.respondWith((async () => {
     const cache = await caches.open(CACHE);
