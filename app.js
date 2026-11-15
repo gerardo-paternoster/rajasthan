@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-16.1';
+const VERSIONE = '2026-11-16.2';
 // Identificativo dell'app presso Google (non è un segreto). Finché è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';

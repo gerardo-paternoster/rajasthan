@@ -204,7 +204,7 @@ h3 { font: 600 18px/1.3 var(--testo); }
 .legenda .q { width: 10px; height: 16px; border-radius: 5px; border: 2.5px solid var(--tenue); }
 .legenda .q.piena { background: var(--tenue); }
 
-.nuova { display: flex; align-items: center; gap: 12px; justify-content: space-between; background: var(--calendula); color: var(--su-calendula); padding: 10px 14px; }
+.nuova { position: sticky; top: calc(60px + env(safe-area-inset-top)); z-index: 5; display: flex; align-items: center; gap: 12px; justify-content: space-between; background: var(--calendula); color: var(--su-calendula); padding: 10px 14px; box-shadow: 0 2px 8px rgba(10, 12, 34, .18); }
 .nuova p { font-size: 15.5px; line-height: 1.3; }
 .nuova button { flex: none; min-height: 42px; padding: 8px 16px; border-radius: 21px; border: 0; background: var(--su-calendula); color: #fff; font-weight: 700; }
 
