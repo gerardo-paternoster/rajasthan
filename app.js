@@ -2,16 +2,17 @@
 /* Tutto Rajasthan – app di viaggio offline-first.
    - Contenuti comuni: data/tappe.json (tenuto sul dispositivo dal service worker).
    - Dati personali: memoria locale del dispositivo; con un token, sincronizzati
-     come file JSON in un repository GitHub privato (un file per sezione). */
+     come file JSON in un repository GitHub privato (un file per sezione).
+   - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 const REPO_PREDEFINITO = 'gerardo-paternoster/rajasthan-dati';
 const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
 const LISTE = {
   scadenze: { nome: 'Scadenze', spunta: 'fatto', conData: true },
   bagagli: { nome: 'Bagagli', spunta: 'nello zaino', stati: ['posseduto', 'da comprare', 'da decidere'] },
-  documenti: { nome: 'Documenti e salute', spunta: 'fatto', conData: true },
-  foto: { nome: 'Fotografia', spunta: null }
+  documenti: { nome: 'Documenti e salute', spunta: 'fatto', conData: true }
 };
+const FOTO = { situazioni: 'Situazioni', ricette: 'Ricette', fotocamera: 'Fotocamera', trucchi: 'Trucchi e regole' };
 
 /* ---------- Memoria locale ---------- */
 let memoriaOk = true;
@@ -29,7 +30,7 @@ const LS = {
 try { localStorage.setItem('rj.prova', '1'); localStorage.removeItem('rj.prova'); }
 catch (e) { memoriaOk = false; }
 
-const DB = {};       // DB[sezione] = { items: { id: voce } }
+const DB = {};        // DB[sezione] = { items: { id: voce } }
 const modifiche = {}; // contatore delle modifiche per sezione, per capire se la sync è ancora valida
 let inAttesa = LS.get('rj.attesa', {});
 for (const s of SEZIONI) { DB[s] = LS.get('rj.d.' + s, { items: {} }); if (!DB[s].items) DB[s] = { items: {} }; modifiche[s] = 0; }
@@ -59,6 +60,7 @@ function elimina(s, id) {
   programmaSync();
 }
 function nuovoId() { return 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function perOrdine(a, b) { return (a.ord || 9999) - (b.ord || 9999) || String(a.titolo).localeCompare(String(b.titolo)); }
 
 /* ---------- Utilità ---------- */
 const $ = (sel, el) => (el || document).querySelector(sel);
@@ -77,6 +79,23 @@ const fmtLungo = new Intl.DateTimeFormat('it-IT', { weekday: 'long', day: 'numer
 const fmtBreve = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short' });
 const fmtOra = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 function testoAParagrafi(t) { return esc(t).replace(/\n/g, '<br>'); }
+function quantoManca(iso) { const g = giorniTra(oggiIso(), iso); return g === 0 ? 'oggi' : g === 1 ? 'domani' : g > 1 ? 'tra ' + g + ' giorni' : 'scaduta'; }
+
+const ICO = {
+  freccia: '<svg class="freccia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  penna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.5z"/></svg>',
+  piu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  campana: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0112 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/></svg>',
+  bussola: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>'
+};
+function arco(colore, largo, classe) {
+  return '<svg class="' + (classe || 'arco') + '" width="' + largo + '" height="' + Math.round(largo * 1.15) + '" viewBox="0 0 40 46" aria-hidden="true"><path fill="' + esc(colore) + '" d="M0 46V20C0 10 9 7 20 0c11 7 20 10 20 20v26z"/></svg>';
+}
+function suColore(hex) {
+  const n = parseInt(String(hex).slice(1), 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#161b3a' : '#ffffff';
+}
+function stileCitta(t) { return t ? ' style="--citta:' + esc(t.colore) + ';--su-citta:' + suColore(t.colore) + '"' : ''; }
 
 /* ---------- Contenuti comuni ---------- */
 let CONT = null;
@@ -91,6 +110,70 @@ async function caricaContenuti() {
   }
 }
 function tappa(id) { return CONT.tappe.find((t) => t.id === id); }
+function giorniDi(id) { return CONT.giorni.filter((g) => g.tappe.indexOf(id) >= 0); }
+
+/* ---------- Sole: alba e tramonto calcolati sul dispositivo (ora indiana) ---------- */
+function sole(iso, lat, lon, alba) {
+  const p = iso.split('-').map(Number), N = Math.round((Date.UTC(p[0], p[1] - 1, p[2]) - Date.UTC(p[0], 0, 0)) / 864e5);
+  const R = Math.PI / 180, lh = lon / 15, t = N + ((alba ? 6 : 18) - lh) / 24, M = 0.9856 * t - 3.289;
+  let L = (M + 1.916 * Math.sin(M * R) + 0.020 * Math.sin(2 * M * R) + 282.634) % 360; if (L < 0) L += 360;
+  let RA = Math.atan(0.91764 * Math.tan(L * R)) / R; RA = ((RA % 360) + 360) % 360;
+  RA += Math.floor(L / 90) * 90 - Math.floor(RA / 90) * 90; RA /= 15;
+  const sd = 0.39782 * Math.sin(L * R), cd = Math.cos(Math.asin(sd));
+  const cH = (Math.cos(90.833 * R) - sd * Math.sin(lat * R)) / (cd * Math.cos(lat * R));
+  if (cH > 1 || cH < -1) return null;
+  let H = Math.acos(cH) / R; if (alba) H = 360 - H; H /= 15;
+  const loc = (((H + RA - 0.06571 * t - 6.622 - lh + 5.5) % 24) + 24) % 24;
+  let h = Math.floor(loc), m = Math.round((loc - h) * 60); if (m === 60) { h++; m = 0; }
+  return h + ':' + String(m).padStart(2, '0');
+}
+
+/* ---------- Meteo (Open-Meteo) ---------- */
+let METEO = LS.get('rj.meteo', null);
+let meteoInCorso = false;
+function cielo(c) {
+  if (c == null) return '';
+  if (c === 0) return 'sereno';
+  if (c <= 2) return 'poco nuvoloso';
+  if (c === 3) return 'coperto';
+  if (c === 45 || c === 48) return 'nebbia';
+  if (c <= 57) return 'pioviggine';
+  if (c <= 67) return 'pioggia';
+  if (c <= 77) return 'neve';
+  if (c <= 82) return 'rovesci';
+  return 'temporale';
+}
+function aria(aqi) {
+  if (aqi == null) return '';
+  return aqi <= 50 ? 'buona' : aqi <= 100 ? 'discreta' : aqi <= 150 ? 'scadente' : aqi <= 200 ? 'insalubre' : aqi <= 300 ? 'molto insalubre' : 'pericolosa';
+}
+async function aggiornaMeteo(forza) {
+  if (!CONT || meteoInCorso || !navigator.onLine) return;
+  if (!forza && METEO && Date.now() - METEO.t < 3600e3) return;
+  meteoInCorso = true;
+  try {
+    const lat = CONT.tappe.map((t) => t.lat).join(','), lon = CONT.tappe.map((t) => t.lon).join(',');
+    const q = 'latitude=' + lat + '&longitude=' + lon + '&timezone=Asia%2FKolkata';
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?' + q + '&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=16');
+    if (!r.ok) throw new Error('meteo ' + r.status);
+    let j = await r.json(); if (!Array.isArray(j)) j = [j];
+    const per = {};
+    CONT.tappe.forEach((t, i) => {
+      const o = j[i]; if (!o) return;
+      const giorni = {}; const d = o.daily || {};
+      (d.time || []).forEach((g, k) => { giorni[g] = { min: d.temperature_2m_min && d.temperature_2m_min[k], max: d.temperature_2m_max && d.temperature_2m_max[k], c: d.weather_code && d.weather_code[k] }; });
+      per[t.id] = { ora: o.current ? { t: o.current.temperature_2m, c: o.current.weather_code } : null, giorni };
+    });
+    try {
+      const ra = await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?' + q + '&current=us_aqi,pm2_5');
+      if (ra.ok) { let a = await ra.json(); if (!Array.isArray(a)) a = [a]; CONT.tappe.forEach((t, i) => { if (per[t.id] && a[i] && a[i].current) per[t.id].aria = { aqi: a[i].current.us_aqi, pm: a[i].current.pm2_5 }; }); }
+    } catch (e) { /* la qualità dell'aria è un di più */ }
+    METEO = { t: Date.now(), per }; LS.set('rj.meteo', METEO);
+    if (rotta.nome === 'tappa' || rotta.nome === 'viaggio') disegnaSePossibile();
+  } catch (e) { /* senza meteo restano le medie del periodo */ }
+  meteoInCorso = false;
+}
+function gradi(n) { return n == null ? '' : Math.round(n) + '°'; }
 
 /* ---------- Sincronizzazione con GitHub ---------- */
 function token() { return LS.get('rj.token', ''); }
@@ -190,12 +273,12 @@ function aggiornaStato() {
     else if (attesa) { c = 'ambra'; t = 'Modifiche in attesa di sincronizzazione'; }
     else { c = 'verde'; t = 'Sincronizzato'; }
   }
-  p.className = 'punto ' + c; $('#stato').title = t;
+  p.className = 'punto ' + c; $('#stato').title = t; $('#stato').setAttribute('aria-label', t);
   const box = $('#statoDett'); if (box) box.innerHTML = htmlStatoSync();
 }
 function htmlStatoSync() {
   const attesa = Object.keys(inAttesa);
-  if (!token()) return '<p>Nessun token: i dati restano su questo dispositivo.' + (attesa.length ? '' : '') + '</p>';
+  if (!token()) return '<p>Nessun token: i dati restano su questo dispositivo.</p>';
   let h = '';
   if (statoSync.fase === 'sync') h += '<p>Sincronizzazione in corso…</p>';
   else if (statoSync.fase === 'errore') h += '<p class="err">' + esc(statoSync.errore) + '</p>';
@@ -223,143 +306,230 @@ function disegnaSePossibile() { if (staScrivendo() || $('#dlg').open) { disegnoR
 function disegna() {
   disegnoRimandato = false;
   const v = $('#vista');
-  if (!CONT) { v.innerHTML = '<div class="carta"><h2>Contenuti non disponibili</h2><p>Apri l\'app una volta con la rete attiva per scaricare i contenuti.</p></div>'; return; }
-  const viste = { viaggio: vistaViaggio, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, diario: vistaDiario, impostazioni: vistaImpostazioni };
+  if (!CONT) { v.innerHTML = '<div class="pannello vuoto"><h3>Contenuti non ancora scaricati</h3><p class="tenue">Apri l\'app una volta con la rete attiva: poi funziona anche senza.</p></div>'; return; }
+  const viste = { viaggio: vistaViaggio, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
   const f = viste[rotta.nome] || vistaViaggio;
   const r = f(rotta.arg);
   v.innerHTML = r.html;
   $('#titolo').textContent = r.titolo;
   $('#back').hidden = !r.indietro; $('#back').dataset.dove = r.indietro || '';
   const tab = { tappa: 'tappe', generali: 'tappe' }[rotta.nome] || rotta.nome;
-  document.querySelectorAll('.tab a').forEach((a) => a.classList.toggle('qui', a.dataset.tab === tab));
+  document.querySelectorAll('.tab a').forEach((a) => { const q = a.dataset.tab === tab; a.classList.toggle('qui', q); if (q) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   aggiornaStato();
   if (r.dopo) r.dopo();
 }
 
+function prossimaScadenza() {
+  const aperte = voci('scadenze').filter((v) => !v.fatto);
+  if (!aperte.length) return null;
+  const conData = aperte.filter((v) => v.data).sort((a, b) => a.data.localeCompare(b.data));
+  const senza = aperte.filter((v) => !v.data).sort(perOrdine);
+  // Le voci senza data vengono prima di quelle datate lontane: sono "da fare subito".
+  if (conData.length && giorniTra(oggiIso(), conData[0].data) <= 3) return conData[0];
+  return senza[0] || conData[0];
+}
 function vistaViaggio() {
   const oggi = oggiIso(), p = CONT.partenza, r = CONT.rientro;
-  let testa;
-  if (oggi < p) { const n = giorniTra(oggi, p); testa = '<div class="conto"><b>' + n + '</b><span>' + (n === 1 ? 'giorno' : 'giorni') + ' alla partenza</span></div>'; }
-  else if (oggi <= r) { testa = '<div class="conto"><b>' + (giorniTra(p, oggi) + 1) + '</b><span>° giorno di ' + (giorniTra(p, r) + 1) + '</span></div>'; }
-  else { testa = '<div class="conto"><span>Viaggio concluso</span></div>'; }
-  let h = '<section class="eroe">' + testa + '<p>' + esc(fmtBreve.format(dataDa(p))) + ' – ' + esc(fmtBreve.format(dataDa(r))) + ' ' + dataDa(r).getFullYear() + '</p></section>';
-  if (CONT.calendarioStimato) h += '<p class="nota-stima">Calendario stimato: fa fede il programma del coordinatore.</p>';
-  h += '<ol class="giorni">';
+  let h = '<section class="apertura">';
+  if (oggi < p) { const n = giorniTra(oggi, p); h += '<h2 class="titolone">' + (n === 1 ? 'Domani si parte' : 'Tra ' + n + ' giorni si parte') + '</h2>'; }
+  else if (oggi <= r) { const g = CONT.giorni.find((x) => x.data === oggi); h += '<h2 class="titolone">Giorno ' + (giorniTra(p, oggi) + 1) + ' di ' + (giorniTra(p, r) + 1) + (g ? ': ' + esc(g.titolo) : '') + '</h2>'; }
+  else { h += '<h2 class="titolone">Viaggio concluso</h2>'; }
+  h += '<p class="tenue date">Da ' + esc(fmtLungo.format(dataDa(p))) + ' a ' + esc(fmtLungo.format(dataDa(r))) + ' ' + dataDa(r).getFullYear() + '</p>';
+  h += '<div class="nastro">' + CONT.tappe.map((t) => '<a href="#tappa/' + esc(t.id) + '" aria-label="' + esc(t.nome) + '">' + arco(t.colore, 40) + '</a>').join('') + '</div>';
+  h += '<div class="nastro-leg"><span>' + esc(CONT.tappe[0].nome) + '</span><span>' + esc(CONT.tappe[CONT.tappe.length - 1].nome) + '</span></div>';
+  const gOggi = CONT.giorni.find((x) => x.data === oggi), tOggi = gOggi && gOggi.tappe.length ? tappa(gOggi.tappe[0]) : null;
+  const m = tOggi && METEO && METEO.per[tOggi.id];
+  if (m && m.ora) h += '<a class="oggi-meteo" href="#tappa/' + esc(tOggi.id) + '"' + stileCitta(tOggi) + '><span class="gradi">' + gradi(m.ora.t) + '</span><span><b>' + esc(tOggi.nome) + ', ' + esc(cielo(m.ora.c)) + '</b><br>' + (m.aria && m.aria.aqi != null ? 'Aria ' + esc(aria(m.aria.aqi)) : '') + '</span></a>';
+  const ps = oggi <= r ? prossimaScadenza() : null;
+  if (ps) h += '<a class="prossima" href="#liste/scadenze">' + ICO.campana + '<div><b>' + esc(ps.titolo) + '</b><span>' + (ps.data ? esc(fmtBreve.format(dataDa(ps.data))) + ', ' + esc(quantoManca(ps.data)) : 'Prossima cosa da fare') + '</span></div></a>';
+  h += '</section><h2 class="sez">Giorno per giorno</h2>';
+  if (CONT.calendarioStimato) h += '<p class="tenue" style="margin-bottom:22px">Calendario stimato: fa fede il programma del coordinatore.</p>';
+  h += '<ol class="filo">';
   CONT.giorni.forEach((g, i) => {
-    const cl = g.data === oggi ? ' oggi' : (g.data < oggi ? ' passato' : '');
-    const d = voce('diario', 'g-' + g.data);
-    h += '<li class="giorno' + cl + '"><div class="quando"><span class="n">' + (i + 1) + '</span>' + esc(fmtGiorno.format(dataDa(g.data))) + '</div><div class="cosa"><h3>' + esc(g.titolo) + '</h3>';
+    const cl = g.data === oggi ? ' class="oggi"' : (g.data < oggi ? ' class="passato"' : '');
+    const d = voce('diario', 'g-' + g.data), t0 = g.tappe.length ? tappa(g.tappe[0]) : null;
+    h += '<li' + cl + stileCitta(t0) + '><span class="perla">' + (i + 1) + '</span><div class="cosa"><span class="quando">' + esc(fmtLungo.format(dataDa(g.data))) + '</span><h3>' + esc(g.titolo) + '</h3>';
     if (g.nota) h += '<p class="tenue">' + esc(g.nota) + '</p>';
-    h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip" href="#tappa/' + esc(id) + '">' + esc(t.nome) + '</a>' : ''; }).join('');
-    h += '<a class="chip chiaro" href="#diario/' + esc(g.data) + '">' + (d && d.testo ? '✎ Diario scritto' : '✎ Diario') + '</a></div></div></li>';
+    h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip citta" href="#tappa/' + esc(id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>' : ''; }).join('');
+    h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a></div></div>';
+    h += '</li>';
   });
   h += '</ol>';
-  return { titolo: 'Tutto Rajasthan', html: h, dopo() { const o = $('.giorno.oggi'); if (o) o.scrollIntoView({ block: 'center' }); } };
+  return { titolo: 'Tutto Rajasthan', html: h, dopo() { const o = $('.filo .oggi'); if (o) o.scrollIntoView({ block: 'center' }); } };
 }
 
 function vistaTappe() {
-  let h = '<a class="carta link" href="#generali"><h2>Consigli per tutto il viaggio</h2><p class="tenue">Scarpe, abbigliamento nei templi, cibo di strada, guide non ufficiali.</p></a>';
+  let h = '<a class="generali" href="#generali">' + ICO.bussola + '<div style="flex:1"><h3>Consigli per tutto il viaggio</h3><p class="tenue">Scarpe, templi, cibo di strada, guide non ufficiali</p></div>' + ICO.freccia + '</a><ul class="tappe">';
   CONT.tappe.forEach((t) => {
-    const tot = t.vedere.length + t.mangiare.length;
-    const fatti = t.vedere.concat(t.mangiare).filter((x, i) => { const k = i < t.vedere.length ? 'v' : 'm'; const s = voce('segni', t.id + '/' + k + '/' + slug(x.t)); return s && s.fatto; }).length;
-    h += '<a class="carta link" href="#tappa/' + esc(t.id) + '"><div class="riga"><h2>' + esc(t.nome) + '</h2><span class="temp">' + t.clima.min + '° / ' + t.clima.max + '°</span></div><p class="tenue">' + esc(t.quando) + (fatti ? ' · ' + fatti + ' di ' + tot + ' spuntati' : '') + '</p></a>';
+    const tutti = t.vedere.map((x) => 'v/' + slug(x.t)).concat(t.mangiare.map((x) => 'm/' + slug(x.t)));
+    const fatti = tutti.filter((k) => { const s = voce('segni', t.id + '/' + k); return s && s.fatto; }).length;
+    h += '<li><a href="#tappa/' + esc(t.id) + '">' + arco(t.colore, 46) + '<div><h3>' + esc(t.nome) + '</h3><p class="tenue">' + esc(t.quando) + (fatti ? ', ' + fatti + ' di ' + tutti.length + ' spuntati' : '') + '</p></div><div class="gradi"><b>' + t.clima.max + '°</b>min ' + t.clima.min + '°</div></a></li>';
   });
-  h += '<p class="pie">' + esc(CONT.avviso) + '<br>Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '.</p>';
+  h += '</ul><p class="pie">' + esc(CONT.avviso) + ' Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '.</p>';
   return { titolo: 'Tappe', html: h };
 }
 
 function htmlSegni(t, lista, k, titolo, etichetta) {
   if (!lista.length) return '';
-  let h = '<section class="carta"><h2>' + titolo + '</h2><ul class="segni">';
+  let h = '<h2 class="sez">' + arco(t.colore, 18) + titolo + '</h2><div class="pannello"><ul class="segni">';
   lista.forEach((x) => {
     const id = t.id + '/' + k + '/' + slug(x.t); const s = voce('segni', id); const on = !!(s && s.fatto);
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button><div><h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + '</div></li>';
   });
-  return h + '</ul></section>';
+  return h + '</ul></div>';
+}
+function htmlMeteo(t) {
+  const gg = giorniDi(t.id), m = METEO && METEO.per[t.id];
+  let h = '<dl class="meteo"><div><dt>Di solito</dt><dd><b>' + t.clima.max + '°</b> di giorno, <b>' + t.clima.min + '°</b> di notte. ' + esc(t.clima.nota) + '</dd></div>';
+  if (m && m.ora) h += '<div><dt>' + (Date.now() - METEO.t < 2 * 3600e3 ? 'Adesso' : 'Ultimo dato') + '</dt><dd><b>' + gradi(m.ora.t) + '</b>, ' + esc(cielo(m.ora.c)) + (m.aria && m.aria.aqi != null ? '. Aria <b>' + esc(aria(m.aria.aqi)) + '</b> (indice ' + Math.round(m.aria.aqi) + ')' : '') + '</dd></div>';
+  const prev = m ? gg.filter((g) => m.giorni[g.data]) : [];
+  if (prev.length) h += '<div><dt>Previsioni</dt><dd><div class="previsioni">' + prev.map((g) => { const p = m.giorni[g.data]; return '<span>' + esc(fmtBreve.format(dataDa(g.data))) + '<b>' + gradi(p.max) + ' / ' + gradi(p.min) + '</b>' + esc(cielo(p.c)) + '</span>'; }).join('') + '</div></dd></div>';
+  else if (gg.length && giorniTra(oggiIso(), gg[0].data) > 15) h += '<div><dt>Previsioni</dt><dd class="tenue">Disponibili da circa due settimane prima, dal ' + esc(fmtBreve.format(new Date(dataDa(gg[0].data).getTime() - 15 * 864e5))) + '.</dd></div>';
+  if (gg.length) { const a = sole(gg[0].data, t.lat, t.lon, true), s = sole(gg[0].data, t.lat, t.lon, false); if (a && s) h += '<div><dt>Sole</dt><dd>Alba alle <b>' + a + '</b>, tramonto alle <b>' + s + '</b> (ora indiana, ' + esc(fmtBreve.format(dataDa(gg[0].data))) + ')</dd></div>'; }
+  return h + '</dl>';
 }
 function vistaTappa(id) {
   const t = tappa(id); if (!t) return vistaTappe();
-  let h = '<section class="eroe piccolo"><p>' + esc(t.quando) + (CONT.calendarioStimato ? ' · data stimata' : '') + '</p><div class="clima"><b>' + t.clima.min + '°</b> min <b>' + t.clima.max + '°</b> max</div><p>' + esc(t.clima.nota) + '</p></section>';
+  let h = '<div' + stileCitta(t) + '><section class="fascia">' + arco(suColore(t.colore), 210, 'sfondo') + '<h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></section>' + htmlMeteo(t);
   h += htmlSegni(t, t.vedere, 'v', 'Cosa vedere', 'Visto');
   h += htmlSegni(t, t.mangiare, 'm', 'Cosa mangiare', 'Assaggiato');
-  h += '<section class="carta"><h2>Consigli pratici</h2><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></section>';
-  const gg = CONT.giorni.filter((g) => g.tappe.indexOf(t.id) >= 0);
-  if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip chiaro" href="#diario/' + esc(g.data) + '">✎ Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
+  h += '<h2 class="sez">' + arco(t.colore, 18) + 'Consigli pratici</h2><div class="pannello"><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></div>';
+  const sit = voci('foto').filter((v) => v.tipo === 'situazione' && (v.dove || []).indexOf(t.id) >= 0).sort(perOrdine);
+  if (sit.length) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
+  const gg = giorniDi(t.id);
+  if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
+  if (METEO) h += '<p class="pie">Meteo aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '.</p>';
+  h += '</div>';
   return { titolo: t.nome, html: h, indietro: '#tappe' };
 }
 function vistaGenerali() {
-  const h = '<section class="carta"><ul class="voci-testo">' + CONT.generali.map((g) => '<li><h3>' + esc(g.t) + '</h3><p>' + esc(g.d) + '</p></li>').join('') + '</ul></section>';
+  const h = '<div class="pannello"><ul class="voci-testo">' + CONT.generali.map((g) => '<li><h3>' + esc(g.t) + '</h3><p>' + esc(g.d) + '</p></li>').join('') + '</ul></div>';
   return { titolo: 'Consigli generali', html: h, indietro: '#tappe' };
 }
 
 function vistaListe(arg) {
-  const sez = LISTE[arg] ? arg : LS.get('rj.lista', 'scadenze');
+  const sez = LISTE[arg] ? arg : (LISTE[LS.get('rj.lista', '')] ? LS.get('rj.lista') : 'scadenze');
   LS.set('rj.lista', sez);
   const cfg = LISTE[sez];
-  let h = '<div class="sotto">' + Object.keys(LISTE).map((k) => '<a href="#liste/' + k + '" class="' + (k === sez ? 'qui' : '') + '">' + esc(LISTE[k].nome) + '</a>').join('') + '</div>';
+  let h = '<div class="sotto">' + Object.keys(LISTE).map((k) => '<a href="#liste/' + k + '"' + (k === sez ? ' class="qui" aria-current="true"' : '') + '>' + esc(LISTE[k].nome) + '</a>').join('') + '</div>';
   const tutte = voci(sez);
   if (!tutte.length) {
-    h += '<div class="carta vuoto"><p>Nessuna voce.</p><p class="tenue">' + (token() ? 'Aggiungine una, oppure attendi la sincronizzazione.' : 'Aggiungi le tue voci: restano su questo dispositivo.') + '</p></div>';
+    h += '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Ancora nessuna voce</h3><p class="tenue">' + (token() ? 'Aggiungine una qui sotto, o attendi la sincronizzazione.' : 'Aggiungi le tue: restano su questo dispositivo.') + '</p></div>';
   } else {
     if (cfg.spunta) { const f = tutte.filter((v) => v.fatto).length; h += '<p class="progresso"><span style="--p:' + Math.round(100 * f / tutte.length) + '%"></span>' + f + ' di ' + tutte.length + ' ' + esc(cfg.spunta) + '</p>'; }
     const gruppi = {};
     tutte.forEach((v) => { const g = v.gruppo || 'Altro'; (gruppi[g] = gruppi[g] || []).push(v); });
     const ordG = Object.keys(gruppi).sort((a, b) => Math.min.apply(null, gruppi[a].map((v) => v.ord || 9999)) - Math.min.apply(null, gruppi[b].map((v) => v.ord || 9999)) || a.localeCompare(b));
     ordG.forEach((g) => {
-      h += '<section class="carta"><h2>' + esc(g) + '</h2><ul class="lista">';
-      gruppi[g].sort((a, b) => (a.ord || 9999) - (b.ord || 9999) || String(a.titolo).localeCompare(String(b.titolo))).forEach((v) => {
+      h += '<section class="pannello"><h2>' + esc(g) + '</h2><ul class="lista">';
+      gruppi[g].sort(perOrdine).forEach((v) => {
         h += '<li class="' + (v.fatto ? 'fatto' : '') + '">';
         if (cfg.spunta) h += '<button class="spunta' + (v.fatto ? ' on' : '') + '" data-az="fatto" data-sez="' + sez + '" data-id="' + esc(v.id) + '" aria-pressed="' + !!v.fatto + '" aria-label="' + esc(cfg.spunta + ': ' + v.titolo) + '"></button>';
         h += '<div class="corpo" data-az="modifica" data-sez="' + sez + '" data-id="' + esc(v.id) + '"><h3>' + esc(v.titolo) + '</h3>';
         if (v.testo) h += '<p>' + testoAParagrafi(v.testo) + '</p>';
-        let meta = '';
-        if (v.data) { const gg = giorniTra(oggiIso(), v.data); meta += '<span class="quando-voce' + (gg < 0 && !v.fatto ? ' scaduta' : '') + '">' + esc(fmtBreve.format(dataDa(v.data))) + (v.fatto ? '' : gg === 0 ? ' · oggi' : gg > 0 ? ' · tra ' + gg + ' g' : ' · scaduta') + '</span>'; }
-        if (meta) h += '<div class="meta">' + meta + '</div>';
+        if (v.data) { const gg = giorniTra(oggiIso(), v.data); h += '<div class="meta"><span class="quando-voce' + (gg < 0 && !v.fatto ? ' scaduta' : '') + '">' + esc(fmtBreve.format(dataDa(v.data))) + (v.fatto ? '' : ', ' + esc(quantoManca(v.data))) + '</span></div>'; }
         h += '</div>';
-        if (cfg.stati) h += '<button class="stato-voce s-' + slug(v.stato || cfg.stati[0]) + '" data-az="stato" data-sez="' + sez + '" data-id="' + esc(v.id) + '">' + esc(v.stato || cfg.stati[0]) + '</button>';
+        if (cfg.stati) h += '<button class="stato-voce s-' + slug(v.stato || cfg.stati[0]) + '" data-az="stato" data-sez="' + sez + '" data-id="' + esc(v.id) + '" aria-label="Stato: ' + esc(v.stato || cfg.stati[0]) + '. Tocca per cambiare">' + esc(v.stato || cfg.stati[0]) + '</button>';
         h += '</li>';
       });
       h += '</ul></section>';
     });
   }
-  h += '<button class="piu" data-az="nuova" data-sez="' + sez + '">+ Aggiungi voce</button>';
+  h += '<button class="piu" data-az="nuova" data-sez="' + sez + '">' + ICO.piu + 'Aggiungi una voce</button>';
   return { titolo: 'Liste', html: h };
+}
+
+/* ---------- Fotografia ---------- */
+function fotoDi(tipo) { return voci('foto').filter((v) => v.tipo === tipo).sort(perOrdine); }
+function ricettaPerChiave(k) { return voci('foto').find((v) => v.tipo === 'ricetta' && v.chiave === k); }
+function htmlNote(v) {
+  return '<h2 class="sez">Le mie note</h2><textarea data-campo="foto|' + esc(v.id) + '" rows="3" placeholder="Cosa ha funzionato, cosa cambierei">' + esc(v.testo || '') + '</textarea>';
+}
+function vistaFoto(arg) {
+  const tutte = voci('foto');
+  if (!tutte.length) return { titolo: 'Fotografia', html: '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Sezione personale</h3><p class="tenue">Qui compaiono le schede di fotografia quando la sincronizzazione è attiva.</p></div>' };
+  if (arg.indexOf('s/') === 0) {
+    const v = voce('foto', arg.slice(2)); if (!v || v.tipo !== 'situazione') return vistaFoto('situazioni');
+    const r = v.ricetta && ricettaPerChiave(v.ricetta);
+    let h = '<h2 class="titolone">' + esc(v.titolo) + '</h2><p class="tenue">' + esc(v.sotto || '') + '</p><p class="intro-foto">' + esc(v.perche || '') + '</p>';
+    h += '<h2 class="sez">Impostazioni</h2><div class="pannello"><ul class="imp">' + (v.imp || []).map((x) => '<li><span class="k">' + esc(x[0]) + '</span><span class="v">' + esc(x[1]) + '</span><span class="w">' + esc(x[2]) + '</span></li>').join('') + '</ul></div>';
+    if (r) h += '<div class="pannello rimandi"><a href="#foto/r/' + esc(r.id) + '"><div><span class="k piccolo">Ricetta consigliata</span><h3><span class="slot">' + esc(r.slot) + '</span>' + esc(r.titolo) + '</h3></div>' + ICO.freccia + '</a></div>';
+    h += '<h2 class="sez">Sul posto</h2><div class="pannello"><ol class="passi">' + (v.passi || []).map((x) => '<li><div><p>' + esc(x[0]) + '</p><p class="w">' + esc(x[1]) + '</p></div></li>').join('') + '</ol></div>';
+    if ((v.errori || []).length) h += '<h2 class="sez">Errori tipici</h2><div class="pannello"><ul class="errori">' + v.errori.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul></div>';
+    const dove = (v.dove || []).map(tappa).filter(Boolean);
+    if (dove.length) h += '<h2 class="sez">Dove</h2><div class="azioni">' + dove.map((t) => '<a class="chip citta" href="#tappa/' + esc(t.id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>').join('') + '</div>';
+    h += htmlNote(v);
+    return { titolo: 'Situazione', html: h, indietro: '#foto/situazioni' };
+  }
+  if (arg.indexOf('r/') === 0) {
+    const v = voce('foto', arg.slice(2)); if (!v || v.tipo !== 'ricetta') return vistaFoto('ricette');
+    let h = '<h2 class="titolone"><span class="slot">' + esc(v.slot) + '</span>' + esc(v.titolo) + '</h2><p class="tenue">Simulazione ' + esc(v.sim) + '</p><p class="intro-foto">' + esc(v.quando || '') + '</p>';
+    h += '<div class="pannello"><ul class="voci-testo"><li><h3>Quando rende</h3><p>' + esc(v.generale || '') + '</p></li><li><h3>Attenzione</h3><p>' + esc(v.nota || '') + '</p></li></ul></div>';
+    h += '<h2 class="sez">Impostazioni</h2><div class="pannello"><dl class="coppie"><dt>Simulazione</dt><dd>' + esc(v.sim) + '</dd>' + Object.keys(v.s || {}).map((k) => '<dt>' + esc(k) + '</dt><dd>' + esc(v.s[k]) + '</dd>').join('') + '</dl></div>';
+    const usi = fotoDi('situazione').filter((s) => s.ricetta === v.chiave);
+    if (usi.length) h += '<h2 class="sez">Situazioni</h2><div class="pannello rimandi">' + usi.map((s) => '<a href="#foto/s/' + esc(s.id) + '"><h3>' + esc(s.titolo) + '</h3>' + ICO.freccia + '</a>').join('') + '</div>';
+    h += htmlNote(v);
+    if (v.url) h += '<p class="pie">Ricetta di Fuji X Weekly: <a href="' + esc(v.url) + '" target="_blank" rel="noopener">pagina originale</a>.</p>';
+    return { titolo: 'Ricetta', html: h, indietro: '#foto/ricette' };
+  }
+  const sez = FOTO[arg] ? arg : (FOTO[LS.get('rj.foto', '')] ? LS.get('rj.foto') : 'situazioni');
+  LS.set('rj.foto', sez);
+  let h = '<div class="sotto">' + Object.keys(FOTO).map((k) => '<a href="#foto/' + k + '"' + (k === sez ? ' class="qui" aria-current="true"' : '') + '>' + esc(FOTO[k]) + '</a>').join('') + '</div>';
+  if (sez === 'situazioni') {
+    h += '<div class="pannello"><ul class="schede-foto">' + fotoDi('situazione').map((v) => { const r = v.ricetta && ricettaPerChiave(v.ricetta); return '<li><a href="#foto/s/' + esc(v.id) + '"><h3>' + esc(v.titolo) + '</h3><p>' + esc(v.sotto || '') + (r ? '<br><span class="slot" style="margin-top:6px">' + esc(r.slot) + '</span>' + esc(r.titolo) : '') + '</p>' + ICO.freccia + '</a></li>'; }).join('') + '</ul></div>';
+  } else if (sez === 'ricette') {
+    h += '<p class="tenue" style="margin-bottom:12px">Le sette ricette salvate in fotocamera, con l\'uso consigliato per questo viaggio.</p><div class="pannello"><ul class="schede-foto">' + fotoDi('ricetta').map((v) => '<li><a href="#foto/r/' + esc(v.id) + '"><h3><span class="slot">' + esc(v.slot) + '</span>' + esc(v.titolo) + '</h3><p>' + esc(v.quando || '') + '</p>' + ICO.freccia + '</a></li>').join('') + '</ul></div>';
+  } else if (sez === 'fotocamera') {
+    const base = fotoDi('base'), f = base.filter((v) => v.fatto).length, gruppi = [];
+    base.forEach((v) => { let g = gruppi.find((x) => x.n === v.gruppo); if (!g) gruppi.push(g = { n: v.gruppo, v: [] }); g.v.push(v); });
+    h += '<p class="progresso"><span style="--p:' + (base.length ? Math.round(100 * f / base.length) : 0) + '%"></span>' + f + ' di ' + base.length + ' controllate</p>';
+    gruppi.forEach((g) => {
+      h += '<section class="pannello"><h2>' + esc(g.n) + '</h2><ul class="imp base">' + g.v.map((v) => '<li class="' + (v.fatto ? 'fatto' : '') + '"><button class="spunta' + (v.fatto ? ' on' : '') + '" data-az="fatto" data-sez="foto" data-id="' + esc(v.id) + '" aria-pressed="' + !!v.fatto + '" aria-label="Controllata: ' + esc(v.titolo) + '"></button><span class="k">' + esc(v.titolo) + '</span><span class="v">' + esc(v.valore || '') + '</span><span class="w">' + esc(v.perche || '') + '</span>' + (v.percorso ? '<span class="percorso">' + esc(v.percorso) + '</span>' : '') + '</li>').join('') + '</ul></section>';
+    });
+  } else {
+    [['trucco', 'Trucchi'], ['regola', 'Regole nei luoghi']].forEach((x) => {
+      const l = fotoDi(x[0]); if (!l.length) return;
+      h += '<h2 class="sez">' + x[1] + '</h2><div class="pannello"><ul class="voci-testo">' + l.map((v) => '<li><h3>' + esc(v.titolo) + '</h3><p>' + esc(v.testo_fisso || v.testo || '') + '</p></li>').join('') + '</ul></div>';
+    });
+  }
+  return { titolo: 'Fotografia', html: h };
 }
 
 function vistaDiario(arg) {
   const oggi = oggiIso();
-  let h = '<p class="tenue intro">Si salva da solo mentre scrivi.</p>';
+  let h = '<p class="tenue" style="margin-bottom:12px">Si salva da solo mentre scrivi.</p>';
   const note = voce('diario', 'note');
-  h += '<section class="carta diario"><h2>Note generali</h2><textarea data-diario="note" rows="3" placeholder="Appunti che non appartengono a un giorno preciso">' + esc(note ? note.testo : '') + '</textarea></section>';
+  h += '<section class="pannello pieno giorno-d"><h2>Note generali</h2><textarea data-campo="diario|note" rows="3" placeholder="Appunti che non appartengono a un giorno preciso">' + esc(note ? note.testo : '') + '</textarea></section>';
   CONT.giorni.forEach((g, i) => {
-    const v = voce('diario', 'g-' + g.data);
-    h += '<section class="carta diario' + (g.data === oggi ? ' oggi' : '') + '" id="d-' + g.data + '"><h2><span class="n">' + (i + 1) + '</span>' + esc(fmtLungo.format(dataDa(g.data))) + '</h2><p class="tenue">' + esc(g.titolo) + '</p><textarea data-diario="g-' + g.data + '" rows="' + (v && v.testo ? 5 : 2) + '" placeholder="Cosa ho visto, mangiato, cosa ricordare">' + esc(v ? v.testo : '') + '</textarea></section>';
+    const v = voce('diario', 'g-' + g.data), t0 = g.tappe.length ? tappa(g.tappe[0]) : null;
+    h += '<section class="pannello pieno giorno-d' + (g.data === oggi ? ' oggi' : '') + '" id="d-' + g.data + '"' + stileCitta(t0) + '><h2><span class="perla">' + (i + 1) + '</span>' + esc(fmtLungo.format(dataDa(g.data))) + '</h2><p class="tenue">' + esc(g.titolo) + '</p><textarea data-campo="diario|g-' + g.data + '" rows="' + (v && v.testo ? 5 : 2) + '" placeholder="Cosa ho visto, mangiato, cosa ricordare">' + esc(v ? v.testo : '') + '</textarea></section>';
   });
   return {
     titolo: 'Diario', html: h, dopo() {
       const bersaglio = arg || (oggi >= CONT.partenza && oggi <= CONT.rientro ? oggi : '');
       const el = bersaglio && document.getElementById('d-' + bersaglio);
-      if (el) { el.scrollIntoView({ block: 'start' }); if (arg) { const ta = $('textarea', el); if (ta) ta.focus({ preventScroll: true }); } }
+      if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -70); if (arg) { const ta = $('textarea', el); if (ta) ta.focus({ preventScroll: true }); } }
     }
   };
 }
 
 let installa = null;
 function vistaImpostazioni() {
-  let h = '<section class="carta"><h2>Sincronizzazione</h2><div id="statoDett">' + htmlStatoSync() + '</div>';
+  let h = '<h2 class="sez">Sincronizzazione</h2><section class="pannello pieno"><div id="statoDett">' + htmlStatoSync() + '</div>';
   if (token()) {
     h += '<p class="tenue">Repository: ' + esc(repo()) + '</p><div class="azioni larghe"><button class="btn" data-az="sync">Sincronizza ora</button><button class="btn chiaro" data-az="togliToken">Rimuovi il token</button></div>';
   } else {
     h += '<p>Con un token di accesso GitHub i dati vengono salvati anche in un repository privato e ritrovati sugli altri dispositivi. Senza token l\'app funziona lo stesso e i dati restano qui.</p>' +
       '<label>Repository dei dati<input id="fRepo" value="' + esc(repo()) + '" autocapitalize="off" autocomplete="off" spellcheck="false"></label>' +
       '<label>Token<input id="fToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>' +
-      '<p class="err" id="errToken" hidden></p><button class="btn" data-az="salvaToken">Salva e sincronizza</button>';
+      '<p class="err" id="errToken" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaToken">Salva e sincronizza</button></div>';
   }
   h += '</section>';
-  h += '<section class="carta"><h2>Copia di sicurezza</h2><p>Salva tutti i tuoi dati in un file, o ricaricali da un file salvato.</p><div class="azioni larghe"><button class="btn chiaro" data-az="esporta">Esporta</button><label class="btn chiaro file">Importa<input type="file" id="fImporta" accept="application/json,.json" hidden></label></div><p class="tenue" id="msgCopia"></p></section>';
-  h += '<section class="carta"><h2>App</h2>';
-  if (installa) h += '<button class="btn" data-az="installa">Installa sul dispositivo</button>';
-  h += '<p class="tenue" id="infoMemoria"></p><p class="tenue">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Gli aggiornamenti si scaricano da soli con la rete e compaiono alla riapertura.</p></section>';
+  h += '<h2 class="sez">Copia di sicurezza</h2><section class="pannello pieno"><p>Salva tutti i tuoi dati in un file, o ricaricali da un file salvato.</p><div class="azioni larghe"><button class="btn chiaro" data-az="esporta">Esporta</button><label class="btn chiaro file">Importa<input type="file" id="fImporta" accept="application/json,.json" hidden></label></div><p class="tenue" id="msgCopia"></p></section>';
+  h += '<h2 class="sez">App</h2><section class="pannello pieno">';
+  if (installa) h += '<div class="azioni" style="margin:0 0 12px"><button class="btn" data-az="installa">Installa sul dispositivo</button></div>';
+  h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Gli aggiornamenti si scaricano da soli con la rete e compaiono alla riapertura.</p>';
+  h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       const el = $('#infoMemoria');
@@ -373,7 +543,7 @@ function vistaImpostazioni() {
 function apriModifica(sez, id) {
   const cfg = LISTE[sez]; const v = id ? voce(sez, id) : null;
   const gruppiNoti = Array.from(new Set(voci(sez).map((x) => x.gruppo).filter(Boolean)));
-  let h = '<h2>' + (v ? 'Modifica voce' : 'Nuova voce') + '</h2>' +
+  let h = '<h2>' + (v ? 'Modifica la voce' : 'Nuova voce') + '</h2>' +
     '<label>Titolo<input name="titolo" required value="' + esc(v ? v.titolo : '') + '"></label>' +
     '<label>Note<textarea name="testo" rows="4">' + esc(v ? v.testo || '' : '') + '</textarea></label>' +
     '<label>Gruppo<input name="gruppo" list="gruppi" value="' + esc(v ? v.gruppo || '' : gruppiNoti[0] || '') + '"><datalist id="gruppi">' + gruppiNoti.map((g) => '<option value="' + esc(g) + '">').join('') + '</datalist></label>';
@@ -384,7 +554,7 @@ function apriModifica(sez, id) {
   const be = $('#btnElimina');
   if (be) be.addEventListener('click', () => {
     if (be.dataset.conferma) { elimina(sez, id); $('#dlg').close('eliminata'); }
-    else { be.dataset.conferma = '1'; be.textContent = 'Conferma eliminazione'; }
+    else { be.dataset.conferma = '1'; be.textContent = 'Conferma: elimina'; }
   });
   $('#dlg').returnValue = '';
   $('#dlg').showModal();
@@ -403,17 +573,18 @@ $('#dlg').addEventListener('close', () => {
 });
 
 /* ---------- Eventi ---------- */
-const timerDiario = {};
+const timerCampo = {};
+function campoDi(el) { const k = el.dataset && el.dataset.campo; if (!k) return null; const i = k.indexOf('|'); return { k, sez: k.slice(0, i), id: k.slice(i + 1) }; }
 $('#vista').addEventListener('input', (e) => {
-  const k = e.target.dataset && e.target.dataset.diario; if (!k) return;
+  const c = campoDi(e.target); if (!c) return;
   const ta = e.target;
-  clearTimeout(timerDiario[k]);
-  timerDiario[k] = setTimeout(() => scrivi('diario', k, { testo: ta.value }), 600);
+  clearTimeout(timerCampo[c.k]);
+  timerCampo[c.k] = setTimeout(() => { timerCampo[c.k] = null; scrivi(c.sez, c.id, { testo: ta.value }); }, 600);
   ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 2 + 'px';
 });
 $('#vista').addEventListener('focusout', (e) => {
-  const k = e.target.dataset && e.target.dataset.diario;
-  if (k && timerDiario[k]) { clearTimeout(timerDiario[k]); timerDiario[k] = null; const v = voce('diario', k); if (!v || v.testo !== e.target.value) scrivi('diario', k, { testo: e.target.value }); }
+  const c = campoDi(e.target);
+  if (c && timerCampo[c.k]) { clearTimeout(timerCampo[c.k]); timerCampo[c.k] = null; const v = voce(c.sez, c.id); if (!v || v.testo !== e.target.value) scrivi(c.sez, c.id, { testo: e.target.value }); }
   if (disegnoRimandato) setTimeout(() => { if (!staScrivendo()) disegna(); }, 250);
 });
 $('#vista').addEventListener('change', (e) => {
@@ -426,13 +597,11 @@ $('#vista').addEventListener('change', (e) => {
       let n = 0;
       for (const s of SEZIONI) {
         const it = j.dati[s] && j.dati[s].items; if (!it) continue;
-        const es = unisci(DB[s].items, it);
-        const finale = unisci(it, DB[s].items).uniti; // vince la voce più recente
-        if (es.daLocale) { DB[s].items = finale; modifiche[s]++; salvaSezione(s); segnaAttesa(s, true); n++; }
+        if (unisci(DB[s].items, it).daLocale) { DB[s].items = unisci(it, DB[s].items).uniti; modifiche[s]++; salvaSezione(s); segnaAttesa(s, true); n++; }
       }
-      if (msg) msg.textContent = n ? 'Importazione completata.' : 'Nessuna voce nuova nel file.';
+      if (msg) msg.textContent = n ? 'Importazione completata.' : 'Nel file non c\'è niente di più recente.';
       programmaSync();
-    } catch (err) { if (msg) msg.textContent = 'Il file non è una copia valida dell\'app.'; }
+    } catch (err) { if (msg) msg.textContent = 'Questo file non è una copia dei dati dell\'app.'; }
   };
   lettore.readAsText(e.target.files[0]);
 });
@@ -445,6 +614,7 @@ $('#vista').addEventListener('click', async (e) => {
   else if (az === 'modifica') apriModifica(sez, id);
   else if (az === 'nuova') apriModifica(sez, null);
   else if (az === 'sync') sincronizza(true);
+  else if (az === 'meteo') { el.disabled = true; await aggiornaMeteo(true); disegna(); }
   else if (az === 'togliToken') { LS.del('rj.token'); statoSync.fase = 'fermo'; disegna(); }
   else if (az === 'salvaToken') {
     const t = $('#fToken').value.trim(), r = $('#fRepo').value.trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, ''), err = $('#errToken');
@@ -472,9 +642,9 @@ $('#vista').addEventListener('click', async (e) => {
 $('#back').addEventListener('click', () => { location.hash = $('#back').dataset.dove || '#viaggio'; });
 $('#stato').addEventListener('click', () => { location.hash = '#impostazioni'; });
 window.addEventListener('hashchange', () => { leggiRotta(); disegna(); window.scrollTo(0, 0); });
-window.addEventListener('online', () => sincronizza(false));
+window.addEventListener('online', () => { sincronizza(false); aggiornaMeteo(false); });
 window.addEventListener('offline', aggiornaStato);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sincronizza(true); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { sincronizza(true); aggiornaMeteo(false); } });
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installa = e; if (rotta.nome === 'impostazioni') disegna(); });
 setInterval(() => sincronizza(false), 5 * 60 * 1000);
 
@@ -487,4 +657,5 @@ setInterval(() => sincronizza(false), 5 * 60 * 1000);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* senza service worker l'app funziona solo online */ });
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
   sincronizza(true);
+  aggiornaMeteo(false);
 })();

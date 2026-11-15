@@ -1,6 +1,6 @@
 // Service worker: tiene app e contenuti sul dispositivo, così l'app si apre senza rete.
 // Strategia: si risponde subito dalla copia locale e, se c'è rete, la si aggiorna in background.
-const CACHE = 'rajasthan-v1';
+const CACHE = 'rajasthan-v2';
 const SHELL = [
   './',
   'index.html',
@@ -9,7 +9,11 @@ const SHELL = [
   'manifest.webmanifest',
   'data/tappe.json',
   'icons/icon-192.png',
-  'icons/icon-512.png'
+  'icons/icon-512.png',
+  'font/rozha.woff2',
+  'font/mukta-400.woff2',
+  'font/mukta-600.woff2',
+  'font/mukta-700.woff2'
 ];
 
 self.addEventListener('install', (e) => {
