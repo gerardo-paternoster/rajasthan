@@ -1,0 +1,278 @@
+{
+  "aggiornato": "2026-11-15",
+  "partenza": "2026-12-20",
+  "rientro": "2027-01-05",
+  "calendarioStimato": true,
+  "avviso": "Il calendario è stimato: fa fede il programma del coordinatore. Orari e regole vengono da guide di viaggio e possono cambiare. Il clima è la media del periodo, non una previsione.",
+  "giorni": [
+    {"data": "2026-12-20", "titolo": "Partenza da Milano", "tappe": []},
+    {"data": "2026-12-21", "titolo": "Delhi", "tappe": ["delhi"]},
+    {"data": "2026-12-22", "titolo": "Verso Bikaner", "tappe": ["bikaner"]},
+    {"data": "2026-12-23", "titolo": "Bikaner e Deshnok", "tappe": ["bikaner"]},
+    {"data": "2026-12-24", "titolo": "Jaisalmer", "tappe": ["jaisalmer"]},
+    {"data": "2026-12-25", "titolo": "Jaisalmer e deserto del Thar", "tappe": ["jaisalmer"], "nota": "Natale, probabile notte in tenda"},
+    {"data": "2026-12-26", "titolo": "Verso Jodhpur", "tappe": ["jodhpur"]},
+    {"data": "2026-12-27", "titolo": "Jodhpur", "tappe": ["jodhpur"]},
+    {"data": "2026-12-28", "titolo": "Ranakpur", "tappe": ["ranakpur"]},
+    {"data": "2026-12-29", "titolo": "Udaipur", "tappe": ["udaipur"]},
+    {"data": "2026-12-30", "titolo": "Udaipur", "tappe": ["udaipur"]},
+    {"data": "2026-12-31", "titolo": "Udaipur", "tappe": ["udaipur"], "nota": "Capodanno"},
+    {"data": "2027-01-01", "titolo": "Ajmer e Pushkar", "tappe": ["ajmer-pushkar"], "nota": "Venerdì: massima affluenza al Dargah"},
+    {"data": "2027-01-02", "titolo": "Jaipur", "tappe": ["jaipur"]},
+    {"data": "2027-01-03", "titolo": "Jaipur", "tappe": ["jaipur"]},
+    {"data": "2027-01-04", "titolo": "Fatehpur Sikri e Agra", "tappe": ["fatehpur-sikri", "agra"]},
+    {"data": "2027-01-05", "titolo": "Delhi e rientro", "tappe": ["delhi"]}
+  ],
+  "generali": [
+    {"t": "Scarpe facili da togliere e calze di riserva", "d": "Ci si scalza in templi, moschee, ghat e mausolei, spesso su marmo freddo al mattino. Un paio di calze \"da tempio\" evita di camminare scalzi."},
+    {"t": "Spalle e ginocchia coperte", "d": "Nei luoghi di culto, per uomini e donne. Una sciarpa o uno scaldacollo serve anche per coprire la testa (obbligatorio al Dargah di Ajmer) e per la polvere."},
+    {"t": "Niente cuoio nei templi jainisti", "d": "Cintura, portafoglio, cinturino: a Ranakpur e nei templi del forte di Jaisalmer."},
+    {"t": "Guide non ufficiali e \"sacerdoti\"", "d": "A Pushkar, Fatehpur Sikri e Ajmer chi si offre spontaneamente di accompagnarti quasi sempre chiede soldi alla fine. Un \"no, grazie\" detto subito e senza fermarsi funziona meglio di una trattativa."},
+    {"t": "Fotografare le persone", "d": "Chiedere prima. Mai chi fa il bagno rituale nei ghat. Chi si mette in posa in costume vicino ai monumenti si aspetta una mancia."},
+    {"t": "Cibo di strada", "d": "Scegliere banchi affollati dove si frigge o si cuoce al momento; evitare crudo, ghiaccio e salse rimaste all'aperto; acqua solo in bottiglia sigillata. Latticini (lassi, rabri) solo in locali noti e frequentati."},
+    {"t": "Mattino presto", "d": "Luce migliore e meno folla ovunque. A Delhi e Agra però tra le 6 e le 9 nebbia e smog possono nascondere i monumenti."},
+    {"t": "Polvere e sabbia", "d": "Proteggere fotocamera e telefono in un sacchetto nel deserto; non aprire sportelli o vani sulle dune."}
+  ],
+  "tappe": [
+    {
+      "id": "delhi",
+      "nome": "Delhi",
+      "quando": "21 dicembre e 5 gennaio",
+      "clima": {"min": 7, "max": 20, "nota": "Nebbia e smog fitti al mattino, sole velato."},
+      "vedere": [
+        {"t": "India Gate", "d": "La Porta dell'India e i viali di New Delhi."},
+        {"t": "Chandni Chowk", "d": "Il cuore di Old Delhi: vicoli e mercati, spezie a Khari Baoli, gioielli a Dariba Kalan."},
+        {"t": "Jama Masjid", "d": "La grande moschea in arenaria rossa e marmo."},
+        {"t": "Forte Rosso", "d": "Dall'esterno, se resta tempo."}
+      ],
+      "mangiare": [
+        {"t": "Paratha ripiene", "d": "In Paranthe Wali Gali, il vicolo delle paratha di Chandni Chowk, attivo dall'Ottocento. Meglio al mattino."},
+        {"t": "Chaat e jalebi", "d": "Dahi bhalle, golgappe e jalebi caldi nei banchi storici della via principale."},
+        {"t": "Kebab e cucina moghul", "d": "Nei vicoli attorno alla Jama Masjid (Gali Kababian, Matia Mahal). È cibo da sera, dopo le 19."},
+        {"t": "Chole bhature", "d": "Ceci speziati e pane fritto, a colazione."}
+      ],
+      "consigli": [
+        "Il modo più semplice per arrivare a Old Delhi è la metro, fermata Chandni Chowk (linea gialla).",
+        "Alla Jama Masjid serve abbigliamento coprente; all'ingresso forniscono tuniche.",
+        "Portafoglio e telefono in tasche chiuse: nei vicoli la calca è continua.",
+        "Lo smog può irritare gola e occhi: scaldacollo o mascherina a portata di mano."
+      ]
+    },
+    {
+      "id": "bikaner",
+      "nome": "Bikaner e Deshnok",
+      "quando": "22–23 dicembre",
+      "clima": {"min": 6, "max": 23, "nota": "Secco, notti fredde."},
+      "vedere": [
+        {"t": "Forte di Junagarh", "d": "Uno dei pochi forti del Rajasthan costruiti in piano. Interni con specchi, intarsi e sale dipinte. Orario indicato 10:00–16:30; servono circa due ore."},
+        {"t": "Haveli Rampuria", "d": "Facciate in arenaria rossa scolpita, nei vicoli della città vecchia. A piedi."},
+        {"t": "Tempio di Karni Mata a Deshnok", "d": "Il \"tempio dei topi\", 30 km a sud: migliaia di ratti venerati e nutriti con latte e dolci. Ingresso gratuito."},
+        {"t": "Centro di ricerca sul cammello", "d": "Spesso abbinato a Deshnok."}
+      ],
+      "mangiare": [
+        {"t": "Bikaneri bhujia", "d": "Lo snack croccante e speziato di farina di legumi per cui la città è famosa. Da comprare sfuso nelle botteghe storiche."},
+        {"t": "Rasgulla e dolci al latte", "d": ""},
+        {"t": "Kachori", "d": "Al mattino."}
+      ],
+      "consigli": [
+        "A Karni Mata si entra scalzi: portare un paio di calze vecchie da buttare dopo. I topi camminano liberamente sul pavimento e sui piedi.",
+        "Chi ha paura dei roditori può restare nel cortile esterno: l'interno è stretto e affollato.",
+        "A Karni Mata fotografare è consentito."
+      ]
+    },
+    {
+      "id": "jaisalmer",
+      "nome": "Jaisalmer e deserto del Thar",
+      "quando": "24–25 dicembre",
+      "clima": {"min": 3, "max": 24, "nota": "Sole. Notte in tenda vicina a 0 °C."},
+      "vedere": [
+        {"t": "Forte di Jaisalmer", "d": "Sonar Quila: forte abitato, con case, botteghe e templi tra le mura. L'accesso alle vie è libero."},
+        {"t": "Templi jainisti nel forte", "d": "Per i non jainisti l'orario è ridotto, di solito solo al mattino: conviene organizzare la visita del forte attorno a questo."},
+        {"t": "Patwon Ki Haveli", "d": "Il più ricco degli haveli. Poi Nathmal e Salim Singh."},
+        {"t": "Lago Gadisar", "d": "Al tramonto o all'alba."},
+        {"t": "Bada Bagh", "d": "Cenotafi reali fuori città, ottimi al tramonto."},
+        {"t": "Dune del Thar", "d": "Sam (circa 40 km a ovest): dune più alte, molti campi, affollato e rumoroso in stagione. Khuri (circa 50 km a sud-ovest): più piccolo e tranquillo. Da sapere dal coordinatore quale sarà."}
+      ],
+      "mangiare": [
+        {"t": "Dal baati churma", "d": "Palline di pane cotte al forno, lenticchie e un dolce sbriciolato di grano, burro chiarificato e zucchero."},
+        {"t": "Ker sangri", "d": "Bacche e fagiolini selvatici del deserto saltati con spezie: aspro e terroso."},
+        {"t": "Gatte ki sabzi", "d": "Gnocchetti di farina di ceci in salsa di yogurt."},
+        {"t": "Cena al campo", "d": "Di solito un buffet rajasthano con musica e danze."}
+      ],
+      "consigli": [
+        "A Natale il forte, gli haveli e i campi sono molto affollati.",
+        "Sequenza tipica del deserto: partenza da Jaisalmer verso le 15–16, cammello o jeep, tramonto sulle dune, cena e spettacolo al campo, notte, rientro al mattino.",
+        "Per la notte: strati caldi, berretto, calze spesse, torcia frontale. La temperatura scende in fretta dopo il tramonto.",
+        "Sulle dune servono scarpe chiuse, occhiali e una sciarpa per la sabbia.",
+        "Dentro il forte usare poca acqua: gli scarichi stanno danneggiando le fondamenta."
+      ]
+    },
+    {
+      "id": "jodhpur",
+      "nome": "Jodhpur",
+      "quando": "26–27 dicembre",
+      "clima": {"min": 9, "max": 25, "nota": "Secco e limpido."},
+      "vedere": [
+        {"t": "Forte di Mehrangarh", "d": "Su una rupe a circa 125 metri sopra la città. Orario 9:00–17:00. Il biglietto per stranieri comprende l'audioguida. Servono 3–4 ore."},
+        {"t": "Jaswant Thada", "d": "Cenotafio di marmo bianco a circa 500 metri dal forte, con la vista migliore sul Mehrangarh."},
+        {"t": "Città blu", "d": "I vicoli ai piedi del forte, da percorrere a piedi di primo mattino."},
+        {"t": "Toorji Ka Jhalra", "d": "Pozzo a gradoni nella città vecchia."},
+        {"t": "Torre dell'orologio e mercato Sardar", "d": "Spezie, tessuti, vita di strada."}
+      ],
+      "mangiare": [
+        {"t": "Mirchi vada", "d": "Peperoncino verde ripieno di patate speziate e fritto in pastella. Snack del pomeriggio, piccante."},
+        {"t": "Pyaaz kachori", "d": "Salato, ripieno di cipolla."},
+        {"t": "Mawa kachori", "d": "Dolce, ripieno di latte condensato."},
+        {"t": "Makhaniya lassi", "d": "Lassi denso allo zafferano, vicino alla torre dell'orologio."}
+      ],
+      "consigli": [
+        "La salita al forte è ripida; c'è un ascensore a pagamento.",
+        "Le viste sulla città blu si hanno dai bastioni sul lato est.",
+        "Macchina fotografica e video possono richiedere un biglietto a parte.",
+        "La sera, cena su una terrazza con vista sul forte illuminato."
+      ]
+    },
+    {
+      "id": "ranakpur",
+      "nome": "Ranakpur",
+      "quando": "28 dicembre",
+      "clima": {"min": 8, "max": 25, "nota": "Secco; colline boscose degli Aravalli."},
+      "vedere": [
+        {"t": "Tempio jainista di Adinath", "d": "Quindicesimo secolo, tutto in marmo bianco: 1.444 colonne scolpite una diversa dall'altra, 29 sale e 80 cupole. Servono 1–2 ore."},
+        {"t": "Templi di Neminath e Parshvanath", "d": "Minori, nello stesso complesso."}
+      ],
+      "mangiare": [
+        {"t": "Thali vegetariano", "d": "Tappa di passaggio: pranzo semplice nei locali lungo la strada o nella mensa del tempio."}
+      ],
+      "consigli": [
+        "Per i turisti il tempio apre da mezzogiorno alle 17:00. Al mattino è riservato ai fedeli.",
+        "Spalle e ginocchia coperte, per uomini e donne; niente pantaloni corti. All'ingresso prestano teli.",
+        "Niente oggetti in cuoio, cintura compresa.",
+        "Si paga un supplemento per ogni fotocamera e telefono. Non si fotografano le statue delle divinità.",
+        "Silenzio all'interno; attenzione alle scimmie all'esterno."
+      ]
+    },
+    {
+      "id": "udaipur",
+      "nome": "Udaipur",
+      "quando": "29–31 dicembre",
+      "clima": {"min": 8, "max": 25, "nota": "Secco, clima ideale."},
+      "vedere": [
+        {"t": "City Palace", "d": "Il più grande complesso di palazzi del Rajasthan, affacciato sul lago Pichola. Orario 9:30–17:30."},
+        {"t": "Giro in barca sul lago Pichola", "d": "Con sosta all'isola di Jag Mandir. Si parte dal molo all'estremità sud del City Palace."},
+        {"t": "Tempio di Jagdish", "d": "A pochi passi dal palazzo."},
+        {"t": "Bagore Ki Haveli", "d": "Al Gangaur Ghat: museo di giorno, spettacolo di danze popolari Dharohar la sera (19:00–20:00)."},
+        {"t": "Ambrai Ghat", "d": "La vista frontale su City Palace e Lake Palace, soprattutto al tramonto."},
+        {"t": "Tramonto dall'alto", "d": "Funivia di Karni Mata o Palazzo dei Monsoni (Sajjangarh)."}
+      ],
+      "mangiare": [
+        {"t": "Thali rajasthano", "d": "In una terrazza sul lago."},
+        {"t": "Dal baati churma e gatte ki sabzi", "d": ""},
+        {"t": "Kachori", "d": "Al mattino nella città vecchia."},
+        {"t": "Safed maas", "d": "Curry di montone bianco e delicato, per chi mangia carne."}
+      ],
+      "consigli": [
+        "Per le foto del palazzo dalla barca, la luce migliore è verso le 16:00.",
+        "Il molo dista circa dieci minuti a piedi dall'ingresso del palazzo; i biglietti costano meno alla biglietteria sul lago.",
+        "Per la funivia può esserci coda fino a un'ora: partire per tempo se si punta al tramonto.",
+        "Lo spettacolo di Bagore Ki Haveli si riempie: arrivare in anticipo.",
+        "A Capodanno terrazze e ristoranti sul lago vanno prenotati, e molti hotel impongono una cena di gala a pagamento.",
+        "È la tappa più adatta per girare da soli: centro piccolo, percorribile a piedi, tranquillo."
+      ]
+    },
+    {
+      "id": "ajmer-pushkar",
+      "nome": "Ajmer e Pushkar",
+      "quando": "1 gennaio",
+      "clima": {"min": 7, "max": 24, "nota": "Secco e soleggiato."},
+      "vedere": [
+        {"t": "Dargah Sharif di Ajmer", "d": "Mausoleo del santo sufi Moinuddin Chishti, tra i luoghi di pellegrinaggio più frequentati dell'India, aperto a persone di ogni fede."},
+        {"t": "Lago sacro di Pushkar", "d": "52 ghat e centinaia di templi attorno all'acqua."},
+        {"t": "Tempio di Brahma", "d": "Del quattordicesimo secolo, uno dei pochissimi dedicati a Brahma."},
+        {"t": "Tempio di Savitri", "d": "Sulla collina, per il tramonto."},
+        {"t": "Aarti serale sui ghat", "d": "La cerimonia delle luci al tramonto."}
+      ],
+      "mangiare": [
+        {"t": "Malpua", "d": "Frittelle dolci immerse nello sciroppo, la specialità di Pushkar. Da mangiare la sera."},
+        {"t": "Thali vegetariano", "d": "Pushkar è interamente vegetariana: niente carne, uova e alcol."},
+        {"t": "Lassi e kachori", "d": "Molti caffè sui tetti."}
+      ],
+      "consigli": [
+        "Il 1° gennaio 2027 è venerdì: al Dargah giovedì e venerdì sono i giorni di massima affluenza. Aspettarsi una calca molto forte.",
+        "Al Dargah: testa coperta per uomini e donne, scarpe lasciate ai banchi all'esterno, niente borse né fotocamere (meglio lasciare tutto sul pulmino). I telefoni in genere passano. Attenzione ai borseggi.",
+        "Al Dargah non serve un accompagnatore e non esiste un'offerta obbligatoria.",
+        "Ai ghat di Pushkar ci si toglie le scarpe scendendo verso l'acqua. Non fotografare chi fa il bagno.",
+        "La truffa dei fiori: qualcuno ti mette in mano dei petali o ti porta sul ghat per una \"benedizione\", poi chiede una donazione consistente. Non accettare fiori e non seguire nessuno.",
+        "Nel tempio di Brahma non si fotografa all'interno e le borse si lasciano fuori."
+      ]
+    },
+    {
+      "id": "jaipur",
+      "nome": "Jaipur",
+      "quando": "2–3 gennaio",
+      "clima": {"min": 8, "max": 22, "nota": "Secco, notti fredde."},
+      "vedere": [
+        {"t": "Forte Amber", "d": "A 11 km dalla città. Orario indicato 8:00–17:30. Andarci presto."},
+        {"t": "Hawa Mahal", "d": "Il Palazzo dei Venti: la facciata rosa si fotografa dalla strada o dai caffè di fronte, con la luce del mattino."},
+        {"t": "Jantar Mantar", "d": "Osservatorio astronomico del Settecento, patrimonio UNESCO."},
+        {"t": "City Palace", "d": "Accanto al Jantar Mantar."},
+        {"t": "Nahargarh", "d": "Per il tramonto sulla città."},
+        {"t": "Bazar della città rosa", "d": "Johari (gioielli), Bapu (tessuti)."}
+      ],
+      "mangiare": [
+        {"t": "Laal maas", "d": "Curry di montone rosso fuoco con peperoncini Mathania. È il piatto più piccante del viaggio."},
+        {"t": "Pyaaz kachori", "d": "Al mattino."},
+        {"t": "Ghevar", "d": "Dolce a nido d'ape, tipico della città."},
+        {"t": "Lassi in terracotta", "d": "Servito in bicchieri di coccio."}
+      ],
+      "consigli": [
+        "Esiste un biglietto cumulativo valido due giorni per Amber, Hawa Mahal, Jantar Mantar, Nahargarh, Albert Hall e altri siti. Il City Palace non è compreso: ha un biglietto a parte.",
+        "La salita ad Amber a dorso di elefante è contestata per il benessere degli animali: si sale bene a piedi o in jeep.",
+        "Nei bazar i prezzi si trattano; diffidare dei negozi dove ti porta un autista o una guida."
+      ]
+    },
+    {
+      "id": "fatehpur-sikri",
+      "nome": "Fatehpur Sikri",
+      "quando": "4 gennaio, lungo la strada per Agra",
+      "clima": {"min": 7, "max": 22, "nota": "Come Agra."},
+      "vedere": [
+        {"t": "Palazzi reali", "d": "A pagamento: Diwan-i-Khas con il pilastro centrale scolpito, Panch Mahal a cinque piani, palazzo di Jodha Bai."},
+        {"t": "Buland Darwaza", "d": "La porta monumentale alta 54 metri. Ingresso libero."},
+        {"t": "Jama Masjid e tomba di Salim Chishti", "d": "La moschea e la tomba in marmo del santo. Ingresso libero."}
+      ],
+      "mangiare": [],
+      "consigli": [
+        "È il posto con i procacciatori più insistenti di tutto il giro. Si concentrano nella zona gratuita, attorno alla Buland Darwaza e alla tomba: false guide, venditori di teli da offrire, richieste di donazioni.",
+        "Usare solo guide autorizzate, che si trovano alla biglietteria.",
+        "Nella zona della moschea ci si toglie le scarpe; per passare poi ai palazzi conviene portarle con sé.",
+        "C'è pochissima segnaletica: senza una spiegazione gli edifici dicono poco.",
+        "Portare acqua."
+      ]
+    },
+    {
+      "id": "agra",
+      "nome": "Agra",
+      "quando": "4 gennaio",
+      "clima": {"min": 7, "max": 22, "nota": "Nebbia all'alba, poi sole."},
+      "vedere": [
+        {"t": "Taj Mahal", "d": "Chiuso ogni venerdì. Apre 30 minuti prima dell'alba e chiude 30 minuti prima del tramonto. Si entra dalle porte est e ovest."},
+        {"t": "Forte di Agra", "d": "Se il programma lo prevede."},
+        {"t": "Mehtab Bagh", "d": "Il giardino sull'altra riva dello Yamuna, per la vista del Taj da dietro al tramonto."}
+      ],
+      "mangiare": [
+        {"t": "Petha", "d": "Dolce candito di zucca bianca, la specialità di Agra."},
+        {"t": "Cucina moghul", "d": "Kebab, biryani, korma."},
+        {"t": "Bedai e jalebi", "d": "La colazione locale: pane fritto con curry di patate, poi jalebi."}
+      ],
+      "consigli": [
+        "Per entrare nel mausoleo principale del Taj serve un biglietto aggiuntivo da 200 rupie oltre a quello d'ingresso.",
+        "Oggetti vietati al Taj: cibo, tabacco e accendini, cuffie, caricabatterie e altri apparecchi elettrici (fotocamera esclusa), treppiedi, droni. Portare solo telefono, fotocamera, portafoglio e acqua.",
+        "Il biglietto per stranieri comprende copriscarpe e una bottiglietta d'acqua.",
+        "All'interno del mausoleo non si fotografa.",
+        "A inizio gennaio l'alba può essere completamente velata dalla nebbia. Se il Taj non si vede, spesso si apre dopo le 9–10.",
+        "In caso di visite di Stato il sito può chiudere senza preavviso."
+      ]
+    }
+  ]
+}

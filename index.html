@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#b5482a">
+<title>Tutto Rajasthan</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <button class="back" id="back" aria-label="Indietro" hidden>‹</button>
+  <h1 id="titolo">Tutto Rajasthan</h1>
+  <button class="stato" id="stato" aria-label="Stato della sincronizzazione"><span class="punto" id="punto"></span></button>
+  <a class="ing" href="#impostazioni" aria-label="Impostazioni">⚙</a>
+</header>
+
+<div class="avviso" id="avvisoMemoria" hidden>La memoria del dispositivo non è disponibile: le modifiche non verranno salvate.</div>
+
+<main id="vista" tabindex="-1"></main>
+
+<nav class="tab" aria-label="Sezioni">
+  <a href="#viaggio" data-tab="viaggio"><span class="ico">◷</span>Viaggio</a>
+  <a href="#tappe" data-tab="tappe"><span class="ico">◈</span>Tappe</a>
+  <a href="#liste" data-tab="liste"><span class="ico">☑</span>Liste</a>
+  <a href="#diario" data-tab="diario"><span class="ico">✎</span>Diario</a>
+</nav>
+
+<dialog id="dlg">
+  <form id="dlgForm" method="dialog"></form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
