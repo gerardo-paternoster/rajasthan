@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-15.3';
+const VERSIONE = '2026-11-15.4';
 const REPO_PREDEFINITO = 'gerardo-paternoster/rajasthan-dati';
 const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
 const LISTE = {
@@ -758,7 +758,17 @@ $('#vista').addEventListener('click', async (e) => {
 });
 $('#back').addEventListener('click', () => { location.hash = $('#back').dataset.dove || '#viaggio'; });
 $('#stato').addEventListener('click', () => { location.hash = '#impostazioni'; });
-$('#btnVersione').addEventListener('click', (e) => { e.target.disabled = true; aggiornaApp($('#msgVersione')).then(() => { e.target.disabled = false; }); });
+// L'avviso viene creato qui se la pagina sul dispositivo è ancora quella vecchia:
+// pagina e script possono essere di versioni diverse per una apertura.
+(function preparaAvvisoVersione() {
+  let b = $('#bannerVersione');
+  if (!b) {
+    b = document.createElement('div'); b.className = 'nuova'; b.id = 'bannerVersione'; b.hidden = true;
+    b.innerHTML = '<p><b>È pronta una versione nuova dell\'app.</b> <span id="msgVersione"></span></p><button id="btnVersione">Aggiorna</button>';
+    const v = $('#vista'); v.parentNode.insertBefore(b, v);
+  }
+  $('#btnVersione').addEventListener('click', (e) => { e.target.disabled = true; aggiornaApp($('#msgVersione')).then(() => { e.target.disabled = false; }); });
+})();
 window.addEventListener('hashchange', () => { leggiRotta(); disegna(); window.scrollTo(0, 0); });
 window.addEventListener('online', () => { sincronizza(false); aggiornaMeteo(false); });
 window.addEventListener('offline', aggiornaStato);
