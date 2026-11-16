@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-16.3';
+const VERSIONE = '2026-11-16.4';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -759,7 +759,7 @@ function vistaImpostazioni() {
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
   h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
   h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
-  h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section>';
+  h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section><p class="pie"><a href="privacy.html">Informativa sulla privacy</a></p>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
