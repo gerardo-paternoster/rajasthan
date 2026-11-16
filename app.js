@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-16.4';
+const VERSIONE = '2026-11-16.5';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -546,7 +546,7 @@ function vistaViaggio() {
     h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a></div></div>';
     h += '</li>';
   });
-  h += '</ol>';
+  h += '</ol><p class="pie">Tutto Rajasthan è un\'app di viaggio gratuita: itinerario, tappe, meteo, liste e diario, anche senza rete. I tuoi dati restano sul tuo dispositivo o nel tuo spazio personale. <a href="privacy.html">Informativa sulla privacy</a></p>';
   return { titolo: 'Tutto Rajasthan', html: h, dopo() { const o = $('.filo .oggi'); if (o) o.scrollIntoView({ block: 'center' }); } };
 }
 
