@@ -6,9 +6,9 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-16.2';
-// Identificativo dell'app presso Google (non è un segreto). Finché è vuoto, l'opzione Google Drive resta nascosta.
-const GOOGLE_CLIENT_ID = '';
+const VERSIONE = '2026-11-16.3';
+// Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
+const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
 const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
 const LISTE = {
