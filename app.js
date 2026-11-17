@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-16.5';
+const VERSIONE = '2026-11-17.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -512,12 +512,14 @@ function disegna() {
 }
 
 function prossimaScadenza() {
-  const aperte = voci('scadenze').filter((v) => !v.fatto);
+  // In apertura solo cose ancora davanti: le voci con una data già passata restano nella lista Scadenze.
+  const oggi = oggiIso();
+  const aperte = voci('scadenze').filter((v) => !v.fatto && (!v.data || v.data >= oggi));
   if (!aperte.length) return null;
   const conData = aperte.filter((v) => v.data).sort((a, b) => a.data.localeCompare(b.data));
   const senza = aperte.filter((v) => !v.data).sort(perOrdine);
-  // Le voci senza data vengono prima di quelle datate lontane: sono "da fare subito".
-  if (conData.length && giorniTra(oggiIso(), conData[0].data) <= 3) return conData[0];
+  // Una voce datata entro tre giorni passa davanti a quelle senza data, che sono "da fare appena puoi".
+  if (conData.length && giorniTra(oggi, conData[0].data) <= 3) return conData[0];
   return senza[0] || conData[0];
 }
 function vistaViaggio() {
