@@ -6,11 +6,12 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-17.1';
+const VERSIONE = '2026-11-21.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
-const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto'];
+// Ogni sezione è un file a sé: sincronizzazione (GitHub o Drive) e copia di sicurezza la includono da sole.
+const SEZIONI = ['segni', 'diario', 'scadenze', 'bagagli', 'documenti', 'foto', 'simulatore'];
 const LISTE = {
   scadenze: { nome: 'Scadenze', spunta: 'fatto', conData: true },
   bagagli: { nome: 'Bagagli', spunta: 'nello zaino', stati: ['posseduto', 'da comprare', 'da decidere'] },
@@ -499,13 +500,13 @@ function disegna() {
   disegnoRimandato = false;
   const v = $('#vista');
   if (!CONT) { v.innerHTML = '<div class="pannello vuoto"><h3>Contenuti non ancora scaricati</h3><p class="tenue">Apri l\'app una volta con la rete attiva: poi funziona anche senza.</p></div>'; return; }
-  const viste = { viaggio: vistaViaggio, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
+  const viste = { viaggio: vistaViaggio, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, sim: vistaSim, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
   const f = viste[rotta.nome] || vistaViaggio;
   const r = f(rotta.arg);
   v.innerHTML = r.html;
   $('#titolo').textContent = r.titolo;
   $('#back').hidden = !r.indietro; $('#back').dataset.dove = r.indietro || '';
-  const tab = { tappa: 'tappe', generali: 'tappe' }[rotta.nome] || rotta.nome;
+  const tab = { tappa: 'tappe', generali: 'tappe', sim: 'liste' }[rotta.nome] || rotta.nome;
   document.querySelectorAll('.tab a').forEach((a) => { const q = a.dataset.tab === tab; a.classList.toggle('qui', q); if (q) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   aggiornaStato();
   if (r.dopo) r.dopo();
@@ -628,7 +629,7 @@ function vistaListe(arg) {
   const sez = LISTE[arg] ? arg : (LISTE[LS.get('rj.lista', '')] ? LS.get('rj.lista') : 'scadenze');
   LS.set('rj.lista', sez);
   const cfg = LISTE[sez];
-  let h = '<div class="sotto">' + Object.keys(LISTE).map((k) => '<a href="#liste/' + k + '"' + (k === sez ? ' class="qui" aria-current="true"' : '') + '>' + esc(LISTE[k].nome) + '</a>').join('') + '</div>';
+  let h = barraListe(sez);
   const tutte = voci(sez);
   if (!tutte.length) {
     h += '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Ancora nessuna voce</h3><p class="tenue">' + (modoSync() ? 'Aggiungine una qui sotto, o attendi la sincronizzazione.' : 'Aggiungi le tue: restano su questo dispositivo.') + '</p></div>';
@@ -654,6 +655,189 @@ function vistaListe(arg) {
   }
   h += '<button class="piu" data-az="nuova" data-sez="' + sez + '">' + ICO.piu + 'Aggiungi una voce</button>';
   return { titolo: 'Liste', html: h };
+}
+function barraListe(qui) {
+  return '<div class="sotto">' + Object.keys(LISTE).map((k) => '<a href="#liste/' + k + '"' + (k === qui ? ' class="qui" aria-current="true"' : '') + '>' + esc(LISTE[k].nome) + '</a>').join('') +
+    '<a href="#sim"' + (qui === 'sim' ? ' class="qui" aria-current="true"' : '') + '>Simulatore</a></div>';
+}
+
+/* ---------- Simulatore del bagaglio ----------
+   Sezione "simulatore", voci di tre tipi:
+   - contenitore: titolo, peso (g, a vuoto), volume (L), comp (% di compressione del contenuto), stima
+   - oggetto: titolo, gruppo, peso (g, per pezzo), volume (L, per pezzo), qta, stima, soloCabina, liquidi
+   - scenario: titolo, limCabina e limStiva (g), cont { idContenitore: 'cabina' | 'stiva' | 'dentro:<id>' },
+     pos { idOggetto: idContenitore | 'addosso' } (un oggetto senza posizione resta a casa). */
+function simDi(tipo) { return voci('simulatore').filter((v) => v.tipo === tipo).sort(perOrdine); }
+function num(x) { const n = Number(x); return isFinite(n) && n > 0 ? n : 0; }
+function qtaDi(o) { return Math.max(1, Math.round(num(o.qta)) || 1); }
+function fmtPeso(g) { return g >= 1000 ? (g / 1000).toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + ' kg' : Math.round(g) + ' g'; }
+function fmtVol(l) { return l.toLocaleString('it-IT', { maximumFractionDigits: 1 }) + ' L'; }
+const NOME_RUOLO = { cabina: 'in cabina', stiva: 'in stiva' };
+
+function calcolaSim(s) {
+  const ruoli = s.cont || {}, pos = s.pos || {}, C = {};
+  simDi('contenitore').forEach((c) => { if (ruoli[c.id]) C[c.id] = { c, ruolo: ruoli[c.id], ogg: [], figli: [], pesoOgg: 0, volOgg: 0 }; });
+  const addosso = { ogg: [], peso: 0 }, casa = { ogg: [], peso: 0 }, avvisi = [];
+  simDi('oggetto').forEach((o) => {
+    const d = pos[o.id], p = num(o.peso) * qtaDi(o), l = num(o.volume) * qtaDi(o);
+    if (d === 'addosso') { addosso.ogg.push(o); addosso.peso += p; }
+    else if (C[d]) { C[d].ogg.push(o); C[d].pesoOgg += p; C[d].volOgg += l; }
+    else { casa.ogg.push(o); casa.peso += p; }
+  });
+  // Contenitori uno dentro l'altro: si risale fino al bagaglio vero (cabina o stiva).
+  const radice = (x) => { let y = x; for (let i = 0; i < 8; i++) { const m = /^dentro:(.+)$/.exec(y.ruolo); if (!m) return NOME_RUOLO[y.ruolo] ? y : null; y = C[m[1]]; if (!y) return null; } return null; };
+  Object.values(C).forEach((x) => {
+    x.radice = radice(x);
+    const m = /^dentro:(.+)$/.exec(x.ruolo);
+    if (m && x.radice && C[m[1]]) C[m[1]].figli.push(x);
+    if (!x.radice) avvisi.push('«' + x.c.titolo + '» è dentro un contenitore che non è nel bagaglio: non viene contato.');
+  });
+  const tot = (x) => {
+    if (x.tot) return x.tot;
+    let peso = num(x.c.peso) + x.pesoOgg, interno = x.volOgg * (1 - Math.min(90, num(x.c.comp)) / 100);
+    x.figli.forEach((f) => { const t = tot(f); peso += t.peso; interno += t.interno; });
+    x.tot = { peso, interno };
+    return x.tot;
+  };
+  const somme = { cabina: 0, stiva: 0 };
+  const radici = Object.values(C).filter((x) => x.radice === x);
+  radici.forEach((x) => { somme[x.ruolo] += tot(x).peso; });
+  Object.values(C).forEach((x) => {
+    if (!x.radice) return;
+    const t = tot(x);
+    if (num(x.c.volume) && t.interno > num(x.c.volume)) avvisi.push('«' + x.c.titolo + '» è troppo pieno: ' + fmtVol(t.interno) + ' in ' + fmtVol(num(x.c.volume)) + '.');
+    x.ogg.forEach((o) => {
+      if (o.soloCabina && x.radice.ruolo === 'stiva') avvisi.push('«' + o.titolo + '» non può andare in stiva (batterie al litio): spostalo in cabina o addosso.');
+      if (o.liquidi && x.radice.ruolo === 'cabina') avvisi.push('«' + o.titolo + '» è in cabina: liquidi solo in flaconi da 100 ml, in una busta trasparente da 1 litro.');
+    });
+  });
+  if (s.limCabina && somme.cabina > s.limCabina) avvisi.unshift('Cabina oltre il limite di ' + fmtPeso(s.limCabina - 0) + ' (' + fmtPeso(somme.cabina) + ').');
+  if (s.limStiva && somme.stiva > s.limStiva) avvisi.unshift('Stiva oltre il limite di ' + fmtPeso(s.limStiva - 0) + ' (' + fmtPeso(somme.stiva) + ').');
+  return { C, radici, addosso, casa, somme, avvisi, tot };
+}
+
+function barraSim(etichetta, val, lim, fmt) {
+  const p = lim ? Math.min(100, val / lim * 100) : 0, oltre = lim && val > lim;
+  return '<div class="sim-barra' + (oltre ? ' oltre' : '') + '"><div class="sim-et"><span>' + esc(etichetta) + '</span><b>' + esc(fmt(val)) + (lim ? ' di ' + esc(fmt(lim)) : '') + '</b></div>' +
+    (lim ? '<span class="sim-trac"><i style="width:' + p.toFixed(1) + '%"></i></span>' : '') + '</div>';
+}
+function rigaOggetto(s, o, dest) {
+  const q = qtaDi(o), p = num(o.peso) * q, l = num(o.volume) * q;
+  let opz = '<option value="casa"' + (dest === 'casa' ? ' selected' : '') + '>A casa</option><option value="addosso"' + (dest === 'addosso' ? ' selected' : '') + '>Addosso</option>';
+  simDi('contenitore').forEach((c) => { if ((s.cont || {})[c.id]) opz += '<option value="' + esc(c.id) + '"' + (dest === c.id ? ' selected' : '') + '>' + esc(c.titolo) + '</option>'; });
+  return '<li><div class="corpo" data-az="simMod" data-tipo="oggetto" data-id="' + esc(o.id) + '"><h3>' + esc(o.titolo) + (q > 1 ? ' <span class="tenue">×' + q + '</span>' : '') + '</h3>' +
+    '<p>' + fmtPeso(p) + ' · ' + fmtVol(l) + (o.stima ? ' <span class="stima">stima</span>' : '') + '</p></div>' +
+    '<select class="sim-dove" data-simpos="' + esc(s.id) + '|' + esc(o.id) + '" aria-label="Dove va: ' + esc(o.titolo) + '">' + opz + '</select></li>';
+}
+function htmlContenitore(s, R, x) {
+  const t = R.tot(x), cap = num(x.c.volume);
+  const altri = simDi('contenitore').filter((c) => c.id !== x.c.id && (s.cont || {})[c.id]);
+  let opz = '<option value="fuori">Togli dallo scenario</option><option value="cabina"' + (x.ruolo === 'cabina' ? ' selected' : '') + '>In cabina</option><option value="stiva"' + (x.ruolo === 'stiva' ? ' selected' : '') + '>In stiva</option>';
+  altri.forEach((c) => { opz += '<option value="dentro:' + esc(c.id) + '"' + (x.ruolo === 'dentro:' + c.id ? ' selected' : '') + '>Dentro: ' + esc(c.titolo) + '</option>'; });
+  let h = '<section class="pannello sim-cont' + (x.radice === x ? '' : ' interno') + '"><div class="sim-testa"><h2 data-az="simMod" data-tipo="contenitore" data-id="' + esc(x.c.id) + '">' + esc(x.c.titolo) + (x.c.stima ? ' <span class="stima">stima</span>' : '') + '</h2>' +
+    '<select class="sim-dove" data-simruolo="' + esc(s.id) + '|' + esc(x.c.id) + '" aria-label="Dove sta: ' + esc(x.c.titolo) + '">' + opz + '</select></div>';
+  h += barraSim('Peso' + (num(x.c.peso) ? ' (vuoto ' + fmtPeso(num(x.c.peso)) + ')' : ''), t.peso, 0, fmtPeso);
+  h += barraSim('Volume' + (num(x.c.comp) ? ' (compressione ' + num(x.c.comp) + '%)' : ''), t.interno, cap, fmtVol);
+  if (x.ogg.length) h += '<ul class="lista">' + x.ogg.map((o) => rigaOggetto(s, o, x.c.id)).join('') + '</ul>';
+  else if (!x.figli.length) h += '<p class="tenue sim-vuoto">Vuoto: sposta qui gli oggetti con il menu accanto a ciascuno.</p>';
+  x.figli.forEach((f) => { h += htmlContenitore(s, R, f); });
+  return h + '</section>';
+}
+
+function vistaSim(arg) {
+  if (arg === 'catalogo') return vistaSimCatalogo();
+  const s = arg ? voce('simulatore', arg) : null;
+  if (s && s.tipo === 'scenario') return vistaScenario(s);
+  let h = barraListe('sim');
+  h += '<p class="tenue sim-intro">Prova combinazioni di zaini e contenuto: pesi e volumi si sommano da soli. Gli oggetti e i contenitori sono gli stessi per tutti gli scenari.</p>';
+  const sc = simDi('scenario');
+  if (!sc.length) h += '<div class="pannello vuoto">' + arco('currentColor', 44) + '<h3>Ancora nessuno scenario</h3><p class="tenue">Creane uno qui sotto' + (modoSync() ? ', o attendi la sincronizzazione.' : '.') + '</p></div>';
+  sc.forEach((s) => {
+    const R = calcolaSim(s);
+    const nomi = R.radici.map((x) => x.c.titolo + ' ' + NOME_RUOLO[x.ruolo]).join(' + ') || 'Nessun bagaglio';
+    h += '<a class="pannello pieno sim-scen" href="#sim/' + esc(s.id) + '"><h3>' + esc(s.titolo) + '</h3><p class="tenue">' + esc(nomi) + '</p>' +
+      barraSim('Cabina', R.somme.cabina, num(s.limCabina), fmtPeso) + barraSim('Stiva', R.somme.stiva, num(s.limStiva), fmtPeso) +
+      (R.avvisi.length ? '<p class="err">' + R.avvisi.length + (R.avvisi.length === 1 ? ' avviso' : ' avvisi') + '</p>' : '') + '</a>';
+  });
+  h += '<div class="azioni larghe"><button class="btn" data-az="simNuovo" data-tipo="scenario">Nuovo scenario</button><a class="btn chiaro" href="#sim/catalogo">Oggetti e contenitori</a></div>';
+  return { titolo: 'Simulatore', html: h };
+}
+
+function vistaScenario(s) {
+  const R = calcolaSim(s);
+  let h = barraListe('sim');
+  h += '<section class="pannello pieno"><div class="sim-testa"><h2 class="sim-tit" data-az="simMod" data-tipo="scenario" data-id="' + esc(s.id) + '">' + esc(s.titolo) + '</h2><button class="btn chiaro piccolo" data-az="simDuplica" data-id="' + esc(s.id) + '">Duplica</button></div>';
+  h += barraSim('Cabina', R.somme.cabina, num(s.limCabina), fmtPeso) + barraSim('Stiva', R.somme.stiva, num(s.limStiva), fmtPeso) + barraSim('Addosso (non pesato)', R.addosso.peso, 0, fmtPeso);
+  if (R.avvisi.length) h += '<ul class="sim-avvisi">' + R.avvisi.map((a) => '<li>' + esc(a) + '</li>').join('') + '</ul>';
+  if (s.testo) h += '<p class="tenue">' + testoAParagrafi(s.testo) + '</p>';
+  h += '<p class="tenue sim-nota">Tocca il nome dello scenario per cambiare nome e limiti, il nome di un contenitore o di un oggetto per i suoi pesi.</p></section>';
+  ['cabina', 'stiva'].forEach((r) => R.radici.filter((x) => x.ruolo === r).forEach((x) => { h += htmlContenitore(s, R, x); }));
+  h += '<section class="pannello"><h2>Addosso</h2>' + (R.addosso.ogg.length ? '<ul class="lista">' + R.addosso.ogg.map((o) => rigaOggetto(s, o, 'addosso')).join('') + '</ul>' : '<p class="tenue sim-vuoto">Niente: quello che indossi in viaggio va qui e non pesa sul bagaglio.</p>') + '</section>';
+  h += '<details class="pannello sim-casa"' + (R.casa.ogg.length && R.casa.ogg.length < 6 ? ' open' : '') + '><summary><h2>A casa <span class="tenue">(' + R.casa.ogg.length + ')</span></h2></summary>' +
+    (R.casa.ogg.length ? '<ul class="lista">' + R.casa.ogg.map((o) => rigaOggetto(s, o, 'casa')).join('') + '</ul>' : '<p class="tenue sim-vuoto">Tutti gli oggetti sono nel bagaglio o addosso.</p>') + '</details>';
+  const fuori = simDi('contenitore').filter((c) => !(s.cont || {})[c.id]);
+  if (fuori.length) {
+    h += '<section class="pannello"><h2>Altri contenitori</h2><ul class="lista">' + fuori.map((c) => '<li><div class="corpo" data-az="simMod" data-tipo="contenitore" data-id="' + esc(c.id) + '"><h3>' + esc(c.titolo) + '</h3><p>' + fmtPeso(num(c.peso)) + ' · ' + fmtVol(num(c.volume)) + '</p></div>' +
+      '<select class="sim-dove" data-simruolo="' + esc(s.id) + '|' + esc(c.id) + '" aria-label="Aggiungi: ' + esc(c.titolo) + '"><option value="fuori" selected>Non usato</option><option value="cabina">In cabina</option><option value="stiva">In stiva</option>' +
+      simDi('contenitore').filter((d) => d.id !== c.id && (s.cont || {})[d.id]).map((d) => '<option value="dentro:' + esc(d.id) + '">Dentro: ' + esc(d.titolo) + '</option>').join('') + '</select></li>').join('') + '</ul></section>';
+  }
+  h += '<div class="azioni larghe"><button class="btn chiaro" data-az="simNuovo" data-tipo="oggetto">Nuovo oggetto</button><button class="btn chiaro" data-az="simNuovo" data-tipo="contenitore">Nuovo contenitore</button></div>';
+  return { titolo: 'Simulatore', html: h, indietro: '#sim' };
+}
+
+function vistaSimCatalogo() {
+  let h = barraListe('sim');
+  const cont = simDi('contenitore');
+  h += '<section class="pannello"><h2>Contenitori</h2>' + (cont.length ? '<ul class="lista">' + cont.map((c) => '<li><div class="corpo" data-az="simMod" data-tipo="contenitore" data-id="' + esc(c.id) + '"><h3>' + esc(c.titolo) + '</h3><p>' + fmtPeso(num(c.peso)) + ' a vuoto · ' + fmtVol(num(c.volume)) + (num(c.comp) ? ' · compressione ' + num(c.comp) + '%' : '') + (c.stima ? ' <span class="stima">stima</span>' : '') + '</p></div></li>').join('') + '</ul>' : '<p class="tenue sim-vuoto">Nessuno.</p>') + '</section>';
+  const gruppi = {};
+  simDi('oggetto').forEach((o) => { (gruppi[o.gruppo || 'Altro'] = gruppi[o.gruppo || 'Altro'] || []).push(o); });
+  Object.keys(gruppi).forEach((g) => {
+    h += '<section class="pannello"><h2>' + esc(g) + '</h2><ul class="lista">' + gruppi[g].map((o) => '<li><div class="corpo" data-az="simMod" data-tipo="oggetto" data-id="' + esc(o.id) + '"><h3>' + esc(o.titolo) + (qtaDi(o) > 1 ? ' <span class="tenue">×' + qtaDi(o) + '</span>' : '') + '</h3><p>' + fmtPeso(num(o.peso)) + ' · ' + fmtVol(num(o.volume)) + (qtaDi(o) > 1 ? ' a pezzo' : '') + (o.stima ? ' <span class="stima">stima</span>' : '') + (o.soloCabina ? ' · solo cabina' : '') + (o.liquidi ? ' · liquidi' : '') + '</p></div></li>').join('') + '</ul></section>';
+  });
+  h += '<div class="azioni larghe"><button class="btn" data-az="simNuovo" data-tipo="oggetto">Nuovo oggetto</button><button class="btn chiaro" data-az="simNuovo" data-tipo="contenitore">Nuovo contenitore</button></div>';
+  return { titolo: 'Oggetti e contenitori', html: h, indietro: '#sim' };
+}
+
+function apriSim(tipo, id) {
+  const v = id ? voce('simulatore', id) : null;
+  const casella = (n, t, on) => '<label class="sim-check"><input type="checkbox" name="' + n + '"' + (on ? ' checked' : '') + '> ' + esc(t) + '</label>';
+  const numero = (n, t, val, passo) => '<label>' + esc(t) + '<input type="number" inputmode="decimal" min="0" step="' + (passo || 1) + '" name="' + n + '" value="' + (val === '' || val == null ? '' : esc(val)) + '"></label>';
+  const nomi = { oggetto: 'oggetto', contenitore: 'contenitore', scenario: 'scenario' };
+  let h = '<h2>' + (v ? 'Modifica ' : 'Nuovo ') + nomi[tipo] + '</h2><label>Nome<input name="titolo" required value="' + esc(v ? v.titolo : '') + '"></label>';
+  if (tipo === 'oggetto') {
+    const gruppi = Array.from(new Set(simDi('oggetto').map((x) => x.gruppo).filter(Boolean)));
+    h += '<label>Gruppo<input name="gruppo" list="simGruppi" value="' + esc(v ? v.gruppo || '' : '') + '"><datalist id="simGruppi">' + gruppi.map((g) => '<option value="' + esc(g) + '">').join('') + '</datalist></label>' +
+      '<div class="sim-tre">' + numero('peso', 'Peso (g, a pezzo)', v ? v.peso : '') + numero('volume', 'Volume (L, a pezzo)', v ? v.volume : '', 0.1) + numero('qta', 'Quanti', v ? qtaDi(v) : 1) + '</div>' +
+      casella('stima', 'Peso o volume stimati: da misurare', v ? v.stima : true) + casella('soloCabina', 'Solo in cabina (batterie al litio)', v && v.soloCabina) + casella('liquidi', 'Contiene liquidi', v && v.liquidi);
+  } else if (tipo === 'contenitore') {
+    h += '<div class="sim-tre">' + numero('peso', 'Peso a vuoto (g)', v ? v.peso : '') + numero('volume', 'Capienza (L)', v ? v.volume : '', 0.5) + numero('comp', 'Compressione (%)', v ? v.comp || 0 : 0) + '</div>' +
+      '<p class="tenue">La compressione riduce lo spazio occupato dal contenuto: 0 per zaini e cubi normali, 20–40 per le sacche di compressione.</p>' + casella('stima', 'Peso o capienza stimati: da misurare', v ? v.stima : true);
+  } else {
+    h += '<div class="sim-tre">' + numero('limCabina', 'Limite cabina (kg)', v && v.limCabina ? v.limCabina / 1000 : 7, 0.5) + numero('limStiva', 'Limite stiva (kg)', v && v.limStiva ? v.limStiva / 1000 : 23, 0.5) + '</div>' +
+      '<p class="tenue">Limiti da verificare quando si conosce la compagnia aerea. Lascia vuoto per nessun limite.</p>';
+  }
+  h += '<label>Note<textarea name="testo" rows="2">' + esc(v ? v.testo || '' : '') + '</textarea></label>';
+  h += '<div class="azioni larghe"><button class="btn" value="salva">Salva</button><button class="btn chiaro" value="annulla" formnovalidate>Annulla</button>' + (v ? '<button class="btn pericolo" type="button" id="btnElimina">Elimina</button>' : '') + '</div>';
+  const f = $('#dlgForm'); f.innerHTML = h; f.dataset.sez = 'simulatore'; f.dataset.id = id || ''; f.dataset.sim = tipo;
+  const be = $('#btnElimina');
+  if (be) be.addEventListener('click', () => {
+    if (be.dataset.conferma) { elimina('simulatore', id); if (tipo === 'scenario') { history.replaceState(null, '', '#sim'); leggiRotta(); } $('#dlg').close('eliminata'); }
+    else { be.dataset.conferma = '1'; be.textContent = 'Conferma: elimina'; }
+  });
+  $('#dlg').returnValue = '';
+  $('#dlg').showModal();
+}
+function salvaSim(f) {
+  const fd = new FormData(f), tipo = f.dataset.sim, nuovo = !f.dataset.id, id = f.dataset.id || nuovoId();
+  const n = (k) => { const x = String(fd.get(k) || '').replace(',', '.'); return x === '' ? 0 : Math.max(0, Number(x) || 0); };
+  const campi = { tipo, titolo: String(fd.get('titolo') || '').trim(), testo: String(fd.get('testo') || '').trim() };
+  if (!campi.titolo) return;
+  if (tipo === 'oggetto') Object.assign(campi, { gruppo: String(fd.get('gruppo') || '').trim(), peso: n('peso'), volume: n('volume'), qta: Math.max(1, Math.round(n('qta')) || 1), stima: fd.has('stima'), soloCabina: fd.has('soloCabina'), liquidi: fd.has('liquidi') });
+  else if (tipo === 'contenitore') Object.assign(campi, { peso: n('peso'), volume: n('volume'), comp: Math.min(90, n('comp')), stima: fd.has('stima') });
+  else Object.assign(campi, { limCabina: Math.round(n('limCabina') * 1000), limStiva: Math.round(n('limStiva') * 1000) });
+  if (nuovo) { campi.ord = 5000 + simDi(tipo).length; if (tipo === 'scenario') Object.assign(campi, { cont: {}, pos: {} }); }
+  scrivi('simulatore', id, campi);
+  if (nuovo && tipo === 'scenario') { history.replaceState(null, '', '#sim/' + id); leggiRotta(); }
 }
 
 /* ---------- Fotografia ---------- */
@@ -784,7 +968,7 @@ function apriModifica(sez, id) {
   if (cfg.conData) h += '<label>Data<input type="date" name="data" value="' + esc(v ? v.data || '' : '') + '"></label>';
   if (cfg.stati) h += '<label>Stato<select name="stato">' + cfg.stati.map((s) => '<option' + ((v ? v.stato : cfg.stati[2]) === s ? ' selected' : '') + '>' + esc(s) + '</option>').join('') + '</select></label>';
   h += '<div class="azioni larghe"><button class="btn" value="salva">Salva</button><button class="btn chiaro" value="annulla" formnovalidate>Annulla</button>' + (v ? '<button class="btn pericolo" type="button" id="btnElimina">Elimina</button>' : '') + '</div>';
-  const f = $('#dlgForm'); f.innerHTML = h; f.dataset.sez = sez; f.dataset.id = id || '';
+  const f = $('#dlgForm'); f.innerHTML = h; f.dataset.sez = sez; f.dataset.id = id || ''; f.dataset.sim = '';
   const be = $('#btnElimina');
   if (be) be.addEventListener('click', () => {
     if (be.dataset.conferma) { elimina(sez, id); $('#dlg').close('eliminata'); }
@@ -795,7 +979,8 @@ function apriModifica(sez, id) {
 }
 $('#dlg').addEventListener('close', () => {
   const d = $('#dlg'), f = $('#dlgForm');
-  if (d.returnValue === 'salva') {
+  if (d.returnValue === 'salva' && f.dataset.sim) salvaSim(f);
+  else if (d.returnValue === 'salva') {
     const fd = new FormData(f), sez = f.dataset.sez, id = f.dataset.id || nuovoId();
     const campi = { titolo: String(fd.get('titolo') || '').trim(), testo: String(fd.get('testo') || '').trim(), gruppo: String(fd.get('gruppo') || '').trim() };
     if (fd.has('data')) campi.data = fd.get('data') || '';
@@ -822,6 +1007,24 @@ $('#vista').addEventListener('focusout', (e) => {
   if (disegnoRimandato) setTimeout(() => { if (!staScrivendo()) disegna(); }, 250);
 });
 $('#vista').addEventListener('change', (e) => {
+  const sp = e.target.dataset && (e.target.dataset.simpos || e.target.dataset.simruolo);
+  if (sp) {
+    const i = sp.indexOf('|'), s = voce('simulatore', sp.slice(0, i)), x = sp.slice(i + 1), val = e.target.value;
+    if (!s) return;
+    if (e.target.dataset.simpos) { const pos = Object.assign({}, s.pos); if (val === 'casa') delete pos[x]; else pos[x] = val; scrivi('simulatore', s.id, { pos }); }
+    else {
+      const cont = Object.assign({}, s.cont);
+      if (val === 'fuori') {
+        delete cont[x];
+        // Chi stava dentro il contenitore tolto torna fuori: gli oggetti a casa, i contenitori fuori dallo scenario.
+        const pos = Object.assign({}, s.pos); Object.keys(pos).forEach((k) => { if (pos[k] === x) delete pos[k]; });
+        Object.keys(cont).forEach((k) => { if (cont[k] === 'dentro:' + x) delete cont[k]; });
+        scrivi('simulatore', s.id, { cont, pos });
+      } else { cont[x] = val; scrivi('simulatore', s.id, { cont }); }
+    }
+    disegna();
+    return;
+  }
   if (e.target.id !== 'fImporta' || !e.target.files[0]) return;
   const lettore = new FileReader();
   lettore.onload = () => {
@@ -847,6 +1050,14 @@ $('#vista').addEventListener('click', async (e) => {
   else if (az === 'stato') { const v = voce(sez, id), st = LISTE[sez].stati; if (v) { scrivi(sez, id, { stato: st[(st.indexOf(v.stato || st[0]) + 1) % st.length] }); disegna(); } }
   else if (az === 'modifica') apriModifica(sez, id);
   else if (az === 'nuova') apriModifica(sez, null);
+  else if (az === 'simNuovo') apriSim(el.dataset.tipo, null);
+  else if (az === 'simMod') apriSim(el.dataset.tipo, id);
+  else if (az === 'simDuplica') {
+    const s = voce('simulatore', id); if (!s) return;
+    const nid = nuovoId();
+    scrivi('simulatore', nid, { tipo: 'scenario', titolo: s.titolo + ' (copia)', testo: s.testo || '', limCabina: s.limCabina || 0, limStiva: s.limStiva || 0, cont: Object.assign({}, s.cont), pos: Object.assign({}, s.pos), ord: (s.ord || 0) + 1 });
+    location.hash = '#sim/' + nid;
+  }
   else if (az === 'sync') sincronizza(true);
   else if (az === 'aggiornaApp') { el.disabled = true; await aggiornaApp($('#msgApp')); el.disabled = false; }
   else if (az === 'meteo') { el.disabled = true; await aggiornaMeteo(true); disegna(); }

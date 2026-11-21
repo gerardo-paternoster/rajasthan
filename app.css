@@ -308,6 +308,41 @@ dialog { border: 0; border-radius: 22px; padding: 20px; width: min(540px, calc(1
 dialog::backdrop { background: rgba(10, 12, 34, .6); }
 dialog h2 { font: 400 26px/1.2 var(--display); }
 
+/* ---------- Simulatore del bagaglio ---------- */
+.sim-intro { padding: 0 2px 14px; }
+.sim-scen { display: block; }
+.sim-scen h3 { font: 400 22px/1.2 var(--display); }
+.sim-testa { display: flex; align-items: center; gap: 10px; padding: 12px 0 4px; }
+.sim-testa h2 { flex: 1; min-width: 0; font: 700 17px/1.3 var(--testo); color: var(--inchiostro); cursor: pointer; padding: 0; }
+.sim-testa h2.sim-tit { font: 400 24px/1.2 var(--display); }
+.sim-testa .sim-dove { flex: 0 0 auto; width: auto; max-width: 52%; }
+.pannello.pieno .sim-testa { padding-top: 0; }
+.sim-barra { margin: 8px 0; }
+.sim-et { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; color: var(--tenue); }
+.sim-et b { color: var(--inchiostro); white-space: nowrap; }
+.sim-trac { display: block; height: 9px; border-radius: 5px; background: var(--linea); margin-top: 4px; overflow: hidden; }
+.sim-trac i { display: block; height: 100%; border-radius: 5px; background: var(--foglia); }
+.sim-barra.oltre .sim-et b { color: var(--robbia); }
+.sim-barra.oltre .sim-trac i { background: var(--robbia); }
+.sim-avvisi { margin: 10px 0 4px; }
+.sim-avvisi li { padding: 8px 0 8px 24px; border-top: 1px solid var(--linea); position: relative; color: var(--robbia); font-size: 15.5px; }
+.sim-avvisi li::before { content: "!"; position: absolute; left: 6px; top: 7px; font-weight: 700; }
+.sim-nota { margin-top: 10px; font-size: 14.5px; }
+.sim-dove { width: auto; max-width: 46%; flex: none; margin-top: 0; padding: 8px 10px; font-size: 15px; border-radius: 12px; align-self: center; }
+.sim-cont .lista li { align-items: center; }
+.sim-cont.interno { background: var(--calce); margin: 10px 0 12px; padding: 2px 12px; border-radius: 14px; }
+.sim-vuoto { padding: 6px 0 14px; }
+.sim-casa summary { cursor: pointer; list-style: none; }
+.sim-casa summary::-webkit-details-marker { display: none; }
+.sim-casa summary h2::after { content: " ▾"; font-size: 13px; }
+.sim-casa[open] summary h2::after { content: " ▴"; }
+.stima { display: inline-block; font-size: 12.5px; font-weight: 700; color: var(--su-calendula); background: var(--calendula); border-radius: 8px; padding: 0 6px; margin-left: 4px; vertical-align: 1px; }
+.btn.piccolo { min-height: 38px; padding: 6px 14px; font-size: 15px; }
+.sim-tre { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sim-tre label { margin-top: 12px; }
+.sim-check { display: flex; align-items: center; gap: 10px; color: var(--inchiostro); font-weight: 400; font-size: 16px; }
+.sim-check input { width: 22px; height: 22px; margin: 0; flex: none; }
+
 @media (min-width: 752px) {
   main { padding-top: 24px; }
   .fascia { margin: 0; border-radius: 18px 18px 0 0; }
