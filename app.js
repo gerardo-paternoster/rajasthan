@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-21.2';
+const VERSIONE = '2026-11-22.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -663,7 +663,8 @@ function barraListe(qui) {
 
 /* ---------- Simulatore del bagaglio ----------
    Sezione "simulatore", voci di tre tipi:
-   - contenitore: titolo, peso (g, a vuoto), volume (L), comp (% di compressione del contenuto), stima
+   - contenitore: titolo, peso (g, a vuoto), volume (L), comp (% di compressione del contenuto), stima,
+     rigido (dentro un altro contenitore occupa sempre tutto il suo volume, non solo quello del contenuto)
    - oggetto: titolo, gruppo, peso (g, per pezzo), volume (L, per pezzo), qta, stima, soloCabina, liquidi
    - scenario: titolo, limCabina, limPersonale e limStiva (g; 0 = nessun limite),
      cont { idContenitore: 'cabina' (bagaglio a mano) | 'personale' (oggetto personale) | 'stiva' | 'dentro:<id>' },
@@ -698,8 +699,8 @@ function calcolaSim(s) {
   const tot = (x) => {
     if (x.tot) return x.tot;
     let peso = num(x.c.peso) + x.pesoOgg, interno = x.volOgg * (1 - Math.min(90, num(x.c.comp)) / 100);
-    x.figli.forEach((f) => { const t = tot(f); peso += t.peso; interno += t.interno; });
-    x.tot = { peso, interno };
+    x.figli.forEach((f) => { const t = tot(f); peso += t.peso; interno += t.occ; });
+    x.tot = { peso, interno, occ: x.c.rigido ? Math.max(num(x.c.volume), interno) : interno };
     return x.tot;
   };
   const somme = { cabina: 0, personale: 0, stiva: 0 };
@@ -798,7 +799,7 @@ function vistaScenario(s) {
 function vistaSimCatalogo() {
   let h = barraListe('sim');
   const cont = simDi('contenitore');
-  h += '<section class="pannello"><h2>Contenitori</h2>' + (cont.length ? '<ul class="lista">' + cont.map((c) => '<li><div class="corpo" data-az="simMod" data-tipo="contenitore" data-id="' + esc(c.id) + '"><h3>' + esc(c.titolo) + '</h3><p>' + fmtPeso(num(c.peso)) + ' a vuoto · ' + fmtVol(num(c.volume)) + (num(c.comp) ? ' · compressione ' + num(c.comp) + '%' : '') + (c.stima ? ' <span class="stima">stima</span>' : '') + '</p></div></li>').join('') + '</ul>' : '<p class="tenue sim-vuoto">Nessuno.</p>') + '</section>';
+  h += '<section class="pannello"><h2>Contenitori</h2>' + (cont.length ? '<ul class="lista">' + cont.map((c) => '<li><div class="corpo" data-az="simMod" data-tipo="contenitore" data-id="' + esc(c.id) + '"><h3>' + esc(c.titolo) + '</h3><p>' + fmtPeso(num(c.peso)) + ' a vuoto · ' + fmtVol(num(c.volume)) + (num(c.comp) ? ' · compressione ' + num(c.comp) + '%' : '') + (c.rigido ? ' · rigido' : '') + (c.stima ? ' <span class="stima">stima</span>' : '') + '</p></div></li>').join('') + '</ul>' : '<p class="tenue sim-vuoto">Nessuno.</p>') + '</section>';
   const gruppi = {};
   simDi('oggetto').forEach((o) => { (gruppi[o.gruppo || 'Altro'] = gruppi[o.gruppo || 'Altro'] || []).push(o); });
   Object.keys(gruppi).forEach((g) => {
@@ -821,7 +822,7 @@ function apriSim(tipo, id) {
       casella('stima', 'Peso o volume stimati: da misurare', v ? v.stima : true) + casella('soloCabina', 'Solo in cabina (batterie al litio)', v && v.soloCabina) + casella('liquidi', 'Contiene liquidi', v && v.liquidi);
   } else if (tipo === 'contenitore') {
     h += '<div class="sim-tre">' + numero('peso', 'Peso a vuoto (g)', v ? v.peso : '') + numero('volume', 'Capienza (L)', v ? v.volume : '', 0.5) + numero('comp', 'Compressione (%)', v ? v.comp || 0 : 0) + '</div>' +
-      '<p class="tenue">La compressione riduce lo spazio occupato dal contenuto: 0 per zaini e cubi normali, 20–40 per le sacche di compressione.</p>' + casella('stima', 'Peso o capienza stimati: da misurare', v ? v.stima : true);
+      '<p class="tenue">La compressione riduce lo spazio occupato dal contenuto: 0 per zaini e cubi normali, 20–40 per le sacche di compressione.</p>' + casella('rigido', 'Rigido: dentro un altro contenitore occupa sempre tutta la sua capienza', v && v.rigido) + casella('stima', 'Peso o capienza stimati: da misurare', v ? v.stima : true);
   } else {
     const kg = (k, d) => (v ? (v[k] ? v[k] / 1000 : '') : d);
     h += '<div class="sim-tre">' + numero('limCabina', 'Bagaglio a mano (kg)', kg('limCabina', 8), 0.5) + numero('limPersonale', 'Oggetto personale (kg)', kg('limPersonale', ''), 0.5) + numero('limStiva', 'Stiva (kg)', kg('limStiva', 23), 0.5) + '</div>' +
@@ -844,7 +845,7 @@ function salvaSim(f) {
   const campi = { tipo, titolo: String(fd.get('titolo') || '').trim(), testo: String(fd.get('testo') || '').trim() };
   if (!campi.titolo) return;
   if (tipo === 'oggetto') Object.assign(campi, { gruppo: String(fd.get('gruppo') || '').trim(), peso: n('peso'), volume: n('volume'), qta: Math.max(1, Math.round(n('qta')) || 1), stima: fd.has('stima'), soloCabina: fd.has('soloCabina'), liquidi: fd.has('liquidi') });
-  else if (tipo === 'contenitore') Object.assign(campi, { peso: n('peso'), volume: n('volume'), comp: Math.min(90, n('comp')), stima: fd.has('stima') });
+  else if (tipo === 'contenitore') Object.assign(campi, { peso: n('peso'), volume: n('volume'), comp: Math.min(90, n('comp')), rigido: fd.has('rigido'), stima: fd.has('stima') });
   else Object.assign(campi, { limCabina: Math.round(n('limCabina') * 1000), limPersonale: Math.round(n('limPersonale') * 1000), limStiva: Math.round(n('limStiva') * 1000) });
   if (nuovo) { campi.ord = 5000 + simDi(tipo).length; if (tipo === 'scenario') Object.assign(campi, { cont: {}, pos: {} }); }
   scrivi('simulatore', id, campi);
