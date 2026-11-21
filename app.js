@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-21.1';
+const VERSIONE = '2026-11-21.2';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -665,14 +665,17 @@ function barraListe(qui) {
    Sezione "simulatore", voci di tre tipi:
    - contenitore: titolo, peso (g, a vuoto), volume (L), comp (% di compressione del contenuto), stima
    - oggetto: titolo, gruppo, peso (g, per pezzo), volume (L, per pezzo), qta, stima, soloCabina, liquidi
-   - scenario: titolo, limCabina e limStiva (g), cont { idContenitore: 'cabina' | 'stiva' | 'dentro:<id>' },
+   - scenario: titolo, limCabina, limPersonale e limStiva (g; 0 = nessun limite),
+     cont { idContenitore: 'cabina' (bagaglio a mano) | 'personale' (oggetto personale) | 'stiva' | 'dentro:<id>' },
      pos { idOggetto: idContenitore | 'addosso' } (un oggetto senza posizione resta a casa). */
 function simDi(tipo) { return voci('simulatore').filter((v) => v.tipo === tipo).sort(perOrdine); }
 function num(x) { const n = Number(x); return isFinite(n) && n > 0 ? n : 0; }
 function qtaDi(o) { return Math.max(1, Math.round(num(o.qta)) || 1); }
 function fmtPeso(g) { return g >= 1000 ? (g / 1000).toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + ' kg' : Math.round(g) + ' g'; }
 function fmtVol(l) { return l.toLocaleString('it-IT', { maximumFractionDigits: 1 }) + ' L'; }
-const NOME_RUOLO = { cabina: 'in cabina', stiva: 'in stiva' };
+const NOME_RUOLO = { cabina: 'bagaglio a mano', personale: 'oggetto personale', stiva: 'in stiva' };
+const RUOLI = [['cabina', 'Bagaglio a mano', 'limCabina'], ['personale', 'Oggetto personale', 'limPersonale'], ['stiva', 'Stiva', 'limStiva']];
+function opzRuoli(sel) { return RUOLI.map((r) => '<option value="' + r[0] + '"' + (sel === r[0] ? ' selected' : '') + '>' + r[1] + '</option>').join(''); }
 
 function calcolaSim(s) {
   const ruoli = s.cont || {}, pos = s.pos || {}, C = {};
@@ -699,7 +702,7 @@ function calcolaSim(s) {
     x.tot = { peso, interno };
     return x.tot;
   };
-  const somme = { cabina: 0, stiva: 0 };
+  const somme = { cabina: 0, personale: 0, stiva: 0 };
   const radici = Object.values(C).filter((x) => x.radice === x);
   radici.forEach((x) => { somme[x.ruolo] += tot(x).peso; });
   Object.values(C).forEach((x) => {
@@ -707,12 +710,15 @@ function calcolaSim(s) {
     const t = tot(x);
     if (num(x.c.volume) && t.interno > num(x.c.volume)) avvisi.push('«' + x.c.titolo + '» è troppo pieno: ' + fmtVol(t.interno) + ' in ' + fmtVol(num(x.c.volume)) + '.');
     x.ogg.forEach((o) => {
-      if (o.soloCabina && x.radice.ruolo === 'stiva') avvisi.push('«' + o.titolo + '» non può andare in stiva (batterie al litio): spostalo in cabina o addosso.');
-      if (o.liquidi && x.radice.ruolo === 'cabina') avvisi.push('«' + o.titolo + '» è in cabina: liquidi solo in flaconi da 100 ml, in una busta trasparente da 1 litro.');
+      if (o.soloCabina && x.radice.ruolo === 'stiva') avvisi.push('«' + o.titolo + '» non può andare in stiva (batterie al litio): spostalo nel bagaglio a mano, nell\'oggetto personale o addosso.');
+      if (o.liquidi && x.radice.ruolo !== 'stiva') avvisi.push('«' + o.titolo + '» è in cabina: liquidi solo in flaconi da 100 ml, in una busta trasparente da 1 litro.');
     });
   });
-  if (s.limCabina && somme.cabina > s.limCabina) avvisi.unshift('Cabina oltre il limite di ' + fmtPeso(s.limCabina - 0) + ' (' + fmtPeso(somme.cabina) + ').');
-  if (s.limStiva && somme.stiva > s.limStiva) avvisi.unshift('Stiva oltre il limite di ' + fmtPeso(s.limStiva - 0) + ' (' + fmtPeso(somme.stiva) + ').');
+  RUOLI.slice().reverse().forEach((r) => {
+    const lim = num(s[r[2]]), n = radici.filter((x) => x.ruolo === r[0]).length;
+    if (n > 1 && r[0] !== 'stiva') avvisi.unshift('Ci sono ' + n + ' contenitori come «' + r[1].toLowerCase() + '»: di solito ne è ammesso uno solo.');
+    if (lim && somme[r[0]] > lim) avvisi.unshift(r[1] + ' oltre il limite di ' + fmtPeso(lim) + ' (' + fmtPeso(somme[r[0]]) + ').');
+  });
   return { C, radici, addosso, casa, somme, avvisi, tot };
 }
 
@@ -720,6 +726,10 @@ function barraSim(etichetta, val, lim, fmt) {
   const p = lim ? Math.min(100, val / lim * 100) : 0, oltre = lim && val > lim;
   return '<div class="sim-barra' + (oltre ? ' oltre' : '') + '"><div class="sim-et"><span>' + esc(etichetta) + '</span><b>' + esc(fmt(val)) + (lim ? ' di ' + esc(fmt(lim)) : '') + '</b></div>' +
     (lim ? '<span class="sim-trac"><i style="width:' + p.toFixed(1) + '%"></i></span>' : '') + '</div>';
+}
+// Una barra per ruolo, solo se il ruolo è usato nello scenario o ha un limite.
+function barreRuoli(s, R) {
+  return RUOLI.filter((r) => R.radici.some((x) => x.ruolo === r[0]) || num(s[r[2]])).map((r) => barraSim(r[1], R.somme[r[0]], num(s[r[2]]), fmtPeso)).join('');
 }
 function rigaOggetto(s, o, dest) {
   const q = qtaDi(o), p = num(o.peso) * q, l = num(o.volume) * q;
@@ -732,7 +742,7 @@ function rigaOggetto(s, o, dest) {
 function htmlContenitore(s, R, x) {
   const t = R.tot(x), cap = num(x.c.volume);
   const altri = simDi('contenitore').filter((c) => c.id !== x.c.id && (s.cont || {})[c.id]);
-  let opz = '<option value="fuori">Togli dallo scenario</option><option value="cabina"' + (x.ruolo === 'cabina' ? ' selected' : '') + '>In cabina</option><option value="stiva"' + (x.ruolo === 'stiva' ? ' selected' : '') + '>In stiva</option>';
+  let opz = '<option value="fuori">Togli dallo scenario</option>' + opzRuoli(x.ruolo);
   altri.forEach((c) => { opz += '<option value="dentro:' + esc(c.id) + '"' + (x.ruolo === 'dentro:' + c.id ? ' selected' : '') + '>Dentro: ' + esc(c.titolo) + '</option>'; });
   let h = '<section class="pannello sim-cont' + (x.radice === x ? '' : ' interno') + '"><div class="sim-testa"><h2 data-az="simMod" data-tipo="contenitore" data-id="' + esc(x.c.id) + '">' + esc(x.c.titolo) + (x.c.stima ? ' <span class="stima">stima</span>' : '') + '</h2>' +
     '<select class="sim-dove" data-simruolo="' + esc(s.id) + '|' + esc(x.c.id) + '" aria-label="Dove sta: ' + esc(x.c.titolo) + '">' + opz + '</select></div>';
@@ -756,7 +766,7 @@ function vistaSim(arg) {
     const R = calcolaSim(s);
     const nomi = R.radici.map((x) => x.c.titolo + ' ' + NOME_RUOLO[x.ruolo]).join(' + ') || 'Nessun bagaglio';
     h += '<a class="pannello pieno sim-scen" href="#sim/' + esc(s.id) + '"><h3>' + esc(s.titolo) + '</h3><p class="tenue">' + esc(nomi) + '</p>' +
-      barraSim('Cabina', R.somme.cabina, num(s.limCabina), fmtPeso) + barraSim('Stiva', R.somme.stiva, num(s.limStiva), fmtPeso) +
+      barreRuoli(s, R) +
       (R.avvisi.length ? '<p class="err">' + R.avvisi.length + (R.avvisi.length === 1 ? ' avviso' : ' avvisi') + '</p>' : '') + '</a>';
   });
   h += '<div class="azioni larghe"><button class="btn" data-az="simNuovo" data-tipo="scenario">Nuovo scenario</button><a class="btn chiaro" href="#sim/catalogo">Oggetti e contenitori</a></div>';
@@ -767,18 +777,18 @@ function vistaScenario(s) {
   const R = calcolaSim(s);
   let h = barraListe('sim');
   h += '<section class="pannello pieno"><div class="sim-testa"><h2 class="sim-tit" data-az="simMod" data-tipo="scenario" data-id="' + esc(s.id) + '">' + esc(s.titolo) + '</h2><button class="btn chiaro piccolo" data-az="simDuplica" data-id="' + esc(s.id) + '">Duplica</button></div>';
-  h += barraSim('Cabina', R.somme.cabina, num(s.limCabina), fmtPeso) + barraSim('Stiva', R.somme.stiva, num(s.limStiva), fmtPeso) + barraSim('Addosso (non pesato)', R.addosso.peso, 0, fmtPeso);
+  h += barreRuoli(s, R) + barraSim('Addosso (non pesato)', R.addosso.peso, 0, fmtPeso);
   if (R.avvisi.length) h += '<ul class="sim-avvisi">' + R.avvisi.map((a) => '<li>' + esc(a) + '</li>').join('') + '</ul>';
   if (s.testo) h += '<p class="tenue">' + testoAParagrafi(s.testo) + '</p>';
   h += '<p class="tenue sim-nota">Tocca il nome dello scenario per cambiare nome e limiti, il nome di un contenitore o di un oggetto per i suoi pesi.</p></section>';
-  ['cabina', 'stiva'].forEach((r) => R.radici.filter((x) => x.ruolo === r).forEach((x) => { h += htmlContenitore(s, R, x); }));
+  RUOLI.forEach((r) => R.radici.filter((x) => x.ruolo === r[0]).forEach((x) => { h += htmlContenitore(s, R, x); }));
   h += '<section class="pannello"><h2>Addosso</h2>' + (R.addosso.ogg.length ? '<ul class="lista">' + R.addosso.ogg.map((o) => rigaOggetto(s, o, 'addosso')).join('') + '</ul>' : '<p class="tenue sim-vuoto">Niente: quello che indossi in viaggio va qui e non pesa sul bagaglio.</p>') + '</section>';
   h += '<details class="pannello sim-casa"' + (R.casa.ogg.length && R.casa.ogg.length < 6 ? ' open' : '') + '><summary><h2>A casa <span class="tenue">(' + R.casa.ogg.length + ')</span></h2></summary>' +
     (R.casa.ogg.length ? '<ul class="lista">' + R.casa.ogg.map((o) => rigaOggetto(s, o, 'casa')).join('') + '</ul>' : '<p class="tenue sim-vuoto">Tutti gli oggetti sono nel bagaglio o addosso.</p>') + '</details>';
   const fuori = simDi('contenitore').filter((c) => !(s.cont || {})[c.id]);
   if (fuori.length) {
     h += '<section class="pannello"><h2>Altri contenitori</h2><ul class="lista">' + fuori.map((c) => '<li><div class="corpo" data-az="simMod" data-tipo="contenitore" data-id="' + esc(c.id) + '"><h3>' + esc(c.titolo) + '</h3><p>' + fmtPeso(num(c.peso)) + ' · ' + fmtVol(num(c.volume)) + '</p></div>' +
-      '<select class="sim-dove" data-simruolo="' + esc(s.id) + '|' + esc(c.id) + '" aria-label="Aggiungi: ' + esc(c.titolo) + '"><option value="fuori" selected>Non usato</option><option value="cabina">In cabina</option><option value="stiva">In stiva</option>' +
+      '<select class="sim-dove" data-simruolo="' + esc(s.id) + '|' + esc(c.id) + '" aria-label="Aggiungi: ' + esc(c.titolo) + '"><option value="fuori" selected>Non usato</option>' + opzRuoli('') +
       simDi('contenitore').filter((d) => d.id !== c.id && (s.cont || {})[d.id]).map((d) => '<option value="dentro:' + esc(d.id) + '">Dentro: ' + esc(d.titolo) + '</option>').join('') + '</select></li>').join('') + '</ul></section>';
   }
   h += '<div class="azioni larghe"><button class="btn chiaro" data-az="simNuovo" data-tipo="oggetto">Nuovo oggetto</button><button class="btn chiaro" data-az="simNuovo" data-tipo="contenitore">Nuovo contenitore</button></div>';
@@ -813,7 +823,8 @@ function apriSim(tipo, id) {
     h += '<div class="sim-tre">' + numero('peso', 'Peso a vuoto (g)', v ? v.peso : '') + numero('volume', 'Capienza (L)', v ? v.volume : '', 0.5) + numero('comp', 'Compressione (%)', v ? v.comp || 0 : 0) + '</div>' +
       '<p class="tenue">La compressione riduce lo spazio occupato dal contenuto: 0 per zaini e cubi normali, 20–40 per le sacche di compressione.</p>' + casella('stima', 'Peso o capienza stimati: da misurare', v ? v.stima : true);
   } else {
-    h += '<div class="sim-tre">' + numero('limCabina', 'Limite cabina (kg)', v && v.limCabina ? v.limCabina / 1000 : 7, 0.5) + numero('limStiva', 'Limite stiva (kg)', v && v.limStiva ? v.limStiva / 1000 : 23, 0.5) + '</div>' +
+    const kg = (k, d) => (v ? (v[k] ? v[k] / 1000 : '') : d);
+    h += '<div class="sim-tre">' + numero('limCabina', 'Bagaglio a mano (kg)', kg('limCabina', 8), 0.5) + numero('limPersonale', 'Oggetto personale (kg)', kg('limPersonale', ''), 0.5) + numero('limStiva', 'Stiva (kg)', kg('limStiva', 23), 0.5) + '</div>' +
       '<p class="tenue">Limiti da verificare quando si conosce la compagnia aerea. Lascia vuoto per nessun limite.</p>';
   }
   h += '<label>Note<textarea name="testo" rows="2">' + esc(v ? v.testo || '' : '') + '</textarea></label>';
@@ -834,7 +845,7 @@ function salvaSim(f) {
   if (!campi.titolo) return;
   if (tipo === 'oggetto') Object.assign(campi, { gruppo: String(fd.get('gruppo') || '').trim(), peso: n('peso'), volume: n('volume'), qta: Math.max(1, Math.round(n('qta')) || 1), stima: fd.has('stima'), soloCabina: fd.has('soloCabina'), liquidi: fd.has('liquidi') });
   else if (tipo === 'contenitore') Object.assign(campi, { peso: n('peso'), volume: n('volume'), comp: Math.min(90, n('comp')), stima: fd.has('stima') });
-  else Object.assign(campi, { limCabina: Math.round(n('limCabina') * 1000), limStiva: Math.round(n('limStiva') * 1000) });
+  else Object.assign(campi, { limCabina: Math.round(n('limCabina') * 1000), limPersonale: Math.round(n('limPersonale') * 1000), limStiva: Math.round(n('limStiva') * 1000) });
   if (nuovo) { campi.ord = 5000 + simDi(tipo).length; if (tipo === 'scenario') Object.assign(campi, { cont: {}, pos: {} }); }
   scrivi('simulatore', id, campi);
   if (nuovo && tipo === 'scenario') { history.replaceState(null, '', '#sim/' + id); leggiRotta(); }
@@ -1055,7 +1066,7 @@ $('#vista').addEventListener('click', async (e) => {
   else if (az === 'simDuplica') {
     const s = voce('simulatore', id); if (!s) return;
     const nid = nuovoId();
-    scrivi('simulatore', nid, { tipo: 'scenario', titolo: s.titolo + ' (copia)', testo: s.testo || '', limCabina: s.limCabina || 0, limStiva: s.limStiva || 0, cont: Object.assign({}, s.cont), pos: Object.assign({}, s.pos), ord: (s.ord || 0) + 1 });
+    scrivi('simulatore', nid, { tipo: 'scenario', titolo: s.titolo + ' (copia)', testo: s.testo || '', limCabina: s.limCabina || 0, limPersonale: s.limPersonale || 0, limStiva: s.limStiva || 0, cont: Object.assign({}, s.cont), pos: Object.assign({}, s.pos), ord: (s.ord || 0) + 1 });
     location.hash = '#sim/' + nid;
   }
   else if (az === 'sync') sincronizza(true);
