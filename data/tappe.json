@@ -1,9 +1,9 @@
 {
- "aggiornato": "2026-11-15",
+ "aggiornato": "2026-11-23",
  "partenza": "2026-12-20",
  "rientro": "2027-01-05",
  "calendarioStimato": true,
- "avviso": "Il calendario è stimato: fa fede il programma del coordinatore. Orari e regole vengono da guide di viaggio e possono cambiare. Il clima è la media del periodo, non una previsione.",
+ "avviso": "Il calendario è stimato: fa fede il programma del coordinatore. Orari, regole e locali vengono da guide di viaggio e possono cambiare: i nomi dei locali storici sono indicazioni, non verificate sul posto. Il clima è la media del periodo, non una previsione.",
  "giorni": [
   {
    "data": "2026-12-20",
@@ -174,37 +174,165 @@
    "vedere": [
     {
      "t": "India Gate",
-     "d": "La Porta dell'India e i viali di New Delhi."
+     "d": "La Porta dell'India e i viali di New Delhi.",
+     "x": [
+      [
+       "Cos'è",
+       "Arco di trionfo di 42 metri del 1931, memoriale dei soldati indiani caduti nella prima guerra mondiale: sulle pareti sono incisi migliaia di nomi. Sotto l'arco arde la fiamma del milite ignoto."
+      ],
+      [
+       "Quando",
+       "Al tramonto e la sera, quando è illuminato e i viali si riempiono di famiglie e venditori ambulanti."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora: si vede dal pulmino o con una breve sosta."
+      ]
+     ]
     },
     {
      "t": "Chandni Chowk",
-     "d": "Il cuore di Old Delhi: vicoli e mercati, spezie a Khari Baoli, gioielli a Dariba Kalan."
+     "d": "Il cuore di Old Delhi: vicoli e mercati, spezie a Khari Baoli, gioielli a Dariba Kalan.",
+     "x": [
+      [
+       "Cos'è",
+       "Il viale principale della Delhi moghul, voluto nel Seicento dalla figlia dell'imperatore Shah Jahan. Dai due lati partono vicoli specializzati: ognuno vende una cosa sola."
+      ],
+      [
+       "Cosa guardare",
+       "Khari Baoli, il più grande mercato di spezie d'Asia: sacchi di peperoncini, curcuma e cardamomo, e l'aria che pizzica la gola. Dariba Kalan per l'argento, Kinari Bazar per nastri e decorazioni da matrimonio."
+      ],
+      [
+       "Come muoversi",
+       "A piedi o in risciò a pedali: con il risciò si vede tutto dall'alto senza farsi travolgere. Concordare il prezzo prima di salire."
+      ],
+      [
+       "Quanto tempo",
+       "Due o tre ore, meglio in tarda mattinata quando i negozi sono aperti."
+      ]
+     ]
     },
     {
      "t": "Jama Masjid",
-     "d": "La grande moschea in arenaria rossa e marmo."
+     "d": "La grande moschea in arenaria rossa e marmo.",
+     "x": [
+      [
+       "Cos'è",
+       "La moschea più grande dell'India, costruita da Shah Jahan, lo stesso del Taj Mahal, tra il 1644 e il 1656. Il cortile può contenere fino a 25.000 persone."
+      ],
+      [
+       "Cosa guardare",
+       "Il colpo d'occhio dal cortile su cupole e minareti, le strisce bianche e nere di marmo e arenaria. Dal minareto sud, salendo una scala stretta, si vede tutta Old Delhi."
+      ],
+      [
+       "Da sapere",
+       "Chiusa ai visitatori durante le preghiere, soprattutto il venerdì a mezzogiorno. Fotocamere e telefoni possono pagare un biglietto; le scarpe si lasciano all'ingresso."
+      ]
+     ]
     },
     {
      "t": "Forte Rosso",
-     "d": "Dall'esterno, se resta tempo."
+     "d": "Dall'esterno, se resta tempo.",
+     "x": [
+      [
+       "Cos'è",
+       "La reggia fortificata dei Moghul, con mura di arenaria rossa lunghe più di due chilometri. Patrimonio UNESCO."
+      ],
+      [
+       "Cosa guardare",
+       "Dall'esterno: la porta di Lahore, dove il primo ministro parla alla nazione ogni 15 agosto."
+      ],
+      [
+       "Da sapere",
+       "È chiuso il lunedì. Dentro, i padiglioni di marmo sono stati in gran parte spogliati nell'Ottocento."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Paratha ripiene",
-     "d": "In Paranthe Wali Gali, il vicolo delle paratha di Chandni Chowk, attivo dall'Ottocento. Meglio al mattino."
+     "d": "In Paranthe Wali Gali, il vicolo delle paratha di Chandni Chowk, attivo dall'Ottocento. Meglio al mattino.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Pane piatto di farina integrale ripieno e fritto in padella nel ghee (burro chiarificato). Ripieni di patate, cavolfiore, ravanello, formaggio fresco (paneer), e anche dolci, di banana o anacardi."
+      ],
+      [
+       "Come si mangia",
+       "Con chutney, curry di patate e sottaceti piccanti serviti a parte: il piccante lo dosi tu."
+      ],
+      [
+       "Dove",
+       "Nei locali storici del vicolo, come Pandit Gaya Prasad Shiv Charan."
+      ]
+     ]
     },
     {
      "t": "Chaat e jalebi",
-     "d": "Dahi bhalle, golgappe e jalebi caldi nei banchi storici della via principale."
+     "d": "Dahi bhalle, golgappe e jalebi caldi nei banchi storici della via principale.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Chaat è la grande famiglia degli spuntini di strada agrodolci e piccanti. I dahi bhalle sono polpette di lenticchie morbidissime coperte di yogurt dolce e chutney di tamarindo; i golgappe palline croccanti da riempire di acqua speziata e mangiare in un boccone."
+      ],
+      [
+       "Jalebi",
+       "Spirali di pastella fritte e immerse nello sciroppo, croccanti fuori e succose dentro, da mangiare bollenti."
+      ],
+      [
+       "Dove",
+       "Natraj Dahi Bhalla, aperto dal 1940, per dahi bhalle e aloo tikki; Old Famous Jalebi Wala, del 1884, all'angolo di Dariba Kalan."
+      ],
+      [
+       "Attenzione",
+       "I golgappe con l'acqua del banco sono il rischio igienico più alto: meglio saltarli."
+      ]
+     ]
     },
     {
      "t": "Kebab e cucina moghul",
-     "d": "Nei vicoli attorno alla Jama Masjid (Gali Kababian, Matia Mahal). È cibo da sera, dopo le 19."
+     "d": "Nei vicoli attorno alla Jama Masjid (Gali Kababian, Matia Mahal). È cibo da sera, dopo le 19.",
+     "piccante": 2,
+     "veg": false,
+     "x": [
+      [
+       "Com'è",
+       "La cucina della corte moghul: carne marinata e cotta alla brace, curry ricchi di spezie e frutta secca, pane cotto nel forno tandoor."
+      ],
+      [
+       "Cosa ordinare",
+       "Seekh kebab di montone, burra (costolette alla brace), nihari (stufato di carne cotto tutta la notte) e korma."
+      ],
+      [
+       "Dove",
+       "Karim's, nel vicolo di fronte alla porta 1 della Jama Masjid, aperto da più di cento anni."
+      ]
+     ]
     },
     {
      "t": "Chole bhature",
-     "d": "Ceci speziati e pane fritto, a colazione."
+     "d": "Ceci speziati e pane fritto, a colazione.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Curry di ceci speziato e acidulo con un pane fritto che si gonfia come un pallone. Colazione pesante, da camionisti."
+      ],
+      [
+       "Dove",
+       "Sita Ram Diwan Chand a Paharganj, che fa solo questo piatto."
+      ],
+      [
+       "Quando",
+       "La mattina: molti banchi finiscono prima di pranzo."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -237,33 +365,129 @@
    "vedere": [
     {
      "t": "Forte di Junagarh",
-     "d": "Uno dei pochi forti del Rajasthan costruiti in piano. Interni con specchi, intarsi e sale dipinte. Orario indicato 10:00–16:30; servono circa due ore."
+     "d": "Uno dei pochi forti del Rajasthan costruiti in piano. Interni con specchi, intarsi e sale dipinte. Orario indicato 10:00–16:30; servono circa due ore.",
+     "x": [
+      [
+       "Cos'è",
+       "Costruito tra il 1589 e il 1593 da Rai Singh, generale dell'imperatore Akbar. Non è mai stato conquistato."
+      ],
+      [
+       "Cosa guardare",
+       "L'Anup Mahal, la sala delle udienze private con pareti laccate in rosso e oro; il Badal Mahal, il \"palazzo delle nuvole\", dipinto con nuvole blu e fulmini rossi e dorati: un lusso per una città del deserto dove piove poco. Nella sala d'armi c'è un biplano della prima guerra mondiale."
+      ],
+      [
+       "Da sapere",
+       "Le sale sono piccole e buie: interni bui (vedi la scheda di fotografia)."
+      ]
+     ]
     },
     {
      "t": "Haveli Rampuria",
-     "d": "Facciate in arenaria rossa scolpita, nei vicoli della città vecchia. A piedi."
+     "d": "Facciate in arenaria rossa scolpita, nei vicoli della città vecchia. A piedi.",
+     "x": [
+      [
+       "Cos'è",
+       "Le case dei mercanti Rampuria, costruite tra fine Ottocento e inizio Novecento in arenaria rossa scolpita come un merletto."
+      ],
+      [
+       "Cosa guardare",
+       "Facciate, balconi chiusi (jharokha) e portoni. Si vedono da fuori: molte sono ancora abitate o in restauro."
+      ],
+      [
+       "Quanto tempo",
+       "Un'ora di passeggiata nei vicoli della città vecchia."
+      ]
+     ]
     },
     {
      "t": "Tempio di Karni Mata a Deshnok",
-     "d": "Il \"tempio dei topi\", 30 km a sud: migliaia di ratti venerati e nutriti con latte e dolci. Ingresso gratuito."
+     "d": "Il \"tempio dei topi\", 30 km a sud: migliaia di ratti venerati e nutriti con latte e dolci. Ingresso gratuito.",
+     "x": [
+      [
+       "Cos'è",
+       "Tempio dedicato a Karni Mata, mistica del Quattrocento venerata come incarnazione della dea Durga. Secondo la tradizione, i topi che vivono nel tempio sono i suoi discendenti reincarnati."
+      ],
+      [
+       "Cosa guardare",
+       "Le porte d'argento scolpite all'ingresso e i topi che bevono da grandi ciotole di latte. Vedere un topo bianco, rarissimo, porta fortuna; anche un topo che ti passa sul piede."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora, un'ora con il viaggio da Bikaner."
+      ]
+     ]
     },
     {
      "t": "Centro di ricerca sul cammello",
-     "d": "Spesso abbinato a Deshnok."
+     "d": "Spesso abbinato a Deshnok.",
+     "x": [
+      [
+       "Cos'è",
+       "Centro governativo che studia e alleva i cammelli del deserto: si vedono le diverse razze e i piccoli."
+      ],
+      [
+       "Da provare",
+       "Al chiosco si assaggia gelato o caffè fatto con latte di cammella."
+      ],
+      [
+       "Quando",
+       "Nel pomeriggio, quando i cammelli rientrano dal pascolo."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Bikaneri bhujia",
-     "d": "Lo snack croccante e speziato di farina di legumi per cui la città è famosa. Da comprare sfuso nelle botteghe storiche."
+     "d": "Lo snack croccante e speziato di farina di legumi per cui la città è famosa. Da comprare sfuso nelle botteghe storiche.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Spaghettini croccanti di farina di legumi con pepe, chiodi di garofano e altre spezie. Si mangia come snack, come si mangerebbero le patatine."
+      ],
+      [
+       "Da sapere",
+       "Haldiram, oggi un'industria nazionale, cominciò proprio da una bottega di Bikaner negli anni Trenta."
+      ],
+      [
+       "Dove",
+       "Bhikharam Chandmal vicino a Kote Gate, o al Bhujia Bazar lì vicino. Si compra sfuso, a peso: si viaggia bene e dura settimane."
+      ]
+     ]
     },
     {
      "t": "Rasgulla e dolci al latte",
-     "d": ""
+     "d": "",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Palline spugnose di formaggio fresco cotte nello sciroppo di zucchero: si strizzano in bocca. A Bikaner c'è chi dice che il segreto sia l'acqua della città."
+      ],
+      [
+       "Dove",
+       "Chhotu Motu Joshi, sulla Station Road, bottega di oltre un secolo: anche per kachori e jalebi la mattina."
+      ]
+     ]
     },
     {
      "t": "Kachori",
-     "d": "Al mattino."
+     "d": "Al mattino.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Fagottino rotondo di pasta friabile fritto, ripieno di lenticchie speziate o cipolla, servito con chutney."
+      ],
+      [
+       "Quando",
+       "Colazione o merenda, appena fritte."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -295,45 +519,205 @@
    "vedere": [
     {
      "t": "Forte di Jaisalmer",
-     "d": "Sonar Quila: forte abitato, con case, botteghe e templi tra le mura. L'accesso alle vie è libero."
+     "d": "Sonar Quila: forte abitato, con case, botteghe e templi tra le mura. L'accesso alle vie è libero.",
+     "x": [
+      [
+       "Cos'è",
+       "Del 1156, uno dei pochissimi forti al mondo ancora abitati: qualche migliaio di persone vive dentro le mura. L'arenaria gialla al tramonto diventa color miele, da cui il nome di \"forte dorato\"."
+      ],
+      [
+       "Cosa guardare",
+       "Le 99 torri di bastione, la piazza principale (Dussehra Chowk), il palazzo reale con il museo, e i vicoli dove si incontrano mucche, bambini e botteghe di tessuti."
+      ],
+      [
+       "Quando",
+       "La mattina per i templi jainisti, il tardo pomeriggio per la luce sulle mura."
+      ],
+      [
+       "Quanto tempo",
+       "Mezza giornata."
+      ]
+     ]
     },
     {
      "t": "Templi jainisti nel forte",
-     "d": "Per i non jainisti l'orario è ridotto, di solito solo al mattino: conviene organizzare la visita del forte attorno a questo."
+     "d": "Per i non jainisti l'orario è ridotto, di solito solo al mattino: conviene organizzare la visita del forte attorno a questo.",
+     "x": [
+      [
+       "Cos'è",
+       "Sette templi collegati tra loro, costruiti tra il XII e il XVI secolo nella stessa arenaria gialla del forte."
+      ],
+      [
+       "Cosa guardare",
+       "Le colonne e le cupole scolpite fino all'ultimo centimetro, con figure di danzatrici, animali e divinità. Il tempio di Parshvanath è il più ricco."
+      ],
+      [
+       "Da sapere",
+       "Niente oggetti in cuoio. Spesso si paga per la fotocamera."
+      ]
+     ]
     },
     {
      "t": "Patwon Ki Haveli",
-     "d": "Il più ricco degli haveli. Poi Nathmal e Salim Singh."
+     "d": "Il più ricco degli haveli. Poi Nathmal e Salim Singh.",
+     "x": [
+      [
+       "Cos'è",
+       "Cinque case costruite una accanto all'altra a partire dal 1805 dal mercante Guman Chand Patwa per i suoi cinque figli: i lavori andarono avanti per circa sessant'anni."
+      ],
+      [
+       "Cosa guardare",
+       "La facciata con decine di balconi traforati. Dentro la prima casa, oggi museo privato (Kothari's Patwa Haveli), stanze con specchi, pitture murali e arredi dell'Ottocento."
+      ],
+      [
+       "Quanto tempo",
+       "Un'ora o due."
+      ]
+     ]
     },
     {
      "t": "Lago Gadisar",
-     "d": "Al tramonto o all'alba."
+     "d": "Al tramonto o all'alba.",
+     "x": [
+      [
+       "Cos'è",
+       "Bacino artificiale del Trecento, per secoli l'unica riserva d'acqua della città, circondato da piccoli templi e padiglioni."
+      ],
+      [
+       "Cosa guardare",
+       "La porta di Tilon ki Pol, in arenaria scolpita, e i riflessi dei padiglioni sull'acqua."
+      ],
+      [
+       "Quando",
+       "All'alba, quando l'acqua è ferma e ci sono solo i pellegrini."
+      ]
+     ]
     },
     {
      "t": "Bada Bagh",
-     "d": "Cenotafi reali fuori città, ottimi al tramonto."
+     "d": "Cenotafi reali fuori città, ottimi al tramonto.",
+     "x": [
+      [
+       "Cos'è",
+       "Il \"grande giardino\", circa 6 km a nord della città: decine di chhatri, padiglioni a cupola eretti in memoria dei sovrani di Jaisalmer."
+      ],
+      [
+       "Cosa guardare",
+       "La fila di cupole contro il deserto, con le pale eoliche moderne sullo sfondo."
+      ],
+      [
+       "Quando",
+       "Al tramonto o all'alba: a mezzogiorno è piatto."
+      ]
+     ]
     },
     {
      "t": "Dune del Thar",
-     "d": "Sam (circa 40 km a ovest): dune più alte, molti campi, affollato e rumoroso in stagione. Khuri (circa 50 km a sud-ovest): più piccolo e tranquillo. Da sapere dal coordinatore quale sarà."
+     "d": "Sam (circa 40 km a ovest): dune più alte, molti campi, affollato e rumoroso in stagione. Khuri (circa 50 km a sud-ovest): più piccolo e tranquillo. Da sapere dal coordinatore quale sarà.",
+     "x": [
+      [
+       "Cos'è",
+       "Il deserto del Thar copre gran parte del Rajasthan occidentale. Più che sabbia infinita è una steppa arida con villaggi, arbusti e ogni tanto campi di dune."
+      ],
+      [
+       "Cosa aspettarsi",
+       "Giro in cammello o jeep, tramonto sulle dune, cena con musica e danze del deserto (spesso le danzatrici kalbelia), notte in tenda."
+      ],
+      [
+       "Da sapere",
+       "Il cammello si cavalca con il corpo morbido, piegandosi indietro quando si alza e avanti quando si siede. Dopo un'ora si sente l'interno coscia."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Dal baati churma",
-     "d": "Palline di pane cotte al forno, lenticchie e un dolce sbriciolato di grano, burro chiarificato e zucchero."
+     "d": "Palline di pane cotte al forno, lenticchie e un dolce sbriciolato di grano, burro chiarificato e zucchero.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Il piatto simbolo del Rajasthan, nato per il deserto: le baati sono palline dure di pane cotte sulla brace e intinte nel ghee; si spezzano nel dal, la zuppa di lenticchie; il churma è un dolce di grano sbriciolato con ghee e zucchero."
+      ],
+      [
+       "Come si mangia",
+       "Si sbriciolano le baati nel dal con le mani. Il churma si alterna o si mangia alla fine."
+      ],
+      [
+       "Da sapere",
+       "È molto sostanzioso: dopo, niente cena."
+      ]
+     ]
     },
     {
      "t": "Ker sangri",
-     "d": "Bacche e fagiolini selvatici del deserto saltati con spezie: aspro e terroso."
+     "d": "Bacche e fagiolini selvatici del deserto saltati con spezie: aspro e terroso.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Bacche di cappero del deserto (ker) e baccelli di un albero locale (sangri), essiccati e cotti con spezie e olio di senape. Sapore asprigno e amarognolo."
+      ],
+      [
+       "Da sapere",
+       "Esiste solo qui: le piante crescono nel Thar e si raccolgono una volta l'anno. È il piatto più \"del luogo\" del viaggio."
+      ],
+      [
+       "Come si mangia",
+       "Con il pane di miglio (bajra roti)."
+      ]
+     ]
     },
     {
      "t": "Gatte ki sabzi",
-     "d": "Gnocchetti di farina di ceci in salsa di yogurt."
+     "d": "Gnocchetti di farina di ceci in salsa di yogurt.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Gnocchetti di farina di ceci bolliti e poi cotti in una salsa di yogurt speziata. Inventato per il deserto, dove le verdure fresche erano rare."
+      ],
+      [
+       "Come si mangia",
+       "Con riso o roti."
+      ]
+     ]
     },
     {
      "t": "Cena al campo",
-     "d": "Di solito un buffet rajasthano con musica e danze."
+     "d": "Di solito un buffet rajasthano con musica e danze.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Cosa aspettarsi",
+       "Di solito un buffet con dal, sabzi, baati, roti cotti sul momento e un dolce, attorno al fuoco con musica."
+      ],
+      [
+       "Da sapere",
+       "Cibo cotto per molti: scegli i piatti caldi appena portati. Porta acqua tua."
+      ]
+     ]
+    },
+    {
+     "t": "Ghotua ladoo",
+     "d": "Il dolce tipico di Jaisalmer.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Palline dolci di farina di ceci, ghee e zucchero, specialità di Jaisalmer."
+      ],
+      [
+       "Dove",
+       "Dhanraj Ranmal Bhatia, al Bhatia Market: bottega di famiglia da generazioni, famosa anche per i peperoncini fritti (mirchi bhajiya)."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -367,41 +751,171 @@
    "vedere": [
     {
      "t": "Forte di Mehrangarh",
-     "d": "Su una rupe a circa 125 metri sopra la città. Orario 9:00–17:00. Il biglietto per stranieri comprende l'audioguida. Servono 3–4 ore."
+     "d": "Su una rupe a circa 125 metri sopra la città. Orario 9:00–17:00. Il biglietto per stranieri comprende l'audioguida. Servono 3–4 ore.",
+     "x": [
+      [
+       "Cos'è",
+       "Fondato nel 1459 da Rao Jodha su una rupe che domina la città. È gestito da una fondazione della famiglia reale e il museo è tra i migliori dell'India."
+      ],
+      [
+       "Cosa guardare",
+       "Il Moti Mahal, sala delle udienze con vetri colorati e piccole nicchie da cui le regine seguivano la corte senza essere viste; il Phool Mahal, la sala più sfarzosa, dorata e dipinta; lo Sheesh Mahal degli specchi. Nelle gallerie, il palanchino dorato Mahadol e le portantine da elefante (howdah), tra cui una d'argento regalata dall'imperatore Shah Jahan."
+      ],
+      [
+       "Da sapere",
+       "Sulla porta di Loha Pol ci sono le impronte delle mani delle regine che si immolarono sulla pira del marito: si vedono passando, conviene saperlo prima."
+      ],
+      [
+       "Quanto tempo",
+       "Tre o quattro ore con l'audioguida."
+      ]
+     ]
     },
     {
      "t": "Jaswant Thada",
-     "d": "Cenotafio di marmo bianco a circa 500 metri dal forte, con la vista migliore sul Mehrangarh."
+     "d": "Cenotafio di marmo bianco a circa 500 metri dal forte, con la vista migliore sul Mehrangarh.",
+     "x": [
+      [
+       "Cos'è",
+       "Mausoleo di marmo bianco del 1899 dedicato al maharaja Jaswant Singh II, con un piccolo giardino e un laghetto."
+      ],
+      [
+       "Cosa guardare",
+       "Il marmo lavorato così sottile che in controluce lascia passare la luce, e la vista frontale del Mehrangarh."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora o un'ora, a cinque minuti dal forte."
+      ]
+     ]
     },
     {
      "t": "Città blu",
-     "d": "I vicoli ai piedi del forte, da percorrere a piedi di primo mattino."
+     "d": "I vicoli ai piedi del forte, da percorrere a piedi di primo mattino.",
+     "x": [
+      [
+       "Cos'è",
+       "Il quartiere di Brahmpuri ai piedi del forte, con molte case dipinte di azzurro. Una spiegazione vuole il blu come colore dei bramini, un'altra come rimedio contro caldo e insetti: probabilmente entrambe."
+      ],
+      [
+       "Cosa guardare",
+       "Porte, scale e vicoli dove i blu cambiano da casa a casa. Dall'alto, dai bastioni del forte, si capisce quanto blu ci sia davvero."
+      ],
+      [
+       "Quando",
+       "La mattina presto, con luce morbida e vita di quartiere."
+      ]
+     ]
     },
     {
      "t": "Toorji Ka Jhalra",
-     "d": "Pozzo a gradoni nella città vecchia."
+     "d": "Pozzo a gradoni nella città vecchia.",
+     "x": [
+      [
+       "Cos'è",
+       "Pozzo a gradoni del 1740, voluto da una regina: per secoli è stato la riserva d'acqua del quartiere. Restaurato, oggi è un luogo di ritrovo."
+      ],
+      [
+       "Cosa guardare",
+       "Le scale geometriche che scendono fino all'acqua, con sculture di animali nelle nicchie."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora, a pochi minuti dalla torre dell'orologio."
+      ]
+     ]
     },
     {
      "t": "Torre dell'orologio e mercato Sardar",
-     "d": "Spezie, tessuti, vita di strada."
+     "d": "Spezie, tessuti, vita di strada.",
+     "x": [
+      [
+       "Cos'è",
+       "Il mercato principale della città vecchia, raccolto attorno alla torre dell'orologio di fine Ottocento."
+      ],
+      [
+       "Cosa guardare",
+       "Spezie, tessuti legati e tinti (bandhani), braccialetti di lacca. Qui ci sono anche le botteghe storiche del lassi e delle kachori."
+      ],
+      [
+       "Quando",
+       "Tardo pomeriggio e sera, quando si anima."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Mirchi vada",
-     "d": "Peperoncino verde ripieno di patate speziate e fritto in pastella. Snack del pomeriggio, piccante."
+     "d": "Peperoncino verde ripieno di patate speziate e fritto in pastella. Snack del pomeriggio, piccante.",
+     "piccante": 3,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Un peperoncino verde grande e lungo, ripieno di patate speziate, passato nella pastella di ceci e fritto. Il piccante dipende dal peperoncino: a volte è dolce, a volte brucia."
+      ],
+      [
+       "Come si mangia",
+       "Caldo, con chutney e un tè con il latte (chai) che spegne il fuoco."
+      ],
+      [
+       "Dove",
+       "Janta Sweet Home o Shahi Samosa, vicino alla torre dell'orologio."
+      ]
+     ]
     },
     {
      "t": "Pyaaz kachori",
-     "d": "Salato, ripieno di cipolla."
+     "d": "Salato, ripieno di cipolla.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Kachori ripiena di cipolla stufata con spezie, sfogliata e friabile. A Jodhpur è la colazione."
+      ],
+      [
+       "Dove",
+       "Janta Sweet Home, la mattina presto, quando escono dalla friggitrice."
+      ]
+     ]
     },
     {
      "t": "Mawa kachori",
-     "d": "Dolce, ripieno di latte condensato."
+     "d": "Dolce, ripieno di latte condensato.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "La versione dolce: ripiena di latte condensato (mawa) e frutta secca, fritta e passata nello sciroppo. Molto dolce e molto ricca."
+      ],
+      [
+       "Dove",
+       "Janta Sweet Home. Una basta per due."
+      ]
+     ]
     },
     {
      "t": "Makhaniya lassi",
-     "d": "Lassi denso allo zafferano, vicino alla torre dell'orologio."
+     "d": "Lassi denso allo zafferano, vicino alla torre dell'orologio.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Lassi densissimo, quasi da mangiare col cucchiaio, con zafferano e cardamomo e uno strato di panna sopra."
+      ],
+      [
+       "Dove",
+       "Shri Mishrilal, al mercato Sardar vicino alla torre dell'orologio: lo fanno da più di cent'anni."
+      ],
+      [
+       "Attenzione",
+       "Latticino: solo in posti molto frequentati come questo."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -434,17 +948,61 @@
    "vedere": [
     {
      "t": "Tempio jainista di Adinath",
-     "d": "Quindicesimo secolo, tutto in marmo bianco: 1.444 colonne scolpite una diversa dall'altra, 29 sale e 80 cupole. Servono 1–2 ore."
+     "d": "Quindicesimo secolo, tutto in marmo bianco: 1.444 colonne scolpite una diversa dall'altra, 29 sale e 80 cupole. Servono 1–2 ore.",
+     "x": [
+      [
+       "Cos'è",
+       "Uno dei cinque luoghi di pellegrinaggio più importanti del giainismo, costruito nel Quattrocento e dedicato al primo dei loro maestri, Adinath. È un \"chaumukha\": quattro ingressi e quattro statue rivolte ai quattro punti cardinali."
+      ],
+      [
+       "Cosa guardare",
+       "Le 1.444 colonne, tutte diverse, e il gioco di luce e ombra che cambia ora dopo ora. Cercare la colonna volutamente storta, il soffitto con i fiori di loto, e la lastra con il serpente dalle mille teste attorno a Parshvanath."
+      ],
+      [
+       "Da sapere",
+       "Le colonne sono disposte in modo che da ogni punto si veda una statua: girandoci attorno si capisce la geometria."
+      ],
+      [
+       "Quanto tempo",
+       "Un'ora e mezza."
+      ]
+     ]
     },
     {
      "t": "Templi di Neminath e Parshvanath",
-     "d": "Minori, nello stesso complesso."
+     "d": "Minori, nello stesso complesso.",
+     "x": [
+      [
+       "Cos'è",
+       "Due templi più piccoli nello stesso complesso."
+      ],
+      [
+       "Cosa guardare",
+       "Sul tempio di Neminath ci sono sculture erotiche, rare in un luogo jainista. Poco fuori c'è anche un tempio del sole, con un carro scolpito."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Thali vegetariano",
-     "d": "Tappa di passaggio: pranzo semplice nei locali lungo la strada o nella mensa del tempio."
+     "d": "Tappa di passaggio: pranzo semplice nei locali lungo la strada o nella mensa del tempio.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Un vassoio con tante ciotoline: dal, due o tre verdure, yogurt, riso, pane, sottaceti e un dolce. Spesso si riempie di nuovo finché non dici basta."
+      ],
+      [
+       "Da sapere",
+       "Vicino ai templi jainisti la cucina è spesso senza cipolla, aglio e tuberi, per non uccidere le piccole creature del terreno."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -478,45 +1036,169 @@
    "vedere": [
     {
      "t": "City Palace",
-     "d": "Il più grande complesso di palazzi del Rajasthan, affacciato sul lago Pichola. Orario 9:30–17:30."
+     "d": "Il più grande complesso di palazzi del Rajasthan, affacciato sul lago Pichola. Orario 9:30–17:30.",
+     "x": [
+      [
+       "Cos'è",
+       "Il palazzo più grande del Rajasthan: una facciata di 244 metri sul lago Pichola, costruita da più generazioni di sovrani dal Cinquecento in poi. Parte è museo, parte è ancora residenza della famiglia reale."
+      ],
+      [
+       "Cosa guardare",
+       "Il Mor Chowk, il cortile dei pavoni, con mosaici di vetro colorato; il Badi Mahal, un giardino pensile costruito su uno sperone di roccia; il Manak Mahal, con le pareti di specchi e vetri rossi; il sole d'oro del Surya Chopar, simbolo della dinastia che si diceva discendente dal sole."
+      ],
+      [
+       "Quanto tempo",
+       "Due o tre ore. Il Mor Chowk rende meglio nel tardo pomeriggio."
+      ]
+     ]
     },
     {
      "t": "Giro in barca sul lago Pichola",
-     "d": "Con sosta all'isola di Jag Mandir. Si parte dal molo all'estremità sud del City Palace."
+     "d": "Con sosta all'isola di Jag Mandir. Si parte dal molo all'estremità sud del City Palace.",
+     "x": [
+      [
+       "Cos'è",
+       "Il lago artificiale del Trecento su cui si affaccia tutta la città vecchia."
+      ],
+      [
+       "Cosa guardare",
+       "Il Lake Palace, oggi albergo, che sembra galleggiare; l'isola di Jag Mandir, dove si scende a passeggiare; i ghat dove la gente fa il bucato."
+      ],
+      [
+       "Quando",
+       "Il giro del tramonto è il più bello ma anche il più caro e affollato."
+      ]
+     ]
     },
     {
      "t": "Tempio di Jagdish",
-     "d": "A pochi passi dal palazzo."
+     "d": "A pochi passi dal palazzo.",
+     "x": [
+      [
+       "Cos'è",
+       "Tempio indù del 1651 dedicato a Vishnu, ancora molto frequentato."
+      ],
+      [
+       "Cosa guardare",
+       "La scalinata con gli elefanti di pietra, le pareti scolpite e, la sera, la cerimonia con campane e canti."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora. È a due minuti dal palazzo."
+      ]
+     ]
     },
     {
      "t": "Bagore Ki Haveli",
-     "d": "Al Gangaur Ghat: museo di giorno, spettacolo di danze popolari Dharohar la sera (19:00–20:00)."
+     "d": "Al Gangaur Ghat: museo di giorno, spettacolo di danze popolari Dharohar la sera (19:00–20:00).",
+     "x": [
+      [
+       "Cos'è",
+       "Casa nobiliare del Settecento sul Gangaur Ghat, con oltre cento stanze."
+      ],
+      [
+       "Cosa vedere",
+       "Di giorno il museo; la sera lo spettacolo Dharohar: danze rajasthane, compresa quella con decine di vasi in equilibrio sulla testa, e le marionette."
+      ],
+      [
+       "Da sapere",
+       "I posti non si prenotano: chi arriva prima si siede meglio."
+      ]
+     ]
     },
     {
      "t": "Ambrai Ghat",
-     "d": "La vista frontale su City Palace e Lake Palace, soprattutto al tramonto."
+     "d": "La vista frontale su City Palace e Lake Palace, soprattutto al tramonto.",
+     "x": [
+      [
+       "Cos'è",
+       "Una piattaforma sulla riva opposta del lago rispetto al palazzo."
+      ],
+      [
+       "Cosa guardare",
+       "La vista frontale su City Palace e Lake Palace, che si accendono quando cala il buio."
+      ],
+      [
+       "Quando",
+       "Dal tramonto all'ora blu, circa mezz'ora dopo."
+      ]
+     ]
     },
     {
      "t": "Tramonto dall'alto",
-     "d": "Funivia di Karni Mata o Palazzo dei Monsoni (Sajjangarh)."
+     "d": "Funivia di Karni Mata o Palazzo dei Monsoni (Sajjangarh).",
+     "x": [
+      [
+       "Cosa scegliere",
+       "La funivia di Karni Mata è vicina e veloce, con vista sul lago e sulla città. Il Palazzo dei Monsoni (Sajjangarh) è più lontano, in collina, con vista sulle colline e sui laghi."
+      ],
+      [
+       "Da sapere",
+       "Per il Palazzo dei Monsoni serve un mezzo e si paga un ingresso al parco. Il tramonto a fine dicembre è verso le 18."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Thali rajasthano",
-     "d": "In una terrazza sul lago."
+     "d": "In una terrazza sul lago.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Il pasto completo della regione su un unico vassoio: dal, gatte, ker sangri o altra verdura, kadhi (salsa di yogurt), baati o roti, riso, churma."
+      ],
+      [
+       "Dove",
+       "Sulle terrazze vicino al lago, o al ristorante del museo del City Palace."
+      ]
+     ]
     },
     {
      "t": "Dal baati churma e gatte ki sabzi",
-     "d": ""
+     "d": "",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Gli stessi piatti di Jaisalmer: se non li hai assaggiati nel deserto, Udaipur è un buon posto per farlo con calma."
+      ]
+     ]
     },
     {
      "t": "Kachori",
-     "d": "Al mattino nella città vecchia."
+     "d": "Al mattino nella città vecchia.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Kachori di lenticchie servite con un curry piccante versato sopra: la versione di Udaipur è più umida di quella di Jodhpur."
+      ],
+      [
+       "Quando",
+       "Colazione, nei banchetti della città vecchia."
+      ]
+     ]
     },
     {
      "t": "Safed maas",
-     "d": "Curry di montone bianco e delicato, per chi mangia carne."
+     "d": "Curry di montone bianco e delicato, per chi mangia carne.",
+     "piccante": 1,
+     "veg": false,
+     "x": [
+      [
+       "Com'è",
+       "Curry bianco di montone con yogurt, panna, mandorle e anacardi: il contrario del laal maas, delicato e cremoso."
+      ],
+      [
+       "Da sapere",
+       "Era il piatto delle corti rajput: lo si trova nei ristoranti più curati, non per strada."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -551,37 +1233,155 @@
    "vedere": [
     {
      "t": "Dargah Sharif di Ajmer",
-     "d": "Mausoleo del santo sufi Moinuddin Chishti, tra i luoghi di pellegrinaggio più frequentati dell'India, aperto a persone di ogni fede."
+     "d": "Mausoleo del santo sufi Moinuddin Chishti, tra i luoghi di pellegrinaggio più frequentati dell'India, aperto a persone di ogni fede.",
+     "x": [
+      [
+       "Cos'è",
+       "La tomba del santo sufi Moinuddin Chishti, morto nel 1236, chiamato \"Garib Nawaz\", il benefattore dei poveri. Ci vanno pellegrini di ogni religione."
+      ],
+      [
+       "Cosa guardare",
+       "La porta di Nizam, d'ingresso; la Buland Darwaza del Quattrocento; i due enormi calderoni (deg) regalati dagli imperatori Akbar e Jahangir, in cui si cuoce un riso dolce distribuito ai poveri. La sera, se capita, i canti qawwali."
+      ],
+      [
+       "Da sapere",
+       "Molti comprano all'esterno petali di rosa o un telo (chadar) da offrire: è facoltativo."
+      ]
+     ]
     },
     {
      "t": "Lago sacro di Pushkar",
-     "d": "52 ghat e centinaia di templi attorno all'acqua."
+     "d": "52 ghat e centinaia di templi attorno all'acqua.",
+     "x": [
+      [
+       "Cos'è",
+       "Secondo la tradizione nato da un fiore di loto caduto dalla mano di Brahma. È uno dei luoghi più sacri dell'induismo e i suoi 52 ghat scendono all'acqua da ogni lato."
+      ],
+      [
+       "Cosa guardare",
+       "Pellegrini che fanno il bagno rituale, sadhu, offerte di fiori e lumini. La sera, la cerimonia aarti."
+      ],
+      [
+       "Quando",
+       "Alba e tramonto. Il Gau Ghat e il Varaha Ghat sono tra i più frequentati."
+      ]
+     ]
     },
     {
      "t": "Tempio di Brahma",
-     "d": "Del quattordicesimo secolo, uno dei pochissimi dedicati a Brahma."
+     "d": "Del quattordicesimo secolo, uno dei pochissimi dedicati a Brahma.",
+     "x": [
+      [
+       "Cos'è",
+       "Uno dei pochissimi templi al mondo dedicati a Brahma, il creatore. Secondo la leggenda la moglie Savitri lo maledisse e per questo non viene venerato quasi altrove."
+      ],
+      [
+       "Cosa guardare",
+       "La guglia rossa e il cigno, animale di Brahma, sopra l'ingresso. Il pavimento è decorato con monete d'argento lasciate dai pellegrini."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora, coda esclusa."
+      ]
+     ]
     },
     {
      "t": "Tempio di Savitri",
-     "d": "Sulla collina, per il tramonto."
+     "d": "Sulla collina, per il tramonto.",
+     "x": [
+      [
+       "Cos'è",
+       "Tempio della moglie di Brahma, in cima alla collina a sud-ovest del lago."
+      ],
+      [
+       "Come arrivarci",
+       "Circa un'ora a piedi su una scalinata ripida, oppure in pochi minuti con la funivia."
+      ],
+      [
+       "Cosa guardare",
+       "Pushkar, il lago e il deserto tutt'intorno. Il tramonto da qui è il più bello della città."
+      ]
+     ]
     },
     {
      "t": "Aarti serale sui ghat",
-     "d": "La cerimonia delle luci al tramonto."
+     "d": "La cerimonia delle luci al tramonto.",
+     "x": [
+      [
+       "Cos'è",
+       "La cerimonia delle luci: i sacerdoti fanno girare grandi lampade a olio davanti all'acqua, tra campane, tamburi e canti."
+      ],
+      [
+       "Da sapere",
+       "Si guarda in silenzio, senza flash. Chi offre di \"partecipare\" con un rito sul ghat poi chiede soldi."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Malpua",
-     "d": "Frittelle dolci immerse nello sciroppo, la specialità di Pushkar. Da mangiare la sera."
+     "d": "Frittelle dolci immerse nello sciroppo, la specialità di Pushkar. Da mangiare la sera.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Frittelle di farina e latte fritte nel ghee e immerse nello sciroppo, spesso servite con il rabri, latte ridotto e cremoso."
+      ],
+      [
+       "Da sapere",
+       "A Pushkar se ne vendono migliaia al giorno: le botteghe le friggono di continuo sulla strada principale."
+      ]
+     ]
     },
     {
      "t": "Thali vegetariano",
-     "d": "Pushkar è interamente vegetariana: niente carne, uova e alcol."
+     "d": "Pushkar è interamente vegetariana: niente carne, uova e alcol.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Come altrove, ma qui obbligatoriamente vegetariano e senza uova: Pushkar è città sacra."
+      ],
+      [
+       "Dove",
+       "Molti ristoranti sui tetti con vista sul lago."
+      ]
+     ]
     },
     {
      "t": "Lassi e kachori",
-     "d": "Molti caffè sui tetti."
+     "d": "Molti caffè sui tetti.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Lassi in bicchiere di terracotta, spesso con banana o zafferano; kachori la mattina nei banchetti attorno al bazar."
+      ],
+      [
+       "Attenzione",
+       "Per il lassi, solo posti con molto giro."
+      ]
+     ]
+    },
+    {
+     "t": "Sohan halwa",
+     "d": "Il dolce di Ajmer, da portare a casa.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Dolce compatto e caramellato di farina, ghee, zucchero e frutta secca, specialità di Ajmer."
+      ],
+      [
+       "Da sapere",
+       "Lo vendono le botteghe attorno al Dargah: i pellegrini lo portano a casa. Si conserva bene, buono da regalare."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -616,45 +1416,189 @@
    "vedere": [
     {
      "t": "Forte Amber",
-     "d": "A 11 km dalla città. Orario indicato 8:00–17:30. Andarci presto."
+     "d": "A 11 km dalla città. Orario indicato 8:00–17:30. Andarci presto.",
+     "x": [
+      [
+       "Cos'è",
+       "Iniziato nel 1592 dal raja Man Singh, generale di Akbar, è stato la reggia prima che la capitale scendesse a Jaipur. Arenaria rossa e marmo bianco sopra il lago Maota."
+      ],
+      [
+       "Cosa guardare",
+       "Il Diwan-i-Aam, la sala delle udienze pubbliche con le colonne; la Ganesh Pol, la porta dipinta che separa la parte pubblica da quella privata; lo Sheesh Mahal, dove migliaia di specchietti trasformano la luce di una candela in un cielo stellato."
+      ],
+      [
+       "Quando",
+       "Appena apre, prima dei gruppi organizzati."
+      ],
+      [
+       "Quanto tempo",
+       "Due o tre ore."
+      ]
+     ]
     },
     {
      "t": "Hawa Mahal",
-     "d": "Il Palazzo dei Venti: la facciata rosa si fotografa dalla strada o dai caffè di fronte, con la luce del mattino."
+     "d": "Il Palazzo dei Venti: la facciata rosa si fotografa dalla strada o dai caffè di fronte, con la luce del mattino.",
+     "x": [
+      [
+       "Cos'è",
+       "Il \"palazzo dei venti\" del 1799: una facciata di cinque piani con 953 finestrelle, costruita perché le donne di corte potessero guardare la strada senza essere viste. Dietro, è poco più profondo di una stanza."
+      ],
+      [
+       "Cosa guardare",
+       "La facciata dalla strada di fronte. Dentro, i vetri colorati delle finestre e la vista sul bazar dall'ultimo piano."
+      ],
+      [
+       "Quando",
+       "La mattina presto, quando il sole illumina la facciata rosa."
+      ]
+     ]
     },
     {
      "t": "Jantar Mantar",
-     "d": "Osservatorio astronomico del Settecento, patrimonio UNESCO."
+     "d": "Osservatorio astronomico del Settecento, patrimonio UNESCO.",
+     "x": [
+      [
+       "Cos'è",
+       "Osservatorio astronomico costruito tra il 1727 e il 1734 dal maharaja Jai Singh II, fondatore di Jaipur. Una ventina di strumenti di pietra e marmo, patrimonio UNESCO."
+      ],
+      [
+       "Cosa guardare",
+       "Il Samrat Yantra, la meridiana più grande del mondo, alta 27 metri: l'ombra si muove a vista d'occhio e segna l'ora locale con una precisione di due secondi. E le due semisfere del Jai Prakash Yantra, con la mappa del cielo incisa."
+      ],
+      [
+       "Da sapere",
+       "Senza una spiegazione gli strumenti sembrano sculture astratte: qui una guida o l'audioguida valgono la spesa."
+      ]
+     ]
     },
     {
      "t": "City Palace",
-     "d": "Accanto al Jantar Mantar."
+     "d": "Accanto al Jantar Mantar.",
+     "x": [
+      [
+       "Cos'è",
+       "Ancora residenza della famiglia reale di Jaipur, che vive nel Chandra Mahal, il palazzo di sette piani al centro."
+      ],
+      [
+       "Cosa guardare",
+       "Il cortile Pritam Niwas Chowk con le quattro porte dipinte che rappresentano le stagioni (la porta del pavone è la più fotografata); nel Diwan-i-Khas due enormi giare d'argento, usate da un maharaja per portare con sé l'acqua del Gange in un viaggio a Londra."
+      ],
+      [
+       "Da sapere",
+       "Biglietto a parte, non compreso nel cumulativo della città."
+      ]
+     ]
     },
     {
      "t": "Nahargarh",
-     "d": "Per il tramonto sulla città."
+     "d": "Per il tramonto sulla città.",
+     "x": [
+      [
+       "Cos'è",
+       "Forte sulle colline sopra la città, del 1734."
+      ],
+      [
+       "Cosa guardare",
+       "Jaipur intera dall'alto mentre si accendono le luci. Dentro, il Madhavendra Bhawan: appartamenti identici per nove regine, collegati da corridoi."
+      ],
+      [
+       "Quando",
+       "Nel tardo pomeriggio, per restare al tramonto."
+      ]
+     ]
     },
     {
      "t": "Bazar della città rosa",
-     "d": "Johari (gioielli), Bapu (tessuti)."
+     "d": "Johari (gioielli), Bapu (tessuti).",
+     "x": [
+      [
+       "Cos'è",
+       "La città vecchia, dipinta di rosa nel 1876 per accogliere il principe di Galles: il rosa è il colore dell'ospitalità."
+      ],
+      [
+       "Cosa cercare",
+       "Johari Bazar per gioielli e argento; Bapu Bazar per tessuti stampati a blocchi, scarpe ricamate (mojari) e pantaloni larghi; Tripolia Bazar per oggetti di lacca."
+      ],
+      [
+       "Da sapere",
+       "Molti negozi chiudono la domenica pomeriggio. Le gemme \"a prezzo d'affare\" sono la truffa classica di Jaipur."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Laal maas",
-     "d": "Curry di montone rosso fuoco con peperoncini Mathania. È il piatto più piccante del viaggio."
+     "d": "Curry di montone rosso fuoco con peperoncini Mathania. È il piatto più piccante del viaggio.",
+     "piccante": 3,
+     "veg": false,
+     "x": [
+      [
+       "Com'è",
+       "Curry di montone cotto a lungo con yogurt e moltissimi peperoncini rossi di Mathania, che danno il colore. Era il piatto dei cacciatori rajput."
+      ],
+      [
+       "Come si mangia",
+       "Con pane di miglio o riso, e un lassi salato o del latticello a portata di mano."
+      ],
+      [
+       "Dove",
+       "Handi, sulla MI Road, è il nome che torna più spesso."
+      ]
+     ]
     },
     {
      "t": "Pyaaz kachori",
-     "d": "Al mattino."
+     "d": "Al mattino.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "La kachori alla cipolla, più grande e friabile di quella di Jodhpur."
+      ],
+      [
+       "Dove",
+       "Rawat Mishthan Bhandar, vicino alla stazione: ne friggono migliaia ogni giorno."
+      ]
+     ]
     },
     {
      "t": "Ghevar",
-     "d": "Dolce a nido d'ape, tipico della città."
+     "d": "Dolce a nido d'ape, tipico della città.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Disco a nido d'ape di pastella fritta, imbevuto di sciroppo e a volte coperto di panna o rabri."
+      ],
+      [
+       "Da sapere",
+       "È un dolce della stagione delle piogge: a dicembre si trova, ma non dappertutto."
+      ],
+      [
+       "Dove",
+       "Laxmi Mishthan Bhandar (LMB) a Johari Bazar, famoso anche per il thali."
+      ]
+     ]
     },
     {
      "t": "Lassi in terracotta",
-     "d": "Servito in bicchieri di coccio."
+     "d": "Servito in bicchieri di coccio.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Lassi denso servito nel kulhar, il bicchiere di terracotta che si butta dopo l'uso: dà un leggero sapore di terra."
+      ],
+      [
+       "Dove",
+       "Lassiwala sulla MI Road. Ci sono più botteghe con nomi simili una accanto all'altra: l'originale è Kishan Lal Govind Narain Agarwal."
+      ]
+     ]
     }
    ],
    "consigli": [
@@ -686,15 +1630,53 @@
    "vedere": [
     {
      "t": "Palazzi reali",
-     "d": "A pagamento: Diwan-i-Khas con il pilastro centrale scolpito, Panch Mahal a cinque piani, palazzo di Jodha Bai."
+     "d": "A pagamento: Diwan-i-Khas con il pilastro centrale scolpito, Panch Mahal a cinque piani, palazzo di Jodha Bai.",
+     "x": [
+      [
+       "Cos'è",
+       "La capitale costruita da Akbar dal 1571 e abbandonata dopo circa quindici anni, probabilmente per mancanza d'acqua. È rimasta quasi intatta, una città fantasma di arenaria rossa."
+      ],
+      [
+       "Cosa guardare",
+       "Il Diwan-i-Khas, con una sola colonna centrale scolpita che regge una piattaforma su cui sedeva l'imperatore; il Panch Mahal, cinque piani di colonnine sempre più piccoli; il cortile del Pachisi, dove secondo la tradizione si giocava con persone al posto delle pedine."
+      ],
+      [
+       "Quanto tempo",
+       "Un'ora e mezza."
+      ]
+     ]
     },
     {
      "t": "Buland Darwaza",
-     "d": "La porta monumentale alta 54 metri. Ingresso libero."
+     "d": "La porta monumentale alta 54 metri. Ingresso libero.",
+     "x": [
+      [
+       "Cos'è",
+       "La \"porta alta\", 54 metri, costruita per celebrare le vittorie di Akbar nel Gujarat. È tra le porte più alte del mondo."
+      ],
+      [
+       "Cosa guardare",
+       "L'iscrizione persiana sull'arco e la scalinata. Dall'alto della scala, la piana verso Agra."
+      ]
+     ]
     },
     {
      "t": "Jama Masjid e tomba di Salim Chishti",
-     "d": "La moschea e la tomba in marmo del santo. Ingresso libero."
+     "d": "La moschea e la tomba in marmo del santo. Ingresso libero.",
+     "x": [
+      [
+       "Cos'è",
+       "La moschea del 1571 e, nel cortile, la tomba di marmo bianco del santo sufi che predisse ad Akbar la nascita di un figlio: per questo la capitale nacque qui."
+      ],
+      [
+       "Cosa guardare",
+       "Le grate di marmo della tomba, sottili come pizzo. I visitatori legano un filo rosso alla grata esprimendo un desiderio."
+      ],
+      [
+       "Da sapere",
+       "Fili e teli si comprano all'ingresso da venditori insistenti: si può entrare anche senza."
+      ]
+     ]
     }
    ],
    "mangiare": [],
@@ -729,29 +1711,135 @@
    "vedere": [
     {
      "t": "Taj Mahal",
-     "d": "Chiuso ogni venerdì. Apre 30 minuti prima dell'alba e chiude 30 minuti prima del tramonto. Si entra dalle porte est e ovest."
+     "d": "Chiuso ogni venerdì. Apre 30 minuti prima dell'alba e chiude 30 minuti prima del tramonto. Si entra dalle porte est e ovest.",
+     "x": [
+      [
+       "Cos'è",
+       "Mausoleo costruito dall'imperatore Shah Jahan per la moglie Mumtaz Mahal, morta di parto nel 1631. Ci lavorarono migliaia di artigiani per una ventina d'anni."
+      ],
+      [
+       "Cosa guardare",
+       "Da vicino, gli intarsi di pietre dure nel marmo, che i Moghul chiamavano parchin kari: fiori e tralci di diaspro, lapislazzuli e corniola. Attorno agli archi, i versetti del Corano in caratteri neri, più grandi in alto perché dal basso sembrino tutti uguali. I quattro minareti pendono leggermente verso l'esterno: in caso di terremoto cadrebbero lontano dalla tomba."
+      ],
+      [
+       "Quando",
+       "All'alba, quando il marmo cambia colore dal grigio al rosa al bianco."
+      ],
+      [
+       "Quanto tempo",
+       "Due o tre ore."
+      ]
+     ]
     },
     {
      "t": "Forte di Agra",
-     "d": "Se il programma lo prevede."
+     "d": "Se il programma lo prevede.",
+     "x": [
+      [
+       "Cos'è",
+       "La fortezza dei Moghul ad Agra, di arenaria rossa, iniziata da Akbar e trasformata da Shah Jahan con padiglioni di marmo."
+      ],
+      [
+       "Cosa guardare",
+       "Il Musamman Burj, la torre ottagonale dove Shah Jahan, imprigionato dal figlio, passò gli ultimi anni guardando il Taj al di là del fiume."
+      ],
+      [
+       "Quanto tempo",
+       "Un'ora e mezza."
+      ]
+     ]
     },
     {
      "t": "Mehtab Bagh",
-     "d": "Il giardino sull'altra riva dello Yamuna, per la vista del Taj da dietro al tramonto."
+     "d": "Il giardino sull'altra riva dello Yamuna, per la vista del Taj da dietro al tramonto.",
+     "x": [
+      [
+       "Cos'è",
+       "Il \"giardino del chiaro di luna\", costruito sulla riva opposta allineato al Taj."
+      ],
+      [
+       "Cosa guardare",
+       "Il Taj da dietro, con il fiume in mezzo e senza folla."
+      ],
+      [
+       "Quando",
+       "Al tramonto. Si può fare anche il venerdì, quando il Taj è chiuso."
+      ]
+     ]
     }
    ],
    "mangiare": [
     {
      "t": "Petha",
-     "d": "Dolce candito di zucca bianca, la specialità di Agra."
+     "d": "Dolce candito di zucca bianca, la specialità di Agra.",
+     "piccante": 0,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Cubetti di zucca bianca candita, traslucidi e dolcissimi, in tante versioni: allo zafferano, al cocco, alla rosa, al paan."
+      ],
+      [
+       "Dove",
+       "Panchhi Petha, dal 1926, è il nome storico: ci sono molte imitazioni con nomi quasi uguali."
+      ],
+      [
+       "Da sapere",
+       "Si conserva qualche giorno, buono da portare a casa."
+      ]
+     ]
     },
     {
      "t": "Cucina moghul",
-     "d": "Kebab, biryani, korma."
+     "d": "Kebab, biryani, korma.",
+     "piccante": 2,
+     "veg": false,
+     "x": [
+      [
+       "Com'è",
+       "Biryani, korma, kebab: la stessa cucina di corte di Old Delhi, nata qui quando Agra era la capitale."
+      ],
+      [
+       "Da sapere",
+       "Molti ristoranti per turisti vicino al Taj sono cari e mediocri: meglio chiedere al coordinatore."
+      ]
+     ]
     },
     {
      "t": "Bedai e jalebi",
-     "d": "La colazione locale: pane fritto con curry di patate, poi jalebi."
+     "d": "La colazione locale: pane fritto con curry di patate, poi jalebi.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Bedai: pane fritto e gonfio, ripieno di lenticchie, servito con un curry di patate piccante. Poi jalebi per chiudere sul dolce."
+      ],
+      [
+       "Dove",
+       "Deviram Sweets, una istituzione dal 1965."
+      ],
+      [
+       "Quando",
+       "Solo la mattina: finiscono entro la tarda mattinata. Perfetto dopo il Taj all'alba."
+      ]
+     ]
+    },
+    {
+     "t": "Dalmoth",
+     "d": "Lo snack croccante di Agra.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Miscela croccante di lenticchie fritte, frutta secca e spezie: lo snack di Agra."
+      ],
+      [
+       "Dove",
+       "Nelle botteghe di petha, venduto in scatole."
+      ]
+     ]
     }
    ],
    "consigli": [

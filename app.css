@@ -211,6 +211,22 @@ h3 { font: 600 18px/1.3 var(--testo); }
 .segni li, .lista li { display: flex; gap: 14px; padding: 13px 0; border-top: 1px solid var(--linea); align-items: flex-start; }
 .segni li:first-child, .lista li:first-child { border-top: 0; }
 .segni p, .lista p { font-size: 16px; color: var(--tenue); margin-top: 2px; }
+.segni li > div, .dett { flex: 1; min-width: 0; }
+.dett summary { list-style: none; display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.dett summary::-webkit-details-marker { display: none; }
+.dett summary > div { flex: 1; min-width: 0; }
+.dett .giu { flex: none; width: 24px; height: 24px; margin-top: 2px; color: var(--tenue); }
+@media (prefers-reduced-motion: no-preference) { .dett .giu { transition: transform .2s; } }
+.dett[open] .giu { transform: rotate(180deg); }
+.dett dl { margin: 10px 0 2px; padding: 4px 0 4px 14px; border-left: 3px solid var(--citta); }
+.dett dt { font-size: 14px; font-weight: 700; color: var(--tenue); margin-top: 10px; }
+.dett dt:first-child { margin-top: 0; }
+.dett dd { margin: 2px 0 0; font-size: 16px; line-height: 1.55; max-width: 62ch; }
+.etichette { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.et { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 12px; border: 1.5px solid var(--linea); color: var(--tenue); }
+.et.pic i { display: inline-block; width: 6px; height: 12px; border-radius: 3px; background: var(--linea); margin-right: -3px; }
+.et.pic i:last-of-type { margin-right: 2px; }
+.et.p1 i:nth-of-type(-n+1), .et.p2 i:nth-of-type(-n+2), .et.p3 i:nth-of-type(-n+3) { background: var(--robbia); }
 .spunta { flex: none; width: 34px; height: 34px; border-radius: 11px; border: 2.5px solid var(--tenue); background: transparent; position: relative; margin-top: 0; }
 .spunta::before { content: ""; position: absolute; inset: -8px; }
 .spunta.on { background: var(--foglia); border-color: var(--foglia); }

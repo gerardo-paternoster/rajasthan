@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-22.1';
+const VERSIONE = '2026-11-23.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -87,6 +87,7 @@ function testoAParagrafi(t) { return esc(t).replace(/\n/g, '<br>'); }
 function quantoManca(iso) { const g = giorniTra(oggiIso(), iso); return g === 0 ? 'oggi' : g === 1 ? 'domani' : g > 1 ? 'tra ' + g + ' giorni' : 'scaduta'; }
 
 const ICO = {
+  giu: '<svg class="giu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
   freccia: '<svg class="freccia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
   penna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.5z"/></svg>',
   piu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
@@ -564,12 +565,25 @@ function vistaTappe() {
   return { titolo: 'Tappe', html: h };
 }
 
+const PICCANTE = ['Non piccante', 'Poco piccante', 'Piccante', 'Molto piccante'];
+function htmlEtichette(x) {
+  if (x.piccante == null && x.veg == null) return '';
+  let h = '<span class="etichette">';
+  if (x.piccante != null) h += '<span class="et pic p' + x.piccante + '"><i></i><i></i><i></i>' + PICCANTE[x.piccante] + '</span>';
+  if (x.veg != null) h += '<span class="et">' + (x.veg ? 'Vegetariano' : 'Con carne') + '</span>';
+  return h + '</span>';
+}
 function htmlSegni(t, lista, k, titolo, etichetta) {
   if (!lista.length) return '';
   let h = '<h2 class="sez">' + arco(t.colore, 18) + titolo + '</h2><div class="pannello"><ul class="segni">';
   lista.forEach((x) => {
     const id = t.id + '/' + k + '/' + slug(x.t); const s = voce('segni', id); const on = !!(s && s.fatto);
-    h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button><div><h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + '</div></li>';
+    h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
+    const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
+    if (x.x && x.x.length) {
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary><dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl></details>';
+    } else h += '<div>' + testa + '</div>';
+    h += '</li>';
   });
   return h + '</ul></div>';
 }
