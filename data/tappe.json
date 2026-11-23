@@ -389,7 +389,190 @@
     "soggetto": "Jama Masjid",
     "pagina": "https://commons.wikimedia.org/wiki/File:Jama_Masjid_-_In_the_Noon.jpg"
    },
-   "sigla": "Del"
+   "sigla": "Del",
+   "locali": [
+    {
+     "id": "paranthe-wali-gali",
+     "n": "Paranthe Wali Gali",
+     "zona": "Vicolo laterale di Chandni Chowk",
+     "vicino": [
+      "Chandni Chowk"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Paratha ripiene fritte nel ghee, con curry di patate, chutney e sottaceti. Due paratha sono uno spuntino, quattro un pranzo.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Il locale più citato è Pandit Gaya Prasad Shiv Charan."
+    },
+    {
+     "id": "jalebi-wala",
+     "n": "Old Famous Jalebi Wala",
+     "zona": "All'angolo tra Dariba Kalan e Chandni Chowk",
+     "vicino": [
+      "Chandni Chowk",
+      "Jama Masjid"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Jalebi grandi fritte nel ghee e servite bollenti; anche imarti. Si ordinano a peso.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Attivo dalla fine dell'Ottocento."
+    },
+    {
+     "id": "natraj-dahi-bhalle",
+     "n": "Natraj Dahi Bhalle Corner",
+     "zona": "Chandni Chowk, vicino alla metro",
+     "vicino": [
+      "Chandni Chowk"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Dahi bhalle (polpette di lenticchie con yogurt e chutney) e aloo tikki, le crocchette di patate.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Sempre coda: è il segno che il ricambio è veloce."
+    },
+    {
+     "id": "jb-kachori",
+     "n": "Jung Bahadur Kachori Wala",
+     "zona": "Chhatta Madan Gopal, Chandni Chowk",
+     "vicino": [
+      "Chandni Chowk"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Kachori di lenticchie urad con curry di patate.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Orario indicato 10:30–20."
+    },
+    {
+     "id": "karims",
+     "n": "Karim's",
+     "zona": "Gali Kababian, il vicolo a sud della Jama Masjid",
+     "vicino": [
+      "Jama Masjid",
+      "Forte Rosso"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina moghul dal 1913: korma di montone, kebab, pollo, pane al tandoor.",
+     "prezzo": 2,
+     "nota": "Poca scelta vegetariana. La sera i vicoli dei kebab sono al massimo."
+    },
+    {
+     "id": "haldirams-cc",
+     "n": "Haldiram's",
+     "zona": "Chandni Chowk",
+     "vicino": [
+      "Chandni Chowk",
+      "Forte Rosso"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Catena di Delhi: chaat, thali e dolci in un locale pulito. Per chi vuole andare sul sicuro.",
+     "prezzo": 1,
+     "veg": true
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "delhi-old",
+     "titolo": "Old Delhi a piedi e in risciò",
+     "sotto": "Mercati, la grande moschea e un pranzo moghul.",
+     "soste": [
+      {
+       "t": "Chandni Chowk",
+       "ora": "9:30",
+       "dur": "2–3 h",
+       "nota": "Khari Baoli per le spezie, Dariba Kalan per l'argento."
+      },
+      {
+       "t": "Jama Masjid",
+       "ora": "12:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "Forte Rosso",
+       "ora": "15:00",
+       "dur": "1 h",
+       "nota": "Anche solo da fuori."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "paranthe-wali-gali",
+       "c": "Due paratha"
+      },
+      "pranzo": {
+       "l": "karims",
+       "c": "Korma di montone e pane"
+      },
+      "spuntino": {
+       "l": "jalebi-wala"
+      },
+      "cena": {
+       "l": "natraj-dahi-bhalle",
+       "c": "Dahi bhalle"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "delhi-arrivo",
+     "titolo": "Arrivo morbido",
+     "sotto": "Per il primo giorno, col fuso orario: viali di New Delhi e cena moghul.",
+     "soste": [
+      {
+       "t": "India Gate",
+       "ora": "16:00",
+       "dur": "1 h",
+       "nota": "Al tramonto, a piedi lungo il viale."
+      },
+      {
+       "t": "Jama Masjid",
+       "ora": "19:00",
+       "nota": "I vicoli dei kebab si animano la sera."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "jb-kachori"
+      },
+      "pranzo": {
+       "l": "haldirams-cc",
+       "c": "Chaat"
+      },
+      "spuntino": {
+       "l": "jalebi-wala"
+      },
+      "cena": {
+       "l": "karims",
+       "c": "Kebab e korma"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "bikaner",
@@ -582,7 +765,159 @@
     "soggetto": "Forte di Junagarh",
     "pagina": "https://commons.wikimedia.org/wiki/File:India_Bikaner_Junagarh_Fort.jpg"
    },
-   "sigla": "Bik"
+   "sigla": "Bik",
+   "locali": [
+    {
+     "id": "chhotu-motu-joshi",
+     "n": "Chhotu Motu Joshi",
+     "zona": "Station Road",
+     "vicino": [
+      "Forte di Junagarh"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Puri con curry di patate e fieno greco, kachori, jalebi; rasgulla e rasmalai.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "A Bikaner si comincia spesso la giornata col dolce."
+    },
+    {
+     "id": "bhikharam-chandmal",
+     "n": "Bhikharam Chandmal Bhujiawala",
+     "zona": "Kote Gate, città vecchia",
+     "vicino": [
+      "Haveli Rampuria"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Bikaneri bhujia in tante versioni, sfusa: da assaggiare e da comprare.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "gallops",
+     "n": "Gallops",
+     "zona": "Di fronte al forte di Junagarh",
+     "vicino": [
+      "Forte di Junagarh"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali rajasthano, gatte ki sabzi, ker sangri; anche carne. Tavoli con vista sul forte.",
+     "prezzo": 2,
+     "nota": "Diverse recensioni lo trovano caro per quello che offre."
+    },
+    {
+     "id": "swarna-mahal",
+     "n": "Swarna Mahal (Laxmi Niwas Palace)",
+     "zona": "Complesso di Lalgarh",
+     "vicino": [],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cena in una sala del palazzo, con pareti dipinte a mano: dal baati, laal maas, ker sangri.",
+     "prezzo": 3,
+     "nota": "Si prenota."
+    },
+    {
+     "id": "nrcc-latte",
+     "n": "Bottega del latte di cammello",
+     "zona": "Centro di ricerca sul cammello",
+     "vicino": [
+      "Centro di ricerca sul cammello"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Gelato, tè e caffè al latte di cammello.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Da verificare sul posto orari e cosa c'è."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "bikaner-classico",
+     "titolo": "Forte e città vecchia",
+     "sotto": "Junagarh al mattino, haveli e bhujia nel pomeriggio.",
+     "soste": [
+      {
+       "t": "Forte di Junagarh",
+       "ora": "10:00",
+       "dur": "2 h"
+      },
+      {
+       "t": "Haveli Rampuria",
+       "ora": "14:30",
+       "dur": "1,5 h",
+       "nota": "A piedi nei vicoli."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "chhotu-motu-joshi",
+       "c": "Puri e jalebi"
+      },
+      "pranzo": {
+       "l": "gallops",
+       "c": "Thali con vista sul forte"
+      },
+      "spuntino": {
+       "l": "bhikharam-chandmal"
+      },
+      "cena": {
+       "l": "chhotu-motu-joshi",
+       "c": "Kachori e rasmalai"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "bikaner-deshnok",
+     "titolo": "Topi e cammelli",
+     "sotto": "Karni Mata a Deshnok e il centro dei cammelli, poi cena in un palazzo.",
+     "soste": [
+      {
+       "t": "Tempio di Karni Mata a Deshnok",
+       "ora": "9:30",
+       "dur": "1 h",
+       "nota": "Calze vecchie da buttare."
+      },
+      {
+       "t": "Centro di ricerca sul cammello",
+       "ora": "15:00",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "chhotu-motu-joshi"
+      },
+      "pranzo": {
+       "l": "bhikharam-chandmal",
+       "c": "Bhujia e chai per strada"
+      },
+      "spuntino": {
+       "l": "nrcc-latte",
+       "c": "Gelato al latte di cammello"
+      },
+      "cena": {
+       "l": "swarna-mahal"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "jaisalmer",
@@ -871,7 +1206,199 @@
     "soggetto": "Forte di Jaisalmer",
     "pagina": "https://commons.wikimedia.org/wiki/File:Jaisalmer_forteresse.jpg"
    },
-   "sigla": "Jsm"
+   "sigla": "Jsm",
+   "locali": [
+    {
+     "id": "dhanraj-bhatia",
+     "n": "Dhanraj Ranmal Bhatia",
+     "zona": "Bhatia Market, centro",
+     "vicino": [
+      "Patwon Ki Haveli",
+      "Forte di Jaisalmer"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Ghotua ladoo e altri dolci di Jaisalmer, pyaaz kachori al mattino.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "dal-pakwan",
+     "n": "Dal pakwan (Mohit Pakwan Bhandar o Shri Hinglaj)",
+     "zona": "Città bassa",
+     "vicino": [],
+     "pasti": [
+      "colazione"
+     ],
+     "tipo": "leggero",
+     "cosa": "Dal pakwan: sfoglie fritte croccanti con lenticchie speziate. La colazione sindhi di Jaisalmer.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Indirizzi da chiedere in hotel."
+    },
+    {
+     "id": "kuku",
+     "n": "Kuku Coffee Shop",
+     "zona": "Dentro il forte",
+     "vicino": [
+      "Forte di Jaisalmer",
+      "Templi jainisti nel forte"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Caffè, tè, pancake e colazioni; posto piccolo e tranquillo.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "trio",
+     "n": "The Trio",
+     "zona": "Gandhi Chowk",
+     "vicino": [
+      "Forte di Jaisalmer",
+      "Patwon Ki Haveli"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina rajasthana anche di carne: laal maas, ker sangri, dal; terrazza con musica la sera.",
+     "prezzo": 2
+    },
+    {
+     "id": "chandan-shree",
+     "n": "Chandan Shree",
+     "zona": "Città bassa",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "pranzo"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Al mattino kachori, samosa e puri; a pranzo thali vegetariano.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "kanchan-shree",
+     "n": "Kanchan Shree",
+     "zona": "Gadisar Road",
+     "vicino": [
+      "Lago Gadisar"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Lassi densi e gelati, per la pausa prima o dopo il lago.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "campo-thar",
+     "n": "Cena al campo",
+     "zona": "Campo tendato nel deserto",
+     "vicino": [
+      "Dune del Thar"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Buffet rajasthano con musica e danze attorno al fuoco.",
+     "prezzo": 2,
+     "nota": "Di solito compreso nell'escursione: da chiedere al coordinatore."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "jaisalmer-forte",
+     "titolo": "Dentro la città d'oro",
+     "sotto": "Templi jainisti al mattino, haveli, e il lago al tramonto.",
+     "soste": [
+      {
+       "t": "Templi jainisti nel forte",
+       "ora": "9:00",
+       "dur": "1 h",
+       "nota": "Solo al mattino per i non jainisti."
+      },
+      {
+       "t": "Forte di Jaisalmer",
+       "ora": "10:30",
+       "dur": "1,5 h"
+      },
+      {
+       "t": "Patwon Ki Haveli",
+       "ora": "14:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "Lago Gadisar",
+       "ora": "17:00",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "kuku"
+      },
+      "pranzo": {
+       "l": "chandan-shree",
+       "c": "Thali vegetariano"
+      },
+      "spuntino": {
+       "l": "kanchan-shree",
+       "c": "Lassi"
+      },
+      "cena": {
+       "l": "trio",
+       "c": "Laal maas e ker sangri"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "jaisalmer-deserto",
+     "titolo": "Giorno del deserto",
+     "sotto": "Mattina in città, poi dune, tramonto e notte al campo.",
+     "soste": [
+      {
+       "t": "Bada Bagh",
+       "ora": "8:30",
+       "dur": "1 h",
+       "nota": "Luce bassa sui cenotafi."
+      },
+      {
+       "t": "Dune del Thar",
+       "ora": "16:00",
+       "nota": "Cammello o jeep, tramonto sulle dune."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "dal-pakwan"
+      },
+      "pranzo": {
+       "l": "dhanraj-bhatia",
+       "c": "Kachori e ghotua ladoo"
+      },
+      "spuntino": {
+       "l": "kuku"
+      },
+      "cena": {
+       "l": "campo-thar"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "jodhpur",
@@ -1105,7 +1632,210 @@
     "soggetto": "Forte di Mehrangarh",
     "pagina": "https://commons.wikimedia.org/wiki/File:Mehrangarh_Fort_sanhita.jpg"
    },
-   "sigla": "Jod"
+   "sigla": "Jod",
+   "locali": [
+    {
+     "id": "shahi-samosa",
+     "n": "Shahi Samosa",
+     "zona": "Nai Sarak, vicino alla torre dell'orologio",
+     "vicino": [
+      "Torre dell'orologio e mercato Sardar"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Samosa enormi, pyaaz kachori e mirchi vada fritti al momento.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Orario indicato 8:30–20."
+    },
+    {
+     "id": "janta-sweet",
+     "n": "Janta Sweet Home",
+     "zona": "Nai Sarak",
+     "vicino": [
+      "Torre dell'orologio e mercato Sardar"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Mirchi vada, pyaaz kachori e mawa kachori; gulab jamun caldi.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "mishrilal",
+     "n": "Shri Mishrilal",
+     "zona": "Mercato Sardar, alla torre",
+     "vicino": [
+      "Torre dell'orologio e mercato Sardar"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Makhaniya lassi denso allo zafferano, rabri.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "cafe-mehran",
+     "n": "Café Mehran",
+     "zona": "Dentro il forte di Mehrangarh",
+     "vicino": [
+      "Forte di Mehrangarh",
+      "Jaswant Thada"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Lassi, paratha, chai: la pausa a metà visita.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "stepwell-cafe",
+     "n": "The Stepwell Café",
+     "zona": "Sopra il pozzo di Toorji",
+     "vicino": [
+      "Toorji Ka Jhalra",
+      "Città blu"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Tre piani affacciati sul pozzo a gradoni, con vista sul forte.",
+     "prezzo": 2
+    },
+    {
+     "id": "indique",
+     "n": "Indique (Pal Haveli)",
+     "zona": "Terrazza vicino alla torre dell'orologio",
+     "vicino": [
+      "Torre dell'orologio e mercato Sardar",
+      "Città blu"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Laal maas, dal baati, gatte; vista sul forte illuminato e sulla torre.",
+     "prezzo": 2,
+     "nota": "Si prenota."
+    },
+    {
+     "id": "gypsy",
+     "n": "Gypsy",
+     "zona": "Sardarpura, città nuova",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali vegetariano illimitato: si mangia finché si vuole.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "In tuk-tuk dalla città vecchia."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "jodhpur-forte",
+     "titolo": "Mehrangarh e città blu",
+     "sotto": "Il forte con calma, poi giù a piedi tra le case blu.",
+     "soste": [
+      {
+       "t": "Città blu",
+       "ora": "8:00",
+       "dur": "1 h",
+       "nota": "Prima che arrivi il sole alto."
+      },
+      {
+       "t": "Forte di Mehrangarh",
+       "ora": "9:30",
+       "dur": "3 h"
+      },
+      {
+       "t": "Jaswant Thada",
+       "ora": "13:30",
+       "dur": "45 min"
+      },
+      {
+       "t": "Toorji Ka Jhalra",
+       "ora": "16:00",
+       "dur": "45 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "janta-sweet",
+       "c": "Pyaaz kachori"
+      },
+      "pranzo": {
+       "l": "cafe-mehran",
+       "c": "Lassi e paratha"
+      },
+      "spuntino": {
+       "l": "mishrilal",
+       "c": "Makhaniya lassi"
+      },
+      "cena": {
+       "l": "indique",
+       "c": "Laal maas col forte illuminato"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "jodhpur-mercati",
+     "titolo": "Street food alla torre",
+     "sotto": "Mercato Sardar, fritti e lassi, thali illimitato.",
+     "soste": [
+      {
+       "t": "Torre dell'orologio e mercato Sardar",
+       "ora": "10:00",
+       "dur": "2 h"
+      },
+      {
+       "t": "Toorji Ka Jhalra",
+       "ora": "12:30",
+       "dur": "45 min"
+      },
+      {
+       "t": "Forte di Mehrangarh",
+       "ora": "15:00",
+       "dur": "2 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "shahi-samosa",
+       "c": "Samosa e mirchi vada"
+      },
+      "pranzo": {
+       "l": "gypsy",
+       "c": "Thali illimitato"
+      },
+      "spuntino": {
+       "l": "mishrilal"
+      },
+      "cena": {
+       "l": "stepwell-cafe"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ]
   },
   {
    "id": "ranakpur",
@@ -1199,7 +1929,64 @@
     "soggetto": "Tempio jainista di Ranakpur",
     "pagina": "https://commons.wikimedia.org/wiki/File:Jain_Temple_Ranakpur.jpg"
    },
-   "sigla": "Ran"
+   "sigla": "Ran",
+   "locali": [
+    {
+     "id": "bhojanshala",
+     "n": "Mensa del tempio (bhojanshala)",
+     "zona": "Accanto al tempio",
+     "vicino": [
+      "Tempio jainista di Adinath",
+      "Templi di Neminath e Parshvanath"
+     ],
+     "pasti": [
+      "pranzo"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali jainista semplice, senza cipolla né aglio. Si paga con un buono all'ingresso.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Pranzo indicato 11:30–13: prima della visita, che per i turisti apre a mezzogiorno."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "ranakpur-tempio",
+     "titolo": "Pranzo jainista e tempio",
+     "sotto": "Si mangia alla mensa del tempio e si entra all'apertura.",
+     "soste": [
+      {
+       "t": "Tempio jainista di Adinath",
+       "ora": "12:00",
+       "dur": "1,5 h",
+       "nota": "Niente cuoio, spalle e ginocchia coperte."
+      },
+      {
+       "t": "Templi di Neminath e Parshvanath",
+       "ora": "13:30",
+       "dur": "30 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "In hotel o lungo la strada"
+      },
+      "pranzo": {
+       "l": "bhojanshala"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Frutta o chai lungo la strada"
+      },
+      "cena": {
+       "l": "",
+       "c": "Leggera, a Udaipur"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ]
   },
   {
    "id": "udaipur",
@@ -1448,7 +2235,229 @@
     "soggetto": "City Palace",
     "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_City_Palace.jpg"
    },
-   "sigla": "Uda"
+   "sigla": "Uda",
+   "locali": [
+    {
+     "id": "ambrai",
+     "n": "Ambrai",
+     "zona": "Amet Haveli, sulla riva del lago",
+     "vicino": [
+      "Ambrai Ghat"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cena sul lago davanti a City Palace e Lake Palace; cucina rajasthana e internazionale.",
+     "prezzo": 3,
+     "nota": "Si prenota; a Capodanno con molto anticipo."
+    },
+    {
+     "id": "chandni-jagat-niwas",
+     "n": "Chandni (Jagat Niwas Palace)",
+     "zona": "Lal Ghat",
+     "vicino": [
+      "Tempio di Jagdish",
+      "City Palace"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali rajasthano su una terrazza sul lago.",
+     "prezzo": 2,
+     "nota": "Molto richiesto: prenotare."
+    },
+    {
+     "id": "millets-of-mewar",
+     "n": "Millets of Mewar",
+     "zona": "Lal Ghat, dietro il tempio di Jagdish",
+     "vicino": [
+      "Tempio di Jagdish",
+      "City Palace"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Piatti a base di miglio, frittelle, cucina vegetariana leggera.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "shreenath-dosa",
+     "n": "Shreenath Masala Dosa",
+     "zona": "Vicolo vicino al palazzo",
+     "vicino": [
+      "City Palace"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Dosa grandi come un piatto da portata.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "jheels",
+     "n": "Jheel's Ginger Coffee Bar",
+     "zona": "Gangaur Ghat",
+     "vicino": [
+      "Bagore Ki Haveli",
+      "Giro in barca sul lago Pichola"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Caffè, dolci da forno, milkshake, con tavoli sul lago.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "natraj-udaipur",
+     "n": "Natraj Dining Hall",
+     "zona": "City Station Road, vicino alla stazione",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali rajasthano e gujarati illimitato: ker sangri, gatte, dal baati.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Non è in centro storico: tuk-tuk."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "udaipur-palazzo",
+     "titolo": "Palazzo e lago",
+     "sotto": "City Palace, barca alle 16 per la luce migliore, cena sul lago.",
+     "soste": [
+      {
+       "t": "Tempio di Jagdish",
+       "ora": "9:00",
+       "dur": "30 min"
+      },
+      {
+       "t": "City Palace",
+       "ora": "9:45",
+       "dur": "2,5 h"
+      },
+      {
+       "t": "Giro in barca sul lago Pichola",
+       "ora": "16:00",
+       "dur": "1 h"
+      },
+      {
+       "t": "Ambrai Ghat",
+       "ora": "18:00",
+       "nota": "Tramonto e poi cena."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "millets-of-mewar"
+      },
+      "pranzo": {
+       "l": "shreenath-dosa"
+      },
+      "spuntino": {
+       "l": "jheels"
+      },
+      "cena": {
+       "l": "ambrai"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "udaipur-lento",
+     "titolo": "Udaipur con calma",
+     "sotto": "Mattina libera, thali a pranzo, tramonto dall'alto e danze la sera. Buona per staccarsi dal gruppo.",
+     "soste": [
+      {
+       "t": "Bagore Ki Haveli",
+       "ora": "11:00",
+       "dur": "1 h",
+       "nota": "Il museo di giorno."
+      },
+      {
+       "t": "Tramonto dall'alto",
+       "ora": "16:30",
+       "dur": "1,5 h",
+       "nota": "Funivia o Palazzo dei Monsoni."
+      },
+      {
+       "t": "Bagore Ki Haveli",
+       "ora": "19:00",
+       "dur": "1 h",
+       "nota": "Spettacolo di danze: arrivare prima."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "jheels"
+      },
+      "pranzo": {
+       "l": "natraj-udaipur",
+       "c": "Thali illimitato"
+      },
+      "spuntino": {
+       "l": "shreenath-dosa"
+      },
+      "cena": {
+       "l": "millets-of-mewar"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "udaipur-capodanno",
+     "titolo": "Capodanno sul lago",
+     "sotto": "Giornata leggera e cena prenotata con vista.",
+     "soste": [
+      {
+       "t": "Giro in barca sul lago Pichola",
+       "ora": "10:00",
+       "dur": "1 h"
+      },
+      {
+       "t": "Tempio di Jagdish",
+       "ora": "12:00",
+       "dur": "30 min"
+      },
+      {
+       "t": "Ambrai Ghat",
+       "ora": "17:30"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "millets-of-mewar"
+      },
+      "pranzo": {
+       "l": "shreenath-dosa"
+      },
+      "spuntino": {
+       "l": "jheels"
+      },
+      "cena": {
+       "l": "chandni-jagat-niwas",
+       "c": "Da prenotare"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "ajmer-pushkar",
@@ -1676,7 +2685,193 @@
     "soggetto": "Lago di Pushkar",
     "pagina": "https://commons.wikimedia.org/wiki/File:Evening_lights_by_the_Pushkar_Lake%2C_Pushkar.jpg"
    },
-   "sigla": "Pus"
+   "sigla": "Pus",
+   "locali": [
+    {
+     "id": "biryani-dargah",
+     "n": "Biryani del Dargah Bazar",
+     "zona": "Vicoli attorno al Dargah, Ajmer",
+     "vicino": [
+      "Dargah Sharif di Ajmer"
+     ],
+     "pasti": [
+      "pranzo"
+     ],
+     "tipo": "completo",
+     "cosa": "Biryani cotto nei grandi pentoloni, anche a mezza mattina.",
+     "prezzo": 1,
+     "nota": "Scegliere dove c'è ricambio e si serve caldo."
+    },
+    {
+     "id": "sohan-halwa",
+     "n": "Botteghe di sohan halwa",
+     "zona": "Dargah Bazar, Ajmer",
+     "vicino": [
+      "Dargah Sharif di Ajmer"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Sohan halwa a peso: dolce duro e burroso, si conserva e si porta via.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "out-of-the-blue",
+     "n": "Out of the Blue",
+     "zona": "Main Market, Pushkar",
+     "vicino": [
+      "Lago sacro di Pushkar",
+      "Tempio di Brahma"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Terrazza con vista sul lago; thali, noodle, pancake.",
+     "prezzo": 2,
+     "veg": true,
+     "nota": "Pushkar è tutta vegetariana: niente carne, uova, alcol."
+    },
+    {
+     "id": "sunset-cafe",
+     "n": "Sunset Café",
+     "zona": "Ghat orientali, Pushkar",
+     "vicino": [
+      "Lago sacro di Pushkar",
+      "Aarti serale sui ghat"
+     ],
+     "pasti": [
+      "spuntino",
+      "cena"
+     ],
+     "tipo": "leggero",
+     "cosa": "Caffè e dolci da forno davanti al tramonto sul lago.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "pushkar-raj",
+     "n": "Pushkar Raj",
+     "zona": "Vicino al tempio sikh, Choti Basti",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Khasta kachori al mattino, thali economico a pranzo.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "malpua-bancarelle",
+     "n": "Banchi di malpua",
+     "zona": "Mercato principale, Pushkar",
+     "vicino": [
+      "Tempio di Brahma",
+      "Aarti serale sui ghat"
+     ],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Malpua fritte al momento e immerse nello sciroppo, la sera.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Sceglierle calde, appena fritte."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "ajmer-pushkar-sacro",
+     "titolo": "Dargah e lago sacro",
+     "sotto": "Ajmer al mattino, Pushkar nel pomeriggio fino all'aarti.",
+     "soste": [
+      {
+       "t": "Dargah Sharif di Ajmer",
+       "ora": "9:00",
+       "dur": "1,5 h",
+       "nota": "Venerdì: grande calca."
+      },
+      {
+       "t": "Lago sacro di Pushkar",
+       "ora": "14:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "Tempio di Brahma",
+       "ora": "15:30",
+       "dur": "45 min"
+      },
+      {
+       "t": "Aarti serale sui ghat",
+       "ora": "18:00",
+       "dur": "45 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "In hotel"
+      },
+      "pranzo": {
+       "l": "biryani-dargah"
+      },
+      "spuntino": {
+       "l": "sohan-halwa"
+      },
+      "cena": {
+       "l": "malpua-bancarelle",
+       "c": "Malpua calde"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "pushkar-alto",
+     "titolo": "Pushkar dall'alto",
+     "sotto": "Salita al tempio di Savitri per il tramonto, poi cena vegetariana.",
+     "soste": [
+      {
+       "t": "Lago sacro di Pushkar",
+       "ora": "10:00",
+       "dur": "1 h"
+      },
+      {
+       "t": "Tempio di Brahma",
+       "ora": "11:30",
+       "dur": "45 min"
+      },
+      {
+       "t": "Tempio di Savitri",
+       "ora": "16:00",
+       "dur": "1,5 h",
+       "nota": "Salita a piedi o in funivia."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "pushkar-raj",
+       "c": "Khasta kachori"
+      },
+      "pranzo": {
+       "l": "out-of-the-blue"
+      },
+      "spuntino": {
+       "l": "sunset-cafe"
+      },
+      "cena": {
+       "l": "pushkar-raj",
+       "c": "Thali"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "jaipur",
@@ -1947,7 +3142,189 @@
     "soggetto": "Hawa Mahal",
     "pagina": "https://commons.wikimedia.org/wiki/File:East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg"
    },
-   "sigla": "Jai"
+   "sigla": "Jai",
+   "locali": [
+    {
+     "id": "lmb",
+     "n": "Laxmi Mishthan Bhandar (LMB)",
+     "zona": "Johari Bazaar",
+     "vicino": [
+      "Hawa Mahal",
+      "Bazar della città rosa",
+      "City Palace"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Locale storico vegetariano: thali, dal baati churma, kachori, ghevar e jalebi al ghee.",
+     "prezzo": 2,
+     "veg": true
+    },
+    {
+     "id": "rawat",
+     "n": "Rawat Mishthan Bhandar",
+     "zona": "Station Road, Sindhi Camp",
+     "vicino": [],
+     "pasti": [
+      "colazione"
+     ],
+     "tipo": "leggero",
+     "cosa": "La pyaaz kachori più famosa della città, e mawa kachori.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Fuori dalla città vecchia: tuk-tuk."
+    },
+    {
+     "id": "lassiwala",
+     "n": "Lassiwala",
+     "zona": "MI Road",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Lassi denso nel bicchiere di terracotta (kulhad).",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Ci sono più botteghe con lo stesso nome; chiude nel pomeriggio."
+    },
+    {
+     "id": "gulab-ji",
+     "n": "Gulab Ji Chaiwala",
+     "zona": "MI Road",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Masala chai: la tappa di rito del mattino.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "1135ad",
+     "n": "1135 AD",
+     "zona": "Dentro il forte Amber, Jaleb Chowk",
+     "vicino": [
+      "Forte Amber"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Sale regali; laal maas, junglee maas, gatte.",
+     "prezzo": 3,
+     "nota": "Si prenota. Il più caro del giro."
+    },
+    {
+     "id": "caffe-hawa-mahal",
+     "n": "Caffè sui tetti di fronte all'Hawa Mahal",
+     "zona": "Strada davanti al palazzo",
+     "vicino": [
+      "Hawa Mahal"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Chai e uno spuntino con la facciata davanti, meglio con la luce del mattino.",
+     "prezzo": 1,
+     "veg": true
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "jaipur-amber",
+     "titolo": "Amber presto e città rosa",
+     "sotto": "Il forte all'apertura, pranzo nelle sale reali, bazar al pomeriggio.",
+     "soste": [
+      {
+       "t": "Forte Amber",
+       "ora": "8:00",
+       "dur": "3 h"
+      },
+      {
+       "t": "Hawa Mahal",
+       "ora": "15:00",
+       "dur": "30 min"
+      },
+      {
+       "t": "Bazar della città rosa",
+       "ora": "15:30",
+       "dur": "2 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "gulab-ji",
+       "c": "Chai"
+      },
+      "pranzo": {
+       "l": "1135ad"
+      },
+      "spuntino": {
+       "l": "lmb",
+       "c": "Ghevar"
+      },
+      "cena": {
+       "l": "lmb",
+       "c": "Kachori e lassi"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "jaipur-citta",
+     "titolo": "Osservatorio, palazzo e tramonto",
+     "sotto": "Hawa Mahal con la luce del mattino, Jantar Mantar e City Palace, Nahargarh al tramonto.",
+     "soste": [
+      {
+       "t": "Hawa Mahal",
+       "ora": "8:30",
+       "dur": "30 min"
+      },
+      {
+       "t": "Jantar Mantar",
+       "ora": "9:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "City Palace",
+       "ora": "10:45",
+       "dur": "2 h"
+      },
+      {
+       "t": "Nahargarh",
+       "ora": "16:30",
+       "dur": "2 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "rawat",
+       "c": "Pyaaz kachori"
+      },
+      "pranzo": {
+       "l": "caffe-hawa-mahal"
+      },
+      "spuntino": {
+       "l": "lassiwala"
+      },
+      "cena": {
+       "l": "lmb",
+       "c": "Thali e dal baati churma"
+      }
+     },
+     "completo": "cena"
+    }
+   ]
   },
   {
    "id": "fatehpur-sikri",
@@ -2041,7 +3418,67 @@
     "soggetto": "Buland Darwaza",
     "pagina": "https://commons.wikimedia.org/wiki/File:Fatehput_Sikiri_Buland_Darwaza_gate_2010.jpg"
    },
-   "sigla": "Agr"
+   "sigla": "Agr",
+   "locali": [
+    {
+     "id": "goverdhan",
+     "n": "Jodha (Hotel Goverdhan)",
+     "zona": "Vicino alla Buland Darwaza",
+     "vicino": [
+      "Buland Darwaza",
+      "Jama Masjid e tomba di Salim Chishti",
+      "Palazzi reali"
+     ],
+     "pasti": [
+      "pranzo"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina indiana anche di carne, pane al tandoor.",
+     "prezzo": 1
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "fatehpur-sosta",
+     "titolo": "Sosta lungo la strada",
+     "sotto": "Palazzi con una guida autorizzata, zona sacra senza procacciatori.",
+     "soste": [
+      {
+       "t": "Palazzi reali",
+       "ora": "10:00",
+       "dur": "1,5 h"
+      },
+      {
+       "t": "Jama Masjid e tomba di Salim Chishti",
+       "ora": "11:45",
+       "dur": "45 min"
+      },
+      {
+       "t": "Buland Darwaza",
+       "ora": "12:30",
+       "dur": "15 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "Prima di partire"
+      },
+      "pranzo": {
+       "l": "goverdhan"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Acqua e frutta"
+      },
+      "cena": {
+       "l": "",
+       "c": "Ad Agra"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ]
   },
   {
    "id": "agra",
@@ -2236,7 +3673,189 @@
     "soggetto": "Taj Mahal",
     "pagina": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_%28Edited%29.jpeg"
    },
-   "sigla": "Agr"
+   "sigla": "Agr",
+   "locali": [
+    {
+     "id": "deviram",
+     "n": "Deviram Sweets",
+     "zona": "MG Road, Pratap Pura",
+     "vicino": [],
+     "pasti": [
+      "colazione"
+     ],
+     "tipo": "leggero",
+     "cosa": "Bedai con curry di patate e jalebi: la colazione di Agra.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Bedai indicato dalle 9 alle 14. Lontano dal Taj: tuk-tuk."
+    },
+    {
+     "id": "saniya-palace",
+     "n": "Terrazza del Saniya Palace",
+     "zona": "Taj Ganj, a 5 minuti dalla porta est",
+     "vicino": [
+      "Taj Mahal"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Cucina semplice, ma la vista sul Taj dal tetto è la migliore del quartiere.",
+     "prezzo": 1
+    },
+    {
+     "id": "shankara-vegis",
+     "n": "Shankara Vegis",
+     "zona": "Taj Ganj, vicino alla porta sud",
+     "vicino": [
+      "Taj Mahal"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Cucina vegetariana casalinga, terrazza con vista.",
+     "prezzo": 1,
+     "veg": true
+    },
+    {
+     "id": "joneys",
+     "n": "Joney's Place",
+     "zona": "Taj Ganj",
+     "vicino": [
+      "Taj Mahal"
+     ],
+     "pasti": [
+      "colazione",
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Locale piccolo e storico per una colazione prima o dopo il Taj.",
+     "prezzo": 1
+    },
+    {
+     "id": "pinch-of-spice",
+     "n": "Pinch of Spice",
+     "zona": "Fatehabad Road",
+     "vicino": [
+      "Taj Mahal"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina moghul: dal makhani, kebab, biryani.",
+     "prezzo": 2
+    },
+    {
+     "id": "mama-chicken",
+     "n": "Mama Chicken Mama Franky",
+     "zona": "Sadar Bazar",
+     "vicino": [
+      "Forte di Agra"
+     ],
+     "pasti": [
+      "spuntino",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Frankie (piadine arrotolate) e pollo alla griglia; il posto dei ragazzi di Agra.",
+     "prezzo": 1
+    },
+    {
+     "id": "panchhi-petha",
+     "n": "Panchhi Petha",
+     "zona": "Più sedi in città",
+     "vicino": [],
+     "pasti": [
+      "spuntino"
+     ],
+     "tipo": "leggero",
+     "cosa": "Petha in tanti gusti e dalmoth, da assaggiare e portare via.",
+     "prezzo": 1,
+     "veg": true,
+     "nota": "Molti negozi imitano il nome."
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "agra-taj",
+     "titolo": "Taj all'alba e moghul a cena",
+     "sotto": "Il Taj all'apertura, il forte, il Taj da dietro al tramonto.",
+     "soste": [
+      {
+       "t": "Taj Mahal",
+       "ora": "6:30",
+       "dur": "2,5 h",
+       "nota": "Biglietto aggiuntivo per il mausoleo."
+      },
+      {
+       "t": "Forte di Agra",
+       "ora": "11:00",
+       "dur": "1,5 h"
+      },
+      {
+       "t": "Mehtab Bagh",
+       "ora": "16:30",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "joneys"
+      },
+      "pranzo": {
+       "l": "saniya-palace",
+       "c": "Con vista"
+      },
+      "spuntino": {
+       "l": "panchhi-petha",
+       "c": "Petha"
+      },
+      "cena": {
+       "l": "pinch-of-spice"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "agra-sapori",
+     "titolo": "Agra dei sapori",
+     "sotto": "Colazione di bedai, Taj in tarda mattinata, street food la sera.",
+     "soste": [
+      {
+       "t": "Taj Mahal",
+       "ora": "10:00",
+       "dur": "2,5 h"
+      },
+      {
+       "t": "Mehtab Bagh",
+       "ora": "16:30",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "deviram",
+       "c": "Bedai e jalebi"
+      },
+      "pranzo": {
+       "l": "shankara-vegis"
+      },
+      "spuntino": {
+       "l": "panchhi-petha",
+       "c": "Dalmoth"
+      },
+      "cena": {
+       "l": "mama-chicken"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ]
   }
  ]
 }

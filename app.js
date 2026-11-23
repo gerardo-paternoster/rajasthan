@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-23.2';
+const VERSIONE = '2026-11-24.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -483,6 +483,275 @@ function htmlStatoSync() {
 }
 function mostraAvvisoMemoria() { const a = $('#avvisoMemoria'); if (a) a.hidden = false; }
 
+/* ---------- Gruppo di viaggio: percorsi e adesioni (Firebase Realtime Database) ---------- */
+// Indirizzo del database del gruppo (non è un segreto: i dati stanno sotto il codice del gruppo,
+// che non compare mai nel repository). Vuoto = le adesioni restano su questo dispositivo.
+const FIREBASE_DB = '';
+const PASTI = [['colazione', 'Colazione'], ['pranzo', 'Pranzo'], ['spuntino', 'Spuntino'], ['cena', 'Cena']];
+let GR = LS.get('rj.gr', {});          // ultima copia del gruppo scaricata
+let coda = LS.get('rj.grCoda', {});    // scritture in attesa: percorso -> valore (null = cancella)
+let GRV = null;                        // copia + coda, ricalcolata quando serve
+let statoGr = { fase: 'fermo', errore: '', ultima: LS.get('rj.grUltima', 0) };
+let grInCorso = false, timerGr = null;
+let BOZZA = null;                      // proposta in scrittura
+
+function io() {
+  let x = LS.get('rj.io', null);
+  if (!x || !x.id) { x = { id: 'p' + Math.random().toString(36).slice(2, 12), n: '' }; LS.set('rj.io', x); }
+  return x;
+}
+function codiceGruppo() { return LS.get('rj.gruppo', ''); }
+function nuovoCodice() {
+  const a = 'abcdefghjkmnpqrstuvwxyz23456789', b = new Uint8Array(20);
+  crypto.getRandomValues(b); return Array.from(b, (x) => a[x % a.length]).join('');
+}
+function impostaIn(o, percorso, val) {
+  const p = percorso.split('/'); let x = o;
+  for (let i = 0; i < p.length - 1; i++) {
+    if (x[p[i]] == null || typeof x[p[i]] !== 'object') { if (val === null) return; x[p[i]] = {}; }
+    x = x[p[i]];
+  }
+  if (val === null) delete x[p[p.length - 1]]; else x[p[p.length - 1]] = val;
+}
+function gruppo() {
+  if (!GRV) { GRV = JSON.parse(JSON.stringify(GR || {})); Object.keys(coda).forEach((k) => impostaIn(GRV, k, coda[k])); }
+  return GRV;
+}
+function grScrivi(campi) { Object.assign(coda, campi); LS.set('rj.grCoda', coda); GRV = null; clearTimeout(timerGr); timerGr = setTimeout(grSincronizza, 800); }
+function grUrl() { return FIREBASE_DB.replace(/\/$/, '') + '/gruppi/' + encodeURIComponent(codiceGruppo()) + '.json'; }
+async function grSincronizza() {
+  if (!FIREBASE_DB || !codiceGruppo() || grInCorso || !navigator.onLine) return;
+  grInCorso = true; statoGr.fase = 'sync';
+  try {
+    const invio = Object.assign({}, coda);
+    if (Object.keys(invio).length) {
+      const r = await fetch(grUrl(), { method: 'PATCH', body: JSON.stringify(invio) });
+      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? 'Il database ha rifiutato la scrittura: vanno controllate le regole.' : 'Il database ha risposto con un errore (' + r.status + ').');
+      Object.keys(invio).forEach((k) => { if (JSON.stringify(coda[k]) === JSON.stringify(invio[k])) delete coda[k]; });
+      LS.set('rj.grCoda', coda);
+    }
+    const r2 = await fetch(grUrl());
+    if (!r2.ok) throw new Error(r2.status === 401 || r2.status === 403 ? 'Il database ha rifiutato la lettura: vanno controllate le regole.' : 'Il database ha risposto con un errore (' + r2.status + ').');
+    GR = (await r2.json()) || {}; LS.set('rj.gr', GR); GRV = null;
+    statoGr = { fase: 'ok', errore: '', ultima: Date.now() }; LS.set('rj.grUltima', statoGr.ultima);
+  } catch (e) {
+    statoGr.fase = 'errore';
+    statoGr.errore = /fetch|Network|Load failed/i.test(e.message) ? 'Rete non raggiungibile: riprovo da solo.' : e.message;
+  }
+  grInCorso = false;
+  if (['giorno', 'tappa', 'impostazioni', 'gruppo', 'viaggio'].indexOf(rotta.nome) >= 0) disegnaSePossibile();
+}
+function salvaNome(n) {
+  const x = io(); x.n = String(n || '').trim().slice(0, 40); LS.set('rj.io', x);
+  if (x.n) grScrivi({ ['persone/' + x.id]: { n: x.n, t: Date.now() } });
+}
+
+function percorsiDi(tid) {
+  const t = tappa(tid); if (!t) return [];
+  const base = (t.percorsi || []).map((p) => Object.assign({ tappa: tid }, p));
+  const prop = Object.entries(gruppo().proposte || {}).filter(([, p]) => p && p.tappa === tid).map(([k, p]) => Object.assign({}, p, { id: k, proposta: true }));
+  return base.concat(prop.sort((a, b) => (a.t || 0) - (b.t || 0)));
+}
+function aderenti(data, pid) { return Object.keys((((gruppo().adesioni || {})[data]) || {})[pid] || {}); }
+function nomeDi(p) { if (p === io().id) return 'tu'; const x = (gruppo().persone || {})[p]; return x && x.n ? x.n : 'qualcuno'; }
+function locale(t, id) { return id ? (t.locali || []).find((l) => l.id === id) : null; }
+const TIPO_LOC = { completo: 'Pasto completo', leggero: 'Leggero', entrambi: 'Leggero o completo' };
+const NOME_PASTO = { colazione: 'Colazione', pranzo: 'Pranzo', cena: 'Cena', spuntino: 'Spuntino' };
+function adattoA(l, k, completo) {
+  if (k === completo) return l.tipo !== 'leggero' && l.pasti.indexOf(k) >= 0;
+  return l.tipo !== 'completo' && (l.pasti.indexOf(k) >= 0 || l.pasti.indexOf('spuntino') >= 0);
+}
+function htmlLocale(l) {
+  let h = '<li class="locale"><div class="loc-testa"><b>' + esc(l.n) + '</b><span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(l.prezzo || 1) + '</span></div>';
+  h += '<p class="tenue">' + esc(l.zona) + '</p><p>' + esc(l.cosa) + '</p><span class="etichette"><span class="et">' + esc(TIPO_LOC[l.tipo] || '') + '</span>' + l.pasti.map((p) => '<span class="et">' + esc(NOME_PASTO[p]) + '</span>').join('') + (l.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
+  if (l.nota) h += '<p class="tenue nota">' + esc(l.nota) + '</p>';
+  return h + '</li>';
+}
+function htmlVicini(t, x) {
+  const v = (t.locali || []).filter((l) => l.vicino.indexOf(x.t) >= 0);
+  if (!v.length) return '';
+  return '<div class="vicini"><h4>Per mangiare qui vicino</h4><ul>' + v.map((l) => '<li><b>' + esc(l.n) + '</b> <span class="tenue">' + esc(TIPO_LOC[l.tipo].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span><br>' + esc(l.cosa) + '</li>').join('') + '</ul></div>';
+}
+function htmlDoveMangiare(t) {
+  const L = t.locali || []; if (!L.length) return '';
+  const compl = L.filter((l) => l.tipo !== 'leggero'), legg = L.filter((l) => l.tipo === 'leggero');
+  let h = '<h2 class="sez">' + arco(t.colore, 18) + 'Dove mangiare</h2><div class="pannello">';
+  if (compl.length) h += '<h2>Per il pasto completo</h2><ul class="locali">' + compl.map(htmlLocale).join('') + '</ul>';
+  if (legg.length) h += '<h2>Colazioni, pasti leggeri e spuntini</h2><ul class="locali">' + legg.map(htmlLocale).join('') + '</ul>';
+  return h + '<p class="tenue nota" style="padding-bottom:14px">₹ economico, ₹₹ medio, ₹₹₹ caro: indicativo. Nomi e orari vengono da guide e recensioni: verificarli sul posto.</p></div>';
+}
+
+function htmlPercorso(p, t, data) {
+  const me = io().id, ad = aderenti(data, p.id), mio = ad.indexOf(me) >= 0, mia = p.proposta && p.autore && p.autore.id === me;
+  let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + stileCitta(t) + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
+  if (p.proposta) h += '<p class="autore">Proposto da ' + esc(mia ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
+  h += '</header><ol class="soste">' + (p.soste || []).map((s) => '<li><span class="ora">' + esc(s.ora || '') + '</span><div><b>' + esc(s.t) + '</b>' + (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') + '</div></li>').join('') + '</ol>';
+  h += '<dl class="pasti">' + PASTI.map(([k, n]) => {
+    const m = (p.pasti || {})[k] || {}, l = locale(t, m.l), c = p.completo === k;
+    return '<div' + (c ? ' class="completo"' : '') + '><dt>' + n + (c ? '<span class="et">completo</span>' : '') + '</dt><dd>' + (l ? '<b>' + esc(l.n) + '</b>' : '') + (m.c ? (l ? '<br>' : '') + esc(m.c) : '') + (!l && !m.c ? '<span class="tenue">Libero</span>' : '') + '</dd></div>';
+  }).join('') + '</dl>';
+  h += '<footer><button class="btn' + (mio ? '' : ' chiaro') + ' piccolo" data-az="aderisci" data-data="' + esc(data) + '" data-id="' + esc(p.id) + '" aria-pressed="' + mio + '">' + (mio ? 'Ci sto ✓' : 'Ci sto') + '</button>';
+  h += '<span class="chi">' + (ad.length ? esc((s => s.charAt(0).toUpperCase() + s.slice(1))(ad.map(nomeDi).join(', '))) : 'Ancora nessuno') + '</span>';
+  h += '<a class="link" href="#proponi/' + esc(data) + '/' + esc(t.id) + '/' + esc(p.id) + '">' + (mia ? 'Modifica' : 'Copia e cambia') + '</a></footer></article>';
+  return h;
+}
+function htmlAvvisoGruppo() {
+  if (!FIREBASE_DB) return '<p class="avviso-gr">Per ora le adesioni restano su questo dispositivo: il voto con i compagni si attiva appena il database del gruppo è pronto.</p>';
+  if (!codiceGruppo()) return '<p class="avviso-gr">Le adesioni restano su questo dispositivo. Per vedere quelle dei compagni <a href="#impostazioni">entra nel gruppo</a> o apri il link d\'invito.</p>';
+  if (statoGr.fase === 'errore') return '<p class="avviso-gr err">' + esc(statoGr.errore) + '</p>';
+  return '';
+}
+function htmlNome() {
+  if (io().n) return '';
+  return '<div class="pannello pieno nome-box"><label>Il tuo nome, come lo vedranno gli altri<input id="fNome" maxlength="40" autocomplete="given-name"></label><div class="azioni"><button class="btn piccolo" data-az="salvaNome">Salva</button></div></div>';
+}
+
+function vistaGiorno(data) {
+  const g = CONT.giorni.find((x) => x.data === data); if (!g) return vistaViaggio();
+  let h = '<p class="tenue intro-giorno">' + (g.nota ? esc(g.nota) + '.<br>' : '') + 'Scegli con "Ci sto": chi aderisce allo stesso percorso va insieme. Un solo pasto completo al giorno, a pranzo o a cena.</p>';
+  h += htmlAvvisoGruppo() + htmlNome();
+  if (!g.tappe.length) h += '<div class="pannello vuoto"><h3>Giorno di viaggio</h3><p class="tenue">Niente percorsi per oggi.</p></div>';
+  g.tappe.forEach((tid) => {
+    const t = tappa(tid); if (!t) return;
+    const lista = percorsiDi(tid).map((p, i) => ({ p, i, n: aderenti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
+    h += '<h2 class="sez"' + stileCitta(t) + '>' + arco(t.colore, 18) + esc(t.nome) + '</h2>';
+    h += lista.map((x) => htmlPercorso(x.p, t, data)).join('');
+    h += '<div class="azioni larghe"><a class="chip" href="#proponi/' + esc(data) + '/' + esc(tid) + '">' + ICO.piu + 'Proponi un percorso</a><a class="chip" href="#tappa/' + esc(tid) + '">Cosa vedere e dove mangiare</a></div>';
+  });
+  if (CONT.calendarioStimato) h += '<p class="pie">Calendario stimato: gli orari dei percorsi vanno adattati al programma del coordinatore e ai tempi del gruppo.</p>';
+  return { titolo: fmtGiorno.format(dataDa(data)), html: h, indietro: '#viaggio' };
+}
+
+function nuovaBozza(chiave, data, t, srcId) {
+  const src = srcId ? percorsiDi(t.id).find((p) => p.id === srcId) : null;
+  const mia = src && src.proposta && src.autore && src.autore.id === io().id;
+  const b = { chiave, data, tappa: t.id, editId: mia ? src.id : '', titolo: src ? (mia ? src.titolo : src.titolo + ' (variante)') : '', sotto: src ? src.sotto || '' : '', soste: {}, altro: '', altroOra: '', completo: src ? src.completo : 'cena', pasti: {} };
+  (src ? src.soste || [] : []).forEach((s) => {
+    if (t.vedere.some((x) => x.t === s.t)) b.soste[s.t] = { on: true, ora: s.ora || '', dur: s.dur || '', nota: s.nota || '' };
+    else if (!b.altro) { b.altro = s.t; b.altroOra = s.ora || ''; }
+  });
+  PASTI.forEach(([k]) => { const m = src && src.pasti && src.pasti[k]; b.pasti[k] = { l: m ? m.l || '' : '', c: m ? m.c || '' : '' }; });
+  return b;
+}
+function vistaProponi(arg) {
+  const [data, tid, srcId] = arg.split('/'); const t = tappa(tid);
+  if (!t || !CONT.giorni.some((g) => g.data === data)) return vistaViaggio();
+  if (!BOZZA || BOZZA.chiave !== arg) BOZZA = nuovaBozza(arg, data, t, srcId);
+  const b = BOZZA;
+  let h = '<div' + stileCitta(t) + '><p class="tenue intro-giorno">' + esc(t.nome) + ', ' + esc(fmtLungo.format(dataDa(data))) + '. La proposta la vedono tutti i compagni del gruppo.</p>' + htmlNome();
+  h += '<div class="pannello pieno editor"><label>Titolo<input data-b="titolo" maxlength="60" value="' + esc(b.titolo) + '" placeholder="Es. Mattina al forte, sera sul lago"></label>';
+  h += '<label>In due parole<textarea data-b="sotto" rows="2" maxlength="200">' + esc(b.sotto) + '</textarea></label>';
+  h += '<h3 class="ed-sez">Cosa vedere</h3><p class="tenue">Spunta le soste e indica l\'ora, se vuoi.</p><ul class="scegli-soste">';
+  t.vedere.forEach((x, i) => { const s = b.soste[x.t] || {}; h += '<li><label class="riga"><input type="checkbox" data-bs="' + i + '"' + (s.on ? ' checked' : '') + '><span>' + esc(x.t) + '</span></label><input type="time" data-bo="' + i + '" value="' + esc(s.ora || '') + '" aria-label="Ora per ' + esc(x.t) + '"></li>'; });
+  h += '<li><input data-b="altro" maxlength="80" value="' + esc(b.altro) + '" placeholder="Altro: un mercato, una passeggiata…"><input type="time" data-b="altroOra" value="' + esc(b.altroOra) + '" aria-label="Ora"></li></ul>';
+  h += '<h3 class="ed-sez">Pasti</h3><p class="tenue">Il pasto completo è uno solo: gli altri restano leggeri.</p><div class="scelta-completo" role="radiogroup" aria-label="Pasto completo">' +
+    ['pranzo', 'cena'].map((k) => '<label class="pill' + (b.completo === k ? ' on' : '') + '"><input type="radio" name="completo" data-b="completo" value="' + k + '"' + (b.completo === k ? ' checked' : '') + '>Completo a ' + k + '</label>').join('') + '</div>';
+  PASTI.forEach(([k, n]) => {
+    const m = b.pasti[k], ok = (t.locali || []).filter((l) => adattoA(l, k, b.completo));
+    if (m.l && !ok.some((l) => l.id === m.l)) m.l = '';
+    h += '<div class="pasto-ed"><label>' + n + (b.completo === k ? ' (completo)' : '') + '<select data-bp="' + k + '"><option value="">Libero o da decidere</option>' + ok.map((l) => '<option value="' + esc(l.id) + '"' + (m.l === l.id ? ' selected' : '') + '>' + esc(l.n) + '</option>').join('') + '</select></label>';
+    h += '<input data-bc="' + k + '" maxlength="80" value="' + esc(m.c) + '" placeholder="Cosa (facoltativo)" aria-label="Cosa mangiare a ' + n.toLowerCase() + '"></div>';
+  });
+  h += '<p class="err" id="errProp" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaProposta">' + (b.editId ? 'Salva le modifiche' : 'Proponi') + '</button><a class="btn chiaro" href="#giorno/' + esc(data) + '">Annulla</a>' + (b.editId ? '<button class="btn pericolo" data-az="ritira">Ritira</button>' : '') + '</div></div></div>';
+  return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data };
+}
+function bozzaDaCampo(el) {
+  if (!BOZZA || !el.dataset) return false;
+  const t = tappa(BOZZA.tappa), d = el.dataset;
+  if (d.b) { BOZZA[d.b] = el.value; return d.b === 'completo'; }
+  if (d.bs != null || d.bo != null) {
+    const x = t.vedere[+(d.bs != null ? d.bs : d.bo)]; if (!x) return false;
+    const s = BOZZA.soste[x.t] || (BOZZA.soste[x.t] = { on: false, ora: '' });
+    if (d.bs != null) s.on = el.checked; else { s.ora = el.value; if (el.value) { s.on = true; const c = $('[data-bs="' + d.bo + '"]'); if (c) c.checked = true; } }
+    return false;
+  }
+  if (d.bp) { BOZZA.pasti[d.bp].l = el.value; return false; }
+  if (d.bc) { BOZZA.pasti[d.bc].c = el.value; return false; }
+  return false;
+}
+function salvaProposta() {
+  const b = BOZZA, t = tappa(b.tappa), err = $('#errProp');
+  const mostra = (m) => { err.textContent = m; err.hidden = false; };
+  const soste = t.vedere.map((x, i) => ({ x, i, s: b.soste[x.t] })).filter((o) => o.s && o.s.on).map((o) => {
+    const r = { t: o.x.t, _i: o.i }; if (o.s.ora) r.ora = o.s.ora; if (o.s.dur) r.dur = o.s.dur; if (o.s.nota) r.nota = o.s.nota; return r;
+  });
+  if (b.altro.trim()) soste.push({ t: b.altro.trim(), _i: 99, ora: b.altroOra || undefined });
+  soste.sort((a, c) => (a.ora || '99') .localeCompare(c.ora || '99') || a._i - c._i); soste.forEach((s) => { delete s._i; if (!s.ora) delete s.ora; });
+  if (!b.titolo.trim()) return mostra('Dai un titolo alla proposta.');
+  if (!soste.length) return mostra('Scegli almeno una cosa da vedere.');
+  if (!io().n) return mostra('Scrivi il tuo nome qui sopra: serve agli altri per sapere chi propone.');
+  const pasti = {}; PASTI.forEach(([k]) => { const m = b.pasti[k]; if (m.l || m.c.trim()) pasti[k] = Object.assign({}, m.l ? { l: m.l } : {}, m.c.trim() ? { c: m.c.trim() } : {}); });
+  const id = b.editId || 'u' + nuovoId(), me = io();
+  grScrivi({
+    ['proposte/' + id]: { tappa: b.tappa, titolo: b.titolo.trim(), sotto: b.sotto.trim(), soste, pasti, completo: b.completo, autore: { id: me.id, n: me.n }, t: Date.now() },
+    ['adesioni/' + b.data + '/' + id + '/' + me.id]: Date.now()
+  });
+  const data = b.data; BOZZA = null; location.hash = '#giorno/' + data;
+}
+
+function htmlImpostazioniGruppo() {
+  let h = '<h2 class="sez">Gruppo di viaggio</h2><section class="pannello pieno">';
+  h += '<p>I percorsi di ogni giorno si scelgono insieme: ognuno dice "Ci sto" e può proporne di nuovi.</p>';
+  h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><div class="azioni"><button class="btn chiaro piccolo" data-az="salvaNome">Salva il nome</button></div>';
+  if (!FIREBASE_DB) h += '<p class="tenue" style="margin-top:14px">Il voto con i compagni non è ancora attivo: per ora adesioni e proposte restano su questo dispositivo e verranno condivise appena entri in un gruppo.</p>';
+  else if (codiceGruppo()) {
+    h += '<p style="margin-top:14px"><b>Sei in un gruppo.</b> ' + (statoGr.fase === 'errore' ? '<span class="err">' + esc(statoGr.errore) + '</span>' : statoGr.ultima ? 'Aggiornato il ' + esc(fmtOra.format(new Date(statoGr.ultima))) + '.' : '') + (Object.keys(coda).length ? ' Modifiche in attesa di invio.' : '') + '</p>';
+    h += '<div class="azioni"><button class="btn piccolo" data-az="invita">Invita i compagni</button><button class="btn chiaro piccolo" data-az="grAggiorna">Aggiorna</button><button class="btn pericolo piccolo" data-az="esciGruppo">Esci dal gruppo</button></div><p class="tenue" id="msgGruppo"></p>';
+    h += '<p class="tenue" style="margin-top:10px">Chi ha il link d\'invito entra nel gruppo: mandalo solo ai compagni di viaggio.</p>';
+  } else {
+    h += '<p class="tenue" style="margin-top:14px">Uno solo crea il gruppo e manda il link d\'invito agli altri, per esempio su WhatsApp.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
+  }
+  return h + '</section>';
+}
+function vistaGruppo(codice) {
+  let h = '';
+  if (!/^[a-z2-9]{16,40}$/.test(codice || '')) h = '<div class="pannello vuoto"><h3>Link d\'invito non valido</h3><p class="tenue">Chiedi di nuovo il link a chi ha creato il gruppo.</p></div>';
+  else if (codice === codiceGruppo()) h = '<div class="pannello vuoto"><h3>Sei già in questo gruppo</h3><p><a class="chip" href="#viaggio">Vai al viaggio</a></p></div>';
+  else {
+    h = '<div class="pannello pieno"><h3>Ti hanno invitato nel gruppo di viaggio</h3><p>Entrando vedi i percorsi proposti dagli altri, chi aderisce a cosa, e puoi proporre i tuoi. Gli altri vedranno il tuo nome, le tue adesioni e le tue proposte; il resto dei tuoi dati rimane solo tuo.</p>';
+    if (codiceGruppo()) h += '<p class="err">Sei già in un altro gruppo: entrando lasci quello.</p>';
+    if (!FIREBASE_DB) h += '<p class="err">Questa versione dell\'app non ha ancora il database del gruppo: aggiorna l\'app dalle impostazioni e riapri il link.</p>';
+    h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><p class="err" id="errGruppo" hidden></p><div class="azioni larghe"><button class="btn" data-az="entra" data-codice="' + esc(codice) + '"' + (FIREBASE_DB ? '' : ' disabled') + '>Entra nel gruppo</button></div><p class="tenue"><a href="privacy.html">Informativa sulla privacy</a></p></div>';
+  }
+  return { titolo: 'Gruppo di viaggio', html: h, indietro: '#viaggio' };
+}
+async function azioneGruppo(az, el) {
+  if (az === 'aderisci') {
+    const d = el.dataset.data, pid = el.dataset.id, me = io().id, mio = aderenti(d, pid).indexOf(me) >= 0;
+    grScrivi({ ['adesioni/' + d + '/' + pid + '/' + me]: mio ? null : Date.now() });
+    disegna(); return true;
+  }
+  if (az === 'salvaNome') { salvaNome($('#fNome').value); disegna(); return true; }
+  if (az === 'salvaProposta') { salvaProposta(); return true; }
+  if (az === 'ritira') {
+    if (!el.dataset.conferma) { el.dataset.conferma = '1'; el.textContent = 'Conferma: ritira'; return true; }
+    const data = BOZZA.data; grScrivi({ ['proposte/' + BOZZA.editId]: null }); BOZZA = null; location.hash = '#giorno/' + data; return true;
+  }
+  if (az === 'creaGruppo' || az === 'entra') {
+    const n = $('#fNome').value.trim(), err = $('#errGruppo');
+    if (!n) { err.textContent = 'Scrivi il tuo nome: è quello che vedranno gli altri.'; err.hidden = false; return true; }
+    if (!navigator.onLine) { err.textContent = 'Serve la rete per entrare nel gruppo.'; err.hidden = false; return true; }
+    if (az === 'entra' && codiceGruppo() !== el.dataset.codice) { GR = {}; LS.set('rj.gr', GR); }
+    LS.set('rj.gruppo', az === 'entra' ? el.dataset.codice : nuovoCodice()); GRV = null;
+    salvaNome(n); await grSincronizza();
+    if (az === 'entra') location.hash = '#viaggio'; else disegna();
+    return true;
+  }
+  if (az === 'invita') {
+    const link = location.origin + location.pathname + '#gruppo/' + codiceGruppo(), msg = $('#msgGruppo');
+    const testo = 'Per scegliere insieme i percorsi del Rajasthan, apri questo link nell\'app Tutto Rajasthan:';
+    try { if (navigator.share) { await navigator.share({ title: 'Tutto Rajasthan, gruppo di viaggio', text: testo, url: link }); return true; } } catch (x) { if (x && x.name === 'AbortError') return true; }
+    try { await navigator.clipboard.writeText(testo + ' ' + link); msg.textContent = 'Link copiato: incollalo nella chat del gruppo.'; } catch (x) { msg.textContent = link; }
+    return true;
+  }
+  if (az === 'grAggiorna') { await grSincronizza(); disegna(); return true; }
+  if (az === 'esciGruppo') {
+    if (!el.dataset.conferma) { el.dataset.conferma = '1'; el.textContent = 'Conferma: esci'; return true; }
+    LS.del('rj.gruppo'); GR = {}; coda = {}; GRV = null; LS.set('rj.gr', GR); LS.set('rj.grCoda', coda); statoGr = { fase: 'fermo', errore: '', ultima: 0 }; disegna(); return true;
+  }
+  return false;
+}
+
 /* ---------- Viste ---------- */
 let rotta = { nome: 'viaggio', arg: '' };
 let disegnoRimandato = false;
@@ -501,13 +770,13 @@ function disegna() {
   disegnoRimandato = false;
   const v = $('#vista');
   if (!CONT) { v.innerHTML = '<div class="pannello vuoto"><h3>Contenuti non ancora scaricati</h3><p class="tenue">Apri l\'app una volta con la rete attiva: poi funziona anche senza.</p></div>'; return; }
-  const viste = { viaggio: vistaViaggio, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, sim: vistaSim, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
+  const viste = { viaggio: vistaViaggio, giorno: vistaGiorno, proponi: vistaProponi, gruppo: vistaGruppo, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, sim: vistaSim, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
   const f = viste[rotta.nome] || vistaViaggio;
   const r = f(rotta.arg);
   v.innerHTML = r.html;
   $('#titolo').textContent = r.titolo;
   $('#back').hidden = !r.indietro; $('#back').dataset.dove = r.indietro || '';
-  const tab = { tappa: 'tappe', generali: 'tappe', sim: 'liste' }[rotta.nome] || rotta.nome;
+  const tab = { tappa: 'tappe', generali: 'tappe', sim: 'liste', giorno: 'viaggio', proponi: 'viaggio', gruppo: 'viaggio' }[rotta.nome] || rotta.nome;
   document.querySelectorAll('.tab a').forEach((a) => { const q = a.dataset.tab === tab; a.classList.toggle('qui', q); if (q) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   aggiornaStato();
   if (r.dopo) r.dopo();
@@ -547,6 +816,7 @@ function vistaViaggio() {
     h += '<li' + cl + stileCitta(t0) + '><span class="perla">' + (i + 1) + '</span><div class="cosa"><span class="quando">' + esc(fmtLungo.format(dataDa(g.data))) + '</span><h3>' + esc(g.titolo) + '</h3>';
     if (g.nota) h += '<p class="tenue">' + esc(g.nota) + '</p>';
     h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip citta" href="#tappa/' + esc(id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>' : ''; }).join('');
+    if (g.tappe.length) { const n = g.tappe.reduce((a, id) => a + percorsiDi(id).filter((p) => aderenti(g.data, p.id).indexOf(io().id) >= 0).length, 0); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Ci sto' : 'Percorsi') + '</a>'; }
     h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a></div></div>';
     h += '</li>';
   });
@@ -604,7 +874,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl></details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' ? htmlVicini(t, x) : '') + '</details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });
@@ -638,10 +908,12 @@ function vistaTappa(id) {
   let h = '<div' + stileCitta(t) + '><section class="fascia">' + (t.foto && t.foto.url ? '<img class="foto" crossorigin="anonymous" src="' + esc(t.foto.url) + '" alt="' + esc(t.foto.soggetto || t.nome) + '">' : '') + arco(suColore(t.colore), 210, 'sfondo') + '<div class="scritta"><h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></div></section>' + htmlMeteo(t);
   h += htmlSegni(t, t.vedere, 'v', 'Cosa vedere', 'Visto');
   h += htmlSegni(t, t.mangiare, 'm', 'Cosa mangiare', 'Assaggiato');
+  h += htmlDoveMangiare(t);
   h += '<h2 class="sez">' + arco(t.colore, 18) + 'Consigli pratici</h2><div class="pannello"><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></div>';
   const sit = voci('foto').filter((v) => v.tipo === 'situazione' && (v.dove || []).indexOf(t.id) >= 0).sort(perOrdine);
   if (sit.length) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
   const gg = giorniDi(t.id);
+  if (gg.length && (t.percorsi || []).length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + 'Percorsi del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
   if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
   let pie = METEO ? 'Meteo di Open-Meteo, aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '. ' : '';
   if (t.foto && t.foto.url) pie += 'Foto: ' + esc(t.foto.soggetto || '') + ', di ' + esc(t.foto.autore) + ', <a href="' + esc(t.foto.pagina) + '" target="_blank" rel="noopener">' + esc(t.foto.licenza) + ', Wikimedia Commons</a>.';
@@ -991,6 +1263,7 @@ function vistaImpostazioni() {
       '<p class="err" id="errToken" hidden></p><div class="azioni larghe"><button class="btn chiaro" data-az="salvaToken">Salva e sincronizza</button></div></section>';
   }
 
+  h += htmlImpostazioniGruppo();
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
   h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
   h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
@@ -1045,6 +1318,7 @@ $('#dlg').addEventListener('close', () => {
 const timerCampo = {};
 function campoDi(el) { const k = el.dataset && el.dataset.campo; if (!k) return null; const i = k.indexOf('|'); return { k, sez: k.slice(0, i), id: k.slice(i + 1) }; }
 $('#vista').addEventListener('input', (e) => {
+  bozzaDaCampo(e.target);
   const c = campoDi(e.target); if (!c) return;
   const ta = e.target;
   clearTimeout(timerCampo[c.k]);
@@ -1057,6 +1331,7 @@ $('#vista').addEventListener('focusout', (e) => {
   if (disegnoRimandato) setTimeout(() => { if (!staScrivendo()) disegna(); }, 250);
 });
 $('#vista').addEventListener('change', (e) => {
+  if (bozzaDaCampo(e.target)) { disegna(); return; }
   const sp = e.target.dataset && (e.target.dataset.simpos || e.target.dataset.simruolo);
   if (sp) {
     const i = sp.indexOf('|'), s = voce('simulatore', sp.slice(0, i)), x = sp.slice(i + 1), val = e.target.value;
@@ -1095,6 +1370,7 @@ $('#vista').addEventListener('change', (e) => {
 $('#vista').addEventListener('click', async (e) => {
   const el = e.target.closest('[data-az]'); if (!el) return;
   const az = el.dataset.az, sez = el.dataset.sez, id = el.dataset.id;
+  if (await azioneGruppo(az, el)) return;
   if (az === 'segno') { const s = voce('segni', id); scrivi('segni', id, { fatto: !(s && s.fatto) }); el.classList.toggle('on'); el.setAttribute('aria-pressed', el.classList.contains('on')); }
   else if (az === 'fatto') { const v = voce(sez, id); if (v) { scrivi(sez, id, { fatto: !v.fatto }); disegna(); } }
   else if (az === 'stato') { const v = voce(sez, id), st = LISTE[sez].stati; if (v) { scrivi(sez, id, { stato: st[(st.indexOf(v.stato || st[0]) + 1) % st.length] }); disegna(); } }
@@ -1165,11 +1441,12 @@ $('#stato').addEventListener('click', () => { location.hash = '#impostazioni'; }
   $('#btnVersione').addEventListener('click', (e) => { e.target.disabled = true; aggiornaApp($('#msgVersione')).then(() => { e.target.disabled = false; }); });
 })();
 window.addEventListener('hashchange', () => { leggiRotta(); disegna(); window.scrollTo(0, 0); });
-window.addEventListener('online', () => { sincronizza(false); aggiornaMeteo(false); });
+window.addEventListener('online', () => { sincronizza(false); aggiornaMeteo(false); grSincronizza(); });
 window.addEventListener('offline', aggiornaStato);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { sincronizza(true); aggiornaMeteo(false); controllaVersione(); } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { sincronizza(true); aggiornaMeteo(false); controllaVersione(); grSincronizza(); } });
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installa = e; if (rotta.nome === 'impostazioni') disegna(); });
 setInterval(() => sincronizza(false), 5 * 60 * 1000);
+setInterval(() => { if (document.visibilityState === 'visible') grSincronizza(); }, 2 * 60 * 1000);
 
 /* ---------- Avvio ---------- */
 (async function avvio() {
@@ -1183,4 +1460,5 @@ setInterval(() => sincronizza(false), 5 * 60 * 1000);
   aggiornaMeteo(false);
   controllaVersione();
   scaricaFoto();
+  grSincronizza();
 })();
