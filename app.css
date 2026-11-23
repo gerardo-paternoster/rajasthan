@@ -218,6 +218,10 @@ h3 { font: 600 18px/1.3 var(--testo); }
 .dett .giu { flex: none; width: 24px; height: 24px; margin-top: 2px; color: var(--tenue); }
 @media (prefers-reduced-motion: no-preference) { .dett .giu { transition: transform .2s; } }
 .dett[open] .giu { transform: rotate(180deg); }
+.foto-voce { margin: 12px 0 0; }
+.foto-voce img { display: block; width: 100%; max-height: 300px; object-fit: cover; border-radius: 6px; background: var(--linea); aspect-ratio: 4 / 3; }
+.foto-voce figcaption { font-size: 13px; color: var(--tenue); margin-top: 6px; line-height: 1.35; }
+.foto-voce figcaption a { text-decoration: underline; }
 .dett dl { margin: 10px 0 2px; padding: 4px 0 4px 14px; border-left: 3px solid var(--citta); }
 .dett dt { font-size: 14px; font-weight: 700; color: var(--tenue); margin-top: 10px; }
 .dett dt:first-child { margin-top: 0; }

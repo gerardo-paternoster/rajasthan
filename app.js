@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-23.1';
+const VERSIONE = '2026-11-23.2';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -573,6 +573,29 @@ function htmlEtichette(x) {
   if (x.veg != null) h += '<span class="et">' + (x.veg ? 'Vegetariano' : 'Con carne') + '</span>';
   return h + '</span>';
 }
+function htmlFotoVoce(x) {
+  if (!x.f || !x.f.url) return '';
+  const f = x.f;
+  return '<figure class="foto-voce"><img src="' + esc(f.url) + '" alt="' + esc(f.nota || x.t) + '" loading="lazy" decoding="async" crossorigin="anonymous" onerror="this.parentNode.hidden=true">' +
+    '<figcaption>' + (f.nota ? esc(f.nota) + '. ' : '') + 'Foto <a href="' + esc(f.pagina) + '" target="_blank" rel="noopener">' + esc(f.autore) + '</a>, ' + esc(f.licenza) + ', Wikimedia Commons</figcaption></figure>';
+}
+function urlFotoVoci() {
+  const u = new Set();
+  (CONT ? CONT.tappe : []).forEach((t) => ['vedere', 'mangiare'].forEach((k) => (t[k] || []).forEach((x) => { if (x.f && x.f.url) u.add(x.f.url); })));
+  return [...u];
+}
+async function scaricaFotoVoci(msg) {
+  if (!('caches' in window)) { msg.textContent = 'Questo browser non permette di salvare le foto.'; return; }
+  if (!navigator.onLine) { msg.textContent = 'Serve la connessione: riprova quando sei online.'; return; }
+  const cache = await caches.open('rajasthan-foto'), lista = urlFotoVoci();
+  let ok = 0, ko = 0;
+  for (const u of lista) {
+    if (await cache.match(u)) { ok++; continue; }
+    try { const r = await fetch(u, { mode: 'cors' }); if (r.ok) { await cache.put(u, r); ok++; } else ko++; } catch (e) { ko++; }
+    msg.textContent = 'Scaricate ' + ok + ' di ' + lista.length + '…';
+  }
+  msg.textContent = ko ? ok + ' foto salvate, ' + ko + ' non scaricate: riprova più tardi.' : 'Tutte le ' + ok + ' foto sono salvate e si vedranno anche offline.';
+}
 function htmlSegni(t, lista, k, titolo, etichetta) {
   if (!lista.length) return '';
   let h = '<h2 class="sez">' + arco(t.colore, 18) + titolo + '</h2><div class="pannello"><ul class="segni">';
@@ -581,7 +604,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary><dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl></details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl></details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });
@@ -971,7 +994,8 @@ function vistaImpostazioni() {
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
   h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
   h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
-  h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div></section><p class="pie"><a href="privacy.html">Informativa sulla privacy</a></p>';
+  h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div>' +
+    '<p class="tenue" style="margin-top:14px">Le foto di luoghi e piatti si scaricano quando apri un dettaglio. Per averle tutte anche offline (circa 3 MB) scaricale prima di partire, col Wi-Fi.</p><div class="azioni"><button class="btn chiaro" data-az="fotoVoci">Scarica tutte le foto</button></div><p class="tenue" id="msgFoto"></p></section><p class="pie"><a href="privacy.html">Informativa sulla privacy</a></p>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
@@ -1085,6 +1109,7 @@ $('#vista').addEventListener('click', async (e) => {
     location.hash = '#sim/' + nid;
   }
   else if (az === 'sync') sincronizza(true);
+  else if (az === 'fotoVoci') { el.disabled = true; await scaricaFotoVoci($('#msgFoto')); el.disabled = false; }
   else if (az === 'aggiornaApp') { el.disabled = true; await aggiornaApp($('#msgApp')); el.disabled = false; }
   else if (az === 'meteo') { el.disabled = true; await aggiornaMeteo(true); disegna(); }
   else if (az === 'togliToken') { LS.del('rj.token'); statoSync.fase = 'fermo'; disegna(); }
