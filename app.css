@@ -438,3 +438,10 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .oppure { margin: 16px 0 0; font-size: 14px; font-weight: 600; color: var(--tenue); }
 .link-btn { background: none; border: 0; padding: 6px 0; font-size: 15px; font-weight: 600; text-decoration: underline; color: var(--inchiostro); }
 .codice { font-family: ui-monospace, Menlo, monospace; font-size: 13px; overflow-wrap: anywhere; user-select: all; }
+
+/* ---------- Link a Google Maps ---------- */
+.mappa { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; font-size: 15px; font-weight: 600; text-decoration: underline; color: var(--inchiostro); }
+.mappa svg { width: 20px; height: 20px; flex: none; color: var(--citta, var(--indaco)); }
+.riga-mappa { margin: 8px 0 0; }
+.percorso-mappa { margin: 0 16px 8px; }
+.vicini .mappa { min-height: 32px; font-size: 14px; }

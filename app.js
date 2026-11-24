@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-24.5';
+const VERSIONE = '2026-11-24.6';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -92,6 +92,7 @@ const ICO = {
   penna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.5z"/></svg>',
   piu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
   campana: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0112 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/></svg>',
+  mappa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   bussola: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>'
 };
 function arco(colore, largo, classe) {
@@ -685,16 +686,28 @@ function adattoA(l, k, completo) {
   if (k === completo) return l.tipo !== 'leggero' && l.pasti.indexOf(k) >= 0;
   return l.tipo !== 'completo' && (l.pasti.indexOf(k) >= 0 || l.pasti.indexOf('spuntino') >= 0);
 }
+function urlMappa(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
+function linkMappa(q, testo) { return q ? '<a class="mappa" href="' + esc(urlMappa(q)) + '" target="_blank" rel="noopener">' + ICO.mappa + esc(testo || 'Apri in Google Maps') + '</a>' : ''; }
+function qSosta(t, nome) { const v = t.vedere.find((x) => x.t === nome); return v && v.q ? v.q : nome + ', ' + t.nome + ', India'; }
+function urlPercorso(t, soste) {
+  const q = (soste || []).map((s) => qSosta(t, s.t)).filter((x, i, a) => a.indexOf(x) === i);
+  if (!q.length) return '';
+  if (q.length === 1) return urlMappa(q[0]);
+  let u = 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(q[0]) + '&destination=' + encodeURIComponent(q[q.length - 1]);
+  if (q.length > 2) u += '&waypoints=' + encodeURIComponent(q.slice(1, -1).join('|'));
+  return u;
+}
 function htmlLocale(l) {
   let h = '<li class="locale"><div class="loc-testa"><b>' + esc(l.n) + '</b><span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(l.prezzo || 1) + '</span></div>';
   h += '<p class="tenue">' + esc(l.zona) + '</p><p>' + esc(l.cosa) + '</p><span class="etichette"><span class="et">' + esc(TIPO_LOC[l.tipo] || '') + '</span>' + l.pasti.map((p) => '<span class="et">' + esc(NOME_PASTO[p]) + '</span>').join('') + (l.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
   if (l.nota) h += '<p class="tenue nota">' + esc(l.nota) + '</p>';
+  if (l.q) h += '<p>' + linkMappa(l.q) + '</p>';
   return h + '</li>';
 }
 function htmlVicini(t, x) {
   const v = (t.locali || []).filter((l) => l.vicino.indexOf(x.t) >= 0);
   if (!v.length) return '';
-  return '<div class="vicini"><h4>Per mangiare qui vicino</h4><ul>' + v.map((l) => '<li><b>' + esc(l.n) + '</b> <span class="tenue">' + esc(TIPO_LOC[l.tipo].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span><br>' + esc(l.cosa) + '</li>').join('') + '</ul></div>';
+  return '<div class="vicini"><h4>Per mangiare qui vicino</h4><ul>' + v.map((l) => '<li><b>' + esc(l.n) + '</b> <span class="tenue">' + esc(TIPO_LOC[l.tipo].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span><br>' + esc(l.cosa) + (l.q ? '<br>' + linkMappa(l.q, 'Mappa') : '') + '</li>').join('') + '</ul></div>';
 }
 function htmlDoveMangiare(t) {
   const L = t.locali || []; if (!L.length) return '';
@@ -710,6 +723,8 @@ function htmlPercorso(p, t, data) {
   let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + stileCitta(t) + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
   if (p.proposta) h += '<p class="autore">Proposto da ' + esc(mia ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
   h += '</header><ol class="soste">' + (p.soste || []).map((s) => '<li><span class="ora">' + esc(s.ora || '') + '</span><div><b>' + esc(s.t) + '</b>' + (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') + '</div></li>').join('') + '</ol>';
+  const up = urlPercorso(t, p.soste);
+  if (up) h += '<p class="riga-mappa percorso-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + ((p.soste || []).length > 1 ? 'Il percorso su Google Maps' : 'Apri in Google Maps') + '</a></p>';
   h += '<dl class="pasti">' + PASTI.map(([k, n]) => {
     const m = (p.pasti || {})[k] || {}, l = locale(t, m.l), c = p.completo === k;
     return '<div' + (c ? ' class="completo"' : '') + '><dt>' + n + (c ? '<span class="et">completo</span>' : '') + '</dt><dd>' + (l ? '<b>' + esc(l.n) + '</b>' : '') + (m.c ? (l ? '<br>' : '') + esc(m.c) : '') + (!l && !m.c ? '<span class="tenue">Libero</span>' : '') + '</dd></div>';
@@ -1015,7 +1030,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' ? htmlVicini(t, x) : '') + '</details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : '') + '</details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });

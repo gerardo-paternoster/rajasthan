@@ -194,7 +194,8 @@
       "autore": "AKS.9955",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:India_Gate_front.jpg"
-     }
+     },
+     "q": "India Gate, New Delhi"
     },
     {
      "t": "Chandni Chowk",
@@ -223,7 +224,8 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Gurudwara_Sisganj_Sahib_Chandni_Chowk_19.jpg",
       "nota": "Il Gurudwara Sis Ganj sulla via principale"
-     }
+     },
+     "q": "Chandni Chowk, Delhi"
     },
     {
      "t": "Jama Masjid",
@@ -241,7 +243,8 @@
        "Da sapere",
        "Chiusa ai visitatori durante le preghiere, soprattutto il venerdì a mezzogiorno. Fotocamere e telefoni possono pagare un biglietto; le scarpe si lasciano all'ingresso."
       ]
-     ]
+     ],
+     "q": "Jama Masjid, Delhi"
     },
     {
      "t": "Forte Rosso",
@@ -265,7 +268,8 @@
       "autore": "PerSona77",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Delhi_fort.jpg"
-     }
+     },
+     "q": "Red Fort, Delhi"
     }
    ],
    "mangiare": [
@@ -406,7 +410,8 @@
      "cosa": "Paratha ripiene fritte nel ghee, con curry di patate, chutney e sottaceti. Due paratha sono uno spuntino, quattro un pranzo.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Il locale più citato è Pandit Gaya Prasad Shiv Charan."
+     "nota": "Il locale più citato è Pandit Gaya Prasad Shiv Charan.",
+     "q": "Pandit Gaya Prasad Shiv Charan Paranthe Wala, Chandni Chowk, Delhi"
     },
     {
      "id": "jalebi-wala",
@@ -424,7 +429,8 @@
      "cosa": "Jalebi grandi fritte nel ghee e servite bollenti; anche imarti. Si ordinano a peso.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Attivo dalla fine dell'Ottocento."
+     "nota": "Attivo dalla fine dell'Ottocento.",
+     "q": "Old Famous Jalebi Wala, Chandni Chowk, Delhi"
     },
     {
      "id": "natraj-dahi-bhalle",
@@ -440,7 +446,8 @@
      "cosa": "Dahi bhalle (polpette di lenticchie con yogurt e chutney) e aloo tikki, le crocchette di patate.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Sempre coda: è il segno che il ricambio è veloce."
+     "nota": "Sempre coda: è il segno che il ricambio è veloce.",
+     "q": "Natraj Dahi Bhalle Wala, Chandni Chowk, Delhi"
     },
     {
      "id": "jb-kachori",
@@ -457,7 +464,8 @@
      "cosa": "Kachori di lenticchie urad con curry di patate.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Orario indicato 10:30–20."
+     "nota": "Orario indicato 10:30–20.",
+     "q": "Jung Bahadur Kachori Wala, Chandni Chowk, Delhi"
     },
     {
      "id": "karims",
@@ -474,7 +482,8 @@
      "tipo": "completo",
      "cosa": "Cucina moghul dal 1913: korma di montone, kebab, pollo, pane al tandoor.",
      "prezzo": 2,
-     "nota": "Poca scelta vegetariana. La sera i vicoli dei kebab sono al massimo."
+     "nota": "Poca scelta vegetariana. La sera i vicoli dei kebab sono al massimo.",
+     "q": "Karim's, Jama Masjid, Delhi"
     },
     {
      "id": "haldirams-cc",
@@ -491,7 +500,8 @@
      "tipo": "entrambi",
      "cosa": "Catena di Delhi: chaat, thali e dolci in un locale pulito. Per chi vuole andare sul sicuro.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Haldiram's, Chandni Chowk, Delhi"
     }
    ],
    "percorsi": [
@@ -600,7 +610,8 @@
        "Da sapere",
        "Le sale sono piccole e buie: interni bui (vedi la scheda di fotografia)."
       ]
-     ]
+     ],
+     "q": "Junagarh Fort, Bikaner"
     },
     {
      "t": "Haveli Rampuria",
@@ -624,7 +635,8 @@
       "autore": "Nagarjun Kandukuru",
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Rampuria_Haveli%2C_Bikaner.jpg"
-     }
+     },
+     "q": "Rampuria Haveli, Bikaner"
     },
     {
      "t": "Tempio di Karni Mata a Deshnok",
@@ -648,7 +660,8 @@
       "autore": "Jakub Hałun",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191212_%C5%9Awi%C4%85tynia_Karni_Maty_w_De%C5%9Bnok_1031_8078_DxO.jpg"
-     }
+     },
+     "q": "Karni Mata Temple, Deshnok"
     },
     {
      "t": "Centro di ricerca sul cammello",
@@ -672,7 +685,8 @@
       "autore": "Sandra Cohen-Rose e Colin Rose",
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Camels_at_Camel_Research_Farm%2C_Bikaner.jpg"
-     }
+     },
+     "q": "National Research Centre on Camel, Bikaner"
     }
    ],
    "mangiare": [
@@ -782,7 +796,8 @@
      "cosa": "Puri con curry di patate e fieno greco, kachori, jalebi; rasgulla e rasmalai.",
      "prezzo": 1,
      "veg": true,
-     "nota": "A Bikaner si comincia spesso la giornata col dolce."
+     "nota": "A Bikaner si comincia spesso la giornata col dolce.",
+     "q": "Chhotu Motu Joshi Sweet Shop, Station Road, Bikaner"
     },
     {
      "id": "bhikharam-chandmal",
@@ -797,7 +812,8 @@
      "tipo": "leggero",
      "cosa": "Bikaneri bhujia in tante versioni, sfusa: da assaggiare e da comprare.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Bhikharam Chandmal Bhujiawala, Kote Gate, Bikaner"
     },
     {
      "id": "gallops",
@@ -813,7 +829,8 @@
      "tipo": "completo",
      "cosa": "Thali rajasthano, gatte ki sabzi, ker sangri; anche carne. Tavoli con vista sul forte.",
      "prezzo": 2,
-     "nota": "Diverse recensioni lo trovano caro per quello che offre."
+     "nota": "Diverse recensioni lo trovano caro per quello che offre.",
+     "q": "Gallops Restaurant, Bikaner"
     },
     {
      "id": "swarna-mahal",
@@ -826,7 +843,8 @@
      "tipo": "completo",
      "cosa": "Cena in una sala del palazzo, con pareti dipinte a mano: dal baati, laal maas, ker sangri.",
      "prezzo": 3,
-     "nota": "Si prenota."
+     "nota": "Si prenota.",
+     "q": "Laxmi Niwas Palace, Bikaner"
     },
     {
      "id": "nrcc-latte",
@@ -842,7 +860,8 @@
      "cosa": "Gelato, tè e caffè al latte di cammello.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Da verificare sul posto orari e cosa c'è."
+     "nota": "Da verificare sul posto orari e cosa c'è.",
+     "q": "National Research Centre on Camel, Bikaner"
     }
    ],
    "percorsi": [
@@ -949,7 +968,8 @@
        "Quanto tempo",
        "Mezza giornata."
       ]
-     ]
+     ],
+     "q": "Jaisalmer Fort"
     },
     {
      "t": "Templi jainisti nel forte",
@@ -973,7 +993,8 @@
       "autore": "Ingo Mehling",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jaisalmer_Jain_Temple_6.jpg"
-     }
+     },
+     "q": "Jain Temples, Jaisalmer Fort"
     },
     {
      "t": "Patwon Ki Haveli",
@@ -997,7 +1018,8 @@
       "autore": "Ashwin Kumar",
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Patwon_Ki_Haveli_-_26140771308.jpg"
-     }
+     },
+     "q": "Patwon Ki Haveli, Jaisalmer"
     },
     {
      "t": "Lago Gadisar",
@@ -1022,7 +1044,8 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Main_entrance_of_Gadisar_Lake.jpg",
       "nota": "L'ingresso al lago"
-     }
+     },
+     "q": "Gadisar Lake, Jaisalmer"
     },
     {
      "t": "Bada Bagh",
@@ -1046,7 +1069,8 @@
       "autore": "Worldthrumaeyes",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Resting_places.jpg"
-     }
+     },
+     "q": "Bada Bagh, Jaisalmer"
     },
     {
      "t": "Dune del Thar",
@@ -1071,7 +1095,8 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Sam_dunes_%28Jaisalmer%29.jpg",
       "nota": "Le dune di Sam"
-     }
+     },
+     "q": "Sam Sand Dunes, Jaisalmer"
     }
    ],
    "mangiare": [
@@ -1223,7 +1248,8 @@
      "tipo": "leggero",
      "cosa": "Ghotua ladoo e altri dolci di Jaisalmer, pyaaz kachori al mattino.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Dhanraj Ranmal Bhatia, Jaisalmer"
     },
     {
      "id": "dal-pakwan",
@@ -1254,7 +1280,8 @@
      "tipo": "leggero",
      "cosa": "Caffè, tè, pancake e colazioni; posto piccolo e tranquillo.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Kuku Coffee Shop, Jaisalmer Fort"
     },
     {
      "id": "trio",
@@ -1270,7 +1297,8 @@
      ],
      "tipo": "completo",
      "cosa": "Cucina rajasthana anche di carne: laal maas, ker sangri, dal; terrazza con musica la sera.",
-     "prezzo": 2
+     "prezzo": 2,
+     "q": "The Trio Restaurant, Gandhi Chowk, Jaisalmer"
     },
     {
      "id": "chandan-shree",
@@ -1284,7 +1312,8 @@
      "tipo": "entrambi",
      "cosa": "Al mattino kachori, samosa e puri; a pranzo thali vegetariano.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Chandan Shree Restaurant, Jaisalmer"
     },
     {
      "id": "kanchan-shree",
@@ -1299,7 +1328,8 @@
      "tipo": "leggero",
      "cosa": "Lassi densi e gelati, per la pausa prima o dopo il lago.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Kanchan Shree, Gadisar Road, Jaisalmer"
     },
     {
      "id": "campo-thar",
@@ -1430,7 +1460,8 @@
        "Quanto tempo",
        "Tre o quattro ore con l'audioguida."
       ]
-     ]
+     ],
+     "q": "Mehrangarh Fort, Jodhpur"
     },
     {
      "t": "Jaswant Thada",
@@ -1454,7 +1485,8 @@
       "autore": "Flying Pharmacist",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jaswant_Thada_Dawn.jpg"
-     }
+     },
+     "q": "Jaswant Thada, Jodhpur"
     },
     {
      "t": "Città blu",
@@ -1478,7 +1510,8 @@
       "autore": "Everhard van Eimeren",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jodhpur_the_blue_city_view_over_the_maze_of_houses_India_25Aug2006.jpg"
-     }
+     },
+     "q": "Blue City, Jodhpur"
     },
     {
      "t": "Toorji Ka Jhalra",
@@ -1502,7 +1535,8 @@
       "autore": "Ramesh Deuba",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Toorji_Ka_Jhalra.jpg"
-     }
+     },
+     "q": "Toorji Ka Jhalra, Jodhpur"
     },
     {
      "t": "Torre dell'orologio e mercato Sardar",
@@ -1520,7 +1554,8 @@
        "Quando",
        "Tardo pomeriggio e sera, quando si anima."
       ]
-     ]
+     ],
+     "q": "Ghanta Ghar Clock Tower, Sardar Market, Jodhpur"
     }
    ],
    "mangiare": [
@@ -1649,7 +1684,8 @@
      "cosa": "Samosa enormi, pyaaz kachori e mirchi vada fritti al momento.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Orario indicato 8:30–20."
+     "nota": "Orario indicato 8:30–20.",
+     "q": "Shahi Samosa, Nai Sarak, Jodhpur"
     },
     {
      "id": "janta-sweet",
@@ -1665,7 +1701,8 @@
      "tipo": "leggero",
      "cosa": "Mirchi vada, pyaaz kachori e mawa kachori; gulab jamun caldi.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Janta Sweet Home, Nai Sarak, Jodhpur"
     },
     {
      "id": "mishrilal",
@@ -1680,7 +1717,8 @@
      "tipo": "leggero",
      "cosa": "Makhaniya lassi denso allo zafferano, rabri.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Shri Mishrilal Hotel, Sardar Market, Jodhpur"
     },
     {
      "id": "cafe-mehran",
@@ -1697,7 +1735,8 @@
      "tipo": "leggero",
      "cosa": "Lassi, paratha, chai: la pausa a metà visita.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Cafe Mehran, Mehrangarh Fort, Jodhpur"
     },
     {
      "id": "stepwell-cafe",
@@ -1714,7 +1753,8 @@
      ],
      "tipo": "entrambi",
      "cosa": "Tre piani affacciati sul pozzo a gradoni, con vista sul forte.",
-     "prezzo": 2
+     "prezzo": 2,
+     "q": "The Stepwell Cafe, Jodhpur"
     },
     {
      "id": "indique",
@@ -1730,7 +1770,8 @@
      "tipo": "completo",
      "cosa": "Laal maas, dal baati, gatte; vista sul forte illuminato e sulla torre.",
      "prezzo": 2,
-     "nota": "Si prenota."
+     "nota": "Si prenota.",
+     "q": "Indique, Pal Haveli, Jodhpur"
     },
     {
      "id": "gypsy",
@@ -1745,7 +1786,8 @@
      "cosa": "Thali vegetariano illimitato: si mangia finché si vuole.",
      "prezzo": 1,
      "veg": true,
-     "nota": "In tuk-tuk dalla città vecchia."
+     "nota": "In tuk-tuk dalla città vecchia.",
+     "q": "Gypsy Restaurant, Sardarpura, Jodhpur"
     }
    ],
    "percorsi": [
@@ -1867,7 +1909,8 @@
        "Quanto tempo",
        "Un'ora e mezza."
       ]
-     ]
+     ],
+     "q": "Ranakpur Jain Temple"
     },
     {
      "t": "Templi di Neminath e Parshvanath",
@@ -1885,7 +1928,8 @@
        "Quanto tempo",
        "Mezz'ora."
       ]
-     ]
+     ],
+     "q": "Parshvanath Temple, Ranakpur"
     }
    ],
    "mangiare": [
@@ -1946,7 +1990,8 @@
      "cosa": "Thali jainista semplice, senza cipolla né aglio. Si paga con un buono all'ingresso.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Pranzo indicato 11:30–13: prima della visita, che per i turisti apre a mezzogiorno."
+     "nota": "Pranzo indicato 11:30–13: prima della visita, che per i turisti apre a mezzogiorno.",
+     "q": "Ranakpur Jain Temple"
     }
    ],
    "percorsi": [
@@ -2014,7 +2059,8 @@
        "Quanto tempo",
        "Due o tre ore. Il Mor Chowk rende meglio nel tardo pomeriggio."
       ]
-     ]
+     ],
+     "q": "City Palace, Udaipur"
     },
     {
      "t": "Giro in barca sul lago Pichola",
@@ -2038,7 +2084,8 @@
       "autore": "Uri Sittan Tripo",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_Lake_India.JPG"
-     }
+     },
+     "q": "Rameshwar Ghat boat ride, Lake Pichola, Udaipur"
     },
     {
      "t": "Tempio di Jagdish",
@@ -2062,7 +2109,8 @@
       "autore": "Ingo Mehling",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jagdish_Temple_Udaipur.jpg"
-     }
+     },
+     "q": "Jagdish Temple, Udaipur"
     },
     {
      "t": "Bagore Ki Haveli",
@@ -2086,7 +2134,8 @@
       "autore": "ashish v",
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Bagore_ki_Haveli%2C_Rajasthan.jpg"
-     }
+     },
+     "q": "Bagore Ki Haveli, Udaipur"
     },
     {
      "t": "Ambrai Ghat",
@@ -2111,7 +2160,8 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_Lake_Palace.jpg",
       "nota": "Il Lake Palace sul Pichola"
-     }
+     },
+     "q": "Ambrai Ghat, Udaipur"
     },
     {
      "t": "Tramonto dall'alto",
@@ -2132,7 +2182,8 @@
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Monsoon_Palace.jpg",
       "nota": "Il Monsoon Palace (Sajjangarh)"
-     }
+     },
+     "q": "Sajjangarh Monsoon Palace, Udaipur"
     }
    ],
    "mangiare": [
@@ -2250,7 +2301,8 @@
      "tipo": "completo",
      "cosa": "Cena sul lago davanti a City Palace e Lake Palace; cucina rajasthana e internazionale.",
      "prezzo": 3,
-     "nota": "Si prenota; a Capodanno con molto anticipo."
+     "nota": "Si prenota; a Capodanno con molto anticipo.",
+     "q": "Ambrai Restaurant, Udaipur"
     },
     {
      "id": "chandni-jagat-niwas",
@@ -2267,7 +2319,8 @@
      "tipo": "completo",
      "cosa": "Thali rajasthano su una terrazza sul lago.",
      "prezzo": 2,
-     "nota": "Molto richiesto: prenotare."
+     "nota": "Molto richiesto: prenotare.",
+     "q": "Jagat Niwas Palace, Udaipur"
     },
     {
      "id": "millets-of-mewar",
@@ -2285,7 +2338,8 @@
      "tipo": "entrambi",
      "cosa": "Piatti a base di miglio, frittelle, cucina vegetariana leggera.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Millets of Mewar, Udaipur"
     },
     {
      "id": "shreenath-dosa",
@@ -2301,7 +2355,8 @@
      "tipo": "leggero",
      "cosa": "Dosa grandi come un piatto da portata.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Shreenath Masala Dosa, Udaipur"
     },
     {
      "id": "jheels",
@@ -2318,7 +2373,8 @@
      "tipo": "leggero",
      "cosa": "Caffè, dolci da forno, milkshake, con tavoli sul lago.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Jheel's Ginger Coffee Bar, Udaipur"
     },
     {
      "id": "natraj-udaipur",
@@ -2333,7 +2389,8 @@
      "cosa": "Thali rajasthano e gujarati illimitato: ker sangri, gatte, dal baati.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Non è in centro storico: tuk-tuk."
+     "nota": "Non è in centro storico: tuk-tuk.",
+     "q": "Natraj Dining Hall, Udaipur"
     }
    ],
    "percorsi": [
@@ -2491,7 +2548,8 @@
       "autore": "Shahnoor Habib Munmun",
       "licenza": "CC BY 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Dargah_of_Sufi_saint_Moinuddin_Chishti_Ajmer_India_%285%29.JPG"
-     }
+     },
+     "q": "Ajmer Sharif Dargah"
     },
     {
      "t": "Lago sacro di Pushkar",
@@ -2509,7 +2567,8 @@
        "Quando",
        "Alba e tramonto. Il Gau Ghat e il Varaha Ghat sono tra i più frequentati."
       ]
-     ]
+     ],
+     "q": "Pushkar Lake"
     },
     {
      "t": "Tempio di Brahma",
@@ -2533,7 +2592,8 @@
       "autore": "vasantv (Flickr)",
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Brahma_Temple%2C_Pushkar.jpg"
-     }
+     },
+     "q": "Brahma Temple, Pushkar"
     },
     {
      "t": "Tempio di Savitri",
@@ -2557,7 +2617,8 @@
       "autore": "Jakub Hałun",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191215_%C5%9Awi%C4%85tynia_Savitri_w_Puszkarze_1016_8669_DxO.jpg"
-     }
+     },
+     "q": "Savitri Mata Temple, Pushkar"
     },
     {
      "t": "Aarti serale sui ghat",
@@ -2578,7 +2639,8 @@
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:%281%29_Aarti_Thali%2C_Prayer_Plate_India.jpg",
       "nota": "Il piatto dell'aarti, con lumini e fiori"
-     }
+     },
+     "q": "Brahma Ghat, Pushkar"
     }
    ],
    "mangiare": [
@@ -2700,7 +2762,8 @@
      "tipo": "completo",
      "cosa": "Biryani cotto nei grandi pentoloni, anche a mezza mattina.",
      "prezzo": 1,
-     "nota": "Scegliere dove c'è ricambio e si serve caldo."
+     "nota": "Scegliere dove c'è ricambio e si serve caldo.",
+     "q": "Dargah Bazar, Ajmer"
     },
     {
      "id": "sohan-halwa",
@@ -2715,7 +2778,8 @@
      "tipo": "leggero",
      "cosa": "Sohan halwa a peso: dolce duro e burroso, si conserva e si porta via.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Dargah Bazar, Ajmer"
     },
     {
      "id": "out-of-the-blue",
@@ -2733,7 +2797,8 @@
      "cosa": "Terrazza con vista sul lago; thali, noodle, pancake.",
      "prezzo": 2,
      "veg": true,
-     "nota": "Pushkar è tutta vegetariana: niente carne, uova, alcol."
+     "nota": "Pushkar è tutta vegetariana: niente carne, uova, alcol.",
+     "q": "Out of the Blue, Pushkar"
     },
     {
      "id": "sunset-cafe",
@@ -2750,7 +2815,8 @@
      "tipo": "leggero",
      "cosa": "Caffè e dolci da forno davanti al tramonto sul lago.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Sunset Cafe, Pushkar"
     },
     {
      "id": "pushkar-raj",
@@ -2765,7 +2831,8 @@
      "tipo": "entrambi",
      "cosa": "Khasta kachori al mattino, thali economico a pranzo.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Pushkar Raj Restaurant, Pushkar"
     },
     {
      "id": "malpua-bancarelle",
@@ -2782,7 +2849,8 @@
      "cosa": "Malpua fritte al momento e immerse nello sciroppo, la sera.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Sceglierle calde, appena fritte."
+     "nota": "Sceglierle calde, appena fritte.",
+     "q": "Main Market, Pushkar"
     }
    ],
    "percorsi": [
@@ -2909,7 +2977,8 @@
       "autore": "Jakub Hałun",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191219_Fort_Amber%2C_Amer%2C_Jaipur_0955_9481.jpg"
-     }
+     },
+     "q": "Amber Fort, Jaipur"
     },
     {
      "t": "Hawa Mahal",
@@ -2927,7 +2996,8 @@
        "Quando",
        "La mattina presto, quando il sole illumina la facciata rosa."
       ]
-     ]
+     ],
+     "q": "Hawa Mahal, Jaipur"
     },
     {
      "t": "Jantar Mantar",
@@ -2951,7 +3021,8 @@
       "autore": "Knowledge Seeker",
       "licenza": "Pubblico dominio",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jantar_Mantar_at_Jaipur.jpg"
-     }
+     },
+     "q": "Jantar Mantar, Jaipur"
     },
     {
      "t": "City Palace",
@@ -2976,7 +3047,8 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Chandra_Mahal%2C_City_Palace%2C_Jaipur%2C_20191218_0951_9043.jpg",
       "nota": "Il Chandra Mahal"
-     }
+     },
+     "q": "City Palace, Jaipur"
     },
     {
      "t": "Nahargarh",
@@ -3000,7 +3072,8 @@
       "autore": "Sanyam Bahga",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Nahargarh_13.jpg"
-     }
+     },
+     "q": "Nahargarh Fort, Jaipur"
     },
     {
      "t": "Bazar della città rosa",
@@ -3025,7 +3098,8 @@
       "licenza": "CC BY 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Johari_Bazaar%2C_Jaipur.jpg",
       "nota": "Johari Bazaar in una cartolina d'epoca"
-     }
+     },
+     "q": "Johari Bazar, Jaipur"
     }
    ],
    "mangiare": [
@@ -3161,7 +3235,8 @@
      "tipo": "entrambi",
      "cosa": "Locale storico vegetariano: thali, dal baati churma, kachori, ghevar e jalebi al ghee.",
      "prezzo": 2,
-     "veg": true
+     "veg": true,
+     "q": "Laxmi Mishthan Bhandar, Johari Bazar, Jaipur"
     },
     {
      "id": "rawat",
@@ -3175,7 +3250,8 @@
      "cosa": "La pyaaz kachori più famosa della città, e mawa kachori.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Fuori dalla città vecchia: tuk-tuk."
+     "nota": "Fuori dalla città vecchia: tuk-tuk.",
+     "q": "Rawat Mishthan Bhandar, Sindhi Camp, Jaipur"
     },
     {
      "id": "lassiwala",
@@ -3190,7 +3266,8 @@
      "cosa": "Lassi denso nel bicchiere di terracotta (kulhad).",
      "prezzo": 1,
      "veg": true,
-     "nota": "Ci sono più botteghe con lo stesso nome; chiude nel pomeriggio."
+     "nota": "Ci sono più botteghe con lo stesso nome; chiude nel pomeriggio.",
+     "q": "Lassiwala, MI Road, Jaipur"
     },
     {
      "id": "gulab-ji",
@@ -3204,7 +3281,8 @@
      "tipo": "leggero",
      "cosa": "Masala chai: la tappa di rito del mattino.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Gulab Ji Chaiwala, Jaipur"
     },
     {
      "id": "1135ad",
@@ -3220,7 +3298,8 @@
      "tipo": "completo",
      "cosa": "Sale regali; laal maas, junglee maas, gatte.",
      "prezzo": 3,
-     "nota": "Si prenota. Il più caro del giro."
+     "nota": "Si prenota. Il più caro del giro.",
+     "q": "1135 AD, Amber Fort, Jaipur"
     },
     {
      "id": "caffe-hawa-mahal",
@@ -3236,7 +3315,8 @@
      "tipo": "leggero",
      "cosa": "Chai e uno spuntino con la facciata davanti, meglio con la luce del mattino.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Hawa Mahal, Jaipur"
     }
    ],
    "percorsi": [
@@ -3359,7 +3439,8 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Diwan-i-Khas%2C_Fatehpur-Sikri.jpg",
       "nota": "Il Diwan-i-Khas"
-     }
+     },
+     "q": "Diwan-i-Khas, Fatehpur Sikri"
     },
     {
      "t": "Buland Darwaza",
@@ -3373,7 +3454,8 @@
        "Cosa guardare",
        "L'iscrizione persiana sull'arco e la scalinata. Dall'alto della scala, la piana verso Agra."
       ]
-     ]
+     ],
+     "q": "Buland Darwaza, Fatehpur Sikri"
     },
     {
      "t": "Jama Masjid e tomba di Salim Chishti",
@@ -3397,7 +3479,8 @@
       "autore": "A.Savin",
       "licenza": "FAL",
       "pagina": "https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri_near_Agra_2016-03_img02.jpg"
-     }
+     },
+     "q": "Tomb of Salim Chishti, Fatehpur Sikri"
     }
    ],
    "mangiare": [],
@@ -3434,7 +3517,8 @@
      ],
      "tipo": "completo",
      "cosa": "Cucina indiana anche di carne, pane al tandoor.",
-     "prezzo": 1
+     "prezzo": 1,
+     "q": "Hotel Goverdhan, Fatehpur Sikri"
     }
    ],
    "percorsi": [
@@ -3510,7 +3594,8 @@
        "Quanto tempo",
        "Due o tre ore."
       ]
-     ]
+     ],
+     "q": "Taj Mahal, Agra"
     },
     {
      "t": "Forte di Agra",
@@ -3534,7 +3619,8 @@
       "autore": "Argha1812",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Agra_Fort_2.jpg"
-     }
+     },
+     "q": "Agra Fort"
     },
     {
      "t": "Mehtab Bagh",
@@ -3559,7 +3645,8 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_facing_Taj_Mahal.JPG",
       "nota": "Il Taj visto dal giardino"
-     }
+     },
+     "q": "Mehtab Bagh, Agra"
     }
    ],
    "mangiare": [
@@ -3687,7 +3774,8 @@
      "cosa": "Bedai con curry di patate e jalebi: la colazione di Agra.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Bedai indicato dalle 9 alle 14. Lontano dal Taj: tuk-tuk."
+     "nota": "Bedai indicato dalle 9 alle 14. Lontano dal Taj: tuk-tuk.",
+     "q": "Deviram Sweets, Pratap Pura, Agra"
     },
     {
      "id": "saniya-palace",
@@ -3703,7 +3791,8 @@
      ],
      "tipo": "entrambi",
      "cosa": "Cucina semplice, ma la vista sul Taj dal tetto è la migliore del quartiere.",
-     "prezzo": 1
+     "prezzo": 1,
+     "q": "Saniya Palace Hotel, Agra"
     },
     {
      "id": "shankara-vegis",
@@ -3719,7 +3808,8 @@
      "tipo": "entrambi",
      "cosa": "Cucina vegetariana casalinga, terrazza con vista.",
      "prezzo": 1,
-     "veg": true
+     "veg": true,
+     "q": "Shankara Vegis Restaurant, Agra"
     },
     {
      "id": "joneys",
@@ -3734,7 +3824,8 @@
      ],
      "tipo": "leggero",
      "cosa": "Locale piccolo e storico per una colazione prima o dopo il Taj.",
-     "prezzo": 1
+     "prezzo": 1,
+     "q": "Joney's Place, Agra"
     },
     {
      "id": "pinch-of-spice",
@@ -3748,7 +3839,8 @@
      ],
      "tipo": "completo",
      "cosa": "Cucina moghul: dal makhani, kebab, biryani.",
-     "prezzo": 2
+     "prezzo": 2,
+     "q": "Pinch of Spice, Fatehabad Road, Agra"
     },
     {
      "id": "mama-chicken",
@@ -3763,7 +3855,8 @@
      ],
      "tipo": "entrambi",
      "cosa": "Frankie (piadine arrotolate) e pollo alla griglia; il posto dei ragazzi di Agra.",
-     "prezzo": 1
+     "prezzo": 1,
+     "q": "Mama Chicken Mama Franky House, Sadar Bazar, Agra"
     },
     {
      "id": "panchhi-petha",
@@ -3777,7 +3870,8 @@
      "cosa": "Petha in tanti gusti e dalmoth, da assaggiare e portare via.",
      "prezzo": 1,
      "veg": true,
-     "nota": "Molti negozi imitano il nome."
+     "nota": "Molti negozi imitano il nome.",
+     "q": "Panchhi Petha, Agra"
     }
    ],
    "percorsi": [
