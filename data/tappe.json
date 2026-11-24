@@ -195,7 +195,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:India_Gate_front.jpg"
      },
-     "q": "India Gate, New Delhi"
+     "q": "India Gate, New Delhi",
+     "c": [
+      28.6129,
+      77.2295
+     ]
     },
     {
      "t": "Chandni Chowk",
@@ -225,7 +229,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Gurudwara_Sisganj_Sahib_Chandni_Chowk_19.jpg",
       "nota": "Il Gurudwara Sis Ganj sulla via principale"
      },
-     "q": "Chandni Chowk, Delhi"
+     "q": "Chandni Chowk, Delhi",
+     "c": [
+      28.6506,
+      77.2303
+     ]
     },
     {
      "t": "Jama Masjid",
@@ -244,7 +252,11 @@
        "Chiusa ai visitatori durante le preghiere, soprattutto il venerdì a mezzogiorno. Fotocamere e telefoni possono pagare un biglietto; le scarpe si lasciano all'ingresso."
       ]
      ],
-     "q": "Jama Masjid, Delhi"
+     "q": "Jama Masjid, Delhi",
+     "c": [
+      28.6507,
+      77.2334
+     ]
     },
     {
      "t": "Forte Rosso",
@@ -269,7 +281,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Delhi_fort.jpg"
      },
-     "q": "Red Fort, Delhi"
+     "q": "Red Fort, Delhi",
+     "c": [
+      28.6562,
+      77.241
+     ]
     }
    ],
    "mangiare": [
@@ -611,7 +627,11 @@
        "Le sale sono piccole e buie: interni bui (vedi la scheda di fotografia)."
       ]
      ],
-     "q": "Junagarh Fort, Bikaner"
+     "q": "Junagarh Fort, Bikaner",
+     "c": [
+      28.0222,
+      73.3194
+     ]
     },
     {
      "t": "Haveli Rampuria",
@@ -636,7 +656,11 @@
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Rampuria_Haveli%2C_Bikaner.jpg"
      },
-     "q": "Rampuria Haveli, Bikaner"
+     "q": "Rampuria Haveli, Bikaner",
+     "c": [
+      28.0145,
+      73.3119
+     ]
     },
     {
      "t": "Tempio di Karni Mata a Deshnok",
@@ -661,7 +685,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191212_%C5%9Awi%C4%85tynia_Karni_Maty_w_De%C5%9Bnok_1031_8078_DxO.jpg"
      },
-     "q": "Karni Mata Temple, Deshnok"
+     "q": "Karni Mata Temple, Deshnok",
+     "c": [
+      27.7907,
+      73.341
+     ]
     },
     {
      "t": "Centro di ricerca sul cammello",
@@ -686,7 +714,11 @@
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Camels_at_Camel_Research_Farm%2C_Bikaner.jpg"
      },
-     "q": "National Research Centre on Camel, Bikaner"
+     "q": "National Research Centre on Camel, Bikaner",
+     "c": [
+      27.99,
+      73.38
+     ]
     }
    ],
    "mangiare": [
@@ -969,7 +1001,11 @@
        "Mezza giornata."
       ]
      ],
-     "q": "Jaisalmer Fort"
+     "q": "Jaisalmer Fort",
+     "c": [
+      26.9124,
+      70.9126
+     ]
     },
     {
      "t": "Templi jainisti nel forte",
@@ -994,7 +1030,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jaisalmer_Jain_Temple_6.jpg"
      },
-     "q": "Jain Temples, Jaisalmer Fort"
+     "q": "Jain Temples, Jaisalmer Fort",
+     "c": [
+      26.9122,
+      70.9118
+     ]
     },
     {
      "t": "Patwon Ki Haveli",
@@ -1019,7 +1059,11 @@
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Patwon_Ki_Haveli_-_26140771308.jpg"
      },
-     "q": "Patwon Ki Haveli, Jaisalmer"
+     "q": "Patwon Ki Haveli, Jaisalmer",
+     "c": [
+      26.917,
+      70.916
+     ]
     },
     {
      "t": "Lago Gadisar",
@@ -1045,7 +1089,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Main_entrance_of_Gadisar_Lake.jpg",
       "nota": "L'ingresso al lago"
      },
-     "q": "Gadisar Lake, Jaisalmer"
+     "q": "Gadisar Lake, Jaisalmer",
+     "c": [
+      26.9055,
+      70.923
+     ]
     },
     {
      "t": "Bada Bagh",
@@ -1070,7 +1118,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Resting_places.jpg"
      },
-     "q": "Bada Bagh, Jaisalmer"
+     "q": "Bada Bagh, Jaisalmer",
+     "c": [
+      26.961,
+      70.876
+     ]
     },
     {
      "t": "Dune del Thar",
@@ -1096,7 +1148,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Sam_dunes_%28Jaisalmer%29.jpg",
       "nota": "Le dune di Sam"
      },
-     "q": "Sam Sand Dunes, Jaisalmer"
+     "q": "Sam Sand Dunes, Jaisalmer",
+     "c": [
+      26.83,
+      70.51
+     ]
     }
    ],
    "mangiare": [
@@ -1461,7 +1517,11 @@
        "Tre o quattro ore con l'audioguida."
       ]
      ],
-     "q": "Mehrangarh Fort, Jodhpur"
+     "q": "Mehrangarh Fort, Jodhpur",
+     "c": [
+      26.298,
+      73.0185
+     ]
     },
     {
      "t": "Jaswant Thada",
@@ -1486,7 +1546,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jaswant_Thada_Dawn.jpg"
      },
-     "q": "Jaswant Thada, Jodhpur"
+     "q": "Jaswant Thada, Jodhpur",
+     "c": [
+      26.3029,
+      73.0228
+     ]
     },
     {
      "t": "Città blu",
@@ -1511,7 +1575,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jodhpur_the_blue_city_view_over_the_maze_of_houses_India_25Aug2006.jpg"
      },
-     "q": "Blue City, Jodhpur"
+     "q": "Blue City, Jodhpur",
+     "c": [
+      26.2955,
+      73.021
+     ]
     },
     {
      "t": "Toorji Ka Jhalra",
@@ -1536,7 +1604,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Toorji_Ka_Jhalra.jpg"
      },
-     "q": "Toorji Ka Jhalra, Jodhpur"
+     "q": "Toorji Ka Jhalra, Jodhpur",
+     "c": [
+      26.2935,
+      73.022
+     ]
     },
     {
      "t": "Torre dell'orologio e mercato Sardar",
@@ -1555,7 +1627,11 @@
        "Tardo pomeriggio e sera, quando si anima."
       ]
      ],
-     "q": "Ghanta Ghar Clock Tower, Sardar Market, Jodhpur"
+     "q": "Ghanta Ghar Clock Tower, Sardar Market, Jodhpur",
+     "c": [
+      26.294,
+      73.0244
+     ]
     }
    ],
    "mangiare": [
@@ -1910,7 +1986,11 @@
        "Un'ora e mezza."
       ]
      ],
-     "q": "Ranakpur Jain Temple"
+     "q": "Ranakpur Jain Temple",
+     "c": [
+      25.1159,
+      73.4729
+     ]
     },
     {
      "t": "Templi di Neminath e Parshvanath",
@@ -1929,7 +2009,11 @@
        "Mezz'ora."
       ]
      ],
-     "q": "Parshvanath Temple, Ranakpur"
+     "q": "Parshvanath Temple, Ranakpur",
+     "c": [
+      25.1165,
+      73.474
+     ]
     }
    ],
    "mangiare": [
@@ -2060,7 +2144,11 @@
        "Due o tre ore. Il Mor Chowk rende meglio nel tardo pomeriggio."
       ]
      ],
-     "q": "City Palace, Udaipur"
+     "q": "City Palace, Udaipur",
+     "c": [
+      24.5764,
+      73.6835
+     ]
     },
     {
      "t": "Giro in barca sul lago Pichola",
@@ -2085,7 +2173,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_Lake_India.JPG"
      },
-     "q": "Rameshwar Ghat boat ride, Lake Pichola, Udaipur"
+     "q": "Rameshwar Ghat boat ride, Lake Pichola, Udaipur",
+     "c": [
+      24.5735,
+      73.683
+     ]
     },
     {
      "t": "Tempio di Jagdish",
@@ -2110,7 +2202,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jagdish_Temple_Udaipur.jpg"
      },
-     "q": "Jagdish Temple, Udaipur"
+     "q": "Jagdish Temple, Udaipur",
+     "c": [
+      24.5797,
+      73.6838
+     ]
     },
     {
      "t": "Bagore Ki Haveli",
@@ -2135,7 +2231,11 @@
       "licenza": "CC BY-SA 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Bagore_ki_Haveli%2C_Rajasthan.jpg"
      },
-     "q": "Bagore Ki Haveli, Udaipur"
+     "q": "Bagore Ki Haveli, Udaipur",
+     "c": [
+      24.5805,
+      73.6822
+     ]
     },
     {
      "t": "Ambrai Ghat",
@@ -2161,7 +2261,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_Lake_Palace.jpg",
       "nota": "Il Lake Palace sul Pichola"
      },
-     "q": "Ambrai Ghat, Udaipur"
+     "q": "Ambrai Ghat, Udaipur",
+     "c": [
+      24.579,
+      73.6795
+     ]
     },
     {
      "t": "Tramonto dall'alto",
@@ -2183,7 +2287,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Monsoon_Palace.jpg",
       "nota": "Il Monsoon Palace (Sajjangarh)"
      },
-     "q": "Sajjangarh Monsoon Palace, Udaipur"
+     "q": "Sajjangarh Monsoon Palace, Udaipur",
+     "c": [
+      24.594,
+      73.639
+     ]
     }
    ],
    "mangiare": [
@@ -2549,7 +2657,11 @@
       "licenza": "CC BY 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Dargah_of_Sufi_saint_Moinuddin_Chishti_Ajmer_India_%285%29.JPG"
      },
-     "q": "Ajmer Sharif Dargah"
+     "q": "Ajmer Sharif Dargah",
+     "c": [
+      26.4563,
+      74.6283
+     ]
     },
     {
      "t": "Lago sacro di Pushkar",
@@ -2568,7 +2680,11 @@
        "Alba e tramonto. Il Gau Ghat e il Varaha Ghat sono tra i più frequentati."
       ]
      ],
-     "q": "Pushkar Lake"
+     "q": "Pushkar Lake",
+     "c": [
+      26.4875,
+      74.553
+     ]
     },
     {
      "t": "Tempio di Brahma",
@@ -2593,7 +2709,11 @@
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Brahma_Temple%2C_Pushkar.jpg"
      },
-     "q": "Brahma Temple, Pushkar"
+     "q": "Brahma Temple, Pushkar",
+     "c": [
+      26.4876,
+      74.5555
+     ]
     },
     {
      "t": "Tempio di Savitri",
@@ -2618,7 +2738,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191215_%C5%9Awi%C4%85tynia_Savitri_w_Puszkarze_1016_8669_DxO.jpg"
      },
-     "q": "Savitri Mata Temple, Pushkar"
+     "q": "Savitri Mata Temple, Pushkar",
+     "c": [
+      26.482,
+      74.545
+     ]
     },
     {
      "t": "Aarti serale sui ghat",
@@ -2640,7 +2764,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:%281%29_Aarti_Thali%2C_Prayer_Plate_India.jpg",
       "nota": "Il piatto dell'aarti, con lumini e fiori"
      },
-     "q": "Brahma Ghat, Pushkar"
+     "q": "Brahma Ghat, Pushkar",
+     "c": [
+      26.488,
+      74.554
+     ]
     }
    ],
    "mangiare": [
@@ -2978,7 +3106,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:20191219_Fort_Amber%2C_Amer%2C_Jaipur_0955_9481.jpg"
      },
-     "q": "Amber Fort, Jaipur"
+     "q": "Amber Fort, Jaipur",
+     "c": [
+      26.9855,
+      75.8513
+     ]
     },
     {
      "t": "Hawa Mahal",
@@ -2997,7 +3129,11 @@
        "La mattina presto, quando il sole illumina la facciata rosa."
       ]
      ],
-     "q": "Hawa Mahal, Jaipur"
+     "q": "Hawa Mahal, Jaipur",
+     "c": [
+      26.9239,
+      75.8267
+     ]
     },
     {
      "t": "Jantar Mantar",
@@ -3022,7 +3158,11 @@
       "licenza": "Pubblico dominio",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jantar_Mantar_at_Jaipur.jpg"
      },
-     "q": "Jantar Mantar, Jaipur"
+     "q": "Jantar Mantar, Jaipur",
+     "c": [
+      26.9248,
+      75.8246
+     ]
     },
     {
      "t": "City Palace",
@@ -3048,7 +3188,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Chandra_Mahal%2C_City_Palace%2C_Jaipur%2C_20191218_0951_9043.jpg",
       "nota": "Il Chandra Mahal"
      },
-     "q": "City Palace, Jaipur"
+     "q": "City Palace, Jaipur",
+     "c": [
+      26.9258,
+      75.8237
+     ]
     },
     {
      "t": "Nahargarh",
@@ -3073,7 +3217,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Nahargarh_13.jpg"
      },
-     "q": "Nahargarh Fort, Jaipur"
+     "q": "Nahargarh Fort, Jaipur",
+     "c": [
+      26.9373,
+      75.8155
+     ]
     },
     {
      "t": "Bazar della città rosa",
@@ -3099,7 +3247,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Johari_Bazaar%2C_Jaipur.jpg",
       "nota": "Johari Bazaar in una cartolina d'epoca"
      },
-     "q": "Johari Bazar, Jaipur"
+     "q": "Johari Bazar, Jaipur",
+     "c": [
+      26.9205,
+      75.827
+     ]
     }
    ],
    "mangiare": [
@@ -3440,7 +3592,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Diwan-i-Khas%2C_Fatehpur-Sikri.jpg",
       "nota": "Il Diwan-i-Khas"
      },
-     "q": "Diwan-i-Khas, Fatehpur Sikri"
+     "q": "Diwan-i-Khas, Fatehpur Sikri",
+     "c": [
+      27.094,
+      77.6635
+     ]
     },
     {
      "t": "Buland Darwaza",
@@ -3455,7 +3611,11 @@
        "L'iscrizione persiana sull'arco e la scalinata. Dall'alto della scala, la piana verso Agra."
       ]
      ],
-     "q": "Buland Darwaza, Fatehpur Sikri"
+     "q": "Buland Darwaza, Fatehpur Sikri",
+     "c": [
+      27.0918,
+      77.6609
+     ]
     },
     {
      "t": "Jama Masjid e tomba di Salim Chishti",
@@ -3480,7 +3640,11 @@
       "licenza": "FAL",
       "pagina": "https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri_near_Agra_2016-03_img02.jpg"
      },
-     "q": "Tomb of Salim Chishti, Fatehpur Sikri"
+     "q": "Tomb of Salim Chishti, Fatehpur Sikri",
+     "c": [
+      27.0928,
+      77.6614
+     ]
     }
    ],
    "mangiare": [],
@@ -3595,7 +3759,11 @@
        "Due o tre ore."
       ]
      ],
-     "q": "Taj Mahal, Agra"
+     "q": "Taj Mahal, Agra",
+     "c": [
+      27.1751,
+      78.0421
+     ]
     },
     {
      "t": "Forte di Agra",
@@ -3620,7 +3788,11 @@
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Agra_Fort_2.jpg"
      },
-     "q": "Agra Fort"
+     "q": "Agra Fort",
+     "c": [
+      27.1795,
+      78.0211
+     ]
     },
     {
      "t": "Mehtab Bagh",
@@ -3646,7 +3818,11 @@
       "pagina": "https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_facing_Taj_Mahal.JPG",
       "nota": "Il Taj visto dal giardino"
      },
-     "q": "Mehtab Bagh, Agra"
+     "q": "Mehtab Bagh, Agra",
+     "c": [
+      27.1798,
+      78.0424
+     ]
     }
    ],
    "mangiare": [

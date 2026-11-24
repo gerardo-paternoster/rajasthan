@@ -445,3 +445,13 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .riga-mappa { margin: 8px 0 0; }
 .percorso-mappa { margin: 0 16px 8px; }
 .vicini .mappa { min-height: 32px; font-size: 14px; }
+
+/* ---------- Schema del percorso ---------- */
+.schema-box { margin: 6px 16px 4px; padding: 6px 8px 8px; border-radius: 12px; background: var(--calce); }
+.schema { display: block; width: 100%; height: auto; color: var(--inchiostro); }
+.schema .n { font: 700 12px var(--testo); fill: #fff; }
+.schema .l { font: 600 12.5px var(--testo); fill: var(--inchiostro); paint-order: stroke; stroke: var(--calce); stroke-width: 4px; stroke-linejoin: round; }
+.schema .s { font: 600 11px var(--testo); fill: var(--tenue); }
+.schema-box > p { font-size: 13px; margin: 2px 4px 0; }
+.soste .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-right: 6px; border-radius: 50%; background: var(--citta); color: #fff; font-size: 12px; vertical-align: 2px; }
+.soste .dist { font-size: 13.5px; }

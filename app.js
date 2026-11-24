@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-24.6';
+const VERSIONE = '2026-11-24.7';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -697,6 +697,42 @@ function urlPercorso(t, soste) {
   if (q.length > 2) u += '&waypoints=' + encodeURIComponent(q.slice(1, -1).join('|'));
   return u;
 }
+function coordSosta(t, nome) { const v = t.vedere.find((x) => x.t === nome); return v && v.c ? v.c : null; }
+function distanzaKm(a, b) {
+  const r = Math.PI / 180, dLa = (b[0] - a[0]) * r, dLo = (b[1] - a[1]) * r;
+  const h = Math.sin(dLa / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLo / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+}
+function fmtDist(km) { return km < 1 ? Math.max(100, Math.round(km * 10) * 100) + ' m' : (km < 20 ? km.toFixed(1).replace('.', ',') : Math.round(km)) + ' km'; }
+// Schema del percorso: punti numerati in proporzione, senza mappa sotto. Funziona offline.
+function htmlSchema(t, soste) {
+  const pt = (soste || []).map((s, i) => ({ n: i + 1, t: s.t, c: coordSosta(t, s.t) })).filter((p) => p.c);
+  if (pt.length < 2) return '';
+  const k = Math.cos(pt[0].c[0] * Math.PI / 180);
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  pt.forEach((p) => { p.x = p.c[1] * k; p.y = -p.c[0]; x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); });
+  let w = Math.max(x1 - x0, 0.003), h = Math.max(y1 - y0, 0.003);
+  const W = 320, pad = 26, H = Math.round(Math.min(230, Math.max(140, (W - 2 * pad) * h / w + 2 * pad)));
+  const sc = Math.min((W - 2 * pad) / w, (H - 2 * pad) / h);
+  const ox = (W - sc * (x1 - x0)) / 2, oy = (H - sc * (y1 - y0)) / 2;
+  pt.forEach((p) => { p.X = ox + (p.x - x0) * sc; p.Y = oy + (p.y - y0) * sc; });
+  const kmPerUnit = 111.32; // gradi (già corretti per la latitudine) -> km
+  const lato = (W - 2 * pad) / sc * kmPerUnit;
+  const passi = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50];
+  const scala = passi.filter((v) => v <= lato / 3).pop() || passi[0];
+  const ls = scala / kmPerUnit * sc;
+  let g = '<svg class="schema" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Schema del percorso: ' + esc(pt.map((p) => p.n + ' ' + p.t).join(', ')) + '">';
+  g += '<polyline points="' + pt.map((p) => p.X.toFixed(1) + ',' + p.Y.toFixed(1)).join(' ') + '" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="2" stroke-dasharray="5 5"/>';
+  pt.forEach((p) => {
+    const dx = p.X > W - 110 ? -14 : 14, anc = dx < 0 ? 'end' : 'start';
+    const nome = p.t.length > 22 ? p.t.slice(0, 21) + '…' : p.t;
+    g += '<circle cx="' + p.X.toFixed(1) + '" cy="' + p.Y.toFixed(1) + '" r="11" fill="var(--citta)"/><text x="' + p.X.toFixed(1) + '" y="' + (p.Y + 4.5).toFixed(1) + '" text-anchor="middle" class="n">' + p.n + '</text>';
+    g += '<text x="' + (p.X + dx).toFixed(1) + '" y="' + (p.Y + 4.5).toFixed(1) + '" text-anchor="' + anc + '" class="l">' + esc(nome) + '</text>';
+  });
+  g += '<path d="M' + (W - 14) + ' ' + (H - 34) + 'l-5 12h10z" fill="currentColor" fill-opacity=".55"/><text x="' + (W - 14) + '" y="' + (H - 38) + '" text-anchor="middle" class="s">N</text>';
+  g += '<line x1="12" y1="' + (H - 12) + '" x2="' + (12 + ls).toFixed(1) + '" y2="' + (H - 12) + '" stroke="currentColor" stroke-width="2"/><text x="12" y="' + (H - 18) + '" class="s">' + fmtDist(scala) + '</text></svg>';
+  return '<div class="schema-box">' + g + '<p class="tenue">Posizioni e distanze indicative, in linea d\'aria.</p></div>';
+}
 function htmlLocale(l) {
   let h = '<li class="locale"><div class="loc-testa"><b>' + esc(l.n) + '</b><span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(l.prezzo || 1) + '</span></div>';
   h += '<p class="tenue">' + esc(l.zona) + '</p><p>' + esc(l.cosa) + '</p><span class="etichette"><span class="et">' + esc(TIPO_LOC[l.tipo] || '') + '</span>' + l.pasti.map((p) => '<span class="et">' + esc(NOME_PASTO[p]) + '</span>').join('') + (l.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
@@ -722,7 +758,10 @@ function htmlPercorso(p, t, data) {
   const me = io().id, ad = aderenti(data, p.id), mio = ad.indexOf(me) >= 0, mia = p.proposta && p.autore && p.autore.id === me;
   let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + stileCitta(t) + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
   if (p.proposta) h += '<p class="autore">Proposto da ' + esc(mia ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
-  h += '</header><ol class="soste">' + (p.soste || []).map((s) => '<li><span class="ora">' + esc(s.ora || '') + '</span><div><b>' + esc(s.t) + '</b>' + (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') + '</div></li>').join('') + '</ol>';
+  h += '</header>' + htmlSchema(t, p.soste) + '<ol class="soste">' + (p.soste || []).map((s, i) => {
+    const a = i ? coordSosta(t, p.soste[i - 1].t) : null, b = coordSosta(t, s.t), dist = a && b ? fmtDist(distanzaKm(a, b)) : '';
+    return '<li><span class="ora">' + esc(s.ora || '') + '</span><div><b><span class="num">' + (i + 1) + '</span>' + esc(s.t) + '</b>' + (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (dist ? '<p class="tenue dist">A ' + dist + ' dalla sosta prima</p>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') + '</div></li>';
+  }).join('') + '</ol>';
   const up = urlPercorso(t, p.soste);
   if (up) h += '<p class="riga-mappa percorso-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + ((p.soste || []).length > 1 ? 'Il percorso su Google Maps' : 'Apri in Google Maps') + '</a></p>';
   h += '<dl class="pasti">' + PASTI.map(([k, n]) => {
