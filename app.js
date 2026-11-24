@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-24.1';
+const VERSIONE = '2026-11-24.2';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -486,7 +486,7 @@ function mostraAvvisoMemoria() { const a = $('#avvisoMemoria'); if (a) a.hidden 
 /* ---------- Gruppo di viaggio: percorsi e adesioni (Firebase Realtime Database) ---------- */
 // Indirizzo del database del gruppo (non è un segreto: i dati stanno sotto il codice del gruppo,
 // che non compare mai nel repository). Vuoto = le adesioni restano su questo dispositivo.
-const FIREBASE_DB = '';
+const FIREBASE_DB = 'https://tutto-rajasthan-default-rtdb.europe-west1.firebasedatabase.app';
 const PASTI = [['colazione', 'Colazione'], ['pranzo', 'Pranzo'], ['spuntino', 'Spuntino'], ['cena', 'Cena']];
 let GR = LS.get('rj.gr', {});          // ultima copia del gruppo scaricata
 let coda = LS.get('rj.grCoda', {});    // scritture in attesa: percorso -> valore (null = cancella)
