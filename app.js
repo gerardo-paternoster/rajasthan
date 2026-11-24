@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-24.4';
+const VERSIONE = '2026-11-24.5';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -487,7 +487,7 @@ function mostraAvvisoMemoria() { const a = $('#avvisoMemoria'); if (a) a.hidden 
 // Chiave API web di Firebase: non è un segreto, identifica solo il progetto.
 const FIREBASE_API_KEY = 'AIzaSyBkU8Dr_7L9hc_GlBO5f-2ynrsNEugd4cg';
 // Account di Gerry: su questi le sezioni personali (Liste, Foto, Diario) si attivano anche su un dispositivo nuovo.
-const PROPRIETARI = [];
+const PROPRIETARI = ['0nVrz5ha5XVtEXAaBAgfNfjrgL23'];
 const URL_AUTH = 'https://identitytoolkit.googleapis.com/v1/accounts:';
 let ACC = LS.get('rj.acc', null);
 const ERR_ACC = {
