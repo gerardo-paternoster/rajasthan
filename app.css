@@ -455,3 +455,23 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .schema-box > p { font-size: 13px; margin: 2px 4px 0; }
 .soste .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-right: 6px; border-radius: 50%; background: var(--citta); color: #fff; font-size: 12px; vertical-align: 2px; }
 .soste .dist { font-size: 13.5px; }
+
+/* ---------- Valutazioni, piatti, ricerca su Google Maps ---------- */
+.voto { font-size: 14.5px; font-weight: 700; color: var(--inchiostro); white-space: nowrap; }
+.voto:empty { display: none; }
+.riga-voto { margin-top: 2px; }
+.piatti-qui { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.piatti-qui > span:first-child { font-size: 14px; font-weight: 600; color: var(--tenue); }
+.et.piatto { border-color: var(--calendula); background: color-mix(in srgb, var(--calendula) 16%, transparent); }
+.mappa.piccola { min-height: 0; vertical-align: -3px; }
+.mappa.piccola svg { width: 18px; height: 18px; }
+.scegli-soste.extra li { grid-template-columns: 1fr 112px auto; }
+.scegli-soste.extra .riga svg { width: 18px; height: 18px; flex: none; color: var(--citta); }
+.cerca-posto { position: relative; margin-top: 8px; }
+.suggerimenti { list-style: none; padding: 0; margin: 4px 0 0; border-radius: 12px; overflow: hidden; }
+.suggerimenti:empty { display: none; }
+.suggerimenti li { border-bottom: 1px solid var(--linea); }
+.suggerimenti li.tenue, .suggerimenti li.err { padding: 10px 12px; }
+.sugg { display: block; width: 100%; text-align: left; background: var(--calce); border: 0; padding: 10px 12px; min-height: 44px; color: var(--inchiostro); font: inherit; }
+.sugg b { display: block; font-size: 16px; }
+.sugg .tenue { font-size: 14px; }

@@ -427,7 +427,11 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Il locale più citato è Pandit Gaya Prasad Shiv Charan.",
-     "q": "Pandit Gaya Prasad Shiv Charan Paranthe Wala, Chandni Chowk, Delhi"
+     "q": "Pandit Gaya Prasad Shiv Charan Paranthe Wala, Chandni Chowk, Delhi",
+     "pid": "ChIJdURoYBr9DDkRri7KT5_XEYQ",
+     "piatti": [
+      "Paratha ripiene"
+     ]
     },
     {
      "id": "jalebi-wala",
@@ -446,7 +450,11 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Attivo dalla fine dell'Ottocento.",
-     "q": "Old Famous Jalebi Wala, Chandni Chowk, Delhi"
+     "q": "Old Famous Jalebi Wala, Chandni Chowk, Delhi",
+     "pid": "ChIJ99VDmRv9DDkRhoDLu3pZ2dQ",
+     "piatti": [
+      "Chaat e jalebi"
+     ]
     },
     {
      "id": "natraj-dahi-bhalle",
@@ -463,7 +471,11 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Sempre coda: è il segno che il ricambio è veloce.",
-     "q": "Natraj Dahi Bhalle Wala, Chandni Chowk, Delhi"
+     "q": "Natraj Dahi Bhalle Wala, Chandni Chowk, Delhi",
+     "pid": "ChIJu_WpWRr9DDkR1pClHM5Oz7c",
+     "piatti": [
+      "Chaat e jalebi"
+     ]
     },
     {
      "id": "jb-kachori",
@@ -481,7 +493,8 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Orario indicato 10:30–20.",
-     "q": "Jung Bahadur Kachori Wala, Chandni Chowk, Delhi"
+     "q": "Jung Bahadur Kachori Wala, Chandni Chowk, Delhi",
+     "pid": "ChIJvap6ZBr9DDkRyaqiDoBiqFQ"
     },
     {
      "id": "karims",
@@ -499,7 +512,11 @@
      "cosa": "Cucina moghul dal 1913: korma di montone, kebab, pollo, pane al tandoor.",
      "prezzo": 2,
      "nota": "Poca scelta vegetariana. La sera i vicoli dei kebab sono al massimo.",
-     "q": "Karim's, Jama Masjid, Delhi"
+     "q": "Karim's, Jama Masjid, Delhi",
+     "pid": "ChIJyy_Vxxj9DDkRPXF11X7EfT0",
+     "piatti": [
+      "Kebab e cucina moghul"
+     ]
     },
     {
      "id": "haldirams-cc",
@@ -517,7 +534,12 @@
      "cosa": "Catena di Delhi: chaat, thali e dolci in un locale pulito. Per chi vuole andare sul sicuro.",
      "prezzo": 1,
      "veg": true,
-     "q": "Haldiram's, Chandni Chowk, Delhi"
+     "q": "Haldiram's, Chandni Chowk, Delhi",
+     "pid": "ChIJowswABv9DDkRlIwWegNm4LA",
+     "piatti": [
+      "Chaat e jalebi",
+      "Chole bhature"
+     ]
     }
    ],
    "percorsi": [
@@ -829,7 +851,12 @@
      "prezzo": 1,
      "veg": true,
      "nota": "A Bikaner si comincia spesso la giornata col dolce.",
-     "q": "Chhotu Motu Joshi Sweet Shop, Station Road, Bikaner"
+     "q": "Chhotu Motu Joshi Sweet Shop, Station Road, Bikaner",
+     "pid": "ChIJm22x4nzdPzkRlSrbahY23Lc",
+     "piatti": [
+      "Kachori",
+      "Rasgulla e dolci al latte"
+     ]
     },
     {
      "id": "bhikharam-chandmal",
@@ -845,7 +872,12 @@
      "cosa": "Bikaneri bhujia in tante versioni, sfusa: da assaggiare e da comprare.",
      "prezzo": 1,
      "veg": true,
-     "q": "Bhikharam Chandmal Bhujiawala, Kote Gate, Bikaner"
+     "q": "Bhikharam Chandmal Bhujiawala, Kote Gate, Bikaner",
+     "pid": "ChIJBVRosnzdPzkRpikiJGBb49A",
+     "piatti": [
+      "Bikaneri bhujia",
+      "Rasgulla e dolci al latte"
+     ]
     },
     {
      "id": "gallops",
@@ -862,7 +894,8 @@
      "cosa": "Thali rajasthano, gatte ki sabzi, ker sangri; anche carne. Tavoli con vista sul forte.",
      "prezzo": 2,
      "nota": "Diverse recensioni lo trovano caro per quello che offre.",
-     "q": "Gallops Restaurant, Bikaner"
+     "q": "Gallops Restaurant, Bikaner",
+     "pid": "ChIJSdMUsHndPzkRGKHxRNZBO7s"
     },
     {
      "id": "swarna-mahal",
@@ -876,7 +909,8 @@
      "cosa": "Cena in una sala del palazzo, con pareti dipinte a mano: dal baati, laal maas, ker sangri.",
      "prezzo": 3,
      "nota": "Si prenota.",
-     "q": "Laxmi Niwas Palace, Bikaner"
+     "q": "Laxmi Niwas Palace, Bikaner",
+     "pid": "ChIJzUaWt6PdPzkR2QNkD9i4_W0"
     },
     {
      "id": "nrcc-latte",
@@ -894,6 +928,59 @@
      "veg": true,
      "nota": "Da verificare sul posto orari e cosa c'è.",
      "q": "National Research Centre on Camel, Bikaner"
+    },
+    {
+     "id": "tanvi-cafe",
+     "n": "Tanvi Cafe",
+     "zona": "Città vecchia, vicino al tempio di Bhairuji",
+     "vicino": [
+      "Haveli Rampuria"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Locale piccolo nei vicoli: cucina rajasthana e indiana del nord.",
+     "prezzo": 1,
+     "pid": "ChIJ6eo4NAznPzkRBmWovA_3b8Y",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Tanvi Cafe, Bikaner"
+    },
+    {
+     "id": "farishta",
+     "n": "Farishta Garden and Cafe",
+     "zona": "Sadul Ganj",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Giardino con tavoli all'aperto e cucina indiana varia, molto frequentato dalle famiglie della città.",
+     "prezzo": 2,
+     "pid": "ChIJ58BtCgDnPzkRAGLG4SQsbHQ",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Farishta Garden and Cafe, Bikaner"
+    },
+    {
+     "id": "thar-darbar",
+     "n": "Thar Darbar",
+     "zona": "Vicino al centro dei cammelli",
+     "vicino": [
+      "Centro di ricerca sul cammello"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Comodo per mangiare durante la visita al centro dei cammelli.",
+     "prezzo": 2,
+     "pid": "ChIJ2fDqx1PhPzkRtrOB6G0w83w",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Thar Darbar, Bikaner"
     }
    ],
    "percorsi": [
@@ -1305,7 +1392,10 @@
      "cosa": "Ghotua ladoo e altri dolci di Jaisalmer, pyaaz kachori al mattino.",
      "prezzo": 1,
      "veg": true,
-     "q": "Dhanraj Ranmal Bhatia, Jaisalmer"
+     "q": "Dhanraj Ranmal Bhatia, Jaisalmer",
+     "piatti": [
+      "Ghotua ladoo"
+     ]
     },
     {
      "id": "dal-pakwan",
@@ -1354,7 +1444,12 @@
      "tipo": "completo",
      "cosa": "Cucina rajasthana anche di carne: laal maas, ker sangri, dal; terrazza con musica la sera.",
      "prezzo": 2,
-     "q": "The Trio Restaurant, Gandhi Chowk, Jaisalmer"
+     "q": "The Trio Restaurant, Gandhi Chowk, Jaisalmer",
+     "piatti": [
+      "Ker sangri",
+      "Dal baati churma",
+      "Gatte ki sabzi"
+     ]
     },
     {
      "id": "chandan-shree",
@@ -1369,7 +1464,10 @@
      "cosa": "Al mattino kachori, samosa e puri; a pranzo thali vegetariano.",
      "prezzo": 1,
      "veg": true,
-     "q": "Chandan Shree Restaurant, Jaisalmer"
+     "q": "Chandan Shree Restaurant, Jaisalmer",
+     "piatti": [
+      "Gatte ki sabzi"
+     ]
     },
     {
      "id": "kanchan-shree",
@@ -1400,7 +1498,34 @@
      "tipo": "completo",
      "cosa": "Buffet rajasthano con musica e danze attorno al fuoco.",
      "prezzo": 2,
-     "nota": "Di solito compreso nell'escursione: da chiedere al coordinatore."
+     "nota": "Di solito compreso nell'escursione: da chiedere al coordinatore.",
+     "piatti": [
+      "Cena al campo",
+      "Dal baati churma"
+     ]
+    },
+    {
+     "id": "angaara",
+     "n": "Angaara (terrazza)",
+     "zona": "Dentro il forte, vicino al Rani ka Mahal",
+     "vicino": [
+      "Forte di Jaisalmer",
+      "Templi jainisti nel forte"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Terrazza dentro il forte con cucina rajasthana: ker sangri, gatte, dal.",
+     "prezzo": 2,
+     "pid": "ChIJTQNnsNq9RzkRVMdNX3yKjFc",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Angaara Restaurant, Jaisalmer Fort",
+     "piatti": [
+      "Ker sangri",
+      "Gatte ki sabzi"
+     ]
     }
    ],
    "percorsi": [
@@ -1761,7 +1886,11 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Orario indicato 8:30–20.",
-     "q": "Shahi Samosa, Nai Sarak, Jodhpur"
+     "q": "Shahi Samosa, Nai Sarak, Jodhpur",
+     "piatti": [
+      "Mirchi vada",
+      "Pyaaz kachori"
+     ]
     },
     {
      "id": "janta-sweet",
@@ -1778,7 +1907,12 @@
      "cosa": "Mirchi vada, pyaaz kachori e mawa kachori; gulab jamun caldi.",
      "prezzo": 1,
      "veg": true,
-     "q": "Janta Sweet Home, Nai Sarak, Jodhpur"
+     "q": "Janta Sweet Home, Nai Sarak, Jodhpur",
+     "piatti": [
+      "Mirchi vada",
+      "Pyaaz kachori",
+      "Mawa kachori"
+     ]
     },
     {
      "id": "mishrilal",
@@ -1794,7 +1928,10 @@
      "cosa": "Makhaniya lassi denso allo zafferano, rabri.",
      "prezzo": 1,
      "veg": true,
-     "q": "Shri Mishrilal Hotel, Sardar Market, Jodhpur"
+     "q": "Shri Mishrilal Hotel, Sardar Market, Jodhpur",
+     "piatti": [
+      "Makhaniya lassi"
+     ]
     },
     {
      "id": "cafe-mehran",
@@ -1864,6 +2001,41 @@
      "veg": true,
      "nota": "In tuk-tuk dalla città vecchia.",
      "q": "Gypsy Restaurant, Sardarpura, Jodhpur"
+    },
+    {
+     "id": "gopal-rooftop",
+     "n": "Gopal Roof Top",
+     "zona": "Ai piedi del forte, Makrana Mohalla",
+     "vicino": [
+      "Forte di Mehrangarh",
+      "Città blu",
+      "Torre dell'orologio e mercato Sardar"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Terrazza con vista sul forte, specializzata in cucina rajasthana e laal maas.",
+     "prezzo": 2,
+     "pid": "ChIJUYaCLreNQTkRDNyNGKk2YMU",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Gopal Roof Top Restaurant, Jodhpur"
+    },
+    {
+     "id": "baari",
+     "n": "Baari",
+     "zona": "Fort Road, Paota",
+     "vicino": [],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Ristorante curato di cucina rajasthana e indiana.",
+     "prezzo": 3,
+     "pid": "ChIJld8EDqaNQTkRtIBukUG8DL4",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Baari restaurant, Jodhpur"
     }
    ],
    "percorsi": [
@@ -2075,7 +2247,32 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Pranzo indicato 11:30–13: prima della visita, che per i turisti apre a mezzogiorno.",
-     "q": "Ranakpur Jain Temple"
+     "q": "Ranakpur Jain Temple",
+     "pid": "ChIJFar6og4gaDkRekQU69i2KoY",
+     "piatti": [
+      "Thali vegetariano"
+     ]
+    },
+    {
+     "id": "manvaar",
+     "n": "Manvaar",
+     "zona": "Ranakpur Road (Hotel Trishala Vilas)",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Ristorante vegetariano lungo la strada del tempio: thali e piatti indiani.",
+     "prezzo": 2,
+     "pid": "ChIJL-rZ8XkgaDkRxYW8o9Kzw5w",
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Manvaar Vegetarian Restaurant, Ranakpur",
+     "piatti": [
+      "Thali vegetariano"
+     ]
     }
    ],
    "percorsi": [
@@ -2428,7 +2625,10 @@
      "cosa": "Thali rajasthano su una terrazza sul lago.",
      "prezzo": 2,
      "nota": "Molto richiesto: prenotare.",
-     "q": "Jagat Niwas Palace, Udaipur"
+     "q": "Jagat Niwas Palace, Udaipur",
+     "piatti": [
+      "Thali rajasthano"
+     ]
     },
     {
      "id": "millets-of-mewar",
@@ -2498,7 +2698,48 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Non è in centro storico: tuk-tuk.",
-     "q": "Natraj Dining Hall, Udaipur"
+     "q": "Natraj Dining Hall, Udaipur",
+     "piatti": [
+      "Thali rajasthano",
+      "Dal baati churma e gatte ki sabzi"
+     ]
+    },
+    {
+     "id": "nazara",
+     "n": "Nazara by Lake View",
+     "zona": "Lal Ghat Road, vicino al tempio di Jagdish",
+     "vicino": [
+      "Tempio di Jagdish",
+      "City Palace"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Terrazza sul lago: cucina indiana e rajasthana.",
+     "prezzo": 2,
+     "pid": "ChIJs-vDy9PlZzkR0LwJOKVNwuE",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Nazara by Lake View, Udaipur"
+    },
+    {
+     "id": "sky-lounge",
+     "n": "The Sky Lounge",
+     "zona": "Gangaur Ghat (Hotel Pichola Haveli)",
+     "vicino": [
+      "Bagore Ki Haveli",
+      "Giro in barca sul lago Pichola"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Terrazza sul lago, comoda prima o dopo lo spettacolo di danze del Bagore Ki Haveli.",
+     "prezzo": 2,
+     "pid": "ChIJQ86KUqDlZzkRPt10UozWnZo",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "The Sky Lounge, Udaipur"
     }
    ],
    "percorsi": [
@@ -2907,7 +3148,10 @@
      "cosa": "Sohan halwa a peso: dolce duro e burroso, si conserva e si porta via.",
      "prezzo": 1,
      "veg": true,
-     "q": "Dargah Bazar, Ajmer"
+     "q": "Dargah Bazar, Ajmer",
+     "piatti": [
+      "Sohan halwa"
+     ]
     },
     {
      "id": "out-of-the-blue",
@@ -2926,7 +3170,10 @@
      "prezzo": 2,
      "veg": true,
      "nota": "Pushkar è tutta vegetariana: niente carne, uova, alcol.",
-     "q": "Out of the Blue, Pushkar"
+     "q": "Out of the Blue, Pushkar",
+     "piatti": [
+      "Thali vegetariano"
+     ]
     },
     {
      "id": "sunset-cafe",
@@ -2960,7 +3207,11 @@
      "cosa": "Khasta kachori al mattino, thali economico a pranzo.",
      "prezzo": 1,
      "veg": true,
-     "q": "Pushkar Raj Restaurant, Pushkar"
+     "q": "Pushkar Raj Restaurant, Pushkar",
+     "piatti": [
+      "Lassi e kachori",
+      "Thali vegetariano"
+     ]
     },
     {
      "id": "malpua-bancarelle",
@@ -2978,7 +3229,51 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Sceglierle calde, appena fritte.",
-     "q": "Main Market, Pushkar"
+     "q": "Main Market, Pushkar",
+     "piatti": [
+      "Malpua"
+     ]
+    },
+    {
+     "id": "madni-darbar",
+     "n": "Madni Darbar",
+     "zona": "Dargah Bazar, Ajmer",
+     "vicino": [
+      "Dargah Sharif di Ajmer"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina moghul e biryani nel bazar del Dargah.",
+     "prezzo": 2,
+     "pid": "ChIJq7PLIO7nazkReg9GvfcJWXg",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Madni Darbar Restaurant, Ajmer"
+    },
+    {
+     "id": "raju-terrace",
+     "n": "Raju Terrace Garden",
+     "zona": "Main Market Road, Pushkar",
+     "vicino": [
+      "Lago sacro di Pushkar",
+      "Tempio di Brahma"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Terrazza-giardino sopra il mercato: thali e cucina vegetariana.",
+     "prezzo": 2,
+     "pid": "ChIJ769TPyLdazkR8qmbCeOJ1ns",
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Raju Terrace Garden Restaurant, Pushkar",
+     "piatti": [
+      "Thali vegetariano"
+     ]
     }
    ],
    "percorsi": [
@@ -3388,7 +3683,11 @@
      "cosa": "Locale storico vegetariano: thali, dal baati churma, kachori, ghevar e jalebi al ghee.",
      "prezzo": 2,
      "veg": true,
-     "q": "Laxmi Mishthan Bhandar, Johari Bazar, Jaipur"
+     "q": "Laxmi Mishthan Bhandar, Johari Bazar, Jaipur",
+     "piatti": [
+      "Ghevar",
+      "Pyaaz kachori"
+     ]
     },
     {
      "id": "rawat",
@@ -3403,7 +3702,10 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Fuori dalla città vecchia: tuk-tuk.",
-     "q": "Rawat Mishthan Bhandar, Sindhi Camp, Jaipur"
+     "q": "Rawat Mishthan Bhandar, Sindhi Camp, Jaipur",
+     "piatti": [
+      "Pyaaz kachori"
+     ]
     },
     {
      "id": "lassiwala",
@@ -3419,7 +3721,10 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Ci sono più botteghe con lo stesso nome; chiude nel pomeriggio.",
-     "q": "Lassiwala, MI Road, Jaipur"
+     "q": "Lassiwala, MI Road, Jaipur",
+     "piatti": [
+      "Lassi in terracotta"
+     ]
     },
     {
      "id": "gulab-ji",
@@ -3451,7 +3756,10 @@
      "cosa": "Sale regali; laal maas, junglee maas, gatte.",
      "prezzo": 3,
      "nota": "Si prenota. Il più caro del giro.",
-     "q": "1135 AD, Amber Fort, Jaipur"
+     "q": "1135 AD, Amber Fort, Jaipur",
+     "piatti": [
+      "Laal maas"
+     ]
     },
     {
      "id": "caffe-hawa-mahal",
@@ -3469,6 +3777,63 @@
      "prezzo": 1,
      "veg": true,
      "q": "Hawa Mahal, Jaipur"
+    },
+    {
+     "id": "mahal-pink-city",
+     "n": "Mahal, The Taste of Pink City",
+     "zona": "Hawa Mahal Road",
+     "vicino": [
+      "Hawa Mahal",
+      "City Palace",
+      "Jantar Mantar"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina rajasthana a due passi dal Palazzo dei Venti.",
+     "prezzo": 3,
+     "pid": "ChIJIQuyqDixbTkR2rqTyXvYZ4g",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Mahal The Taste of Pink City, Jaipur",
+     "piatti": [
+      "Laal maas"
+     ]
+    },
+    {
+     "id": "rajasthani-bhog",
+     "n": "Rajasthani Bhog",
+     "zona": "Bani Park",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Thali e piatti rajasthani, frequentato dalle famiglie di Jaipur.",
+     "prezzo": 2,
+     "pid": "ChIJOxy-nQyzbTkRTebNDRXj1co",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Rajasthani Bhog, Jaipur"
+    },
+    {
+     "id": "rajrasa",
+     "n": "RajRasa",
+     "zona": "Amer Road",
+     "vicino": [
+      "Forte Amber"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina rajasthana sulla strada di Amber, comodo dopo il forte.",
+     "prezzo": 3,
+     "pid": "ChIJm5d8BQCxbTkRij5I1TJxX1o",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "RajRasa, Amer Road, Jaipur"
     }
    ],
    "percorsi": [
@@ -3682,7 +4047,8 @@
      "tipo": "completo",
      "cosa": "Cucina indiana anche di carne, pane al tandoor.",
      "prezzo": 1,
-     "q": "Hotel Goverdhan, Fatehpur Sikri"
+     "q": "Hotel Goverdhan, Fatehpur Sikri",
+     "pid": "ChIJGwAAAOOTczkRsQ2Fi5BtqSE"
     }
    ],
    "percorsi": [
@@ -3951,7 +4317,10 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Bedai indicato dalle 9 alle 14. Lontano dal Taj: tuk-tuk.",
-     "q": "Deviram Sweets, Pratap Pura, Agra"
+     "q": "Deviram Sweets, Pratap Pura, Agra",
+     "piatti": [
+      "Bedai e jalebi"
+     ]
     },
     {
      "id": "saniya-palace",
@@ -4016,7 +4385,10 @@
      "tipo": "completo",
      "cosa": "Cucina moghul: dal makhani, kebab, biryani.",
      "prezzo": 2,
-     "q": "Pinch of Spice, Fatehabad Road, Agra"
+     "q": "Pinch of Spice, Fatehabad Road, Agra",
+     "piatti": [
+      "Cucina moghul"
+     ]
     },
     {
      "id": "mama-chicken",
@@ -4047,7 +4419,31 @@
      "prezzo": 1,
      "veg": true,
      "nota": "Molti negozi imitano il nome.",
-     "q": "Panchhi Petha, Agra"
+     "q": "Panchhi Petha, Agra",
+     "piatti": [
+      "Petha",
+      "Dalmoth"
+     ]
+    },
+    {
+     "id": "nawaabs",
+     "n": "The Nawaabs",
+     "zona": "Fatehabad Road",
+     "vicino": [
+      "Taj Mahal"
+     ],
+     "pasti": [
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Cucina moghul: kebab, curry e biryani.",
+     "prezzo": 3,
+     "pid": "ChIJi9iW1K1xdDkRXB6IQ3ffHNA",
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "The Nawaabs, Fatehabad Road, Agra",
+     "piatti": [
+      "Cucina moghul"
+     ]
     }
    ],
    "percorsi": [
