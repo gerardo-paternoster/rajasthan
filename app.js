@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-25.1';
+const VERSIONE = '2026-11-25.2';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -92,6 +92,7 @@ const ICO = {
   penna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.5L16.5 4a2.1 2.1 0 013 3L8 18.5z"/></svg>',
   piu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
   campana: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0112 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/></svg>',
+  libro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15H6.5A2.5 2.5 0 004 20.5z"/><path d="M4 20.5A2.5 2.5 0 016.5 23H20"/></svg>',
   mappa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   bussola: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>'
 };
@@ -764,6 +765,11 @@ function adattoA(l, k, completo) {
   if (k === completo) return l.tipo !== 'leggero' && l.pasti.indexOf(k) >= 0;
   return l.tipo !== 'completo' && (l.pasti.indexOf(k) >= 0 || l.pasti.indexOf('spuntino') >= 0);
 }
+function urlWiki(lingua, titolo) { return 'https://' + lingua + '.wikipedia.org/w/index.php?search=' + encodeURIComponent(titolo) + '&go=Go'; }
+function linkWiki(w, prima) {
+  if (!w) return '';
+  return '<span class="wiki">' + ICO.libro + (prima ? esc(prima) + ' ' : '') + 'Wikipedia: <a href="' + esc(urlWiki('it', w.it)) + '" target="_blank" rel="noopener" lang="it">italiano</a>, <a href="' + esc(urlWiki('en', w.en)) + '" target="_blank" rel="noopener" lang="en">inglese</a></span>';
+}
 function urlMappa(q, pid) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + (pid ? '&query_place_id=' + encodeURIComponent(pid) : ''); }
 function linkMappa(q, testo, pid) { return q ? '<a class="mappa" href="' + esc(urlMappa(q, pid)) + '" target="_blank" rel="noopener">' + ICO.mappa + esc(testo || 'Apri in Google Maps') + '</a>' : ''; }
 function qSosta(t, nome) { const v = t.vedere.find((x) => x.t === nome); return v && v.q ? v.q : nome + ', ' + t.nome + ', India'; }
@@ -1166,7 +1172,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : htmlDoveProvarlo(t, x)) + '</details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (k === 'v' && x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : htmlDoveProvarlo(t, x)) + '</details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });
@@ -1198,6 +1204,7 @@ function htmlMeteo(t) {
 function vistaTappa(id) {
   const t = tappa(id); if (!t) return vistaTappe();
   let h = '<div' + stileCitta(t) + '><section class="fascia">' + (t.foto && t.foto.url ? '<img class="foto" crossorigin="anonymous" src="' + esc(t.foto.url) + '" alt="' + esc(t.foto.soggetto || t.nome) + '">' : '') + arco(suColore(t.colore), 210, 'sfondo') + '<div class="scritta"><h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></div></section>' + htmlMeteo(t);
+  if (t.w) h += '<p class="wiki-citta">' + linkWiki(t.w, t.w2 ? t.w.it + ':' : '') + (t.w2 ? '<br>' + linkWiki(t.w2, t.w2.it + ':') : '') + '</p>';
   h += htmlSegni(t, t.vedere, 'v', 'Cosa vedere', 'Visto');
   h += htmlSegni(t, t.mangiare, 'm', 'Cosa mangiare', 'Assaggiato');
   h += htmlDoveMangiare(t);

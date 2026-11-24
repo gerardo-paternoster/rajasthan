@@ -475,3 +475,10 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .sugg { display: block; width: 100%; text-align: left; background: var(--calce); border: 0; padding: 10px 12px; min-height: 44px; color: var(--inchiostro); font: inherit; }
 .sugg b { display: block; font-size: 16px; }
 .sugg .tenue { font-size: 14px; }
+
+/* ---------- Wikipedia ---------- */
+.wiki { font-size: 15px; }
+.wiki svg { width: 18px; height: 18px; margin-right: 6px; vertical-align: -4px; color: var(--citta, var(--indaco)); }
+.wiki a { font-weight: 600; text-decoration: underline; padding: 6px 0; }
+.riga-wiki { margin: 2px 0 0; }
+.wiki-citta { margin: 4px 0 14px; line-height: 1.9; }

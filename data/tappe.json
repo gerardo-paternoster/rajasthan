@@ -199,7 +199,11 @@
      "c": [
       28.6129,
       77.2295
-     ]
+     ],
+     "w": {
+      "it": "India Gate",
+      "en": "India Gate"
+     }
     },
     {
      "t": "Chandni Chowk",
@@ -233,7 +237,11 @@
      "c": [
       28.6506,
       77.2303
-     ]
+     ],
+     "w": {
+      "it": "Chandni Chowk",
+      "en": "Chandni Chowk"
+     }
     },
     {
      "t": "Jama Masjid",
@@ -256,7 +264,11 @@
      "c": [
       28.6507,
       77.2334
-     ]
+     ],
+     "w": {
+      "it": "Jama Masjid (Delhi)",
+      "en": "Jama Masjid, Delhi"
+     }
     },
     {
      "t": "Forte Rosso",
@@ -285,7 +297,11 @@
      "c": [
       28.6562,
       77.241
-     ]
+     ],
+     "w": {
+      "it": "Forte Rosso",
+      "en": "Red Fort"
+     }
     }
    ],
    "mangiare": [
@@ -620,7 +636,11 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Delhi",
+    "en": "Delhi"
+   }
   },
   {
    "id": "bikaner",
@@ -653,7 +673,11 @@
      "c": [
       28.0222,
       73.3194
-     ]
+     ],
+     "w": {
+      "it": "Forte di Junagarh",
+      "en": "Junagarh Fort"
+     }
     },
     {
      "t": "Haveli Rampuria",
@@ -682,7 +706,11 @@
      "c": [
       28.0145,
       73.3119
-     ]
+     ],
+     "w": {
+      "it": "Rampuria Haveli",
+      "en": "Rampuria Haveli"
+     }
     },
     {
      "t": "Tempio di Karni Mata a Deshnok",
@@ -711,7 +739,11 @@
      "c": [
       27.7907,
       73.341
-     ]
+     ],
+     "w": {
+      "it": "Tempio di Karni Mata",
+      "en": "Karni Mata Temple"
+     }
     },
     {
      "t": "Centro di ricerca sul cammello",
@@ -740,7 +772,11 @@
      "c": [
       27.99,
       73.38
-     ]
+     ],
+     "w": {
+      "it": "National Research Centre on Camel",
+      "en": "National Research Centre on Camel"
+     }
     }
    ],
    "mangiare": [
@@ -1055,7 +1091,11 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Bikaner",
+    "en": "Bikaner"
+   }
   },
   {
    "id": "jaisalmer",
@@ -1092,7 +1132,11 @@
      "c": [
       26.9124,
       70.9126
-     ]
+     ],
+     "w": {
+      "it": "Forte di Jaisalmer",
+      "en": "Jaisalmer Fort"
+     }
     },
     {
      "t": "Templi jainisti nel forte",
@@ -1121,7 +1165,11 @@
      "c": [
       26.9122,
       70.9118
-     ]
+     ],
+     "w": {
+      "it": "Templi giainisti di Jaisalmer",
+      "en": "Jain temples of Jaisalmer"
+     }
     },
     {
      "t": "Patwon Ki Haveli",
@@ -1150,7 +1198,11 @@
      "c": [
       26.917,
       70.916
-     ]
+     ],
+     "w": {
+      "it": "Patwon Ki Haveli",
+      "en": "Patwon Ki Haveli"
+     }
     },
     {
      "t": "Lago Gadisar",
@@ -1180,7 +1232,11 @@
      "c": [
       26.9055,
       70.923
-     ]
+     ],
+     "w": {
+      "it": "Gadisar",
+      "en": "Gadisar Lake"
+     }
     },
     {
      "t": "Bada Bagh",
@@ -1209,7 +1265,11 @@
      "c": [
       26.961,
       70.876
-     ]
+     ],
+     "w": {
+      "it": "Bada Bagh",
+      "en": "Bada Bagh"
+     }
     },
     {
      "t": "Dune del Thar",
@@ -1239,7 +1299,11 @@
      "c": [
       26.83,
       70.51
-     ]
+     ],
+     "w": {
+      "it": "Deserto del Thar",
+      "en": "Sam Sand Dunes"
+     }
     }
    ],
    "mangiare": [
@@ -1609,7 +1673,11 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Jaisalmer",
+    "en": "Jaisalmer"
+   }
   },
   {
    "id": "jodhpur",
@@ -1646,7 +1714,11 @@
      "c": [
       26.298,
       73.0185
-     ]
+     ],
+     "w": {
+      "it": "Forte di Mehrangarh",
+      "en": "Mehrangarh"
+     }
     },
     {
      "t": "Jaswant Thada",
@@ -1675,7 +1747,11 @@
      "c": [
       26.3029,
       73.0228
-     ]
+     ],
+     "w": {
+      "it": "Jaswant Thada",
+      "en": "Jaswant Thada"
+     }
     },
     {
      "t": "Città blu",
@@ -1704,7 +1780,11 @@
      "c": [
       26.2955,
       73.021
-     ]
+     ],
+     "w": {
+      "it": "Jodhpur città blu",
+      "en": "Blue City Jodhpur"
+     }
     },
     {
      "t": "Toorji Ka Jhalra",
@@ -1733,7 +1813,11 @@
      "c": [
       26.2935,
       73.022
-     ]
+     ],
+     "w": {
+      "it": "Toorji Ka Jhalra",
+      "en": "Toorji Ka Jhalra"
+     }
     },
     {
      "t": "Torre dell'orologio e mercato Sardar",
@@ -1756,7 +1840,11 @@
      "c": [
       26.294,
       73.0244
-     ]
+     ],
+     "w": {
+      "it": "Ghanta Ghar Jodhpur",
+      "en": "Ghanta Ghar, Jodhpur"
+     }
     }
    ],
    "mangiare": [
@@ -2125,7 +2213,11 @@
      },
      "completo": "pranzo"
     }
-   ]
+   ],
+   "w": {
+    "it": "Jodhpur",
+    "en": "Jodhpur"
+   }
   },
   {
    "id": "ranakpur",
@@ -2162,7 +2254,11 @@
      "c": [
       25.1159,
       73.4729
-     ]
+     ],
+     "w": {
+      "it": "Tempio di Ranakpur",
+      "en": "Ranakpur Jain Temple"
+     }
     },
     {
      "t": "Templi di Neminath e Parshvanath",
@@ -2185,7 +2281,11 @@
      "c": [
       25.1165,
       73.474
-     ]
+     ],
+     "w": {
+      "it": "Ranakpur Parshvanath",
+      "en": "Ranakpur Parshvanath temple"
+     }
     }
    ],
    "mangiare": [
@@ -2312,7 +2412,11 @@
      },
      "completo": "pranzo"
     }
-   ]
+   ],
+   "w": {
+    "it": "Ranakpur",
+    "en": "Ranakpur"
+   }
   },
   {
    "id": "udaipur",
@@ -2345,7 +2449,11 @@
      "c": [
       24.5764,
       73.6835
-     ]
+     ],
+     "w": {
+      "it": "City Palace (Udaipur)",
+      "en": "City Palace, Udaipur"
+     }
     },
     {
      "t": "Giro in barca sul lago Pichola",
@@ -2374,7 +2482,11 @@
      "c": [
       24.5735,
       73.683
-     ]
+     ],
+     "w": {
+      "it": "Lago Pichola",
+      "en": "Lake Pichola"
+     }
     },
     {
      "t": "Tempio di Jagdish",
@@ -2403,7 +2515,11 @@
      "c": [
       24.5797,
       73.6838
-     ]
+     ],
+     "w": {
+      "it": "Tempio di Jagdish",
+      "en": "Jagdish Temple"
+     }
     },
     {
      "t": "Bagore Ki Haveli",
@@ -2432,7 +2548,11 @@
      "c": [
       24.5805,
       73.6822
-     ]
+     ],
+     "w": {
+      "it": "Bagore Ki Haveli",
+      "en": "Bagore-ki-Haveli"
+     }
     },
     {
      "t": "Ambrai Ghat",
@@ -2462,7 +2582,11 @@
      "c": [
       24.579,
       73.6795
-     ]
+     ],
+     "w": {
+      "it": "Lago Pichola",
+      "en": "Lake Pichola"
+     }
     },
     {
      "t": "Tramonto dall'alto",
@@ -2488,7 +2612,11 @@
      "c": [
       24.594,
       73.639
-     ]
+     ],
+     "w": {
+      "it": "Palazzo dei Monsoni",
+      "en": "Monsoon Palace"
+     }
     }
    ],
    "mangiare": [
@@ -2863,7 +2991,11 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Udaipur",
+    "en": "Udaipur"
+   }
   },
   {
    "id": "ajmer-pushkar",
@@ -2902,7 +3034,11 @@
      "c": [
       26.4563,
       74.6283
-     ]
+     ],
+     "w": {
+      "it": "Dargah di Ajmer",
+      "en": "Ajmer Sharif Dargah"
+     }
     },
     {
      "t": "Lago sacro di Pushkar",
@@ -2925,7 +3061,11 @@
      "c": [
       26.4875,
       74.553
-     ]
+     ],
+     "w": {
+      "it": "Lago di Pushkar",
+      "en": "Pushkar Lake"
+     }
     },
     {
      "t": "Tempio di Brahma",
@@ -2954,7 +3094,11 @@
      "c": [
       26.4876,
       74.5555
-     ]
+     ],
+     "w": {
+      "it": "Tempio di Brahma (Pushkar)",
+      "en": "Jagatpita Brahma Mandir"
+     }
     },
     {
      "t": "Tempio di Savitri",
@@ -2983,7 +3127,11 @@
      "c": [
       26.482,
       74.545
-     ]
+     ],
+     "w": {
+      "it": "Tempio di Savitri Pushkar",
+      "en": "Savitri Temple, Pushkar"
+     }
     },
     {
      "t": "Aarti serale sui ghat",
@@ -3009,7 +3157,11 @@
      "c": [
       26.488,
       74.554
-     ]
+     ],
+     "w": {
+      "it": "Aarti",
+      "en": "Aarti"
+     }
     }
    ],
    "mangiare": [
@@ -3362,7 +3514,15 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Pushkar",
+    "en": "Pushkar"
+   },
+   "w2": {
+    "it": "Ajmer",
+    "en": "Ajmer"
+   }
   },
   {
    "id": "jaipur",
@@ -3405,7 +3565,11 @@
      "c": [
       26.9855,
       75.8513
-     ]
+     ],
+     "w": {
+      "it": "Forte Amber",
+      "en": "Amber Fort"
+     }
     },
     {
      "t": "Hawa Mahal",
@@ -3428,7 +3592,11 @@
      "c": [
       26.9239,
       75.8267
-     ]
+     ],
+     "w": {
+      "it": "Hawa Mahal",
+      "en": "Hawa Mahal"
+     }
     },
     {
      "t": "Jantar Mantar",
@@ -3457,7 +3625,11 @@
      "c": [
       26.9248,
       75.8246
-     ]
+     ],
+     "w": {
+      "it": "Jantar Mantar (Jaipur)",
+      "en": "Jantar Mantar, Jaipur"
+     }
     },
     {
      "t": "City Palace",
@@ -3487,7 +3659,11 @@
      "c": [
       26.9258,
       75.8237
-     ]
+     ],
+     "w": {
+      "it": "City Palace (Jaipur)",
+      "en": "City Palace, Jaipur"
+     }
     },
     {
      "t": "Nahargarh",
@@ -3516,7 +3692,11 @@
      "c": [
       26.9373,
       75.8155
-     ]
+     ],
+     "w": {
+      "it": "Forte di Nahargarh",
+      "en": "Nahargarh Fort"
+     }
     },
     {
      "t": "Bazar della città rosa",
@@ -3546,7 +3726,11 @@
      "c": [
       26.9205,
       75.827
-     ]
+     ],
+     "w": {
+      "it": "Johari Bazaar Jaipur",
+      "en": "Johari Bazaar"
+     }
     }
    ],
    "mangiare": [
@@ -3921,7 +4105,11 @@
      },
      "completo": "cena"
     }
-   ]
+   ],
+   "w": {
+    "it": "Jaipur",
+    "en": "Jaipur"
+   }
   },
   {
    "id": "fatehpur-sikri",
@@ -3961,7 +4149,11 @@
      "c": [
       27.094,
       77.6635
-     ]
+     ],
+     "w": {
+      "it": "Fatehpur Sikri",
+      "en": "Fatehpur Sikri"
+     }
     },
     {
      "t": "Buland Darwaza",
@@ -3980,7 +4172,11 @@
      "c": [
       27.0918,
       77.6609
-     ]
+     ],
+     "w": {
+      "it": "Buland Darwaza",
+      "en": "Buland Darwaza"
+     }
     },
     {
      "t": "Jama Masjid e tomba di Salim Chishti",
@@ -4009,7 +4205,11 @@
      "c": [
       27.0928,
       77.6614
-     ]
+     ],
+     "w": {
+      "it": "Tomba di Salim Chishti",
+      "en": "Tomb of Salim Chishti"
+     }
     }
    ],
    "mangiare": [],
@@ -4092,7 +4292,11 @@
      },
      "completo": "pranzo"
     }
-   ]
+   ],
+   "w": {
+    "it": "Fatehpur Sikri",
+    "en": "Fatehpur Sikri"
+   }
   },
   {
    "id": "agra",
@@ -4129,7 +4333,11 @@
      "c": [
       27.1751,
       78.0421
-     ]
+     ],
+     "w": {
+      "it": "Taj Mahal",
+      "en": "Taj Mahal"
+     }
     },
     {
      "t": "Forte di Agra",
@@ -4158,7 +4366,11 @@
      "c": [
       27.1795,
       78.0211
-     ]
+     ],
+     "w": {
+      "it": "Forte di Agra",
+      "en": "Agra Fort"
+     }
     },
     {
      "t": "Mehtab Bagh",
@@ -4188,7 +4400,11 @@
      "c": [
       27.1798,
       78.0424
-     ]
+     ],
+     "w": {
+      "it": "Mehtab Bagh",
+      "en": "Mehtab Bagh"
+     }
     }
    ],
    "mangiare": [
@@ -4521,7 +4737,11 @@
      },
      "completo": "pranzo"
     }
-   ]
+   ],
+   "w": {
+    "it": "Agra",
+    "en": "Agra"
+   }
   }
  ]
 }
