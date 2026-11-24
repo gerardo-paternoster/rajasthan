@@ -37,7 +37,8 @@
 
   <h2>Gruppo di viaggio</h2>
   <p>Se entri in un gruppo di viaggio (con il link d'invito), l'app condivide con gli altri membri solo tre cose: il nome che scegli, i percorsi a cui dici "Ci sto" e i percorsi che proponi. Liste, spunte, note e diario restano tuoi e non vengono condivisi.</p>
-  <p>Questi dati stanno in un database Firebase (Google) creato da chi ha fatto l'app, in Europa, sotto un codice segreto del gruppo: li può leggere chi ha il link d'invito e chi gestisce il database. Uscendo dal gruppo l'app smette di inviarli; per farli cancellare chiedilo a chi ha creato il gruppo.</p>
+  <p>Per entrare nel gruppo serve un accesso, con Google oppure con email e password, gestito da Firebase Authentication (Google). Serve solo a riconoscerti, così ritrovi le tue scelte su più dispositivi e nessun altro può cambiarle. Dell'account Google l'app riceve solo nome ed email; non chiede altri permessi.</p>
+  <p>Questi dati e l'email dell'account stanno in Firebase (Google), in un progetto creato da chi ha fatto l'app, con il database in Europa e sotto un codice segreto del gruppo. Le adesioni e le proposte le può leggere chi è entrato con il link d'invito; tutto, email comprese, lo può vedere chi gestisce il progetto. Uscendo dal gruppo l'app smette di inviarli; per farli cancellare, account compreso, chiedilo a chi ha creato il gruppo.</p>
 
   <h2>Uso dei dati dell'account Google</h2>
   <p>L'app chiede un solo permesso: vedere, creare e modificare i file di Google Drive che ha creato lei stessa. Non può vedere gli altri file del tuo Drive, né la posta, i contatti o il calendario.</p>
@@ -52,7 +53,7 @@
     <li>Open-Meteo, per meteo e qualità dell'aria (riceve solo le coordinate delle città del viaggio, non la tua posizione);</li>
     <li>Wikimedia Commons, per le foto delle tappe;</li>
     <li>Google, solo se scegli di accedere con Google;</li>
-    <li>Firebase (Google), solo se entri in un gruppo di viaggio.</li>
+    <li>Firebase (Google), solo se accedi ed entri in un gruppo di viaggio.</li>
   </ul>
   <p>L'app non chiede e non usa la posizione del dispositivo.</p>
 

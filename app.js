@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-24.2';
+const VERSIONE = '2026-11-24.3';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -483,6 +483,129 @@ function htmlStatoSync() {
 }
 function mostraAvvisoMemoria() { const a = $('#avvisoMemoria'); if (a) a.hidden = false; }
 
+/* ---------- Account (Firebase Authentication, via REST) ---------- */
+// Chiave API web di Firebase: non è un segreto, identifica solo il progetto.
+const FIREBASE_API_KEY = '';
+// Account di Gerry: su questi le sezioni personali (Liste, Foto, Diario) si attivano anche su un dispositivo nuovo.
+const PROPRIETARI = [];
+const URL_AUTH = 'https://identitytoolkit.googleapis.com/v1/accounts:';
+let ACC = LS.get('rj.acc', null);
+const ERR_ACC = {
+  EMAIL_EXISTS: 'Esiste già un account con questa email: usa "Entra".',
+  INVALID_LOGIN_CREDENTIALS: 'Email o password non corrette.', INVALID_PASSWORD: 'Email o password non corrette.', EMAIL_NOT_FOUND: 'Email o password non corrette.',
+  INVALID_EMAIL: 'L\'email non sembra valida.', MISSING_PASSWORD: 'Scrivi la password.', MISSING_EMAIL: 'Scrivi l\'email.',
+  TOO_MANY_ATTEMPTS_TRY_LATER: 'Troppi tentativi: riprova tra qualche minuto.', USER_DISABLED: 'Questo account è stato disattivato.',
+  OPERATION_NOT_ALLOWED: 'Questo modo di accesso non è ancora attivo.'
+};
+function errAcc(m) {
+  m = String(m || ''); if (m.indexOf('WEAK_PASSWORD') === 0) return 'Password troppo corta: almeno 6 caratteri.';
+  return ERR_ACC[m.split(' ')[0]] || 'Accesso non riuscito (' + m + ').';
+}
+async function chiamaAuth(metodo, corpo) {
+  if (!FIREBASE_API_KEY) throw new Error('L\'accesso non è ancora attivo in questa versione dell\'app.');
+  const r = await fetch(URL_AUTH + metodo + '?key=' + FIREBASE_API_KEY, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(errAcc(j.error && j.error.message));
+  return j;
+}
+function salvaAcc(j, metodo) {
+  const prima = io().id;
+  ACC = { uid: j.localId, idToken: j.idToken, refreshToken: j.refreshToken, scad: Date.now() + (+j.expiresIn || 3600) * 1000, email: j.email || '', metodo };
+  LS.set('rj.acc', ACC);
+  if (PROPRIETARI.indexOf(ACC.uid) >= 0) LS.set('rj.proprietario', true);
+  migraIdentita(prima, ACC.uid);
+  const x = io(); if (!x.n && j.displayName) { x.n = String(j.displayName).split(' ')[0].slice(0, 40); LS.set('rj.io', x); }
+}
+// Le adesioni date prima dell'accesso passano all'account.
+function migraIdentita(da, a) {
+  const x = io(); x.id = a; LS.set('rj.io', x);
+  if (!da || da === a) return;
+  const nuova = {};
+  Object.keys(coda).forEach((k) => {
+    let v = coda[k]; const p = k.split('/');
+    if (p[p.length - 1] === da) p[p.length - 1] = a;
+    if (v && typeof v === 'object' && v.autore && v.autore.id === da) v = Object.assign({}, v, { autore: Object.assign({}, v.autore, { id: a }) });
+    nuova[p.join('/')] = v;
+  });
+  coda = nuova; LS.set('rj.grCoda', coda); GRV = null;
+}
+async function tokenAcc() {
+  if (!ACC) return '';
+  if (ACC.scad - 60000 > Date.now()) return ACC.idToken;
+  const r = await fetch('https://securetoken.googleapis.com/v1/token?key=' + FIREBASE_API_KEY, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'grant_type=refresh_token&refresh_token=' + encodeURIComponent(ACC.refreshToken) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { if (r.status === 400) { ACC = null; LS.del('rj.acc'); } throw new Error('L\'accesso è scaduto: entra di nuovo.'); }
+  ACC = Object.assign({}, ACC, { idToken: j.id_token, refreshToken: j.refresh_token, scad: Date.now() + (+j.expires_in || 3600) * 1000 });
+  LS.set('rj.acc', ACC); return ACC.idToken;
+}
+function esciAccount() { ACC = null; LS.del('rj.acc'); statoGr = { fase: 'fermo', errore: '', ultima: 0 }; try { if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect(); } catch (e) {} }
+async function accediConIdGoogle(credenziale) {
+  const j = await chiamaAuth('signInWithIdp', { postBody: 'id_token=' + credenziale + '&providerId=google.com', requestUri: location.origin + location.pathname, returnSecureToken: true, returnIdpCredential: true });
+  salvaAcc(j, 'google');
+}
+// Pulsante "Accedi con Google" nel riquadro #gAcc, se presente nella vista.
+function montaGoogle() {
+  const el = $('#gAcc'); if (!el || !GOOGLE_CLIENT_ID || !FIREBASE_API_KEY || !navigator.onLine) return;
+  caricaGoogle().then(() => {
+    if (!(window.google && google.accounts && google.accounts.id) || !document.body.contains(el)) return;
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID, use_fedcm_for_prompt: true,
+      callback: async (r) => {
+        const err = $('#errAcc');
+        try { await accediConIdGoogle(r.credential); await dopoAccesso(); }
+        catch (e) { if (err) { err.textContent = e.message; err.hidden = false; } }
+      }
+    });
+    el.innerHTML = ''; google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', text: 'continue_with', locale: 'it', width: Math.min(320, el.clientWidth || 320) });
+  }).catch(() => {});
+}
+function htmlAccesso(perche) {
+  if (!FIREBASE_API_KEY) return '<p class="tenue">L\'accesso non è ancora attivo: aggiorna l\'app tra qualche giorno.</p>';
+  return '<div class="accesso"><p>' + esc(perche) + '</p><div id="gAcc" class="g-acc"></div><p class="oppure">oppure con email e password</p>' +
+    '<label>Email<input id="fEmail" type="email" autocomplete="email" autocapitalize="off" spellcheck="false"></label>' +
+    '<label>Password<input id="fPass" type="password" autocomplete="current-password" minlength="6"></label>' +
+    '<p class="err" id="errAcc" hidden></p><p class="tenue" id="msgAcc"></p>' +
+    '<div class="azioni larghe"><button class="btn" data-az="accEntra">Entra</button><button class="btn chiaro" data-az="accNuovo">Crea l\'account</button></div>' +
+    '<p><button class="link-btn" data-az="accReset">Password dimenticata?</button></p></div>';
+}
+// Dopo l'accesso: se c'è un invito in sospeso si entra nel gruppo, altrimenti si ridisegna.
+async function dopoAccesso() {
+  const inv = LS.get('rj.invito', '');
+  if (inv) { LS.del('rj.invito'); await entraNelGruppo(inv, io().n || ''); return; }
+  await grSincronizza(); disegna();
+}
+async function azioneAccount(az, el) {
+  if (['accEntra', 'accNuovo', 'accReset'].indexOf(az) < 0) return false;
+  const err = $('#errAcc'), msg = $('#msgAcc'), email = ($('#fEmail').value || '').trim(), pass = $('#fPass').value || '';
+  err.hidden = true; msg.textContent = '';
+  const fn = $('#fNome'); if (fn && fn.value.trim()) { const x = io(); x.n = fn.value.trim().slice(0, 40); LS.set('rj.io', x); }
+  if (!navigator.onLine) { err.textContent = 'Serve la rete per entrare.'; err.hidden = false; return true; }
+  try {
+    if (az === 'accReset') {
+      if (!email) throw new Error('Scrivi la tua email qui sopra, poi premi di nuovo.');
+      await chiamaAuth('sendOobCode', { requestType: 'PASSWORD_RESET', email });
+      msg.textContent = 'Se l\'email ha un account, ti arriva un messaggio per scegliere una password nuova. Guarda anche nello spam.';
+      return true;
+    }
+    if (az === 'accNuovo' && pass.length < 6) throw new Error('Scegli una password di almeno 6 caratteri.');
+    el.disabled = true;
+    const j = await chiamaAuth(az === 'accNuovo' ? 'signUp' : 'signInWithPassword', { email, password: pass, returnSecureToken: true });
+    salvaAcc(j, 'email'); await dopoAccesso();
+  } catch (e) { err.textContent = e.message; err.hidden = false; el.disabled = false; }
+  return true;
+}
+
+/* ---------- Sezioni personali solo per il proprietario ---------- */
+function proprietario() {
+  return !!(LS.get('rj.proprietario', false) || modoSync() || (ACC && PROPRIETARI.indexOf(ACC.uid) >= 0));
+}
+const SEZ_PERSONALI = ['liste', 'sim', 'foto', 'diario'];
+function aggiornaModoOspite() {
+  const p = proprietario();
+  if (p && !LS.get('rj.proprietario', false)) LS.set('rj.proprietario', true);
+  document.body.classList.toggle('ospite', !p);
+}
+
 /* ---------- Gruppo di viaggio: percorsi e adesioni (Firebase Realtime Database) ---------- */
 // Indirizzo del database del gruppo (non è un segreto: i dati stanno sotto il codice del gruppo,
 // che non compare mai nel repository). Vuoto = le adesioni restano su questo dispositivo.
@@ -518,19 +641,20 @@ function gruppo() {
   return GRV;
 }
 function grScrivi(campi) { Object.assign(coda, campi); LS.set('rj.grCoda', coda); GRV = null; clearTimeout(timerGr); timerGr = setTimeout(grSincronizza, 800); }
-function grUrl() { return FIREBASE_DB.replace(/\/$/, '') + '/gruppi/' + encodeURIComponent(codiceGruppo()) + '.json'; }
+function grUrl(tok) { return FIREBASE_DB.replace(/\/$/, '') + '/g2/' + encodeURIComponent(codiceGruppo()) + '.json?auth=' + encodeURIComponent(tok); }
 async function grSincronizza() {
-  if (!FIREBASE_DB || !codiceGruppo() || grInCorso || !navigator.onLine) return;
+  if (!FIREBASE_DB || !codiceGruppo() || !ACC || grInCorso || !navigator.onLine) return;
   grInCorso = true; statoGr.fase = 'sync';
   try {
+    const tok = await tokenAcc();
     const invio = Object.assign({}, coda);
     if (Object.keys(invio).length) {
-      const r = await fetch(grUrl(), { method: 'PATCH', body: JSON.stringify(invio) });
-      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? 'Il database ha rifiutato la scrittura: vanno controllate le regole.' : 'Il database ha risposto con un errore (' + r.status + ').');
+      const r = await fetch(grUrl(tok), { method: 'PATCH', body: JSON.stringify(invio) });
+      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? 'Il database ha rifiutato la scrittura: vanno controllate le regole, oppure stai cambiando qualcosa di un altro.' : 'Il database ha risposto con un errore (' + r.status + ').');
       Object.keys(invio).forEach((k) => { if (JSON.stringify(coda[k]) === JSON.stringify(invio[k])) delete coda[k]; });
       LS.set('rj.grCoda', coda);
     }
-    const r2 = await fetch(grUrl());
+    const r2 = await fetch(grUrl(tok));
     if (!r2.ok) throw new Error(r2.status === 401 || r2.status === 403 ? 'Il database ha rifiutato la lettura: vanno controllate le regole.' : 'Il database ha risposto con un errore (' + r2.status + ').');
     GR = (await r2.json()) || {}; LS.set('rj.gr', GR); GRV = null;
     statoGr = { fase: 'ok', errore: '', ultima: Date.now() }; LS.set('rj.grUltima', statoGr.ultima);
@@ -693,27 +817,41 @@ function htmlImpostazioniGruppo() {
   let h = '<h2 class="sez">Gruppo di viaggio</h2><section class="pannello pieno">';
   h += '<p>I percorsi di ogni giorno si scelgono insieme: ognuno dice "Ci sto" e può proporne di nuovi.</p>';
   h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><div class="azioni"><button class="btn chiaro piccolo" data-az="salvaNome">Salva il nome</button></div>';
-  if (!FIREBASE_DB) h += '<p class="tenue" style="margin-top:14px">Il voto con i compagni non è ancora attivo: per ora adesioni e proposte restano su questo dispositivo e verranno condivise appena entri in un gruppo.</p>';
-  else if (codiceGruppo()) {
-    h += '<p style="margin-top:14px"><b>Sei in un gruppo.</b> ' + (statoGr.fase === 'errore' ? '<span class="err">' + esc(statoGr.errore) + '</span>' : statoGr.ultima ? 'Aggiornato il ' + esc(fmtOra.format(new Date(statoGr.ultima))) + '.' : '') + (Object.keys(coda).length ? ' Modifiche in attesa di invio.' : '') + '</p>';
+  if (!FIREBASE_DB) return h + '<p class="tenue" style="margin-top:14px">Il voto con i compagni non è ancora attivo.</p></section>';
+  if (!ACC) return h + '<div style="margin-top:18px">' + htmlAccesso('Per creare il gruppo o entrarci serve un accesso: così le tue scelte ti seguono su telefono e computer.') + '</div></section>';
+  h += '<p style="margin-top:16px">Accesso ' + (ACC.metodo === 'google' ? 'con Google' : 'con email') + (ACC.email ? ': <b>' + esc(ACC.email) + '</b>' : '') + '.</p>';
+  if (codiceGruppo()) {
+    h += '<p style="margin-top:10px"><b>Sei in un gruppo.</b> ' + (statoGr.fase === 'errore' ? '<span class="err">' + esc(statoGr.errore) + '</span>' : statoGr.ultima ? 'Aggiornato il ' + esc(fmtOra.format(new Date(statoGr.ultima))) + '.' : '') + (Object.keys(coda).length ? ' Modifiche in attesa di invio.' : '') + '</p>';
     h += '<div class="azioni"><button class="btn piccolo" data-az="invita">Invita i compagni</button><button class="btn chiaro piccolo" data-az="grAggiorna">Aggiorna</button><button class="btn pericolo piccolo" data-az="esciGruppo">Esci dal gruppo</button></div><p class="tenue" id="msgGruppo"></p>';
-    h += '<p class="tenue" style="margin-top:10px">Chi ha il link d\'invito entra nel gruppo: mandalo solo ai compagni di viaggio.</p>';
+    h += '<p class="tenue" style="margin-top:10px">Chi ha il link d\'invito può entrare nel gruppo: mandalo solo ai compagni di viaggio. Ognuno può cambiare solo le proprie adesioni e proposte.</p>';
   } else {
-    h += '<p class="tenue" style="margin-top:14px">Uno solo crea il gruppo e manda il link d\'invito agli altri, per esempio su WhatsApp.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
+    h += '<p class="tenue" style="margin-top:10px">Uno solo crea il gruppo e manda il link d\'invito agli altri, per esempio su WhatsApp.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
   }
+  h += '<div class="azioni" style="margin-top:14px"><button class="btn chiaro piccolo" data-az="esciAccount">Esci dall\'account</button></div>';
+  if (proprietario()) h += '<p class="tenue" style="margin-top:10px">Identificativo del tuo account (serve a riconoscerti sui dispositivi nuovi): <span class="codice">' + esc(ACC.uid) + '</span></p>';
   return h + '</section>';
 }
 function vistaGruppo(codice) {
   let h = '';
+  const dopo = () => montaGoogle();
   if (!/^[a-z2-9]{16,40}$/.test(codice || '')) h = '<div class="pannello vuoto"><h3>Link d\'invito non valido</h3><p class="tenue">Chiedi di nuovo il link a chi ha creato il gruppo.</p></div>';
-  else if (codice === codiceGruppo()) h = '<div class="pannello vuoto"><h3>Sei già in questo gruppo</h3><p><a class="chip" href="#viaggio">Vai al viaggio</a></p></div>';
+  else if (codice === codiceGruppo() && ACC) h = '<div class="pannello vuoto"><h3>Sei già in questo gruppo</h3><p><a class="chip" href="#viaggio">Vai al viaggio</a></p></div>';
   else {
-    h = '<div class="pannello pieno"><h3>Ti hanno invitato nel gruppo di viaggio</h3><p>Entrando vedi i percorsi proposti dagli altri, chi aderisce a cosa, e puoi proporre i tuoi. Gli altri vedranno il tuo nome, le tue adesioni e le tue proposte; il resto dei tuoi dati rimane solo tuo.</p>';
-    if (codiceGruppo()) h += '<p class="err">Sei già in un altro gruppo: entrando lasci quello.</p>';
-    if (!FIREBASE_DB) h += '<p class="err">Questa versione dell\'app non ha ancora il database del gruppo: aggiorna l\'app dalle impostazioni e riapri il link.</p>';
-    h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><p class="err" id="errGruppo" hidden></p><div class="azioni larghe"><button class="btn" data-az="entra" data-codice="' + esc(codice) + '"' + (FIREBASE_DB ? '' : ' disabled') + '>Entra nel gruppo</button></div><p class="tenue"><a href="privacy.html">Informativa sulla privacy</a></p></div>';
+    h = '<div class="pannello pieno"><h3>Ti hanno invitato nel gruppo di viaggio</h3><p>Entrando vedi i percorsi di ogni giorno, chi aderisce a cosa, e puoi proporre i tuoi. Gli altri vedranno il tuo nome, le tue adesioni e le tue proposte.</p>';
+    if (codiceGruppo() && codiceGruppo() !== codice) h += '<p class="err">Sei già in un altro gruppo: entrando lasci quello.</p>';
+    if (!FIREBASE_DB) h += '<p class="err">Questa versione dell\'app non ha ancora il gruppo: aggiornala dalle impostazioni e riapri il link.</p>';
+    h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><p class="err" id="errGruppo" hidden></p>';
+    if (ACC) h += '<div class="azioni larghe"><button class="btn" data-az="entra" data-codice="' + esc(codice) + '">Entra nel gruppo</button></div>';
+    else { LS.set('rj.invito', codice); h += '<div style="margin-top:16px">' + htmlAccesso('Per entrare serve un accesso: con lo stesso account ritrovi le tue scelte su telefono e computer.') + '</div>'; }
+    h += '<p class="tenue" style="margin-top:12px"><a href="privacy.html">Informativa sulla privacy</a></p></div>';
   }
-  return { titolo: 'Gruppo di viaggio', html: h, indietro: '#viaggio' };
+  return { titolo: 'Gruppo di viaggio', html: h, indietro: '#viaggio', dopo };
+}
+async function entraNelGruppo(codice, nome) {
+  if (codiceGruppo() !== codice) { GR = {}; LS.set('rj.gr', GR); }
+  LS.set('rj.gruppo', codice); GRV = null;
+  if (nome) salvaNome(nome); else if (io().n) salvaNome(io().n);
+  await grSincronizza(); location.hash = '#viaggio'; disegna();
 }
 async function azioneGruppo(az, el) {
   if (az === 'aderisci') {
@@ -731,12 +869,12 @@ async function azioneGruppo(az, el) {
     const n = $('#fNome').value.trim(), err = $('#errGruppo');
     if (!n) { err.textContent = 'Scrivi il tuo nome: è quello che vedranno gli altri.'; err.hidden = false; return true; }
     if (!navigator.onLine) { err.textContent = 'Serve la rete per entrare nel gruppo.'; err.hidden = false; return true; }
-    if (az === 'entra' && codiceGruppo() !== el.dataset.codice) { GR = {}; LS.set('rj.gr', GR); }
-    LS.set('rj.gruppo', az === 'entra' ? el.dataset.codice : nuovoCodice()); GRV = null;
-    salvaNome(n); await grSincronizza();
-    if (az === 'entra') location.hash = '#viaggio'; else disegna();
+    if (!ACC) { err.textContent = 'Prima accedi.'; err.hidden = false; return true; }
+    if (az === 'entra') { await entraNelGruppo(el.dataset.codice, n); return true; }
+    LS.set('rj.gruppo', nuovoCodice()); GR = {}; GRV = null; salvaNome(n); await grSincronizza(); disegna();
     return true;
   }
+  if (az === 'esciAccount') { esciAccount(); disegna(); return true; }
   if (az === 'invita') {
     const link = location.origin + location.pathname + '#gruppo/' + codiceGruppo(), msg = $('#msgGruppo');
     const testo = 'Per scegliere insieme i percorsi del Rajasthan, apri questo link nell\'app Tutto Rajasthan:';
@@ -771,6 +909,8 @@ function disegna() {
   const v = $('#vista');
   if (!CONT) { v.innerHTML = '<div class="pannello vuoto"><h3>Contenuti non ancora scaricati</h3><p class="tenue">Apri l\'app una volta con la rete attiva: poi funziona anche senza.</p></div>'; return; }
   const viste = { viaggio: vistaViaggio, giorno: vistaGiorno, proponi: vistaProponi, gruppo: vistaGruppo, tappe: vistaTappe, tappa: vistaTappa, generali: vistaGenerali, liste: vistaListe, sim: vistaSim, foto: vistaFoto, diario: vistaDiario, impostazioni: vistaImpostazioni };
+  aggiornaModoOspite();
+  if (!proprietario() && SEZ_PERSONALI.indexOf(rotta.nome) >= 0) rotta = { nome: 'viaggio', arg: '' };
   const f = viste[rotta.nome] || vistaViaggio;
   const r = f(rotta.arg);
   v.innerHTML = r.html;
@@ -805,7 +945,7 @@ function vistaViaggio() {
   const gOggi = CONT.giorni.find((x) => x.data === oggi), tOggi = gOggi && gOggi.tappe.length ? tappa(gOggi.tappe[0]) : null;
   const m = tOggi && METEO && METEO.per[tOggi.id];
   if (m && m.ora) h += '<a class="oggi-meteo" href="#tappa/' + esc(tOggi.id) + '"' + stileCitta(tOggi) + '><span class="gradi">' + gradi(m.ora.t) + '</span><span><b>' + esc(tOggi.nome) + ', ' + esc(cielo(m.ora.c)) + '</b><br>' + (m.aria && m.aria.aqi != null ? 'Aria ' + esc(aria(m.aria.aqi)) : '') + '</span></a>';
-  const ps = oggi <= r ? prossimaScadenza() : null;
+  const ps = oggi <= r && proprietario() ? prossimaScadenza() : null;
   if (ps) h += '<a class="prossima" href="#liste/scadenze">' + ICO.campana + '<div><b>' + esc(ps.titolo) + '</b><span>' + (ps.data ? esc(fmtBreve.format(dataDa(ps.data))) + ', ' + esc(quantoManca(ps.data)) : 'Prossima cosa da fare') + '</span></div></a>';
   h += '</section><h2 class="sez">Temperature del viaggio</h2><div class="pannello pieno">' + graficoViaggio() + '</div><h2 class="sez">Giorno per giorno</h2>';
   if (CONT.calendarioStimato) h += '<p class="tenue" style="margin-bottom:22px">Calendario stimato: fa fede il programma del coordinatore.</p>';
@@ -817,7 +957,8 @@ function vistaViaggio() {
     if (g.nota) h += '<p class="tenue">' + esc(g.nota) + '</p>';
     h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip citta" href="#tappa/' + esc(id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>' : ''; }).join('');
     if (g.tappe.length) { const n = g.tappe.reduce((a, id) => a + percorsiDi(id).filter((p) => aderenti(g.data, p.id).indexOf(io().id) >= 0).length, 0); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Ci sto' : 'Percorsi') + '</a>'; }
-    h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a></div></div>';
+    if (proprietario()) h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a>';
+    h += '</div></div>';
     h += '</li>';
   });
   h += '</ol><p class="pie">Tutto Rajasthan è un\'app di viaggio gratuita: itinerario, tappe, meteo, liste e diario, anche senza rete. I tuoi dati restano sul tuo dispositivo o nel tuo spazio personale. <a href="privacy.html">Informativa sulla privacy</a></p>';
@@ -911,10 +1052,10 @@ function vistaTappa(id) {
   h += htmlDoveMangiare(t);
   h += '<h2 class="sez">' + arco(t.colore, 18) + 'Consigli pratici</h2><div class="pannello"><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></div>';
   const sit = voci('foto').filter((v) => v.tipo === 'situazione' && (v.dove || []).indexOf(t.id) >= 0).sort(perOrdine);
-  if (sit.length) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
+  if (sit.length && proprietario()) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
   const gg = giorniDi(t.id);
   if (gg.length && (t.percorsi || []).length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + 'Percorsi del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
-  if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
+  if (gg.length && proprietario()) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
   let pie = METEO ? 'Meteo di Open-Meteo, aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '. ' : '';
   if (t.foto && t.foto.url) pie += 'Foto: ' + esc(t.foto.soggetto || '') + ', di ' + esc(t.foto.autore) + ', <a href="' + esc(t.foto.pagina) + '" target="_blank" rel="noopener">' + esc(t.foto.licenza) + ', Wikimedia Commons</a>.';
   if (pie) h += '<p class="pie">' + pie + '</p>';
@@ -1237,8 +1378,10 @@ function vistaDiario(arg) {
 
 let installa = null;
 function vistaImpostazioni() {
-  const modo = modoSync();
-  let h = '<h2 class="sez">Dove stanno i tuoi dati</h2><section class="pannello pieno"><div id="statoDett">' + htmlStatoSync() + '</div>';
+  const modo = modoSync(), prop = proprietario();
+  let h = '';
+  if (prop) {
+  h += '<h2 class="sez">Dove stanno i tuoi dati</h2><section class="pannello pieno"><div id="statoDett">' + htmlStatoSync() + '</div>';
   if (modo === 'github') h += '<p class="tenue">Repository: ' + esc(repo()) + '</p><div class="azioni larghe"><button class="btn" data-az="sync">Sincronizza ora</button><button class="btn chiaro" data-az="togliToken">Scollega GitHub</button></div>';
   else if (modo === 'drive') h += '<p class="tenue">Cartella "' + esc(CARTELLA_DRIVE) + '" nel tuo Drive.</p><p class="err" id="errDrive" hidden></p><div class="azioni larghe">' + (driveToken() ? '<button class="btn" data-az="sync">Sincronizza ora</button>' : '<button class="btn" data-az="driveAccedi">Rinnova l\'accesso a Google</button>') + '<button class="btn chiaro" data-az="driveEsci">Scollega Google Drive</button></div>';
   else h += '<p class="tenue">Liste, spunte e diario si salvano da soli qui. Per non perderli se cambi o perdi il telefono, scegli uno dei modi qui sotto.</p>';
@@ -1262,6 +1405,7 @@ function vistaImpostazioni() {
       '<label>Token<input id="fToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>' +
       '<p class="err" id="errToken" hidden></p><div class="azioni larghe"><button class="btn chiaro" data-az="salvaToken">Salva e sincronizza</button></div></section>';
   }
+  }
 
   h += htmlImpostazioniGruppo();
   h += '<h2 class="sez">App</h2><section class="pannello pieno">';
@@ -1273,6 +1417,7 @@ function vistaImpostazioni() {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
       if (GOOGLE_CLIENT_ID && modo !== 'github' && navigator.onLine) caricaGoogle().catch(() => {});
+      montaGoogle();
       const el = $('#infoMemoria');
       if (!memoriaOk) { el.textContent = 'La memoria del dispositivo non è disponibile.'; return; }
       if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then((p) => { el.textContent = p ? 'Memoria protetta: il sistema non cancellerà i dati per fare spazio.' : 'Memoria non protetta: installa l\'app sulla schermata Home per proteggerla.'; });
@@ -1370,6 +1515,7 @@ $('#vista').addEventListener('change', (e) => {
 $('#vista').addEventListener('click', async (e) => {
   const el = e.target.closest('[data-az]'); if (!el) return;
   const az = el.dataset.az, sez = el.dataset.sez, id = el.dataset.id;
+  if (await azioneAccount(az, el)) return;
   if (await azioneGruppo(az, el)) return;
   if (az === 'segno') { const s = voce('segni', id); scrivi('segni', id, { fatto: !(s && s.fatto) }); el.classList.toggle('on'); el.setAttribute('aria-pressed', el.classList.contains('on')); }
   else if (az === 'fatto') { const v = voce(sez, id); if (v) { scrivi(sez, id, { fatto: !v.fatto }); disegna(); } }

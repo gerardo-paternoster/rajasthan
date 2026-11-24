@@ -428,3 +428,13 @@ dialog h2 { font: 400 26px/1.2 var(--display); }
 .vicini h4 { font-size: 14px; font-weight: 700; color: var(--tenue); margin-bottom: 4px; }
 .vicini ul { list-style: none; padding: 0; margin: 0; }
 .vicini li { display: block; font-size: 15px; padding: 5px 0; line-height: 1.4; }
+
+/* ---------- Ospiti: solo Viaggio e Tappe ---------- */
+body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.ospite .tab a[data-tab="diario"] { display: none; }
+
+/* ---------- Accesso ---------- */
+.accesso > p:first-child { margin-bottom: 12px; }
+.g-acc { min-height: 44px; display: flex; }
+.oppure { margin: 16px 0 0; font-size: 14px; font-weight: 600; color: var(--tenue); }
+.link-btn { background: none; border: 0; padding: 6px 0; font-size: 15px; font-weight: 600; text-decoration: underline; color: var(--inchiostro); }
+.codice { font-family: ui-monospace, Menlo, monospace; font-size: 13px; overflow-wrap: anywhere; user-select: all; }
