@@ -1,70 +1,78 @@
 {
- "aggiornato": "2026-11-23",
+ "aggiornato": "2026-11-25",
  "partenza": "2026-12-20",
  "rientro": "2027-01-05",
- "calendarioStimato": true,
- "avviso": "Il calendario è stimato: fa fede il programma del coordinatore. Orari, regole e locali vengono da guide di viaggio e possono cambiare: i nomi dei locali storici sono indicazioni, non verificate sul posto. Il clima è la media del periodo, non una previsione.",
+ "calendarioStimato": false,
+ "avviso": "Calendario dal programma del coordinatore del 25 novembre: il foglio notizie definitivo può cambiare qualcosa. Orari, regole e locali vengono da guide di viaggio e da Google Maps e possono cambiare: i locali sono indicazioni, non verificati sul posto. Le posizioni sulle mappe sono indicative. Il clima è la media del periodo, non una previsione.",
  "giorni": [
   {
    "data": "2026-12-20",
    "titolo": "Partenza da Milano",
-   "tappe": []
+   "tappe": [],
+   "nota": "Arrivo a Delhi all'01:35 del 21, prima notte a Delhi"
   },
   {
    "data": "2026-12-21",
-   "titolo": "Delhi",
+   "titolo": "Delhi – Jhunjhunu – Mandawa",
    "tappe": [
-    "delhi"
+    "mandawa"
    ]
   },
   {
    "data": "2026-12-22",
-   "titolo": "Verso Bikaner",
+   "titolo": "Mandawa – Fatehpur – Deshnok – Bikaner",
    "tappe": [
+    "mandawa",
     "bikaner"
-   ]
+   ],
+   "nota": "La sera, cena a casa della guida se il gruppo la sceglie"
   },
   {
    "data": "2026-12-23",
-   "titolo": "Bikaner e Deshnok",
+   "titolo": "Bikaner – Kolayat – Khichan – Jaisalmer",
    "tappe": [
-    "bikaner"
-   ]
+    "bikaner",
+    "jaisalmer"
+   ],
+   "nota": "Lungo trasferimento: le soste le decide il coordinatore, qui si sceglie soprattutto dove mangiare"
   },
   {
    "data": "2026-12-24",
-   "titolo": "Jaisalmer",
-   "tappe": [
-    "jaisalmer"
-   ]
-  },
-  {
-   "data": "2026-12-25",
-   "titolo": "Jaisalmer e deserto del Thar",
+   "titolo": "Jaisalmer: forte e deserto",
    "tappe": [
     "jaisalmer"
    ],
-   "nota": "Natale, probabile notte in tenda"
+   "nota": "Vigilia di Natale. La notte in tenda non risulta nel programma: da chiedere al coordinatore"
+  },
+  {
+   "data": "2026-12-25",
+   "titolo": "Jaisalmer – Pokhran – Osian – Jodhpur",
+   "tappe": [
+    "jodhpur"
+   ],
+   "nota": "Natale"
   },
   {
    "data": "2026-12-26",
-   "titolo": "Verso Jodhpur",
-   "tappe": [
-    "jodhpur"
-   ]
-  },
-  {
-   "data": "2026-12-27",
    "titolo": "Jodhpur",
    "tappe": [
     "jodhpur"
    ]
   },
   {
-   "data": "2026-12-28",
-   "titolo": "Ranakpur",
+   "data": "2026-12-27",
+   "titolo": "Jodhpur – Ghanerao – Ranakpur – Kumbhalgarh",
    "tappe": [
-    "ranakpur"
+    "ranakpur",
+    "kumbhalgarh"
+   ]
+  },
+  {
+   "data": "2026-12-28",
+   "titolo": "Kumbhalgarh – Nagda – Udaipur",
+   "tappe": [
+    "kumbhalgarh",
+    "udaipur"
    ]
   },
   {
@@ -76,26 +84,28 @@
   },
   {
    "data": "2026-12-30",
-   "titolo": "Udaipur",
+   "titolo": "Udaipur – Chittorgarh – Bundi",
    "tappe": [
-    "udaipur"
+    "chittorgarh",
+    "bundi"
    ]
   },
   {
    "data": "2026-12-31",
-   "titolo": "Udaipur",
+   "titolo": "Bundi – Ajmer – Pushkar",
    "tappe": [
-    "udaipur"
+    "bundi",
+    "ajmer-pushkar"
    ],
-   "nota": "Capodanno"
+   "nota": "Capodanno a Pushkar. Giovedì: grande affluenza al Dargah"
   },
   {
    "data": "2027-01-01",
-   "titolo": "Ajmer e Pushkar",
+   "titolo": "Pushkar – Kishangarh – Jaipur",
    "tappe": [
-    "ajmer-pushkar"
-   ],
-   "nota": "Venerdì: massima affluenza al Dargah"
+    "ajmer-pushkar",
+    "jaipur"
+   ]
   },
   {
    "data": "2027-01-02",
@@ -106,25 +116,26 @@
   },
   {
    "data": "2027-01-03",
-   "titolo": "Jaipur",
-   "tappe": [
-    "jaipur"
-   ]
-  },
-  {
-   "data": "2027-01-04",
-   "titolo": "Fatehpur Sikri e Agra",
+   "titolo": "Jaipur – Abhaneri – Fatehpur Sikri – Agra",
    "tappe": [
     "fatehpur-sikri",
     "agra"
    ]
   },
   {
-   "data": "2027-01-05",
-   "titolo": "Delhi e rientro",
+   "data": "2027-01-04",
+   "titolo": "Agra – Delhi",
    "tappe": [
+    "agra",
     "delhi"
-   ]
+   ],
+   "nota": "Taj Mahal e Forte di Agra, cena a Delhi"
+  },
+  {
+   "data": "2027-01-05",
+   "titolo": "Rientro",
+   "tappe": [],
+   "nota": "Volo alle 03:35"
   }
  ],
  "generali": [
@@ -165,7 +176,7 @@
   {
    "id": "delhi",
    "nome": "Delhi",
-   "quando": "21 dicembre e 5 gennaio",
+   "quando": "Prima notte (21 dicembre) e cena del 4 gennaio",
    "clima": {
     "min": 7,
     "max": 20,
@@ -544,7 +555,8 @@
      ],
      "pasti": [
       "pranzo",
-      "spuntino"
+      "spuntino",
+      "cena"
      ],
      "tipo": "entrambi",
      "cosa": "Catena di Delhi: chaat, thali e dolci in un locale pulito. Per chi vuole andare sul sicuro.",
@@ -560,78 +572,71 @@
    ],
    "percorsi": [
     {
-     "id": "delhi-old",
-     "titolo": "Old Delhi a piedi e in risciò",
-     "sotto": "Mercati, la grande moschea e un pranzo moghul.",
-     "soste": [
-      {
-       "t": "Chandni Chowk",
-       "ora": "9:30",
-       "dur": "2–3 h",
-       "nota": "Khari Baoli per le spezie, Dariba Kalan per l'argento."
-      },
-      {
-       "t": "Jama Masjid",
-       "ora": "12:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Forte Rosso",
-       "ora": "15:00",
-       "dur": "1 h",
-       "nota": "Anche solo da fuori."
-      }
+     "id": "delhi-ultima",
+     "giorni": [
+      "2027-01-04"
      ],
-     "pasti": {
-      "colazione": {
-       "l": "paranthe-wali-gali",
-       "c": "Due paratha"
-      },
-      "pranzo": {
-       "l": "karims",
-       "c": "Korma di montone e pane"
-      },
-      "spuntino": {
-       "l": "jalebi-wala"
-      },
-      "cena": {
-       "l": "natraj-dahi-bhalle",
-       "c": "Dahi bhalle"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "delhi-arrivo",
-     "titolo": "Arrivo morbido",
-     "sotto": "Per il primo giorno, col fuso orario: viali di New Delhi e cena moghul.",
+     "titolo": "Ultima sera a Delhi",
+     "sotto": "Cena moghul nei vicoli dei kebab, prima del volo della notte.",
      "soste": [
-      {
-       "t": "India Gate",
-       "ora": "16:00",
-       "dur": "1 h",
-       "nota": "Al tramonto, a piedi lungo il viale."
-      },
       {
        "t": "Jama Masjid",
        "ora": "19:00",
-       "nota": "I vicoli dei kebab si animano la sera."
+       "dur": "1 h",
+       "nota": "I vicoli di Gali Kababian la sera."
       }
      ],
      "pasti": {
       "colazione": {
-       "l": "jb-kachori"
+       "l": "",
+       "c": "Ad Agra"
       },
       "pranzo": {
-       "l": "haldirams-cc",
-       "c": "Chaat"
+       "l": "",
+       "c": "Ad Agra o lungo la strada"
       },
       "spuntino": {
-       "l": "jalebi-wala"
+       "l": "jalebi-wala",
+       "c": "Jalebi calde"
       },
       "cena": {
        "l": "karims",
        "c": "Kebab e korma"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "delhi-veg",
+     "giorni": [
+      "2027-01-04"
+     ],
+     "titolo": "Chandni Chowk la sera",
+     "sotto": "Chaat e dolci vegetariani, poi in aeroporto.",
+     "soste": [
+      {
+       "t": "Chandni Chowk",
+       "ora": "18:30",
+       "dur": "1 h",
+       "nota": "Molti negozi chiudono, i banchi di cibo restano."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "Ad Agra"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Ad Agra o lungo la strada"
+      },
+      "spuntino": {
+       "l": "natraj-dahi-bhalle",
+       "c": "Dahi bhalle"
+      },
+      "cena": {
+       "l": "haldirams-cc",
+       "c": "Chaat e chole bhature"
       }
      },
      "completo": "cena"
@@ -640,6 +645,445 @@
    "w": {
     "it": "Delhi",
     "en": "Delhi"
+   }
+  },
+  {
+   "id": "mandawa",
+   "nome": "Mandawa e Shekhawati",
+   "quando": "21–22 dicembre",
+   "clima": {
+    "min": 6,
+    "max": 23,
+    "nota": "Secco; notti fredde, a volte foschia al mattino."
+   },
+   "vedere": [
+    {
+     "t": "Haveli dipinte di Mandawa",
+     "d": "Le case dei mercanti marwari, affrescate dentro e fuori.",
+     "x": [
+      [
+       "Cos'è",
+       "Haveli costruite tra il Settecento e i primi del Novecento dalle famiglie di mercanti dello Shekhawati, arricchite col commercio. Facciate, cortili e soffitti sono coperti di affreschi: divinità e scene epiche, ma anche treni, automobili e aerei, come li immaginavano i pittori locali. Per questo la regione è chiamata una galleria d'arte a cielo aperto."
+      ],
+      [
+       "Come si visita",
+       "A piedi, nel centro: molte haveli si aprono con un piccolo biglietto o un'offerta al custode. Diverse sono abitate o in rovina: si chiede prima di entrare."
+      ],
+      [
+       "Quando",
+       "La luce bassa del mattino presto o del tardo pomeriggio fa risaltare i colori delle facciate."
+      ]
+     ],
+     "q": "Mandawa havelis, Mandawa, Rajasthan",
+     "c": [
+      28.0549,
+      75.15
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Haveli_mandawa.jpg/500px-Haveli_mandawa.jpg",
+      "autore": "Dhirad",
+      "licenza": "CC BY-SA 2.5",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Haveli_mandawa.jpg"
+     },
+     "w": {
+      "it": "Mandawa (India)",
+      "en": "Mandawa"
+     }
+    },
+    {
+     "t": "Castello di Mandawa",
+     "d": "Il forte del Settecento al centro del paese, oggi hotel.",
+     "x": [
+      [
+       "Cos'è",
+       "Il forte dei signori locali, del 1755, trasformato in hotel di charme. Sale e cortili conservano armi, ritratti e decorazioni."
+      ],
+      [
+       "Cosa fare",
+       "Salire sulle terrazze al tramonto, con i tetti e i minareti del paese sotto di sé. Per i non ospiti l'accesso può essere a pagamento o legato a una consumazione: da chiedere."
+      ]
+     ],
+     "q": "Castle Mandawa, Mandawa, Rajasthan",
+     "c": [
+      28.0556,
+      75.149
+     ],
+     "w": {
+      "it": "Mandawa (India)",
+      "en": "Mandawa Fort"
+     }
+    },
+    {
+     "t": "Haveli di Nadine Le Prince a Fatehpur",
+     "d": "Haveli del 1802 restaurata da un'artista francese, oggi centro culturale.",
+     "x": [
+      [
+       "Cos'è",
+       "La haveli della famiglia Devra, comprata e restaurata dal 1999 dalla pittrice francese Nadine Le Prince. È una delle meglio conservate dello Shekhawati: affreschi originali, cortili, una piccola galleria."
+      ],
+      [
+       "Da sapere",
+       "Biglietto indicato intorno ai 200 ₹: da verificare. A Fatehpur ci sono anche le haveli Singhania e Devra, più trascurate."
+      ]
+     ],
+     "q": "Nadine Le Prince Haveli, Fatehpur, Rajasthan",
+     "c": [
+      27.99,
+      74.955
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Le_Prince_Haveli_courtyard.JPG/500px-Le_Prince_Haveli_courtyard.JPG",
+      "autore": "Behenjara",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Le_Prince_Haveli_courtyard.JPG",
+      "nota": "Il cortile della haveli"
+     },
+     "w": {
+      "it": "Fatehpur (Rajasthan)",
+      "en": "Fatehpur, Rajasthan"
+     }
+    },
+    {
+     "t": "Tempio di Rani Sati a Jhunjhunu",
+     "d": "Grande tempio di marmo, meta di pellegrinaggio dei marwari.",
+     "x": [
+      [
+       "Cos'è",
+       "Tempio dedicato a Rani Sati, venerata dalle comunità di mercanti marwari di tutta l'India: per questo è ricco, con marmi, specchi e argento."
+      ],
+      [
+       "Da sapere",
+       "Orari indicati 5–13 e 15–22, ingresso libero. Scarpe all'ingresso."
+      ]
+     ],
+     "q": "Rani Sati Temple, Jhunjhunu",
+     "c": [
+      28.128,
+      75.4
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/%28_Side_view_of_Rani_Sati_temple_Jhunjhunu_%29.jpg/500px-%28_Side_view_of_Rani_Sati_temple_Jhunjhunu_%29.jpg",
+      "autore": "Ankit Sihag",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:%28_Side_view_of_Rani_Sati_temple_Jhunjhunu_%29.jpg"
+     },
+     "w": {
+      "it": "Jhunjhunu",
+      "en": "Rani Sati Temple"
+     }
+    },
+    {
+     "t": "Khetri Mahal a Jhunjhunu",
+     "d": "Il \"palazzo del vento\" del 1770, tutto archi e vuoti per far passare l'aria.",
+     "x": [
+      [
+       "Cos'è",
+       "Palazzo costruito senza quasi muri pieni: colonne e archi lasciano correre il vento, l'aria condizionata del Settecento. Al posto delle scale ci sono rampe, per salire a cavallo."
+      ],
+      [
+       "Cosa fare",
+       "Salire sul tetto: vista sulla città e sul forte di Badalgarh. È poco visitato e spesso tranquillo."
+      ]
+     ],
+     "q": "Khetri Mahal, Jhunjhunu",
+     "c": [
+      28.135,
+      75.392
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Khetri-Mahal-Jhunjhunu-Back.jpg/500px-Khetri-Mahal-Jhunjhunu-Back.jpg",
+      "autore": "AKS2000",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Khetri-Mahal-Jhunjhunu-Back.jpg"
+     },
+     "w": {
+      "it": "Jhunjhunu",
+      "en": "Khetri Mahal"
+     }
+    }
+   ],
+   "mangiare": [
+    {
+     "t": "Ker sangri",
+     "d": "Il piatto del deserto: bacche e baccelli secchi saltati con spezie.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Ker (bacche) e sangri (baccelli) di piante del deserto, seccati e cucinati con peperoncino, amchur e olio di senape. Asprigno e piccante."
+      ],
+      [
+       "Con cosa",
+       "Con roti di miglio o chapati."
+      ]
+     ]
+    },
+    {
+     "t": "Kadhi",
+     "d": "Curry di yogurt e farina di ceci, spesso con frittelle (pakora).",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Salsa gialla, acidula e speziata, addensata con farina di ceci; con le pakora diventa kadhi pakora."
+      ],
+      [
+       "Come si mangia",
+       "Col riso (kadhi chawal) o con i roti. Cucina di casa, si trova facilmente nei locali piccoli."
+      ]
+     ]
+    },
+    {
+     "t": "Bajre ki roti e chutney d'aglio",
+     "d": "Pane di miglio con burro e chutney d'aglio e peperoncino.",
+     "piccante": 3,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Il pane d'inverno del Rajasthan rurale: miglio perla, più spesso e rustico del chapati, servito con burro o ghee."
+      ],
+      [
+       "Da sapere",
+       "La lehsun ki chutney è fortissima: assaggiarla prima con la punta del pane."
+      ]
+     ]
+    }
+   ],
+   "consigli": [
+    "Le haveli sono case private: chiedere prima di entrare e lasciare il biglietto o un'offerta al custode.",
+    "Guide improvvisate si offrono per strada: concordare prezzo e durata prima di partire.",
+    "Mandawa si gira a piedi, ma i vicoli sono polverosi e pieni di moto: scarpe chiuse.",
+    "Per gli affreschi dentro i cortili la luce è scarsa: alzare gli ISO piuttosto che usare il flash."
+   ],
+   "colore": "#8b5fb0",
+   "lat": 28.055,
+   "lon": 75.15,
+   "sigla": "Man",
+   "foto": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Haveli_mandawa.jpg/1280px-Haveli_mandawa.jpg",
+    "autore": "Dhirad",
+    "licenza": "CC BY-SA 2.5",
+    "soggetto": "Haveli dipinta a Mandawa",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Haveli_mandawa.jpg"
+   },
+   "locali": [
+    {
+     "id": "shekhawati-rooftop",
+     "n": "Shekhawati Rooftop Restaurant",
+     "zona": "Vicino a Subhash Chowk",
+     "vicino": [
+      "Haveli dipinte di Mandawa"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Cucina di casa su una terrazza con vista sui tetti: ker sangri, kadhi col riso, chapati.",
+     "prezzo": 2,
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Shekhawati Rooftop Restaurant, Mandawa",
+     "pid": "ChIJ-S2KnalbEzkRPngrebfJg8o",
+     "piatti": [
+      "Ker sangri",
+      "Kadhi"
+     ]
+    },
+    {
+     "id": "veg-crown",
+     "n": "Veg Crown",
+     "zona": "Dhigal Road",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Ristorante vegetariano: thali e piatti del nord dell'India.",
+     "prezzo": 2,
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Veg crown restaurant, Mandawa",
+     "pid": "ChIJaZYb0lxbEzkR6Gs-CDyuEAs"
+    },
+    {
+     "id": "paawana",
+     "n": "Paawana Cafe & Kitchen",
+     "zona": "Main Market, vicino al tempio di Raghunath",
+     "vicino": [
+      "Haveli dipinte di Mandawa"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Caffè nel bazar: chai, colazioni e piatti semplici.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Paawana Cafe & Kitchen, Mandawa",
+     "pid": "ChIJgekGnylbEzkRFNTiSo17_4s"
+    },
+    {
+     "id": "gwala-rooftop",
+     "n": "Gwala Rooftop",
+     "zona": "Vicino all'hotel Radhika Haveli",
+     "vicino": [
+      "Haveli dipinte di Mandawa",
+      "Castello di Mandawa"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Terrazza con cucina rajasthana e del nord dell'India.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Gwala Rooftop Restaurant, Mandawa",
+     "pid": "ChIJv-rsx69aEzkRwQjkIUYhaVo"
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "mandawa-arrivo",
+     "giorni": [
+      "2026-12-21"
+     ],
+     "titolo": "Jhunjhunu e prime haveli",
+     "sotto": "Il tempio e il palazzo del vento lungo la strada, poi Mandawa al tramonto.",
+     "soste": [
+      {
+       "t": "Tempio di Rani Sati a Jhunjhunu",
+       "ora": "13:00",
+       "dur": "45 min",
+       "nota": "Scarpe all'ingresso."
+      },
+      {
+       "t": "Khetri Mahal a Jhunjhunu",
+       "ora": "14:00",
+       "dur": "45 min"
+      },
+      {
+       "t": "Haveli dipinte di Mandawa",
+       "ora": "16:00",
+       "dur": "1,5 h"
+      },
+      {
+       "t": "Castello di Mandawa",
+       "ora": "17:45",
+       "dur": "30 min",
+       "nota": "Tramonto dalle terrazze."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "In hotel a Delhi"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Dhaba lungo la strada"
+      },
+      "spuntino": {
+       "l": "paawana",
+       "c": "Chai nel bazar"
+      },
+      "cena": {
+       "l": "shekhawati-rooftop",
+       "c": "Ker sangri e kadhi"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "mandawa-veg",
+     "giorni": [
+      "2026-12-21"
+     ],
+     "titolo": "Mandawa con calma",
+     "sotto": "Solo haveli e terrazze, cena vegetariana.",
+     "soste": [
+      {
+       "t": "Haveli dipinte di Mandawa",
+       "ora": "15:30",
+       "dur": "2 h",
+       "nota": "Senza fretta, con un custode che apre i cortili."
+      },
+      {
+       "t": "Castello di Mandawa",
+       "ora": "17:45",
+       "dur": "30 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "In hotel a Delhi"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada"
+      },
+      "spuntino": {
+       "l": "paawana"
+      },
+      "cena": {
+       "l": "veg-crown",
+       "c": "Thali"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "mandawa-fatehpur",
+     "giorni": [
+      "2026-12-22"
+     ],
+     "titolo": "Mandawa all'alba e Fatehpur",
+     "sotto": "Le facciate con la luce bassa, poi la haveli restaurata.",
+     "soste": [
+      {
+       "t": "Haveli dipinte di Mandawa",
+       "ora": "8:00",
+       "dur": "1 h",
+       "nota": "Vicoli vuoti e luce radente."
+      },
+      {
+       "t": "Haveli di Nadine Le Prince a Fatehpur",
+       "ora": "10:00",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "paawana"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada per Deshnok"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Chai a Fatehpur"
+      },
+      "cena": {
+       "l": "",
+       "c": "A Bikaner"
+      }
+     },
+     "completo": "cena"
+    }
+   ],
+   "w": {
+    "it": "Mandawa (India)",
+    "en": "Mandawa"
    }
   },
   {
@@ -775,7 +1219,30 @@
      ],
      "w": {
       "it": "National Research Centre on Camel",
-      "en": "National Research Centre on Camel"
+      "en": "National Research Centre on Camels, Bikaner"
+     }
+    },
+    {
+     "t": "Kolayat",
+     "d": "Villaggio sacro sul lago, con i ghat e il tempio di Kapil Muni.",
+     "x": [
+      [
+       "Cos'è",
+       "Luogo di pellegrinaggio legato al saggio Kapil Muni, a circa 50 km da Bikaner: un lago circondato da ghat e templi, molto più tranquillo di Pushkar."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora, sulla strada per Jaisalmer."
+      ]
+     ],
+     "q": "Kapil Muni Temple, Kolayat",
+     "c": [
+      27.8333,
+      72.95
+     ],
+     "w": {
+      "it": "Kolayat",
+      "en": "Kolayat"
      }
     }
    ],
@@ -857,7 +1324,8 @@
    "consigli": [
     "A Karni Mata si entra scalzi: portare un paio di calze vecchie da buttare dopo. I topi camminano liberamente sul pavimento e sui piedi.",
     "Chi ha paura dei roditori può restare nel cortile esterno: l'interno è stretto e affollato.",
-    "A Karni Mata fotografare è consentito."
+    "A Karni Mata fotografare è consentito.",
+    "La sera del 22 il coordinatore propone la cena a casa della guida di Bikaner: si decide nel gruppo WhatsApp."
    ],
    "colore": "#c7772e",
    "lat": 28.0229,
@@ -1021,20 +1489,103 @@
    ],
    "percorsi": [
     {
-     "id": "bikaner-classico",
-     "titolo": "Forte e città vecchia",
-     "sotto": "Junagarh al mattino, haveli e bhujia nel pomeriggio.",
+     "id": "bikaner-deshnok",
+     "giorni": [
+      "2026-12-22"
+     ],
+     "titolo": "Topi e cammelli",
+     "sotto": "Karni Mata a Deshnok arrivando da Fatehpur, poi il centro dei cammelli.",
      "soste": [
       {
-       "t": "Forte di Junagarh",
-       "ora": "10:00",
-       "dur": "2 h"
+       "t": "Tempio di Karni Mata a Deshnok",
+       "ora": "14:30",
+       "dur": "1 h",
+       "nota": "Calze vecchie da buttare."
+      },
+      {
+       "t": "Centro di ricerca sul cammello",
+       "ora": "16:30",
+       "dur": "1 h",
+       "nota": "Orari da verificare."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Mandawa"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada"
+      },
+      "spuntino": {
+       "l": "nrcc-latte",
+       "c": "Gelato al latte di cammello"
+      },
+      "cena": {
+       "l": "",
+       "c": "A casa della guida, se il gruppo la sceglie"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "bikaner-citta",
+     "giorni": [
+      "2026-12-22"
+     ],
+     "titolo": "Bhujia e cena in città",
+     "sotto": "Per chi non va a cena dalla guida: Deshnok, poi i vicoli della città vecchia.",
+     "soste": [
+      {
+       "t": "Tempio di Karni Mata a Deshnok",
+       "ora": "14:30",
+       "dur": "1 h"
       },
       {
        "t": "Haveli Rampuria",
-       "ora": "14:30",
+       "ora": "17:00",
+       "dur": "1 h",
+       "nota": "A piedi nei vicoli, con la luce del tramonto."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Mandawa"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada"
+      },
+      "spuntino": {
+       "l": "bhikharam-chandmal",
+       "c": "Bhujia appena fatta"
+      },
+      "cena": {
+       "l": "tanvi-cafe"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "bikaner-classico",
+     "giorni": [
+      "2026-12-23"
+     ],
+     "titolo": "Junagarh presto, poi in strada",
+     "sotto": "Il forte all'apertura se c'è tempo, e il lago sacro di Kolayat.",
+     "soste": [
+      {
+       "t": "Forte di Junagarh",
+       "ora": "9:00",
        "dur": "1,5 h",
-       "nota": "A piedi nei vicoli."
+       "nota": "Solo se il coordinatore lo mette prima della partenza."
+      },
+      {
+       "t": "Kolayat",
+       "ora": "11:30",
+       "dur": "30 min"
       }
      ],
      "pasti": {
@@ -1043,50 +1594,16 @@
        "c": "Puri e jalebi"
       },
       "pranzo": {
-       "l": "gallops",
-       "c": "Thali con vista sul forte"
+       "l": "",
+       "c": "Lungo la strada"
       },
       "spuntino": {
-       "l": "bhikharam-chandmal"
-      },
-      "cena": {
-       "l": "chhotu-motu-joshi",
-       "c": "Kachori e rasmalai"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "bikaner-deshnok",
-     "titolo": "Topi e cammelli",
-     "sotto": "Karni Mata a Deshnok e il centro dei cammelli, poi cena in un palazzo.",
-     "soste": [
-      {
-       "t": "Tempio di Karni Mata a Deshnok",
-       "ora": "9:30",
-       "dur": "1 h",
-       "nota": "Calze vecchie da buttare."
-      },
-      {
-       "t": "Centro di ricerca sul cammello",
-       "ora": "15:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "chhotu-motu-joshi"
-      },
-      "pranzo": {
        "l": "bhikharam-chandmal",
-       "c": "Bhujia e chai per strada"
-      },
-      "spuntino": {
-       "l": "nrcc-latte",
-       "c": "Gelato al latte di cammello"
+       "c": "Bhujia per il viaggio"
       },
       "cena": {
-       "l": "swarna-mahal"
+       "l": "",
+       "c": "A Jaisalmer"
       }
      },
      "completo": "cena"
@@ -1100,11 +1617,11 @@
   {
    "id": "jaisalmer",
    "nome": "Jaisalmer e deserto del Thar",
-   "quando": "24–25 dicembre",
+   "quando": "23–25 dicembre",
    "clima": {
     "min": 3,
     "max": 24,
-    "nota": "Sole. Notte in tenda vicina a 0 °C."
+    "nota": "Sole; sulle dune la sera si scende vicino a 0 °C."
    },
    "vedere": [
     {
@@ -1168,7 +1685,7 @@
      ],
      "w": {
       "it": "Templi giainisti di Jaisalmer",
-      "en": "Jain temples of Jaisalmer"
+      "en": "Jaisalmer Fort Jain temples"
      }
     },
     {
@@ -1281,7 +1798,7 @@
       ],
       [
        "Cosa aspettarsi",
-       "Giro in cammello o jeep, tramonto sulle dune, cena con musica e danze del deserto (spesso le danzatrici kalbelia), notte in tenda."
+       "Giro in cammello o jeep, tramonto sulle dune, cena con musica e danze del deserto (spesso le danzatrici kalbelia). Nei pacchetti c'è spesso la notte in tenda: per noi è da confermare."
       ],
       [
        "Da sapere",
@@ -1303,6 +1820,39 @@
      "w": {
       "it": "Deserto del Thar",
       "en": "Sam Sand Dunes"
+     }
+    },
+    {
+     "t": "Khichan e le gru",
+     "d": "Il villaggio dove migliaia di gru damigella svernano e vengono nutrite.",
+     "x": [
+      [
+       "Cos'è",
+       "Villaggio vicino a Phalodi dove da fine estate a marzo arrivano migliaia di gru damigella (kurja) dall'Asia centrale; il picco è dicembre–gennaio. Gli abitanti le nutrono con il grano in un recinto, il chugga ghar."
+      ],
+      [
+       "Quando",
+       "Le gru arrivano all'alba e si nutrono fino a metà giornata: nel pomeriggio se ne vedono meno, a riposo vicino agli stagni."
+      ],
+      [
+       "Foto",
+       "Si guarda dai tetti attorno al recinto: serve uno zoom, con l'X100VI conviene la scena d'insieme dello stormo."
+      ]
+     ],
+     "q": "Khichan bird sanctuary, Phalodi",
+     "c": [
+      27.135,
+      72.415
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/RJ_SH_19-Khichan-1-20131009.jpg/500px-RJ_SH_19-Khichan-1-20131009.jpg",
+      "autore": "Daniel Villafruela",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:RJ_SH_19-Khichan-1-20131009.jpg"
+     },
+     "w": {
+      "it": "Anthropoides virgo",
+      "en": "Khichan"
      }
     }
    ],
@@ -1423,8 +1973,8 @@
    ],
    "consigli": [
     "A Natale il forte, gli haveli e i campi sono molto affollati.",
-    "Sequenza tipica del deserto: partenza da Jaisalmer verso le 15–16, cammello o jeep, tramonto sulle dune, cena e spettacolo al campo, notte, rientro al mattino.",
-    "Per la notte: strati caldi, berretto, calze spesse, torcia frontale. La temperatura scende in fretta dopo il tramonto.",
+    "Sequenza tipica del deserto: partenza da Jaisalmer verso le 15–16, cammello o jeep, tramonto sulle dune, cena al campo. Il programma indica la notte a Jaisalmer: se c'è la notte in tenda lo dirà il coordinatore.",
+    "Dopo il tramonto la temperatura crolla: piumino, berretto e calze spesse anche solo per la cena al campo.",
     "Sulle dune servono scarpe chiuse, occhiali e una sciarpa per la sabbia.",
     "Dentro il forte usare poca acqua: gli scarichi stanno danneggiando le fondamenta."
    ],
@@ -1552,7 +2102,7 @@
     {
      "id": "campo-thar",
      "n": "Cena al campo",
-     "zona": "Campo tendato nel deserto",
+     "zona": "Campo nel deserto",
      "vicino": [
       "Dune del Thar"
      ],
@@ -1594,9 +2144,53 @@
    ],
    "percorsi": [
     {
-     "id": "jaisalmer-forte",
-     "titolo": "Dentro la città d'oro",
-     "sotto": "Templi jainisti al mattino, haveli, e il lago al tramonto.",
+     "id": "jaisalmer-arrivo",
+     "giorni": [
+      "2026-12-23"
+     ],
+     "titolo": "Gru, cenotafi e città d'oro",
+     "sotto": "Khichan nel pomeriggio, Bada Bagh al tramonto, cena nel forte.",
+     "soste": [
+      {
+       "t": "Khichan e le gru",
+       "ora": "14:00",
+       "dur": "45 min",
+       "nota": "Di pomeriggio le gru sono meno."
+      },
+      {
+       "t": "Bada Bagh",
+       "ora": "17:15",
+       "dur": "45 min",
+       "nota": "Tramonto sui cenotafi."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Bikaner"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "A Phalodi o lungo la strada"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Chai lungo la strada"
+      },
+      "cena": {
+       "l": "trio",
+       "c": "Laal maas e ker sangri"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "jaisalmer-deserto",
+     "giorni": [
+      "2026-12-24"
+     ],
+     "titolo": "Forte al mattino, dune al tramonto",
+     "sotto": "Templi e vicoli del forte, poi il deserto e la cena al campo.",
      "soste": [
       {
        "t": "Templi jainisti nel forte",
@@ -1606,7 +2200,49 @@
       },
       {
        "t": "Forte di Jaisalmer",
-       "ora": "10:30",
+       "ora": "10:00",
+       "dur": "1,5 h"
+      },
+      {
+       "t": "Dune del Thar",
+       "ora": "15:30",
+       "nota": "Cammello o jeep, tramonto. La notte in tenda è da confermare."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "kuku"
+      },
+      "pranzo": {
+       "l": "chandan-shree",
+       "c": "Thali leggero"
+      },
+      "spuntino": {
+       "l": "dhanraj-bhatia",
+       "c": "Ghotua ladoo"
+      },
+      "cena": {
+       "l": "campo-thar"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "jaisalmer-forte",
+     "giorni": [
+      "2026-12-24"
+     ],
+     "titolo": "Città d'oro, senza deserto",
+     "sotto": "Per chi resta in città: forte, haveli e il lago al tramonto.",
+     "soste": [
+      {
+       "t": "Templi jainisti nel forte",
+       "ora": "9:00",
+       "dur": "1 h"
+      },
+      {
+       "t": "Forte di Jaisalmer",
+       "ora": "10:00",
        "dur": "1,5 h"
       },
       {
@@ -1622,7 +2258,7 @@
      ],
      "pasti": {
       "colazione": {
-       "l": "kuku"
+       "l": "dal-pakwan"
       },
       "pranzo": {
        "l": "chandan-shree",
@@ -1633,42 +2269,7 @@
        "c": "Lassi"
       },
       "cena": {
-       "l": "trio",
-       "c": "Laal maas e ker sangri"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jaisalmer-deserto",
-     "titolo": "Giorno del deserto",
-     "sotto": "Mattina in città, poi dune, tramonto e notte al campo.",
-     "soste": [
-      {
-       "t": "Bada Bagh",
-       "ora": "8:30",
-       "dur": "1 h",
-       "nota": "Luce bassa sui cenotafi."
-      },
-      {
-       "t": "Dune del Thar",
-       "ora": "16:00",
-       "nota": "Cammello o jeep, tramonto sulle dune."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "dal-pakwan"
-      },
-      "pranzo": {
-       "l": "dhanraj-bhatia",
-       "c": "Kachori e ghotua ladoo"
-      },
-      "spuntino": {
-       "l": "kuku"
-      },
-      "cena": {
-       "l": "campo-thar"
+       "l": "angaara"
       }
      },
      "completo": "cena"
@@ -1682,7 +2283,7 @@
   {
    "id": "jodhpur",
    "nome": "Jodhpur",
-   "quando": "26–27 dicembre",
+   "quando": "25–27 dicembre",
    "clima": {
     "min": 9,
     "max": 25,
@@ -1783,7 +2384,7 @@
      ],
      "w": {
       "it": "Jodhpur città blu",
-      "en": "Blue City Jodhpur"
+      "en": "Jodhpur"
      }
     },
     {
@@ -1843,7 +2444,65 @@
      ],
      "w": {
       "it": "Ghanta Ghar Jodhpur",
-      "en": "Ghanta Ghar, Jodhpur"
+      "en": "Ghanta Ghar (Jodhpur)"
+     }
+    },
+    {
+     "t": "Forte di Pokhran",
+     "d": "Il forte di arenaria rossa dei Champawat, nella città dei test nucleari.",
+     "x": [
+      [
+       "Cos'è",
+       "Fortezza del Cinquecento a circa 110 km da Jaisalmer, oggi in parte hotel e museo. Pokhran è nota in India per i test nucleari del 1974 e del 1998, fatti nel deserto vicino."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora o un'ora, come sosta sulla strada per Jodhpur."
+      ]
+     ],
+     "q": "Pokaran Fort, Pokhran",
+     "c": [
+      26.92,
+      71.92
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Pokhran_Fort.JPG/500px-Pokhran_Fort.JPG",
+      "autore": "Archan Dave",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Pokhran_Fort.JPG"
+     },
+     "w": {
+      "it": "Pokaran",
+      "en": "Pokhran"
+     }
+    },
+    {
+     "t": "Templi di Osian",
+     "d": "Templi dell'VIII–XII secolo in un'antica città carovaniera.",
+     "x": [
+      [
+       "Cos'è",
+       "A circa 65 km da Jodhpur, Osian fu un grande centro di commerci tra l'VIII e il XII secolo. Restano templi hindu e jainisti scolpiti: il tempio del Sole, quelli di Harihara, il tempio di Sachiya Mata sulla collina e quello jainista di Mahavira."
+      ],
+      [
+       "Da sapere",
+       "Nei templi jainisti niente cuoio. Intorno ci sono dune basse: si vede il deserto anche qui."
+      ]
+     ],
+     "q": "Osian temples, Osian, Rajasthan",
+     "c": [
+      26.7167,
+      72.9167
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Osiyan1_photo_wiki.jpg/500px-Osiyan1_photo_wiki.jpg",
+      "autore": "Lakhindr",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Osiyan1_photo_wiki.jpg"
+     },
+     "w": {
+      "it": "Osian",
+      "en": "Osian, Rajasthan"
      }
     }
    ],
@@ -2128,9 +2787,56 @@
    ],
    "percorsi": [
     {
+     "id": "jodhpur-strada",
+     "giorni": [
+      "2026-12-25"
+     ],
+     "titolo": "Pokhran, Osian e la torre dell'orologio",
+     "sotto": "Due soste nel deserto e la sera di Natale con vista sul forte.",
+     "soste": [
+      {
+       "t": "Forte di Pokhran",
+       "ora": "10:30",
+       "dur": "45 min"
+      },
+      {
+       "t": "Templi di Osian",
+       "ora": "14:00",
+       "dur": "1 h"
+      },
+      {
+       "t": "Torre dell'orologio e mercato Sardar",
+       "ora": "18:00",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Jaisalmer"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada"
+      },
+      "spuntino": {
+       "l": "shahi-samosa",
+       "c": "Mirchi vada"
+      },
+      "cena": {
+       "l": "indique",
+       "c": "Laal maas col forte illuminato"
+      }
+     },
+     "completo": "cena"
+    },
+    {
      "id": "jodhpur-forte",
+     "giorni": [
+      "2026-12-26"
+     ],
      "titolo": "Mehrangarh e città blu",
-     "sotto": "Il forte con calma, poi giù a piedi tra le case blu.",
+     "sotto": "I vicoli blu presto, il forte al mattino, il pozzo a gradini nel pomeriggio.",
      "soste": [
       {
        "t": "Città blu",
@@ -2168,16 +2874,18 @@
        "c": "Makhaniya lassi"
       },
       "cena": {
-       "l": "indique",
-       "c": "Laal maas col forte illuminato"
+       "l": "gopal-rooftop"
       }
      },
      "completo": "cena"
     },
     {
      "id": "jodhpur-mercati",
+     "giorni": [
+      "2026-12-26"
+     ],
      "titolo": "Street food alla torre",
-     "sotto": "Mercato Sardar, fritti e lassi, thali illimitato.",
+     "sotto": "Mercato e pozzo al mattino, il forte nel pomeriggio, cena leggera.",
      "soste": [
       {
        "t": "Torre dell'orologio e mercato Sardar",
@@ -2222,7 +2930,7 @@
   {
    "id": "ranakpur",
    "nome": "Ranakpur",
-   "quando": "28 dicembre",
+   "quando": "27 dicembre, lungo la strada",
    "clima": {
     "min": 8,
     "max": 25,
@@ -2285,6 +2993,29 @@
      "w": {
       "it": "Ranakpur Parshvanath",
       "en": "Ranakpur Parshvanath temple"
+     }
+    },
+    {
+     "t": "Ghanerao",
+     "d": "Villaggio con un castello del 1606, pozzi a gradini e templi jainisti.",
+     "x": [
+      [
+       "Cos'è",
+       "A circa 19 km da Ranakpur: un castello oggi hotel di charme, molti pozzi a gradini e, a qualche chilometro, il tempio jainista di Muchhal Mahavir, il \"Mahavir coi baffi\"."
+      ],
+      [
+       "Quanto tempo",
+       "Una breve sosta sulla strada da Jodhpur."
+      ]
+     ],
+     "q": "Ghanerao Castle, Ghanerao",
+     "c": [
+      25.2333,
+      73.5333
+     ],
+     "w": {
+      "it": "Ranakpur",
+      "en": "Ghanerao"
      }
     }
    ],
@@ -2378,9 +3109,17 @@
    "percorsi": [
     {
      "id": "ranakpur-tempio",
-     "titolo": "Pranzo jainista e tempio",
-     "sotto": "Si mangia alla mensa del tempio e si entra all'apertura.",
+     "giorni": [
+      "2026-12-27"
+     ],
+     "titolo": "Ghanerao, pranzo jainista e tempio",
+     "sotto": "Il castello lungo la strada, pranzo al bhojanshala, poi il tempio che apre a mezzogiorno.",
      "soste": [
+      {
+       "t": "Ghanerao",
+       "ora": "10:00",
+       "dur": "45 min"
+      },
       {
        "t": "Tempio jainista di Adinath",
        "ora": "12:00",
@@ -2396,7 +3135,7 @@
      "pasti": {
       "colazione": {
        "l": "",
-       "c": "In hotel o lungo la strada"
+       "c": "A Jodhpur"
       },
       "pranzo": {
        "l": "bhojanshala"
@@ -2407,7 +3146,7 @@
       },
       "cena": {
        "l": "",
-       "c": "Leggera, a Udaipur"
+       "c": "Leggera, a Kumbhalgarh"
       }
      },
      "completo": "pranzo"
@@ -2419,9 +3158,281 @@
    }
   },
   {
+   "id": "kumbhalgarh",
+   "nome": "Kumbhalgarh",
+   "quando": "27–28 dicembre",
+   "clima": {
+    "min": 7,
+    "max": 23,
+    "nota": "Colline degli Aravalli: sera fresca e ventilata."
+   },
+   "vedere": [
+    {
+     "t": "Forte di Kumbhalgarh",
+     "d": "Il forte di Rana Kumbha sugli Aravalli, con la seconda muraglia più lunga del mondo.",
+     "x": [
+      [
+       "Cos'è",
+       "Fortezza del Quattrocento costruita da Rana Kumbha di Mewar: la cinta muraria corre per circa 36 km sulle creste. Patrimonio UNESCO con gli altri forti di collina del Rajasthan."
+      ],
+      [
+       "Cosa vedere",
+       "In cima il Badal Mahal, il \"palazzo delle nuvole\", con vista su colline e pianura del Marwar."
+      ],
+      [
+       "Quanto tempo",
+       "2–3 ore, con salite ripide: scarpe comode. Orari indicati circa 9–18; ingresso per stranieri indicato intorno ai 600 ₹, da verificare."
+      ]
+     ],
+     "q": "Kumbhalgarh Fort, Rajasthan",
+     "c": [
+      25.1489,
+      73.5803
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kumbhalgarh_055.jpg/500px-Kumbhalgarh_055.jpg",
+      "autore": "Rajesh Kapoor",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Kumbhalgarh_055.jpg"
+     },
+     "w": {
+      "it": "Forte Kumbhalgarh",
+      "en": "Kumbhalgarh"
+     }
+    },
+    {
+     "t": "Mura e templi del forte",
+     "d": "Una passeggiata sui bastioni tra decine di templi.",
+     "x": [
+      [
+       "Cos'è",
+       "Dentro le mura ci sono decine di templi hindu e jainisti, tra cui quello di Neelkanth Mahadev con un grande lingam."
+      ],
+      [
+       "Cosa fare",
+       "Camminare un tratto di muraglia: è larga abbastanza per più persone affiancate e regala la vista più bella."
+      ]
+     ],
+     "q": "Neelkanth Mahadev Temple, Kumbhalgarh",
+     "c": [
+      25.146,
+      73.584
+     ],
+     "w": {
+      "it": "Forte Kumbhalgarh",
+      "en": "Kumbhalgarh"
+     }
+    },
+    {
+     "t": "Spettacolo di luci e suoni",
+     "d": "La storia del forte raccontata sulle mura illuminate.",
+     "x": [
+      [
+       "Quando",
+       "Indicato verso le 18:30–18:45, dura circa 45 minuti."
+      ],
+      [
+       "Da sapere",
+       "È in hindi: si guarda più per le luci che per il racconto. Fa freddo: piumino e berretto."
+      ]
+     ],
+     "q": "Kumbhalgarh Fort, Rajasthan",
+     "c": [
+      25.1489,
+      73.5803
+     ],
+     "w": {
+      "it": "Forte Kumbhalgarh",
+      "en": "Kumbhalgarh"
+     }
+    }
+   ],
+   "mangiare": [
+    {
+     "t": "Thali del Mewar",
+     "d": "Il pasto completo della regione: dal, sabzi, roti, riso e un dolce.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Un vassoio con piccole porzioni di tutto, rabboccate a richiesta. D'inverno a volte compare il roti di mais (makki)."
+      ],
+      [
+       "Dove",
+       "Nei ristoranti lungo la strada del forte e negli hotel: qui non c'è un paese vero e proprio."
+      ]
+     ]
+    }
+   ],
+   "consigli": [
+    "Non c'è un paese: si mangia negli hotel o nei pochi ristoranti sulla strada del forte.",
+    "La salita al Badal Mahal è ripida e su pietra liscia: scarpe con buona suola.",
+    "Al tramonto il vento sulle mura è freddo: strati e berretto a portata di mano."
+   ],
+   "colore": "#6b8a3a",
+   "lat": 25.1489,
+   "lon": 73.5803,
+   "sigla": "Kum",
+   "foto": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kumbhalgarh_055.jpg/1280px-Kumbhalgarh_055.jpg",
+    "autore": "Rajesh Kapoor",
+    "licenza": "CC BY-SA 4.0",
+    "soggetto": "Le mura di Kumbhalgarh",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Kumbhalgarh_055.jpg"
+   },
+   "locali": [
+    {
+     "id": "pangat",
+     "n": "Pangat",
+     "zona": "Beer Ki Bhagal, sulla strada del forte",
+     "vicino": [],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Ristorante tra i più votati della zona, cucina rajasthana.",
+     "prezzo": 3,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Pangat, Kumbhalgarh",
+     "pid": "ChIJIY-F-hwjaDkRjijFozwjKZY",
+     "piatti": [
+      "Thali del Mewar"
+     ]
+    },
+    {
+     "id": "swagat-kumbhalgarh",
+     "n": "Swagat Restaurant",
+     "zona": "Fort Road, prima del Club Mahindra",
+     "vicino": [],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Locale semplice sulla strada del forte: thali e piatti indiani.",
+     "prezzo": 1,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Swagat Restaurant, Kumbhalgarh",
+     "pid": "ChIJwa4H8cQjaDkRdHi0JoP5edU",
+     "piatti": [
+      "Thali del Mewar"
+     ]
+    },
+    {
+     "id": "1458ad",
+     "n": "1458 AD Camp & Restaurant",
+     "zona": "Ai piedi del forte",
+     "vicino": [
+      "Forte di Kumbhalgarh",
+      "Spettacolo di luci e suoni"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Ristorante di un campo vicino all'ingresso: comodo prima o dopo lo spettacolo.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "1458 AD Kumbhalgarh Camp & Restaurant",
+     "pid": "ChIJy1om-zciaDkRBcEmJBdCQPw"
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "kumbhalgarh-sera",
+     "giorni": [
+      "2026-12-27"
+     ],
+     "titolo": "Mura al tramonto e spettacolo",
+     "sotto": "Dopo Ranakpur: un primo giro sui bastioni e le luci sul forte.",
+     "soste": [
+      {
+       "t": "Mura e templi del forte",
+       "ora": "16:30",
+       "dur": "1,5 h",
+       "nota": "Se si arriva in tempo."
+      },
+      {
+       "t": "Spettacolo di luci e suoni",
+       "ora": "18:30",
+       "dur": "45 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Jodhpur"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "A Ranakpur"
+      },
+      "spuntino": {
+       "l": "1458ad",
+       "c": "Chai prima dello spettacolo"
+      },
+      "cena": {
+       "l": "swagat-kumbhalgarh",
+       "c": "Leggera"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "kumbhalgarh-forte",
+     "giorni": [
+      "2026-12-28"
+     ],
+     "titolo": "Il forte al mattino",
+     "sotto": "Badal Mahal e un tratto di mura prima di scendere verso Udaipur.",
+     "soste": [
+      {
+       "t": "Forte di Kumbhalgarh",
+       "ora": "9:00",
+       "dur": "2 h",
+       "nota": "Badal Mahal in cima."
+      },
+      {
+       "t": "Mura e templi del forte",
+       "ora": "11:00",
+       "dur": "45 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "In hotel"
+      },
+      "pranzo": {
+       "l": "pangat",
+       "c": "Thali del Mewar"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Frutta lungo la strada"
+      },
+      "cena": {
+       "l": "",
+       "c": "Leggera, a Udaipur"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ],
+   "w": {
+    "it": "Forte Kumbhalgarh",
+    "en": "Kumbhalgarh"
+   }
+  },
+  {
    "id": "udaipur",
    "nome": "Udaipur",
-   "quando": "29–31 dicembre",
+   "quando": "28–30 dicembre",
    "clima": {
     "min": 8,
     "max": 25,
@@ -2617,6 +3628,35 @@
       "it": "Palazzo dei Monsoni",
       "en": "Monsoon Palace"
      }
+    },
+    {
+     "t": "Templi di Sas-Bahu a Nagda",
+     "d": "Due templi del X secolo coperti di sculture, vicino a un lago.",
+     "x": [
+      [
+       "Cos'è",
+       "Sahastra Bahu, \"dalle mille braccia\", dedicati a Vishnu: il nome popolare Sas-Bahu significa \"suocera e nuora\". Pareti e soffitti scolpiti fittissimi."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora o tre quarti d'ora, a circa 20 km da Udaipur, verso Eklingji."
+      ]
+     ],
+     "q": "Sas Bahu Temple, Nagda, Udaipur",
+     "c": [
+      24.7361,
+      73.7208
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/N-RJ-147SasBahuTemplesUdaipur-SolReyes20100922_511.JPG/500px-N-RJ-147SasBahuTemplesUdaipur-SolReyes20100922_511.JPG",
+      "autore": "SolReyes",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:N-RJ-147SasBahuTemplesUdaipur-SolReyes20100922_511.JPG"
+     },
+     "w": {
+      "it": "Udaipur",
+      "en": "Sahasra Bahu Temples"
+     }
     }
    ],
    "mangiare": [
@@ -2702,11 +3742,11 @@
     }
    ],
    "consigli": [
+    "C'è una sola giornata piena, il 29: City Palace e barca vanno messi quel giorno. Il 28 si arriva da Nagda nel pomeriggio.",
     "Per le foto del palazzo dalla barca, la luce migliore è verso le 16:00.",
     "Il molo dista circa dieci minuti a piedi dall'ingresso del palazzo; i biglietti costano meno alla biglietteria sul lago.",
     "Per la funivia può esserci coda fino a un'ora: partire per tempo se si punta al tramonto.",
     "Lo spettacolo di Bagore Ki Haveli si riempie: arrivare in anticipo.",
-    "A Capodanno terrazze e ristoranti sul lago vanno prenotati, e molti hotel impongono una cena di gala a pagamento.",
     "È la tappa più adatta per girare da soli: centro piccolo, percorribile a piedi, tranquillo."
    ],
    "colore": "#188a86",
@@ -2734,7 +3774,7 @@
      "tipo": "completo",
      "cosa": "Cena sul lago davanti a City Palace e Lake Palace; cucina rajasthana e internazionale.",
      "prezzo": 3,
-     "nota": "Si prenota; a Capodanno con molto anticipo.",
+     "nota": "Si prenota, soprattutto per i tavoli sul lago.",
      "q": "Ambrai Restaurant, Udaipur"
     },
     {
@@ -2872,9 +3912,49 @@
    ],
    "percorsi": [
     {
+     "id": "udaipur-arrivo",
+     "giorni": [
+      "2026-12-28"
+     ],
+     "titolo": "Nagda e il lago al tramonto",
+     "sotto": "I templi scolpiti arrivando da Kumbhalgarh, poi il tramonto sul Pichola.",
+     "soste": [
+      {
+       "t": "Templi di Sas-Bahu a Nagda",
+       "ora": "13:00",
+       "dur": "45 min"
+      },
+      {
+       "t": "Ambrai Ghat",
+       "ora": "17:30",
+       "nota": "Tramonto sul lago."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Kumbhalgarh"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "A Kumbhalgarh o lungo la strada"
+      },
+      "spuntino": {
+       "l": "jheels"
+      },
+      "cena": {
+       "l": "sky-lounge"
+      }
+     },
+     "completo": "cena"
+    },
+    {
      "id": "udaipur-palazzo",
+     "giorni": [
+      "2026-12-29"
+     ],
      "titolo": "Palazzo e lago",
-     "sotto": "City Palace, barca alle 16 per la luce migliore, cena sul lago.",
+     "sotto": "City Palace al mattino, barca nel pomeriggio, cena sul lago.",
      "soste": [
       {
        "t": "Tempio di Jagdish",
@@ -2915,8 +3995,11 @@
     },
     {
      "id": "udaipur-lento",
+     "giorni": [
+      "2026-12-29"
+     ],
      "titolo": "Udaipur con calma",
-     "sotto": "Mattina libera, thali a pranzo, tramonto dall'alto e danze la sera. Buona per staccarsi dal gruppo.",
+     "sotto": "Haveli, tramonto dall'alto e danze la sera.",
      "soste": [
       {
        "t": "Bagore Ki Haveli",
@@ -2953,43 +4036,6 @@
       }
      },
      "completo": "pranzo"
-    },
-    {
-     "id": "udaipur-capodanno",
-     "titolo": "Capodanno sul lago",
-     "sotto": "Giornata leggera e cena prenotata con vista.",
-     "soste": [
-      {
-       "t": "Giro in barca sul lago Pichola",
-       "ora": "10:00",
-       "dur": "1 h"
-      },
-      {
-       "t": "Tempio di Jagdish",
-       "ora": "12:00",
-       "dur": "30 min"
-      },
-      {
-       "t": "Ambrai Ghat",
-       "ora": "17:30"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "millets-of-mewar"
-      },
-      "pranzo": {
-       "l": "shreenath-dosa"
-      },
-      "spuntino": {
-       "l": "jheels"
-      },
-      "cena": {
-       "l": "chandni-jagat-niwas",
-       "c": "Da prenotare"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -2998,9 +4044,597 @@
    }
   },
   {
+   "id": "chittorgarh",
+   "nome": "Chittorgarh",
+   "quando": "30 dicembre, lungo la strada",
+   "clima": {
+    "min": 9,
+    "max": 26,
+    "nota": "Sole; sull'altopiano del forte poca ombra."
+   },
+   "vedere": [
+    {
+     "t": "Torre della Vittoria",
+     "d": "Vijay Stambh: nove piani di pietra scolpita, del 1440.",
+     "x": [
+      [
+       "Cos'è",
+       "Torre fatta costruire da Rana Kumbha per celebrare una vittoria sul sultano di Malwa: alta 37 metri, scolpita dentro e fuori con divinità hindu."
+      ],
+      [
+       "Da sapere",
+       "La salita interna, quando è aperta, è stretta e buia."
+      ]
+     ],
+     "q": "Vijay Stambh, Chittorgarh",
+     "c": [
+      24.8879,
+      74.6452
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Tower_of_victory.jpg/500px-Tower_of_victory.jpg",
+      "autore": "Schwiki",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Tower_of_victory.jpg"
+     },
+     "w": {
+      "it": "Forte Chittor",
+      "en": "Vijaya Stambha"
+     }
+    },
+    {
+     "t": "Torre della Fama",
+     "d": "Kirti Stambh, la torre jainista del XII secolo dedicata ad Adinath.",
+     "x": [
+      [
+       "Cos'è",
+       "Più antica e più piccola della Torre della Vittoria, fatta costruire da un mercante jainista; è decorata con figure dei tirthankara."
+      ]
+     ],
+     "q": "Kirti Stambh, Chittorgarh",
+     "c": [
+      24.8922,
+      74.65
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kirti_Stambha_%28Tower_of_Fame%29_%284571936260%29.jpg/500px-Kirti_Stambha_%28Tower_of_Fame%29_%284571936260%29.jpg",
+      "autore": "Jon Connell",
+      "licenza": "CC BY 2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Kirti_Stambha_%28Tower_of_Fame%29_%284571936260%29.jpg"
+     },
+     "w": {
+      "it": "Forte Chittor",
+      "en": "Kirti Stambha"
+     }
+    },
+    {
+     "t": "Palazzo di Rana Kumbha",
+     "d": "Le rovine del palazzo reale, il più antico edificio del forte.",
+     "x": [
+      [
+       "Cos'è",
+       "Palazzo del Quattrocento, oggi in rovina, legato alle storie di Mirabai, la poetessa mistica, e del jauhar, il suicidio collettivo delle donne durante gli assedi."
+      ],
+      [
+       "Vicino",
+       "I templi di Meera e di Kumbha Shyam, con la cupola scolpita."
+      ]
+     ],
+     "q": "Rana Kumbha Palace, Chittorgarh",
+     "c": [
+      24.8869,
+      74.6446
+     ],
+     "w": {
+      "it": "Forte Chittor",
+      "en": "Chittor Fort"
+     }
+    },
+    {
+     "t": "Palazzo di Padmini e Gaumukh",
+     "d": "Il palazzo sull'acqua della regina leggendaria e la sorgente sacra.",
+     "x": [
+      [
+       "Cos'è",
+       "Il piccolo palazzo affacciato su una vasca, legato alla leggenda della regina Padmini e del sultano Alauddin Khilji. Il Gaumukh è un serbatoio alimentato da una sorgente che esce da una \"bocca di mucca\" scolpita."
+      ],
+      [
+       "Da sapere",
+       "Il forte è grandissimo (circa 280 ettari): si gira col pulmino da un punto all'altro. Guide autorizzate indicate intorno ai 400 ₹."
+      ]
+     ],
+     "q": "Padmini Palace, Chittorgarh",
+     "c": [
+      24.8806,
+      74.6466
+     ],
+     "w": {
+      "it": "Forte Chittor",
+      "en": "Chittor Fort"
+     }
+    }
+   ],
+   "mangiare": [
+    {
+     "t": "Dal baati churma",
+     "d": "Il piatto simbolo del Rajasthan, qui servito anche dentro il forte.",
+     "piccante": 1,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Palle di pane cotte sulla brace (baati), spezzate e annegate nel ghee, con dal di lenticchie e churma, un dolce di briciole con zucchero e ghee."
+      ],
+      [
+       "Dove",
+       "Al ristorante Shri Barbarik, dentro il forte, è il piatto più ordinato."
+      ]
+     ]
+    }
+   ],
+   "consigli": [
+    "Il forte è enorme: le distanze tra i monumenti si fanno col pulmino, non a piedi.",
+    "Poca ombra sull'altopiano: cappello, crema solare e acqua.",
+    "Una guida autorizzata aiuta a capire le storie degli assedi, che qui sono tutto."
+   ],
+   "colore": "#5c6f8f",
+   "lat": 24.8879,
+   "lon": 74.6452,
+   "sigla": "Chi",
+   "foto": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Chittorgarh_fort.JPG/1280px-Chittorgarh_fort.JPG",
+    "autore": "Ssjoshi111",
+    "licenza": "CC BY-SA 3.0",
+    "soggetto": "Il forte di Chittorgarh",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chittorgarh_fort.JPG"
+   },
+   "locali": [
+    {
+     "id": "shri-barbarik",
+     "n": "Shri Barbarik",
+     "zona": "Dentro il forte, vicino al palazzo di Ratan Singh",
+     "vicino": [
+      "Palazzo di Rana Kumbha",
+      "Torre della Vittoria"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Il ristorante dentro il forte: dal baati churma e thali.",
+     "prezzo": 2,
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Shri Barbarik Restaurant, Chittorgarh Fort",
+     "pid": "ChIJ_azB1tyhaDkRRDCxmF_LX4w",
+     "piatti": [
+      "Dal baati churma"
+     ]
+    },
+    {
+     "id": "rawal-kothi",
+     "n": "Hotel Rawal Kothi Fort & Restro",
+     "zona": "Villaggio del forte",
+     "vicino": [
+      "Palazzo di Padmini e Gaumukh"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Hotel-ristorante nel villaggio dentro le mura.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Hotel Rawal Kothi Fort & Restro, Chittorgarh",
+     "pid": "ChIJm4BzfQChaDkRCKUgUwIGO4E"
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "chittor-forte",
+     "giorni": [
+      "2026-12-30"
+     ],
+     "titolo": "Le torri e i palazzi del forte",
+     "sotto": "Mezza giornata sull'altopiano, con pranzo dentro le mura.",
+     "soste": [
+      {
+       "t": "Palazzo di Rana Kumbha",
+       "ora": "10:00",
+       "dur": "45 min"
+      },
+      {
+       "t": "Torre della Vittoria",
+       "ora": "11:00",
+       "dur": "30 min"
+      },
+      {
+       "t": "Torre della Fama",
+       "ora": "11:45",
+       "dur": "20 min"
+      },
+      {
+       "t": "Palazzo di Padmini e Gaumukh",
+       "ora": "12:15",
+       "dur": "30 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Udaipur"
+      },
+      "pranzo": {
+       "l": "shri-barbarik",
+       "c": "Dal baati churma"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Chai"
+      },
+      "cena": {
+       "l": "",
+       "c": "Leggera, a Bundi"
+      }
+     },
+     "completo": "pranzo"
+    }
+   ],
+   "w": {
+    "it": "Chittorgarh",
+    "en": "Chittor Fort"
+   }
+  },
+  {
+   "id": "bundi",
+   "nome": "Bundi",
+   "quando": "30–31 dicembre",
+   "clima": {
+    "min": 9,
+    "max": 25,
+    "nota": "Secco; mattine fresche."
+   },
+   "vedere": [
+    {
+     "t": "Garh Palace e Chitrashala",
+     "d": "Il palazzo sulla collina e la galleria dei dipinti in miniatura.",
+     "x": [
+      [
+       "Cos'è",
+       "Il palazzo dei Rao di Bundi, scalato sulla collina. Le sale Chhatra, Phool e Badal Mahal hanno affreschi; la Chitrashala (Ummed Mahal) è un cortile con pareti interamente dipinte nello stile di Bundi, verdi e azzurri."
+      ],
+      [
+       "Da sapere",
+       "Orari indicati circa 8–18; biglietti separati per palazzo e Chitrashala. Ci sono scimmie: niente cibo in mano."
+      ]
+     ],
+     "q": "Garh Palace, Bundi",
+     "c": [
+      25.449,
+      75.6375
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg/500px-Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg",
+      "autore": "Eklavya Yadav",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg"
+     },
+     "w": {
+      "it": "Bundi",
+      "en": "Taragarh Fort, Bundi"
+     }
+    },
+    {
+     "t": "Forte di Taragarh",
+     "d": "Il \"forte della stella\" sopra il palazzo, mezzo inghiottito dalla vegetazione.",
+     "x": [
+      [
+       "Cos'è",
+       "Fortezza del Trecento sulla cresta sopra Bundi, in rovina e piena di scimmie."
+      ],
+      [
+       "Da sapere",
+       "Salita ripida da dietro il palazzo, 20–30 minuti. Meglio non da soli e con un bastone per le scimmie."
+      ]
+     ],
+     "q": "Taragarh Fort, Bundi",
+     "c": [
+      25.451,
+      75.637
+     ],
+     "w": {
+      "it": "Bundi",
+      "en": "Taragarh Fort, Bundi"
+     }
+    },
+    {
+     "t": "Raniji ki Baori",
+     "d": "Il pozzo a gradini della regina, del 1699, scolpito come un tempio.",
+     "x": [
+      [
+       "Cos'è",
+       "Bundi è la città dei pozzi a gradini: questo, profondo circa 46 metri, ha archi e colonne scolpiti con elefanti e divinità."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora. In centro, vicino al mercato; poco lontano c'è il Dhabhai Kund, un altro pozzo geometrico."
+      ]
+     ],
+     "q": "Raniji ki Baori, Bundi",
+     "c": [
+      25.4402,
+      75.6394
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Rani_ji_ki_Baori_Bundi.jpg/500px-Rani_ji_ki_Baori_Bundi.jpg",
+      "autore": "Shakti",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rani_ji_ki_Baori_Bundi.jpg"
+     },
+     "w": {
+      "it": "Bundi",
+      "en": "Raniji ki Baori"
+     }
+    },
+    {
+     "t": "Lago Nawal Sagar e città vecchia",
+     "d": "Il lago ai piedi del palazzo e i vicoli delle case azzurre.",
+     "x": [
+      [
+       "Cosa fare",
+       "Camminare nei vicoli della città vecchia, con molte case dipinte d'azzurro come a Jodhpur ma senza folla, fino al lago con il piccolo tempio di Varuna in mezzo all'acqua."
+      ],
+      [
+       "Quando",
+       "Al tramonto, quando il palazzo si riflette nel lago."
+      ]
+     ],
+     "q": "Nawal Sagar Lake, Bundi",
+     "c": [
+      25.445,
+      75.634
+     ],
+     "w": {
+      "it": "Bundi",
+      "en": "Bundi"
+     }
+    }
+   ],
+   "mangiare": [
+    {
+     "t": "Gatte ki sabzi",
+     "d": "Gnocchetti di farina di ceci in curry di yogurt.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Rotolini di farina di ceci bolliti e tagliati, poi cotti in un sugo di yogurt speziato. Piatto rajasthano da tutti i giorni."
+      ],
+      [
+       "Dove",
+       "A Bundi si mangia soprattutto sulle terrazze dei guesthouse davanti al palazzo."
+      ]
+     ]
+    }
+   ],
+   "consigli": [
+    "Bundi è piccola e tranquilla: buona per staccarsi dal gruppo per un'ora a piedi.",
+    "Le scimmie del palazzo e di Taragarh rubano cibo e occhiali: tenere tutto nello zaino.",
+    "La Chitrashala è poco illuminata: per le foto dei dipinti alzare gli ISO, niente flash."
+   ],
+   "colore": "#4aa3c4",
+   "lat": 25.4415,
+   "lon": 75.6397,
+   "sigla": "Bun",
+   "foto": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg/1280px-Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg",
+    "autore": "Eklavya Yadav",
+    "licenza": "CC BY-SA 3.0",
+    "soggetto": "Garh Palace e forte di Taragarh",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg"
+   },
+   "locali": [
+    {
+     "id": "fort-on-plate",
+     "n": "Fort on Plate",
+     "zona": "Davanti al Garh Palace",
+     "vicino": [
+      "Garh Palace e Chitrashala",
+      "Lago Nawal Sagar e città vecchia"
+     ],
+     "pasti": [
+      "colazione",
+      "pranzo",
+      "cena",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Caffè e ristorante sotto il palazzo: colazioni, thali, piatti rajasthani.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Fort on Plate Cafe and Restaurant, Bundi",
+     "pid": "ChIJDU5j1hQJbzkRdl63TlMomEo",
+     "piatti": [
+      "Gatte ki sabzi"
+     ]
+    },
+    {
+     "id": "morgan-place",
+     "n": "Morgan's Place",
+     "zona": "Sul tetto dell'hotel Kasera Paradise, ai piedi del palazzo",
+     "vicino": [
+      "Garh Palace e Chitrashala"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "completo",
+     "cosa": "Terrazza con vista sul palazzo illuminato: cucina indiana e rajasthana.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Morgan Place restaurant Bundi",
+     "pid": "ChIJF4HMs6QJbzkR9M3j0S4fKZ8"
+    },
+    {
+     "id": "atulyam",
+     "n": "Atulyam Rooftop",
+     "zona": "Haveli Raj Palace, vicino al forte",
+     "vicino": [
+      "Garh Palace e Chitrashala",
+      "Lago Nawal Sagar e città vecchia"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Terrazza di una haveli nella città vecchia.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "The Atulyam Rooftop Restaurant, Bundi",
+     "pid": "ChIJIzxwfEcJbzkRHjpXGys-1-I"
+    },
+    {
+     "id": "blue-door",
+     "n": "The Blue Door",
+     "zona": "New Colony, vicino al Circuit House",
+     "vicino": [
+      "Raniji ki Baori"
+     ],
+     "pasti": [
+      "pranzo",
+      "cena"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Terrazza nella parte nuova, frequentata anche dagli indiani in viaggio.",
+     "prezzo": 2,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "The Blue Door, Bundi",
+     "pid": "ChIJrZYBXoIJbzkRmGL75fPhbGU"
+    }
+   ],
+   "percorsi": [
+    {
+     "id": "bundi-sera",
+     "giorni": [
+      "2026-12-30"
+     ],
+     "titolo": "Lago e vicoli al tramonto",
+     "sotto": "Arrivo da Chittorgarh, passeggiata e cena leggera sotto il palazzo.",
+     "soste": [
+      {
+       "t": "Lago Nawal Sagar e città vecchia",
+       "ora": "17:00",
+       "dur": "1 h",
+       "nota": "Il palazzo si riflette nel lago."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Udaipur"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "A Chittorgarh"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Chai lungo la strada"
+      },
+      "cena": {
+       "l": "fort-on-plate",
+       "c": "Leggera"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "bundi-terrazza",
+     "giorni": [
+      "2026-12-30"
+     ],
+     "titolo": "Cena col palazzo illuminato",
+     "sotto": "Pranzo leggero a Chittorgarh e cena completa in terrazza.",
+     "soste": [
+      {
+       "t": "Lago Nawal Sagar e città vecchia",
+       "ora": "17:00",
+       "dur": "1 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Udaipur"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Leggero a Chittorgarh"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Chai lungo la strada"
+      },
+      "cena": {
+       "l": "morgan-place",
+       "c": "Con vista sul palazzo"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "bundi-palazzo",
+     "giorni": [
+      "2026-12-31"
+     ],
+     "titolo": "Palazzo, dipinti e pozzo",
+     "sotto": "La mattina a Bundi prima di partire per Ajmer.",
+     "soste": [
+      {
+       "t": "Garh Palace e Chitrashala",
+       "ora": "8:30",
+       "dur": "2 h"
+      },
+      {
+       "t": "Raniji ki Baori",
+       "ora": "10:45",
+       "dur": "30 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "fort-on-plate"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Lungo la strada per Ajmer"
+      },
+      "spuntino": {
+       "l": "",
+       "c": "Frutta o chai"
+      },
+      "cena": {
+       "l": "",
+       "c": "A Pushkar, Capodanno"
+      }
+     },
+     "completo": "cena"
+    }
+   ],
+   "w": {
+    "it": "Bundi",
+    "en": "Bundi"
+   }
+  },
+  {
    "id": "ajmer-pushkar",
    "nome": "Ajmer e Pushkar",
-   "quando": "1 gennaio",
+   "quando": "31 dicembre – 1 gennaio, Capodanno a Pushkar",
    "clima": {
     "min": 7,
     "max": 24,
@@ -3097,7 +4731,7 @@
      ],
      "w": {
       "it": "Tempio di Brahma (Pushkar)",
-      "en": "Jagatpita Brahma Mandir"
+      "en": "Brahma Temple, Pushkar"
      }
     },
     {
@@ -3130,7 +4764,7 @@
      ],
      "w": {
       "it": "Tempio di Savitri Pushkar",
-      "en": "Savitri Temple, Pushkar"
+      "en": "Savitri Mata Mandir"
      }
     },
     {
@@ -3161,6 +4795,36 @@
      "w": {
       "it": "Aarti",
       "en": "Aarti"
+     }
+    },
+    {
+     "t": "Kishangarh",
+     "d": "La città della pittura Bani Thani e del marmo.",
+     "x": [
+      [
+       "Cos'è",
+       "Piccolo regno famoso per la scuola di miniatura del Settecento: la Bani Thani, la dama dal profilo allungato, è chiamata la Monna Lisa indiana. Oggi Kishangarh è il grande mercato del marmo."
+      ],
+      [
+       "Cosa vedere",
+       "Il forte e il lago Gundolao. Fuori città la discarica degli scarti di marmo, una distesa bianca diventata set fotografico: da chiedere al coordinatore se e quando si può entrare."
+      ]
+     ],
+     "q": "Kishangarh Fort, Kishangarh",
+     "c": [
+      26.588,
+      74.865
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Kishangarh_Fort_Front.jpg/500px-Kishangarh_Fort_Front.jpg",
+      "autore": "Ramesh Lalwani",
+      "licenza": "CC BY 2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Kishangarh_Fort_Front.jpg",
+      "nota": "Il forte"
+     },
+     "w": {
+      "it": "Kishangarh",
+      "en": "Kishangarh"
      }
     }
    ],
@@ -3251,12 +4915,14 @@
     }
    ],
    "consigli": [
-    "Il 1° gennaio 2027 è venerdì: al Dargah giovedì e venerdì sono i giorni di massima affluenza. Aspettarsi una calca molto forte.",
+    "Il 31 dicembre è giovedì: al Dargah giovedì e venerdì sono i giorni di massima affluenza, e a fine anno ancora di più. Aspettarsi una calca molto forte.",
     "Al Dargah: testa coperta per uomini e donne, scarpe lasciate ai banchi all'esterno, niente borse né fotocamere (meglio lasciare tutto sul pulmino). I telefoni in genere passano. Attenzione ai borseggi.",
     "Al Dargah non serve un accompagnatore e non esiste un'offerta obbligatoria.",
     "Ai ghat di Pushkar ci si toglie le scarpe scendendo verso l'acqua. Non fotografare chi fa il bagno.",
     "La truffa dei fiori: qualcuno ti mette in mano dei petali o ti porta sul ghat per una \"benedizione\", poi chiede una donazione consistente. Non accettare fiori e non seguire nessuno.",
-    "Nel tempio di Brahma non si fotografa all'interno e le borse si lasciano fuori."
+    "Nel tempio di Brahma non si fotografa all'interno e le borse si lasciano fuori.",
+    "Pushkar è città sacra: niente carne, uova e alcol, anche a Capodanno. Il cenone è vegetariano e analcolico.",
+    "La sera del 31 ghat e bazar sono pieni di gente: portafoglio e telefono in tasche chiuse."
    ],
    "colore": "#c2477a",
    "lat": 26.4897,
@@ -3426,29 +5092,46 @@
      "piatti": [
       "Thali vegetariano"
      ]
+    },
+    {
+     "id": "highway-king",
+     "n": "Hotel Highway King",
+     "zona": "NH 8 a Kishangarh, vicino al casello",
+     "vicino": [
+      "Kishangarh"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "La grande sosta sulla statale per Jaipur: thali, paratha, chai. Pulito e veloce.",
+     "prezzo": 2,
+     "veg": true,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Hotel Highway King Kishangarh",
+     "pid": "ChIJM6iuAAD3azkRqSu7Jjctld4"
     }
    ],
    "percorsi": [
     {
-     "id": "ajmer-pushkar-sacro",
-     "titolo": "Dargah e lago sacro",
-     "sotto": "Ajmer al mattino, Pushkar nel pomeriggio fino all'aarti.",
+     "id": "pushkar-capodanno",
+     "giorni": [
+      "2026-12-31"
+     ],
+     "titolo": "Dargah, lago e Capodanno",
+     "sotto": "Ajmer nel primo pomeriggio, l'aarti sul lago e il cenone vegetariano.",
      "soste": [
       {
        "t": "Dargah Sharif di Ajmer",
-       "ora": "9:00",
-       "dur": "1,5 h",
-       "nota": "Venerdì: grande calca."
+       "ora": "13:30",
+       "dur": "1 h",
+       "nota": "Giovedì: grande calca."
       },
       {
        "t": "Lago sacro di Pushkar",
-       "ora": "14:30",
+       "ora": "16:30",
        "dur": "1 h"
-      },
-      {
-       "t": "Tempio di Brahma",
-       "ora": "15:30",
-       "dur": "45 min"
       },
       {
        "t": "Aarti serale sui ghat",
@@ -3459,7 +5142,51 @@
      "pasti": {
       "colazione": {
        "l": "",
-       "c": "In hotel"
+       "c": "A Bundi"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Leggero lungo la strada"
+      },
+      "spuntino": {
+       "l": "malpua-bancarelle",
+       "c": "Malpua calde"
+      },
+      "cena": {
+       "l": "raju-terrace",
+       "c": "Cenone di Capodanno, senza alcol"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "pushkar-biryani",
+     "giorni": [
+      "2026-12-31"
+     ],
+     "titolo": "Biryani al Dargah, malpua a Pushkar",
+     "sotto": "Pasto completo ad Ajmer, cena leggera tra i ghat.",
+     "soste": [
+      {
+       "t": "Dargah Sharif di Ajmer",
+       "ora": "13:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "Lago sacro di Pushkar",
+       "ora": "16:30",
+       "dur": "1 h"
+      },
+      {
+       "t": "Aarti serale sui ghat",
+       "ora": "18:00",
+       "dur": "45 min"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Bundi"
       },
       "pranzo": {
        "l": "biryani-dargah"
@@ -3468,32 +5195,35 @@
        "l": "sohan-halwa"
       },
       "cena": {
-       "l": "malpua-bancarelle",
-       "c": "Malpua calde"
+       "l": "sunset-cafe",
+       "c": "Leggera, poi i festeggiamenti"
       }
      },
      "completo": "pranzo"
     },
     {
      "id": "pushkar-alto",
-     "titolo": "Pushkar dall'alto",
-     "sotto": "Salita al tempio di Savitri per il tramonto, poi cena vegetariana.",
+     "giorni": [
+      "2027-01-01"
+     ],
+     "titolo": "Pushkar all'alba e Kishangarh",
+     "sotto": "Savitri per chi vuole l'alba, Brahma, poi la sosta sulla strada per Jaipur.",
      "soste": [
       {
-       "t": "Lago sacro di Pushkar",
-       "ora": "10:00",
-       "dur": "1 h"
+       "t": "Tempio di Savitri",
+       "ora": "7:00",
+       "dur": "1,5 h",
+       "nota": "Facoltativo: alba sul lago, salita a piedi o in funivia."
       },
       {
        "t": "Tempio di Brahma",
-       "ora": "11:30",
+       "ora": "9:30",
        "dur": "45 min"
       },
       {
-       "t": "Tempio di Savitri",
-       "ora": "16:00",
-       "dur": "1,5 h",
-       "nota": "Salita a piedi o in funivia."
+       "t": "Kishangarh",
+       "ora": "13:00",
+       "dur": "1 h"
       }
      ],
      "pasti": {
@@ -3502,14 +5232,15 @@
        "c": "Khasta kachori"
       },
       "pranzo": {
-       "l": "out-of-the-blue"
+       "l": "highway-king",
+       "c": "Thali sulla statale"
       },
       "spuntino": {
-       "l": "sunset-cafe"
+       "l": "malpua-bancarelle"
       },
       "cena": {
-       "l": "pushkar-raj",
-       "c": "Thali"
+       "l": "",
+       "c": "A Jaipur"
       }
      },
      "completo": "cena"
@@ -3527,7 +5258,7 @@
   {
    "id": "jaipur",
    "nome": "Jaipur",
-   "quando": "2–3 gennaio",
+   "quando": "1–3 gennaio",
    "clima": {
     "min": 8,
     "max": 22,
@@ -4022,7 +5753,50 @@
    ],
    "percorsi": [
     {
+     "id": "jaipur-arrivo",
+     "giorni": [
+      "2027-01-01"
+     ],
+     "titolo": "Prima sera nella città rosa",
+     "sotto": "Bazar al tramonto e cena da LMB.",
+     "soste": [
+      {
+       "t": "Hawa Mahal",
+       "ora": "17:00",
+       "dur": "20 min",
+       "nota": "Da fuori, con la luce della sera."
+      },
+      {
+       "t": "Bazar della città rosa",
+       "ora": "17:30",
+       "dur": "1,5 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Pushkar"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "A Kishangarh"
+      },
+      "spuntino": {
+       "l": "gulab-ji",
+       "c": "Chai"
+      },
+      "cena": {
+       "l": "lmb",
+       "c": "Thali e dal baati churma"
+      }
+     },
+     "completo": "cena"
+    },
+    {
      "id": "jaipur-amber",
+     "giorni": [
+      "2027-01-02"
+     ],
      "titolo": "Amber presto e città rosa",
      "sotto": "Il forte all'apertura, pranzo nelle sale reali, bazar al pomeriggio.",
      "soste": [
@@ -4063,6 +5837,9 @@
     },
     {
      "id": "jaipur-citta",
+     "giorni": [
+      "2027-01-02"
+     ],
      "titolo": "Osservatorio, palazzo e tramonto",
      "sotto": "Hawa Mahal con la luce del mattino, Jantar Mantar e City Palace, Nahargarh al tramonto.",
      "soste": [
@@ -4099,8 +5876,7 @@
        "l": "lassiwala"
       },
       "cena": {
-       "l": "lmb",
-       "c": "Thali e dal baati churma"
+       "l": "mahal-pink-city"
       }
      },
      "completo": "cena"
@@ -4114,7 +5890,7 @@
   {
    "id": "fatehpur-sikri",
    "nome": "Fatehpur Sikri",
-   "quando": "4 gennaio, lungo la strada per Agra",
+   "quando": "3 gennaio, lungo la strada per Agra",
    "clima": {
     "min": 7,
     "max": 22,
@@ -4210,6 +5986,39 @@
       "it": "Tomba di Salim Chishti",
       "en": "Tomb of Salim Chishti"
      }
+    },
+    {
+     "t": "Chand Baori ad Abhaneri",
+     "d": "Uno dei pozzi a gradini più grandi e profondi dell'India.",
+     "x": [
+      [
+       "Cos'è",
+       "Pozzo dell'VIII–IX secolo: circa 3.500 gradini disposti a piramide rovesciata su tredici livelli. Accanto c'è il tempio di Harshat Mata, in rovina ma con belle sculture."
+      ],
+      [
+       "Da sapere",
+       "Orari indicati 7:30–18:30; biglietto per stranieri indicato tra 250 e 300 ₹, da verificare. Non si scende sui gradini."
+      ],
+      [
+       "Quanto tempo",
+       "Mezz'ora o tre quarti d'ora."
+      ]
+     ],
+     "q": "Chand Baori, Abhaneri",
+     "c": [
+      27.0073,
+      76.6065
+     ],
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Chand_Baori_perspective_panorama_%28July_2022%29.jpg/500px-Chand_Baori_perspective_panorama_%28July_2022%29.jpg",
+      "autore": "Chainwit.",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Chand_Baori_perspective_panorama_%28July_2022%29.jpg"
+     },
+     "w": {
+      "it": "Chand Baori",
+      "en": "Chand Baori"
+     }
     }
    ],
    "mangiare": [],
@@ -4230,7 +6039,7 @@
     "soggetto": "Buland Darwaza",
     "pagina": "https://commons.wikimedia.org/wiki/File:Fatehput_Sikiri_Buland_Darwaza_gate_2010.jpg"
    },
-   "sigla": "Agr",
+   "sigla": "Fat",
    "locali": [
     {
      "id": "goverdhan",
@@ -4249,45 +6058,71 @@
      "prezzo": 1,
      "q": "Hotel Goverdhan, Fatehpur Sikri",
      "pid": "ChIJGwAAAOOTczkRsQ2Fi5BtqSE"
+    },
+    {
+     "id": "chand-baori-rest",
+     "n": "Chand Baori Restaurant",
+     "zona": "Accanto al pozzo",
+     "vicino": [
+      "Chand Baori ad Abhaneri"
+     ],
+     "pasti": [
+      "pranzo",
+      "spuntino"
+     ],
+     "tipo": "entrambi",
+     "cosa": "Sosta per chai e uno spuntino, o un pranzo semplice.",
+     "prezzo": 1,
+     "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
+     "q": "Chand Baori Restaurant, Abhaneri",
+     "pid": "ChIJT7hNa8dxcjkRb9eF5xonzOM"
     }
    ],
    "percorsi": [
     {
      "id": "fatehpur-sosta",
-     "titolo": "Sosta lungo la strada",
-     "sotto": "Palazzi con una guida autorizzata, zona sacra senza procacciatori.",
+     "giorni": [
+      "2027-01-03"
+     ],
+     "titolo": "Il pozzo di Abhaneri e la città moghul",
+     "sotto": "Chand Baori al mattino, Fatehpur Sikri con una guida autorizzata.",
      "soste": [
       {
+       "t": "Chand Baori ad Abhaneri",
+       "ora": "9:45",
+       "dur": "45 min"
+      },
+      {
        "t": "Palazzi reali",
-       "ora": "10:00",
+       "ora": "13:00",
        "dur": "1,5 h"
       },
       {
        "t": "Jama Masjid e tomba di Salim Chishti",
-       "ora": "11:45",
+       "ora": "14:45",
        "dur": "45 min"
       },
       {
        "t": "Buland Darwaza",
-       "ora": "12:30",
+       "ora": "15:30",
        "dur": "15 min"
       }
      ],
      "pasti": {
       "colazione": {
        "l": "",
-       "c": "Prima di partire"
+       "c": "A Jaipur"
       },
       "pranzo": {
        "l": "goverdhan"
       },
       "spuntino": {
-       "l": "",
-       "c": "Acqua e frutta"
+       "l": "chand-baori-rest",
+       "c": "Chai"
       },
       "cena": {
        "l": "",
-       "c": "Ad Agra"
+       "c": "Leggera, ad Agra"
       }
      },
      "completo": "pranzo"
@@ -4301,7 +6136,7 @@
   {
    "id": "agra",
    "nome": "Agra",
-   "quando": "4 gennaio",
+   "quando": "3–4 gennaio",
    "clima": {
     "min": 7,
     "max": 22,
@@ -4664,38 +6499,67 @@
    ],
    "percorsi": [
     {
-     "id": "agra-taj",
-     "titolo": "Taj all'alba e moghul a cena",
-     "sotto": "Il Taj all'apertura, il forte, il Taj da dietro al tramonto.",
+     "id": "agra-sera",
+     "giorni": [
+      "2027-01-03"
+     ],
+     "titolo": "Il Taj da dietro",
+     "sotto": "Se si arriva prima del tramonto: Mehtab Bagh, poi street food.",
      "soste": [
       {
-       "t": "Taj Mahal",
-       "ora": "6:30",
-       "dur": "2,5 h",
-       "nota": "Biglietto aggiuntivo per il mausoleo."
-      },
-      {
-       "t": "Forte di Agra",
-       "ora": "11:00",
-       "dur": "1,5 h"
-      },
-      {
        "t": "Mehtab Bagh",
-       "ora": "16:30",
-       "dur": "1 h"
+       "ora": "17:00",
+       "dur": "45 min",
+       "nota": "Chiude al tramonto: solo se si arriva in tempo."
       }
      ],
      "pasti": {
       "colazione": {
-       "l": "joneys"
+       "l": "",
+       "c": "A Jaipur"
       },
       "pranzo": {
-       "l": "saniya-palace",
-       "c": "Con vista"
+       "l": "",
+       "c": "A Fatehpur Sikri"
       },
       "spuntino": {
        "l": "panchhi-petha",
        "c": "Petha"
+      },
+      "cena": {
+       "l": "mama-chicken",
+       "c": "Leggera"
+      }
+     },
+     "completo": "pranzo"
+    },
+    {
+     "id": "agra-cena",
+     "giorni": [
+      "2027-01-03"
+     ],
+     "titolo": "Cena moghul ad Agra",
+     "sotto": "Pranzo leggero a Fatehpur, cena completa vicino al Taj.",
+     "soste": [
+      {
+       "t": "Mehtab Bagh",
+       "ora": "17:00",
+       "dur": "45 min",
+       "nota": "Solo se si arriva in tempo."
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "",
+       "c": "A Jaipur"
+      },
+      "pranzo": {
+       "l": "",
+       "c": "Leggero a Fatehpur Sikri"
+      },
+      "spuntino": {
+       "l": "panchhi-petha",
+       "c": "Dalmoth"
       },
       "cena": {
        "l": "pinch-of-spice"
@@ -4704,38 +6568,82 @@
      "completo": "cena"
     },
     {
-     "id": "agra-sapori",
-     "titolo": "Agra dei sapori",
-     "sotto": "Colazione di bedai, Taj in tarda mattinata, street food la sera.",
+     "id": "agra-taj",
+     "giorni": [
+      "2027-01-04"
+     ],
+     "titolo": "Taj all'alba e forte",
+     "sotto": "Il Taj all'apertura, il forte, poi la strada per Delhi.",
      "soste": [
       {
        "t": "Taj Mahal",
-       "ora": "10:00",
-       "dur": "2,5 h"
+       "ora": "6:45",
+       "dur": "2,5 h",
+       "nota": "Biglietto aggiuntivo per il mausoleo. Nebbia possibile."
       },
       {
-       "t": "Mehtab Bagh",
-       "ora": "16:30",
-       "dur": "1 h"
+       "t": "Forte di Agra",
+       "ora": "10:30",
+       "dur": "1,5 h"
       }
      ],
      "pasti": {
       "colazione": {
-       "l": "deviram",
-       "c": "Bedai e jalebi"
+       "l": "joneys",
+       "c": "Dopo il Taj"
       },
       "pranzo": {
        "l": "shankara-vegis"
       },
       "spuntino": {
        "l": "panchhi-petha",
+       "c": "Petha per il viaggio"
+      },
+      "cena": {
+       "l": "",
+       "c": "A Delhi"
+      }
+     },
+     "completo": "cena"
+    },
+    {
+     "id": "agra-sapori",
+     "giorni": [
+      "2027-01-04"
+     ],
+     "titolo": "Taj e bedai",
+     "sotto": "Il Taj all'apertura, colazione di bedai, forte e pranzo con vista.",
+     "soste": [
+      {
+       "t": "Taj Mahal",
+       "ora": "6:45",
+       "dur": "2,5 h"
+      },
+      {
+       "t": "Forte di Agra",
+       "ora": "11:00",
+       "dur": "1,5 h"
+      }
+     ],
+     "pasti": {
+      "colazione": {
+       "l": "deviram",
+       "c": "Bedai e jalebi, dopo il Taj"
+      },
+      "pranzo": {
+       "l": "saniya-palace",
+       "c": "Con vista sul Taj"
+      },
+      "spuntino": {
+       "l": "panchhi-petha",
        "c": "Dalmoth"
       },
       "cena": {
-       "l": "mama-chicken"
+       "l": "",
+       "c": "A Delhi"
       }
      },
-     "completo": "pranzo"
+     "completo": "cena"
     }
    ],
    "w": {

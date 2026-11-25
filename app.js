@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-25.2';
+const VERSIONE = '2026-11-25.3';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -750,9 +750,9 @@ function salvaNome(n) {
   if (x.n) grScrivi({ ['persone/' + x.id]: { n: x.n, t: Date.now() } });
 }
 
-function percorsiDi(tid) {
+function percorsiDi(tid, data) {
   const t = tappa(tid); if (!t) return [];
-  const base = (t.percorsi || []).map((p) => Object.assign({ tappa: tid }, p));
+  const base = (t.percorsi || []).filter((p) => !data || !p.giorni || p.giorni.indexOf(data) >= 0).map((p) => Object.assign({ tappa: tid }, p));
   const prop = Object.entries(gruppo().proposte || {}).filter(([, p]) => p && p.tappa === tid).map(([k, p]) => Object.assign({}, p, { id: k, proposta: true }));
   return base.concat(prop.sort((a, b) => (a.t || 0) - (b.t || 0)));
 }
@@ -887,12 +887,12 @@ function vistaGiorno(data) {
   if (!g.tappe.length) h += '<div class="pannello vuoto"><h3>Giorno di viaggio</h3><p class="tenue">Niente percorsi per oggi.</p></div>';
   g.tappe.forEach((tid) => {
     const t = tappa(tid); if (!t) return;
-    const lista = percorsiDi(tid).map((p, i) => ({ p, i, n: aderenti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
+    const lista = percorsiDi(tid, data).map((p, i) => ({ p, i, n: aderenti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
     h += '<h2 class="sez"' + stileCitta(t) + '>' + arco(t.colore, 18) + esc(t.nome) + '</h2>';
     h += lista.map((x) => htmlPercorso(x.p, t, data)).join('');
     h += '<div class="azioni larghe"><a class="chip" href="#proponi/' + esc(data) + '/' + esc(tid) + '">' + ICO.piu + 'Proponi un percorso</a><a class="chip" href="#tappa/' + esc(tid) + '">Cosa vedere e dove mangiare</a></div>';
   });
-  if (CONT.calendarioStimato) h += '<p class="pie">Calendario stimato: gli orari dei percorsi vanno adattati al programma del coordinatore e ai tempi del gruppo.</p>';
+  h += '<p class="pie">' + (CONT.calendarioStimato ? 'Calendario stimato: gli orari dei percorsi vanno adattati al programma del coordinatore e ai tempi del gruppo.' : 'Orari indicativi: si adattano ai trasferimenti e a quello che il gruppo decide col coordinatore.') + '</p>';
   return { titolo: fmtGiorno.format(dataDa(data)), html: h, indietro: '#viaggio' };
 }
 
@@ -1105,7 +1105,7 @@ function vistaViaggio() {
   const ps = oggi <= r && proprietario() ? prossimaScadenza() : null;
   if (ps) h += '<a class="prossima" href="#liste/scadenze">' + ICO.campana + '<div><b>' + esc(ps.titolo) + '</b><span>' + (ps.data ? esc(fmtBreve.format(dataDa(ps.data))) + ', ' + esc(quantoManca(ps.data)) : 'Prossima cosa da fare') + '</span></div></a>';
   h += '</section><h2 class="sez">Temperature del viaggio</h2><div class="pannello pieno">' + graficoViaggio() + '</div><h2 class="sez">Giorno per giorno</h2>';
-  if (CONT.calendarioStimato) h += '<p class="tenue" style="margin-bottom:22px">Calendario stimato: fa fede il programma del coordinatore.</p>';
+  h += '<p class="tenue" style="margin-bottom:22px">' + (CONT.calendarioStimato ? 'Calendario stimato: fa fede il programma del coordinatore.' : 'Dal programma del coordinatore del 25 novembre: il foglio notizie definitivo può cambiare qualcosa.') + '</p>';
   h += '<ol class="filo">';
   CONT.giorni.forEach((g, i) => {
     const cl = g.data === oggi ? ' class="oggi"' : (g.data < oggi ? ' class="passato"' : '');
@@ -1113,7 +1113,7 @@ function vistaViaggio() {
     h += '<li' + cl + stileCitta(t0) + '><span class="perla">' + (i + 1) + '</span><div class="cosa"><span class="quando">' + esc(fmtLungo.format(dataDa(g.data))) + '</span><h3>' + esc(g.titolo) + '</h3>';
     if (g.nota) h += '<p class="tenue">' + esc(g.nota) + '</p>';
     h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip citta" href="#tappa/' + esc(id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>' : ''; }).join('');
-    if (g.tappe.length) { const n = g.tappe.reduce((a, id) => a + percorsiDi(id).filter((p) => aderenti(g.data, p.id).indexOf(io().id) >= 0).length, 0); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Ci sto' : 'Percorsi') + '</a>'; }
+    if (g.tappe.length) { const n = g.tappe.reduce((a, id) => a + percorsiDi(id, g.data).filter((p) => aderenti(g.data, p.id).indexOf(io().id) >= 0).length, 0); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Ci sto' : 'Percorsi') + '</a>'; }
     if (proprietario()) h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a>';
     h += '</div></div>';
     h += '</li>';
