@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-27.2';
+const VERSIONE = '2026-11-27.3';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -680,11 +680,11 @@ async function caricaDatiGoogle() {
       const x = gp(k) || await gpLocale(t, l).catch(() => null);
       document.querySelectorAll('[data-voto="' + CSS.escape(el.dataset.voto) + '"]').forEach((e) => { e.innerHTML = testoVoto(x); });
     }
-    for (const el of document.querySelectorAll('[data-votog]')) {
-      const pid = el.dataset.votog, k = 'v:' + pid;
+    for (const el of document.querySelectorAll('[data-gi]')) {
+      const pid = el.dataset.gi, k = 'i:' + pid;
       let x = gp(k);
-      if (!x) { try { const p = await chiamaPlaces('places/' + pid, 'id,rating,userRatingCount'); x = gpSalva(k, { r: p.rating || 0, n: p.userRatingCount || 0 }); } catch (e) { x = null; } }
-      document.querySelectorAll('[data-votog="' + CSS.escape(pid) + '"]').forEach((e) => { e.innerHTML = testoVoto(x); });
+      if (!x) { try { const p = await chiamaPlaces('places/' + pid + '?languageCode=it', 'id,rating,userRatingCount,editorialSummary'); x = gpSalva(k, { r: p.rating || 0, n: p.userRatingCount || 0, s: p.editorialSummary && p.editorialSummary.text ? p.editorialSummary.text : '' }); } catch (e) { x = null; } }
+      document.querySelectorAll('[data-gi="' + CSS.escape(pid) + '"]').forEach((e) => { e.innerHTML = e.closest('.vicini') ? testoVoto(x) : testoGoogle(x); });
     }
     for (const el of document.querySelectorAll('[data-posto]')) {
       const pid = el.dataset.posto;
@@ -779,27 +779,6 @@ function salvaNome(n) {
 }
 
 // Posti aggiunti dal gruppo a una tappa da Google Maps: posti/{id} = {tappa, tipo: 'v' (da visitare) o 'm' (per mangiare), pid, n, autore, t}.
-let AGG = null; // { tappa, tipo } mentre si cerca un posto da aggiungere
-function postiGruppo(tid, tipo) {
-  return Object.entries(gruppo().posti || {}).filter(([, p]) => p && p.tappa === tid && p.tipo === tipo && p.pid)
-    .map(([k, p]) => Object.assign({}, p, { id: k })).sort((a, b) => (a.t || 0) - (b.t || 0));
-}
-function htmlPostiGruppo(t, tipo) {
-  const lista = postiGruppo(t.id, tipo), me = io().id;
-  let h = '';
-  if (lista.length) h += '<h3 class="agg-tit">Aggiunti dal gruppo</h3><ul class="posti-g">' + lista.map((p) => '<li id="g-' + esc(p.id) + '"><b>' + esc(p.n) + '</b>' + (PLACES_KEY ? ' <span class="voto" data-votog="' + esc(p.pid) + '">' + testoVoto(gp('v:' + p.pid)) + '</span>' : '') +
-    '<br><span class="tenue">Aggiunto da ' + esc(p.autore && p.autore.id === me ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</span> ' + linkMappa(p.n, 'Mappa', p.pid) +
-    (p.autore && p.autore.id === me ? ' <button class="link-btn" data-az="togliPosto" data-id="' + esc(p.id) + '">Togli</button>' : '') + '</li>').join('') + '</ul>';
-  if (!PLACES_KEY) return h;
-  const etich = tipo === 'v' ? 'Aggiungi un luogo da Google Maps' : 'Aggiungi un posto per mangiare da Google Maps';
-  if (AGG && AGG.tappa === t.id && AGG.tipo === tipo) {
-    h += '<div class="cerca-posto agg"><input id="fCerca" type="search" maxlength="80" placeholder="' + (tipo === 'v' ? 'Nome del luogo' : 'Nome del ristorante o del bar') + '" autocomplete="off" aria-label="' + etich + '"><ul id="suggerimenti" class="suggerimenti"></ul>' +
-      (io().n ? '' : '<label>Il tuo nome, come lo vedranno gli altri<input id="fNome" maxlength="40" autocomplete="given-name"></label>') +
-      '<p class="err" id="errAgg" hidden></p><div class="azioni"><button class="btn chiaro piccolo" data-az="chiudiAgg">Annulla</button></div></div>';
-  } else h += '<div class="azioni"><button class="chip" data-az="apriAgg" data-tappa="' + esc(t.id) + '" data-tipo="' + tipo + '">' + ICO.piu + etich + '</button></div>';
-  return h;
-}
-
 // Percorsi di un giorno: quelli dell'app più le proposte del gruppo per quel giorno.
 function percorsiDelGiorno(data) {
   const g = CONT.giorni.find((x) => x.data === data); if (!g) return [];
@@ -825,20 +804,19 @@ function linkWiki(w, prima) {
 function urlMappa(q, pid) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + (pid ? '&query_place_id=' + encodeURIComponent(pid) : ''); }
 function linkMappa(q, testo, pid) { return q ? '<a class="mappa" href="' + esc(urlMappa(q, pid)) + '" target="_blank" rel="noopener">' + ICO.mappa + esc(testo || 'Apri in Google Maps') + '</a>' : ''; }
 
-// Una sosta è {tappa, t} (un luogo dell'app), {tappa, l, t} (un locale dell'app) oppure {t, pid} (un posto di Google Maps).
-function vedereDi(s) { const t = s.tappa && !s.l && tappa(s.tappa); return t ? t.vedere.find((x) => x.t === s.t) || null : null; }
-function localeDi(s) { const t = s.l && tappa(s.tappa); return t ? (t.locali || []).find((x) => x.id === s.l) || null : null; }
-function pidSosta(s) { if (s.pid) return s.pid; const l = localeDi(s); return l && l.pid ? l.pid : ''; }
-function qSosta(s) { if (s.pid) return s.t; const l = localeDi(s); if (l) return l.q || l.n; const v = vedereDi(s), t = s.tappa && tappa(s.tappa); return v && v.q ? v.q : s.t + ', ' + (t ? t.nome : '') + ', India'; }
-function coordSosta(s) {
-  const pid = pidSosta(s);
-  if (pid) { const x = gp('p:' + pid), l = localeDi(s), y = l && gp('l:' + s.tappa + ':' + l.id); return x && x.c ? x.c : y && y.c ? y.c : null; }
-  const v = vedereDi(s); return v && v.c ? v.c : null;
+// Una sosta è {tappa, id, t} (un posto della tappa) oppure {t, pid} (un posto di Google Maps non aggiunto alla tappa).
+// Le forme vecchie {tappa, t} e {tappa, l, t} indicano le voci dell'app.
+function normSosta(s) {
+  if (!s || s.id || !s.tappa) return s;
+  if (s.l) return Object.assign({}, s, { id: idBase(s.tappa, 'm', s.l) });
+  return Object.assign({}, s, { id: idBase(s.tappa, 'v', s.t) });
 }
-// Link alla voce nella pagina della tappa.
-function hrefLuogo(tid, titolo) { return '#tappa/' + tid + '/v-' + slug(titolo); }
-function hrefPiatto(tid, titolo) { return '#tappa/' + tid + '/m-' + slug(titolo); }
-function hrefLocale(tid, id) { return '#tappa/' + tid + '/l-' + id; }
+function postoSosta(s) { s = normSosta(s); return s && s.id ? postoDa(s.tappa, s.id) : null; }
+function pidSosta(s) { const p = postoSosta(s); return p ? p.pid || '' : s.pid || ''; }
+function nomeSosta(s) { const p = postoSosta(s); return p ? p.n : s.t; }
+function qSosta(s) { const p = postoSosta(s), t = s.tappa && tappa(s.tappa); if (p) return p.q || (p.pid ? p.n : p.n + ', ' + (t ? t.nome : '') + ', India'); return s.t; }
+function coordSosta(s) { const p = postoSosta(s); if (p) return coordPosto(p); if (s.pid) { const x = gp('p:' + s.pid); return x && x.c ? x.c : null; } return null; }
+function tipoSosta(s) { const p = postoSosta(s); return p ? p.tipo : s.cibo ? 'm' : 'v'; }
 function urlPercorso(soste) {
   const v = [];
   (soste || []).forEach((s) => { const q = qSosta(s); if (!v.some((x) => x.q === q)) v.push({ q, pid: pidSosta(s) }); });
@@ -859,7 +837,7 @@ function distanzaKm(a, b) {
 function fmtDist(km) { return km < 1 ? Math.max(100, Math.round(km * 10) * 100) + ' m' : (km < 20 ? km.toFixed(1).replace('.', ',') : Math.round(km)) + ' km'; }
 // Schema del percorso: punti numerati in proporzione, senza mappa sotto. Funziona offline.
 function htmlSchema(soste) {
-  const pt = (soste || []).map((s, i) => ({ n: i + 1, t: s.t, c: coordSosta(s) })).filter((p) => p.c);
+  const pt = (soste || []).map((s, i) => ({ n: i + 1, t: nomeSosta(s), c: coordSosta(s) })).filter((p) => p.c);
   if (pt.length < 2) return '';
   const k = Math.cos(pt[0].c[0] * Math.PI / 180);
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
@@ -886,51 +864,253 @@ function htmlSchema(soste) {
   g += '<line x1="12" y1="' + (H - 12) + '" x2="' + (12 + ls).toFixed(1) + '" y2="' + (H - 12) + '" stroke="currentColor" stroke-width="2"/><text x="12" y="' + (H - 18) + '" class="s">' + fmtDist(scala) + '</text></svg>';
   return '<div class="schema-box">' + g + '<p class="tenue">Posizioni e distanze indicative, in linea d\'aria.</p></div>';
 }
-function htmlLocale(l) {
-  let h = '<li class="locale" id="l-' + esc(l.id) + '"><div class="loc-testa"><b>' + esc(l.n) + '</b><span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(l.prezzo || 1) + '</span></div>' + (htmlVoto(T_CORRENTE, l) ? '<p class="riga-voto">' + htmlVoto(T_CORRENTE, l) + '</p>' : '');
-  h += '<p class="tenue">' + esc(l.zona) + '</p><p>' + esc(l.cosa) + '</p><span class="etichette"><span class="et">' + esc(TIPO_LOC[l.tipo] || '') + '</span>' + l.pasti.map((p) => '<span class="et">' + esc(NOME_PASTO[p]) + '</span>').join('') + (l.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
-  if (l.vicino && l.vicino.length) h += '<p class="tenue nota">Vicino a: ' + l.vicino.map((v) => '<a href="' + esc(hrefLuogo(T_CORRENTE.id, v)) + '">' + esc(v) + '</a>').join(', ') + '</p>';
-  if (l.nota) h += '<p class="tenue nota">' + esc(l.nota) + '</p>';
-  if (l.piatti && l.piatti.length) h += '<p class="piatti-qui"><span>Piatti tipici qui:</span> ' + l.piatti.map((p) => '<a class="et piatto" href="' + esc(hrefPiatto(T_CORRENTE.id, p)) + '">' + esc(p) + '</a>').join('') + '</p>';
-  if (l.q) h += '<p>' + linkMappa(l.q, '', l.pid) + '</p>';
-  return h + '</li>';
+/* ---------- Posti: da visitare, per mangiare, per dormire ---------- */
+// Le voci dell'app (data/tappe.json) sono il punto di partenza; tutto il resto sta nel database del gruppo, ramo posti:
+// - posti/b-…: correzione (o cancellazione, con cancellato) di una voce dell'app con lo stesso id; solo il superadmin;
+// - posti/<altro>: posto aggiunto da qualcuno del gruppo, scelto su Google Maps; lo cambia o lo toglie chi l'ha aggiunto, o il superadmin.
+const TIPI_POSTO = { v: 'Da visitare', m: 'Per mangiare', d: 'Per dormire' };
+const COLORE_TIPO = { m: '#c2410c', d: '#6d28d9' };
+function superadmin() { return !!(ACC && PROPRIETARI.indexOf(ACC.uid) >= 0); }
+function idBase(tid, tipo, chiave) { return 'b-' + tid + '-' + (tipo === 'v' ? 'v-' + slug(chiave) : 'l-' + chiave); }
+const BASE = {};
+function baseDi(tid) {
+  const t = tappa(tid); if (!t) return [];
+  if (BASE[tid] && BASE[tid].cont === CONT) return BASE[tid].l;
+  const l = [];
+  t.vedere.forEach((v, i) => l.push(Object.assign({}, v, { id: idBase(tid, 'v', v.t), tappa: tid, tipo: 'v', n: v.t, base: true, o: i })));
+  (t.locali || []).forEach((x, i) => { const y = Object.assign({}, x, { id: idBase(tid, 'm', x.id), lid: x.id, tappa: tid, tipo: 'm', tl: x.tipo, n: x.n, base: true, o: 100 + i, vicino: (x.vicino || []).map((v) => idBase(tid, 'v', v)) }); l.push(y); });
+  BASE[tid] = { cont: CONT, l }; return l;
 }
-function localiVicini(t, titolo) { return (t.locali || []).filter((l) => l.vicino.indexOf(titolo) >= 0); }
-function htmlVicini(t, x) {
-  const v = localiVicini(t, x.t);
+function postiDi(tid, tipo) {
+  const db = gruppo().posti || {}, out = [];
+  baseDi(tid).forEach((b) => { const o = db[b.id]; if (o && o.cancellato) return; out.push(o ? Object.assign({}, b, o, { id: b.id, base: true, corretto: true }) : b); });
+  Object.keys(db).sort((a, b) => ((db[a] && db[a].t) || 0) - ((db[b] && db[b].t) || 0)).forEach((k) => { const p = db[k]; if (!p || p.cancellato || k.startsWith('b-') || p.tappa !== tid) return; out.push(Object.assign({}, p, { id: k })); });
+  return tipo ? out.filter((p) => p.tipo === tipo) : out;
+}
+function postoDa(tid, id) { return tid ? postiDi(tid).find((p) => p.id === id) || null : null; }
+function puoCambiare(p) { return superadmin() || (!p.base && p.autore && p.autore.id === io().id); }
+function coordPosto(p) {
+  if (p.c) return p.c;
+  if (p.pid) { const x = gp('p:' + p.pid); if (x && x.c) return x.c; }
+  if (p.lid) { const y = gp('l:' + p.tappa + ':' + p.lid); if (y && y.c) return y.c; }
+  return null;
+}
+// Luoghi da visitare vicini a un posto per mangiare o dormire: quelli indicati nell'app, altrimenti entro 1,2 km.
+function vicinoDi(p) {
+  if (p.vicino && p.vicino.length) return p.vicino;
+  const c = coordPosto(p); if (!c) return [];
+  return postiDi(p.tappa, 'v').filter((v) => { const d = coordPosto(v); return d && distanzaKm(c, d) <= 1.2; }).map((v) => v.id);
+}
+function vicinoA_(tid, vid, tipo) { return postiDi(tid, tipo || 'm').filter((p) => vicinoDi(p).indexOf(vid) >= 0); }
+function hrefPosto(tid, id) { return '#tappa/' + tid + '/p-' + id; }
+function hrefPiatto(tid, titolo) { return '#tappa/' + tid + '/m-' + slug(titolo); }
+function htmlGoogleInfo(p) {
+  if (!PLACES_KEY || !p.pid) return '';
+  return '<span class="voto" data-gi="' + esc(p.pid) + '">' + testoGoogle(gp('i:' + p.pid)) + '</span>';
+}
+function testoGoogle(x) { return x ? testoVoto(x) + (x.s ? (x.r ? '<br>' : '') + '<span class="riassunto">' + esc(x.s) + '</span>' : '') : ''; }
+function autoreDi(p) { return p.base ? '' : '<p class="tenue nota">Aggiunto da ' + esc(p.autore && p.autore.id === io().id ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>'; }
+function htmlComandi(p) {
+  if (!puoCambiare(p)) return '';
+  return '<p class="comandi"><button class="link-btn" data-az="modPosto" data-tappa="' + esc(p.tappa) + '" data-id="' + esc(p.id) + '">Modifica</button> <button class="link-btn pericolo-t" data-az="delPosto" data-tappa="' + esc(p.tappa) + '" data-id="' + esc(p.id) + '">Elimina</button></p>';
+}
+function htmlTestoWiki(p) { return p.wd ? '<p class="da-wiki">' + esc(p.wd) + ' <span class="tenue">(Wikipedia' + (p.wl === 'en' ? ', in inglese' : '') + ')</span></p>' : ''; }
+
+// Luoghi da visitare: con la spunta "Visto" (solo per Gerry si salva), dettagli, mappa, Wikipedia, posti vicini.
+function htmlLuoghi(t) {
+  const lista = postiDi(t.id, 'v');
+  let h = '<h2 class="sez">' + arco(t.colore, 18) + 'Cosa vedere</h2><div class="pannello"><ul class="segni">';
+  lista.forEach((x) => {
+    const sid = t.id + '/v/' + slug(x.base ? x.t : x.n), s = voce('segni', sid), on = !!(s && s.fatto);
+    h += '<li id="p-' + esc(x.id) + '"><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(sid) + '" aria-pressed="' + on + '" aria-label="' + esc('Visto: ' + x.n) + '"></button>';
+    const testa = '<h3>' + esc(x.n) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + (x.base ? '' : '<span class="etichette"><span class="et">Aggiunto dal gruppo</span></span>');
+    const mangia = vicinoA_(t.id, x.id, 'm'), dorme = vicinoA_(t.id, x.id, 'd');
+    h += '<details class="dett"' + (x.pid && !coordPosto(x) ? ' data-posto="' + esc(x.pid) + '"' : '') + '><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(Object.assign({ t: x.n }, x)) +
+      (x.x && x.x.length ? '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' : '') + htmlTestoWiki(x) +
+      (x.pid ? '<p class="riga-voto">' + htmlGoogleInfo(x) + '</p>' : '') + (x.nota ? '<p class="tenue nota">' + esc(x.nota) + '</p>' : '') +
+      '<p class="riga-mappa">' + linkMappa(x.q || x.n, '', x.pid) + '</p>' + (x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') +
+      htmlElencoVicini(t, mangia, 'Per mangiare qui vicino') + htmlElencoVicini(t, dorme, 'Per dormire qui vicino') + autoreDi(x) + htmlComandi(x) + '</details></li>';
+  });
+  if (!lista.length) h += '<li class="tenue">Ancora nessun luogo.</li>';
+  return h + '</ul>' + htmlAggiungi(t, 'v') + '</div>';
+}
+function htmlElencoVicini(t, v, titolo) {
   if (!v.length) return '';
-  return '<div class="vicini"><h4>Per mangiare qui vicino</h4><ul>' + v.map((l) => '<li><a class="nome-loc" href="' + esc(hrefLocale(t.id, l.id)) + '">' + esc(l.n) + '</a> <span class="tenue">' + esc(TIPO_LOC[l.tipo].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span> ' + htmlVoto(t, l) + '<br>' + esc(l.cosa) + (l.q ? '<br>' + linkMappa(l.q, 'Mappa', l.pid) : '') + '</li>').join('') + '</ul></div>';
+  return '<div class="vicini"><h4>' + titolo + '</h4><ul>' + v.map((l) => '<li><a class="nome-loc" href="' + esc(hrefPosto(t.id, l.id)) + '">' + esc(l.n) + '</a>' + (l.tl ? ' <span class="tenue">' + esc(TIPO_LOC[l.tl].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span>' : '') + ' ' + htmlVotoPosto(l) + (l.cosa ? '<br>' + esc(l.cosa) : '') + '</li>').join('') + '</ul></div>';
+}
+function htmlVotoPosto(p) {
+  if (!PLACES_KEY) return '';
+  if (p.pid) return '<span class="voto" data-gi="' + esc(p.pid) + '">' + testoVoto(gp('i:' + p.pid)) + '</span>';
+  if (p.lid && p.q) return '<span class="voto" data-voto="' + esc(p.tappa + '|' + p.lid) + '">' + testoVoto(gp('l:' + p.tappa + ':' + p.lid)) + '</span>';
+  return '';
+}
+function htmlPostoScheda(p) {
+  const t = tappa(p.tappa);
+  let h = '<li class="locale" id="p-' + esc(p.id) + '"' + (p.pid && !coordPosto(p) ? ' data-posto="' + esc(p.pid) + '"' : '') + '><div class="loc-testa"><b>' + esc(p.n) + '</b>' + (p.prezzo ? '<span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(p.prezzo) + '</span>' : '') + '</div>';
+  const voto = htmlVotoPosto(p);
+  if (voto) h += '<p class="riga-voto">' + (p.pid ? htmlGoogleInfo(p) : voto) + '</p>';
+  if (p.zona) h += '<p class="tenue">' + esc(p.zona) + '</p>';
+  if (p.cosa) h += '<p>' + esc(p.cosa) + '</p>';
+  if (p.d && !p.cosa) h += '<p>' + esc(p.d) + '</p>';
+  h += htmlTestoWiki(p) + htmlFotoVoce(Object.assign({ t: p.n }, p));
+  if (p.tl || (p.pasti && p.pasti.length) || p.veg) h += '<span class="etichette">' + (p.tl ? '<span class="et">' + esc(TIPO_LOC[p.tl] || '') + '</span>' : '') + (p.pasti || []).map((x) => '<span class="et">' + esc(NOME_PASTO[x]) + '</span>').join('') + (p.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
+  const vic = vicinoDi(p).map((id) => postoDa(p.tappa, id)).filter(Boolean);
+  if (vic.length) h += '<p class="tenue nota">Vicino a: ' + vic.map((v) => '<a href="' + esc(hrefPosto(p.tappa, v.id)) + '">' + esc(v.n) + '</a>').join(', ') + '</p>';
+  if (p.nota) h += '<p class="tenue nota">' + esc(p.nota) + '</p>';
+  if (p.piatti && p.piatti.length && t) h += '<p class="piatti-qui"><span>Piatti tipici qui:</span> ' + p.piatti.map((x) => '<a class="et piatto" href="' + esc(hrefPiatto(t.id, x)) + '">' + esc(x) + '</a>').join('') + '</p>';
+  if (p.q || p.pid) h += '<p>' + linkMappa(p.q || p.n, '', p.pid) + (p.w ? ' ' + linkWiki(p.w) : '') + '</p>';
+  return h + autoreDi(p) + htmlComandi(p) + '</li>';
 }
 let T_CORRENTE = null;
 function htmlDoveProvarlo(t, x) {
-  const v = (t.locali || []).filter((l) => (l.piatti || []).indexOf(x.t) >= 0);
+  const v = postiDi(t.id, 'm').filter((l) => (l.piatti || []).indexOf(x.t) >= 0);
   if (!v.length) return '';
-  return '<div class="vicini"><h4>Dove provarlo</h4><ul>' + v.map((l) => '<li><a class="nome-loc" href="' + esc(hrefLocale(t.id, l.id)) + '">' + esc(l.n) + '</a> <span class="tenue">' + esc(l.zona) + '</span> ' + htmlVoto(t, l) + (l.q ? '<br>' + linkMappa(l.q, 'Mappa', l.pid) : '') + '</li>').join('') + '</ul></div>';
+  return '<div class="vicini"><h4>Dove provarlo</h4><ul>' + v.map((l) => '<li><a class="nome-loc" href="' + esc(hrefPosto(t.id, l.id)) + '">' + esc(l.n) + '</a> <span class="tenue">' + esc(l.zona || '') + '</span> ' + htmlVotoPosto(l) + '</li>').join('') + '</ul></div>';
 }
 function htmlDoveMangiare(t) {
-  const L = t.locali || [];
   T_CORRENTE = t;
-  const compl = L.filter((l) => l.tipo !== 'leggero'), legg = L.filter((l) => l.tipo === 'leggero');
+  const L = postiDi(t.id, 'm'), compl = L.filter((l) => l.tl && l.tl !== 'leggero'), legg = L.filter((l) => l.tl === 'leggero'), altri = L.filter((l) => !l.tl);
   let h = '<h2 class="sez">' + arco(t.colore, 18) + 'Dove mangiare</h2><div class="pannello">';
-  if (compl.length) h += '<h2>Per il pasto completo</h2><ul class="locali">' + compl.map(htmlLocale).join('') + '</ul>';
-  if (legg.length) h += '<h2>Colazioni, pasti leggeri e spuntini</h2><ul class="locali">' + legg.map(htmlLocale).join('') + '</ul>';
-  h += htmlPostiGruppo(t, 'm');
-  return h + '<p class="tenue nota" style="padding-bottom:14px">₹ economico, ₹₹ medio, ₹₹₹ caro: indicativo. Nomi e orari vengono da guide e recensioni: verificarli sul posto.' + (PLACES_KEY ? ' Valutazioni (★ e numero di recensioni) da Google Maps.' : '') + '</p></div>';
+  if (compl.length) h += '<h2>Per il pasto completo</h2><ul class="locali">' + compl.map(htmlPostoScheda).join('') + '</ul>';
+  if (legg.length) h += '<h2>Colazioni, pasti leggeri e spuntini</h2><ul class="locali">' + legg.map(htmlPostoScheda).join('') + '</ul>';
+  if (altri.length) h += '<h2>Aggiunti dal gruppo</h2><ul class="locali">' + altri.map(htmlPostoScheda).join('') + '</ul>';
+  h += htmlAggiungi(t, 'm');
+  return h + '<p class="tenue nota" style="padding-bottom:14px">₹ economico, ₹₹ medio, ₹₹₹ caro: indicativo. Nomi e orari vengono da guide, recensioni e Google Maps: verificarli sul posto.' + (PLACES_KEY ? ' Valutazioni (★ e numero di recensioni) e descrizioni brevi da Google Maps.' : '') + '</p></div>';
+}
+function htmlDoveDormire(t) {
+  const L = postiDi(t.id, 'd');
+  let h = '<h2 class="sez">' + arco(t.colore, 18) + 'Dove dormire</h2><div class="pannello">';
+  h += L.length ? '<ul class="locali">' + L.map(htmlPostoScheda).join('') + '</ul>' : '<p class="tenue" style="padding-top:12px">Ancora nessun alloggio: gli hotel li sceglie il coordinatore, aggiungili quando li conosci.</p>';
+  return h + htmlAggiungi(t, 'd') + '</div>';
+}
+
+// Aggiunta e modifica: si sceglie il posto su Google Maps, il nome si può cambiare, Wikipedia e foto si cercano da sole.
+let AGG = null; // { tappa, tipo, fase: 'cerca' | 'scheda', pid, n, nota, id (modifica), info, cerco }
+function htmlAggiungi(t, tipo) {
+  const etich = { v: 'Aggiungi un luogo da visitare', m: 'Aggiungi un posto per mangiare', d: 'Aggiungi un posto per dormire' }[tipo];
+  if (!AGG || AGG.tappa !== t.id || AGG.tipo0 !== tipo) return PLACES_KEY ? '<div class="azioni"><button class="chip" data-az="apriAgg" data-tappa="' + esc(t.id) + '" data-tipo="' + tipo + '">' + ICO.piu + etich + '</button></div>' : '';
+  const a = AGG;
+  let h = '<div class="pannello-agg" id="agg">';
+  if (a.fase === 'cerca') {
+    h += '<p><b>' + etich + '</b></p><input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul>';
+  } else {
+    h += '<p><b>' + (a.id ? 'Modifica' : 'Nuovo posto') + '</b>' + (a.nG && a.nG !== a.n ? ' <span class="tenue">(su Google: ' + esc(a.nG) + ')</span>' : '') + '</p>';
+    h += '<label>Nome<input data-a="n" maxlength="80" value="' + esc(a.n) + '"></label>';
+    h += '<label>Categoria<select data-a="tipo">' + Object.keys(TIPI_POSTO).map((k) => '<option value="' + k + '"' + (k === a.tipo ? ' selected' : '') + '>' + TIPI_POSTO[k] + '</option>').join('') + '</select></label>';
+    if (a.base) h += '<label>Descrizione breve<textarea data-a="d" rows="2" maxlength="300">' + esc(a.d || '') + '</textarea></label>';
+    h += '<label>Nota (facoltativa)<textarea data-a="nota" rows="2" maxlength="300" placeholder="Es. prenotare, chiede il coordinatore, aperto solo la sera">' + esc(a.nota || '') + '</textarea></label>';
+    if (!a.base) {
+      if (a.cerco) h += '<p class="tenue">Cerco su Wikipedia descrizione e foto…</p>';
+      else if (a.info && (a.info.w || a.info.f)) {
+        h += '<div class="anteprima"><p class="tenue">Trovato su Wikipedia:</p>' + (a.info.f ? '<img src="' + esc(a.info.f.url) + '" alt="" loading="lazy" crossorigin="anonymous">' : '') + (a.info.wd ? '<p>' + esc(a.info.wd) + '</p>' : '') + (a.info.w ? '<p>' + linkWiki(a.info.w) + '</p>' : '') +
+          '<label class="riga-check"><input type="checkbox" data-a="usaInfo"' + (a.usaInfo ? ' checked' : '') + '> Usa queste informazioni</label></div>';
+      } else if (a.info) h += '<p class="tenue">Su Wikipedia non ho trovato una voce per questo posto: si vedranno le informazioni di Google Maps.</p>';
+    }
+    if (!io().n) h += '<label>Il tuo nome, come lo vedranno gli altri<input id="fNome" maxlength="40" autocomplete="given-name"></label>';
+    h += '<div class="azioni"><button class="btn piccolo" data-az="salvaPosto">' + (a.id ? 'Salva' : 'Aggiungi') + '</button>';
+  }
+  h += (a.fase === 'cerca' ? '<div class="azioni">' : '') + '<button class="btn chiaro piccolo" data-az="chiudiAgg">Annulla</button></div><p class="err" id="errAgg" hidden></p></div>';
+  return h;
+}
+function aggDaCampo(el) {
+  if (!AGG || !el.dataset || !el.dataset.a) return false;
+  AGG[el.dataset.a] = el.type === 'checkbox' ? el.checked : el.value;
+  return false;
+}
+function normalizza(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]+/g, ' ').split(' ').filter((x) => x.length > 2 && ['the', 'and', 'del', 'della', 'shri', 'sri'].indexOf(x) < 0); }
+function somiglianza(a, b) { const x = normalizza(a), y = normalizza(b); if (!x.length || !y.length) return 0; const s = new Set(y); return x.filter((w) => s.has(w)).length / Math.min(x.length, y.length); }
+// Cerca su Wikipedia una voce per il posto (vicina e con nome simile), con testo in italiano se c'è e foto di Commons.
+async function arricchisci(nome, pid, t) {
+  let c = null;
+  try { const p = await gpPosto(pid); c = p && p.c; } catch (e) { /* senza posizione si cerca per nome */ }
+  const W = 'https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&redirects=1&prop=pageimages|langlinks|coordinates&piprop=name&lllang=it&';
+  const pagine = [];
+  const prendi = async (q) => { try { const j = await fetch(W + q).then((r) => r.json()); Object.values((j.query && j.query.pages) || {}).forEach((p) => pagine.push(p)); } catch (e) { /* niente */ } };
+  if (c) await prendi('generator=geosearch&ggsradius=2000&ggslimit=20&ggscoord=' + c[0] + '|' + c[1]);
+  await prendi('generator=search&gsrlimit=5&gsrsearch=' + encodeURIComponent(nome + ' ' + t.nome));
+  let best = null, bs = 0;
+  pagine.forEach((p) => {
+    const pc = p.coordinates && p.coordinates[0] ? [p.coordinates[0].lat, p.coordinates[0].lon] : null;
+    if (c && pc && distanzaKm(c, pc) > 5) return;
+    const s = somiglianza(nome, p.title);
+    if (s > bs) { bs = s; best = Object.assign({ pc }, p); }
+  });
+  if (!best || bs < 0.6) return { trovato: false };
+  const it = best.langlinks && best.langlinks[0] && best.langlinks[0]['*'];
+  const info = { trovato: true, w: it ? { en: best.title, it } : { en: best.title }, c: best.pc || null };
+  try {
+    const lang = it ? 'it' : 'en', tit = it || best.title;
+    const j = await fetch('https://' + lang + '.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro=1&explaintext=1&exsentences=3&titles=' + encodeURIComponent(tit)).then((r) => r.json());
+    const p = Object.values(j.query.pages)[0]; if (p && p.extract) { info.wd = p.extract.replace(/\s+/g, ' ').trim().slice(0, 500); info.wl = lang; }
+  } catch (e) { /* senza testo */ }
+  if (best.pageimage) {
+    try {
+      const j = await fetch('https://commons.wikimedia.org/w/api.php?origin=*&format=json&action=query&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&iiextmetadatafilter=LicenseShortName|Artist&titles=' + encodeURIComponent('File:' + best.pageimage)).then((r) => r.json());
+      const p = Object.values(j.query.pages)[0], i = p && p.imageinfo && p.imageinfo[0];
+      if (i && i.thumburl) { const m = i.extmetadata || {}; info.f = { url: i.thumburl, autore: ((m.Artist && m.Artist.value) || '').replace(/<[^>]+>/g, '').trim().slice(0, 80) || 'Wikimedia Commons', licenza: (m.LicenseShortName && m.LicenseShortName.value) || '', pagina: i.descriptionurl }; }
+    } catch (e) { /* senza foto */ }
+  }
+  return info;
+}
+async function cercaInfo() {
+  const a = AGG; if (!a || !a.pid) return;
+  a.cerco = true; disegnaSePossibile();
+  const t = tappa(a.tappa), info = await arricchisci(a.nG || a.n, a.pid, t).catch(() => ({ trovato: false }));
+  if (AGG !== a) return;
+  a.cerco = false; a.info = info; a.usaInfo = !!info.trovato; disegnaSePossibile();
+}
+function salvaPosto() {
+  const a = AGG, err = $('#errAgg');
+  const fn = $('#fNome'); if (fn && fn.value.trim()) salvaNome(fn.value);
+  if (!a.n.trim()) { err.textContent = 'Il nome non può essere vuoto.'; err.hidden = false; return; }
+  if (!io().n) { err.textContent = 'Scrivi il tuo nome: gli altri vedranno chi ha aggiunto il posto.'; err.hidden = false; return; }
+  const me = io();
+  if (a.id) {
+    const p = postoDa(a.tappa, a.id); if (!p) { AGG = null; return; }
+    let nuovo;
+    if (p.base) { // correzione di una voce dell'app: si salva la voce intera, così resta leggibile anche da sola
+      nuovo = {}; Object.keys(p).forEach((k) => { if (['base', 'corretto', 'o', 'id', 'lid', 'vicino'].indexOf(k) < 0 && p[k] !== undefined) nuovo[k] = p[k]; });
+      nuovo.vicino = p.vicino || []; if (p.lid) nuovo.lid = p.lid;
+      Object.assign(nuovo, { n: a.n.trim(), tipo: a.tipo, d: (a.d || '').trim(), nota: (a.nota || '').trim(), autore: { id: me.id, n: me.n }, mod: Date.now() });
+    } else nuovo = Object.assign({}, gruppo().posti[a.id], { n: a.n.trim(), tipo: a.tipo, nota: (a.nota || '').trim() });
+    grScrivi({ ['posti/' + a.id]: nuovo });
+  } else {
+    const x = { tappa: a.tappa, tipo: a.tipo, pid: a.pid, n: a.n.trim(), nG: a.nG || '', nota: (a.nota || '').trim(), autore: { id: me.id, n: me.n }, t: Date.now() };
+    if (a.usaInfo && a.info && a.info.trovato) { ['w', 'f', 'wd', 'wl', 'c'].forEach((k) => { if (a.info[k]) x[k] = a.info[k]; }); }
+    grScrivi({ ['posti/' + nuovoId()]: x });
+  }
+  AGG = null; sessioneCerca = ''; disegna();
+}
+// Dall'editor della proposta: il posto scelto entra subito nella tappa, Wikipedia si cerca dopo.
+function aggiungiPostoGruppo(tid, tipo, pid, n) {
+  const esiste = Object.entries(gruppo().posti || {}).find(([, p]) => p && !p.cancellato && p.tappa === tid && p.pid === pid);
+  if (esiste) return esiste[0];
+  const base = postiDi(tid).find((p) => p.pid === pid || somiglianza(p.n, n) >= 0.99); if (base) return base.id;
+  const me = io(), id = nuovoId();
+  grScrivi({ ['posti/' + id]: { tappa: tid, tipo, pid, n: String(n || '').slice(0, 80), nG: String(n || '').slice(0, 80), autore: { id: me.id, n: me.n }, t: Date.now() } });
+  arricchisci(n, pid, tappa(tid)).then((info) => {
+    if (!info.trovato) return;
+    const p = gruppo().posti && gruppo().posti[id]; if (!p) return;
+    const w = {}; ['w', 'f', 'wd', 'wl', 'c'].forEach((k) => { if (info[k]) w['posti/' + id + '/' + k] = info[k]; });
+    grScrivi(w); disegnaSePossibile();
+  }).catch(() => {});
+  return id;
 }
 
 function htmlPercorso(p, data) {
-  const me = io().id, vv = votanti(data, p.id), mio = votoDi(data) === p.id, mia = p.proposta && p.autore && p.autore.id === me;
+  const me = io().id, vv = votanti(data, p.id), mio = votoDi(data) === p.id, mia = p.proposta && ((p.autore && p.autore.id === me) || superadmin());
   const t0 = tappa((p.soste || []).map((s) => s.tappa).find(Boolean) || '') || tappa((CONT.giorni.find((g) => g.data === data) || { tappe: [] }).tappe[0]);
   let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + (t0 ? stileCitta(t0) : '') + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
-  if (p.proposta) h += '<p class="autore">Proposto da ' + esc(mia ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
+  if (p.proposta) h += '<p class="autore">Proposto da ' + esc(p.autore && p.autore.id === me ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
   h += '</header>' + htmlSchema(p.soste) + '<ol class="soste">' + (p.soste || []).map((s, i) => {
     const a = i ? coordSosta(p.soste[i - 1]) : null, b = coordSosta(s), dist = a && b ? fmtDist(distanzaKm(a, b)) : '';
-    const t = s.tappa && tappa(s.tappa), loc = localeDi(s), vic = t && !loc ? localiVicini(t, s.t) : [], pid = pidSosta(s);
-    const nome = loc ? '<a href="' + esc(hrefLocale(s.tappa, loc.id)) + '">' + esc(s.t) + '</a>' : vedereDi(s) ? '<a href="' + esc(hrefLuogo(s.tappa, s.t)) + '">' + esc(s.t) + '</a>' : esc(s.t);
-    return '<li' + (pid && !coordSosta(s) ? ' data-posto="' + esc(pid) + '"' : '') + '><span class="ora">' + esc(s.ora || '') + '</span><div><b><span class="num' + (loc || s.cibo ? ' cibo' : '') + '">' + (i + 1) + '</span>' + nome + '</b>' + (loc || s.cibo ? ' <span class="et piccola-et">Per mangiare</span>' : '') +
-      ' <a class="mappa piccola" href="' + esc(urlMappa(qSosta(s), pid)) + '" target="_blank" rel="noopener" aria-label="' + esc(s.t) + ' su Google Maps">' + ICO.mappa + '</a>' +
+    const ps = postoSosta(s), tipo = tipoSosta(s), pid = pidSosta(s), nm = nomeSosta(s);
+    const vic = ps && tipo === 'v' ? vicinoA_(s.tappa, ps.id, 'm') : [];
+    const nome = ps ? '<a href="' + esc(hrefPosto(s.tappa, ps.id)) + '">' + esc(nm) + '</a>' : esc(nm);
+    return '<li' + (pid && !coordSosta(s) ? ' data-posto="' + esc(pid) + '"' : '') + '><span class="ora">' + esc(s.ora || '') + '</span><div><b><span class="num t-' + tipo + '">' + (i + 1) + '</span>' + nome + '</b>' + (tipo !== 'v' ? ' <span class="et piccola-et">' + TIPI_POSTO[tipo] + '</span>' : '') +
+      ' <a class="mappa piccola" href="' + esc(urlMappa(qSosta(s), pid)) + '" target="_blank" rel="noopener" aria-label="' + esc(nm) + ' su Google Maps">' + ICO.mappa + '</a>' +
       (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (dist ? '<p class="tenue dist">A ' + dist + ' dalla sosta prima</p>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') +
-      (vic.length ? '<p class="mangia-qui"><span>Per mangiare qui:</span> ' + vic.map((l) => '<a href="' + esc(hrefLocale(s.tappa, l.id)) + '">' + esc(l.n) + '</a>').join(', ') + '</p>' : '') + '</div></li>';
+      (vic.length ? '<p class="mangia-qui"><span>Per mangiare qui:</span> ' + vic.map((l) => '<a href="' + esc(hrefPosto(s.tappa, l.id)) + '">' + esc(l.n) + '</a>').join(', ') + '</p>' : '') + '</div></li>';
   }).join('') + '</ol>';
   const up = urlPercorso(p.soste);
   if (up) h += '<p class="riga-mappa percorso-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + ((p.soste || []).length > 1 ? 'Il percorso su Google Maps' : 'Apri in Google Maps') + '</a></p>';
@@ -964,33 +1144,23 @@ function vistaGiorno(data) {
 }
 
 /* ---------- Editor della proposta: luoghi su mappa, ordine a mano o calcolato ---------- */
-// Chiave di un luogo: "v|tappa|titolo" per i luoghi dell'app, "g|place_id|nome" per i posti di Google.
-// Chiavi: "v|tappa|titolo" luogo dell'app, "l|tappa|id" locale dell'app, "g|place_id|nome|c" posto di Google (c = per mangiare).
-function chiaveSosta(s) { return s.pid ? 'g|' + s.pid + '|' + String(s.t).replace(/\|/g, ' ') + (s.cibo ? '|c' : '') : s.l ? 'l|' + s.tappa + '|' + s.l : 'v|' + s.tappa + '|' + s.t; }
+// Chiavi: "p|tappa|id" posto della tappa, "g|place_id|nome" posto di Google rimasto fuori dalle tappe.
+function chiaveSosta(s) { s = normSosta(s); return s.id ? 'p|' + s.tappa + '|' + s.id : 'g|' + s.pid + '|' + String(s.t).replace(/\|/g, ' '); }
 function sostaDaChiave(k) {
-  const [tipo, a, b, c] = k.split('|');
-  if (tipo === 'g') return c ? { t: b, pid: a, cibo: true } : { t: b, pid: a };
-  if (tipo === 'l') { const t = tappa(a), l = t && (t.locali || []).find((x) => x.id === b); return { tappa: a, l: b, t: l ? l.n : b }; }
-  return { tappa: a, t: b };
+  const [tipo, a, b] = k.split('|');
+  if (tipo === 'g') return { t: b, pid: a };
+  const p = postoDa(a, b); return { tappa: a, id: b, t: p ? p.n : b };
 }
 function nuovaBozza(chiave, data, srcId) {
   const src = srcId ? percorsiDelGiorno(data).find((p) => p.id === srcId) : null;
-  const mia = src && src.proposta && src.autore && src.autore.id === io().id;
-  const sel = src ? (src.soste || []).filter((s) => s.pid || vedereDi(s) || localeDi(s)).map(chiaveSosta) : [];
-  return { chiave, data, editId: mia ? src.id : '', titolo: src ? (mia ? src.titolo : src.titolo + ' (variante)') : '', sotto: src ? src.sotto || '' : '', sel, extra: sel.filter((k) => k[0] === 'g'), modo: src && src.modo === 'auto' ? 'auto' : 'mano', partenza: sel[0] || '', msgOrdine: '' };
+  const mia = src && src.proposta && ((src.autore && src.autore.id === io().id) || superadmin());
+  const sel = src ? (src.soste || []).map(normSosta).filter((s) => s.pid || postoSosta(s)).map(chiaveSosta) : [];
+  return { chiave, data, editId: mia ? src.id : '', autore: mia ? src.autore : null, titolo: src ? (mia ? src.titolo : src.titolo + ' (variante)') : '', sotto: src ? src.sotto || '' : '', sel, modo: src && src.modo === 'auto' ? 'auto' : 'mano', partenza: sel[0] || '', msgOrdine: '', cercaTipo: 'v' };
 }
 function candidatiBozza(b) {
   const g = CONT.giorni.find((x) => x.data === b.data), out = [];
-  const visti = new Set(), gpc = (pid) => { const x = gp('p:' + pid); return x && x.c ? x.c : null; };
-  const metti = (x) => { if (!visti.has(x.k)) { visti.add(x.k); out.push(x); } };
-  g.tappe.forEach((tid) => {
-    const t = tappa(tid); if (!t) return;
-    t.vedere.forEach((v) => metti({ k: 'v|' + tid + '|' + v.t, t: v.t, tappa: t, c: v.c, gruppo: tid, tipo: 'v' }));
-    postiGruppo(tid, 'v').forEach((p) => metti({ k: chiaveSosta({ t: p.n, pid: p.pid }), t: p.n, pid: p.pid, c: gpc(p.pid), gruppo: tid, tipo: 'v' }));
-    (t.locali || []).forEach((l) => { const y = gp('l:' + tid + ':' + l.id); metti({ k: 'l|' + tid + '|' + l.id, t: l.n, pid: l.pid || '', c: l.pid ? gpc(l.pid) || (y && y.c) : null, gruppo: tid, tipo: 'm' }); });
-    postiGruppo(tid, 'm').forEach((p) => metti({ k: chiaveSosta({ t: p.n, pid: p.pid, cibo: true }), t: p.n, pid: p.pid, c: gpc(p.pid), gruppo: tid, tipo: 'm' }));
-  });
-  b.extra.forEach((k) => { const s = sostaDaChiave(k); metti({ k, t: s.t, pid: s.pid, c: gpc(s.pid), gruppo: '', tipo: s.cibo ? 'm' : 'v' }); });
+  g.tappe.forEach((tid) => postiDi(tid).forEach((p) => out.push({ k: 'p|' + tid + '|' + p.id, t: p.n, pid: p.pid || '', c: coordPosto(p), gruppo: tid, tipo: p.tipo })));
+  b.sel.filter((k) => k[0] === 'g').forEach((k) => { const s = sostaDaChiave(k), x = gp('p:' + s.pid); out.push({ k, t: s.t, pid: s.pid, c: x && x.c ? x.c : null, gruppo: '', tipo: 'v' }); });
   return out;
 }
 function vistaProponi(arg) {
@@ -1001,21 +1171,20 @@ function vistaProponi(arg) {
   let h = '<div' + stileCitta(t0) + '><p class="tenue intro-giorno">' + esc(fmtLungo.format(dataDa(data))) + ': ' + esc(g.titolo) + '. La proposta la vedono e la votano tutti i compagni del gruppo.</p>' + htmlNome();
   h += '<div class="pannello pieno editor"><label>Titolo<input data-b="titolo" maxlength="60" value="' + esc(b.titolo) + '" placeholder="Es. Mattina al forte, sera sul lago"></label>';
   h += '<label>In due parole<textarea data-b="sotto" rows="2" maxlength="200">' + esc(b.sotto) + '</textarea></label>';
-  h += '<h3 class="ed-sez">Luoghi da visitare</h3><p class="tenue">' + (usaMappa() ? 'Tocca i luoghi sulla mappa o nell\'elenco, nell\'ordine in cui vuoi visitarli.' : 'Tocca i luoghi nell\'ordine in cui vuoi visitarli.') + '</p>';
-  if (usaMappa()) h += '<div id="mappaPosto" class="mappa-ed"></div>';
-  const bottone = (x) => { const n = b.sel.indexOf(x.k) + 1; return '<li><button class="luogo' + (x.tipo === 'm' ? ' cibo' : '') + (n ? ' on' : '') + '" data-az="selLuogo" data-k="' + esc(x.k) + '" aria-pressed="' + !!n + '"><span class="num">' + (n || '') + '</span>' + esc(x.t) + '</button></li>'; };
+  h += '<h3 class="ed-sez">Soste</h3><p class="tenue">' + (usaMappa() ? 'Tocca i posti sulla mappa o nell\'elenco, nell\'ordine in cui vuoi andarci.' : 'Tocca i posti nell\'ordine in cui vuoi andarci.') + '</p>';
+  if (usaMappa()) h += '<div id="mappaPosto" class="mappa-ed"></div><p class="legenda tenue"><span class="pt v"></span>da visitare <span class="pt m"></span>per mangiare <span class="pt d"></span>per dormire</p>';
+  const bottone = (x) => { const n = b.sel.indexOf(x.k) + 1; return '<li><button class="luogo t-' + x.tipo + (n ? ' on' : '') + '" data-az="selLuogo" data-k="' + esc(x.k) + '" aria-pressed="' + !!n + '"><span class="num">' + (n || '') + '</span>' + esc(x.t) + '</button></li>'; };
   g.tappe.forEach((tid) => {
     const t = tappa(tid); if (!t) return;
-    const v = cand.filter((x) => x.gruppo === tid && x.tipo === 'v'), m = cand.filter((x) => x.gruppo === tid && x.tipo === 'm');
-    h += '<p class="ed-tappa">' + (g.tappe.length > 1 ? esc(t.nome) + ': d' : 'D') + 'a visitare</p><ul class="scegli-luoghi">' + v.map(bottone).join('') + '</ul>';
-    if (m.length) h += '<p class="ed-tappa">' + (g.tappe.length > 1 ? esc(t.nome) + ': p' : 'P') + 'er mangiare</p><ul class="scegli-luoghi">' + m.map(bottone).join('') + '</ul>';
+    ['v', 'm', 'd'].forEach((tipo) => {
+      const l = cand.filter((x) => x.gruppo === tid && x.tipo === tipo);
+      if (l.length) h += '<p class="ed-tappa">' + (g.tappe.length > 1 ? esc(t.nome) + ': ' + TIPI_POSTO[tipo].toLowerCase() : TIPI_POSTO[tipo]) + '</p><ul class="scegli-luoghi">' + l.map(bottone).join('') + '</ul>';
+    });
   });
   const ex = cand.filter((x) => !x.gruppo);
-  if (ex.length) h += '<p class="ed-tappa">Cercati su Google Maps</p><ul class="scegli-luoghi">' + ex.map(bottone).join('') + '</ul>';
-  if (PLACES_KEY) h += '<div class="cerca-posto"><div class="scelta-completo" role="radiogroup" aria-label="Che cosa cerchi">' + [['v', 'Un luogo da visitare'], ['m', 'Un posto per mangiare']].map(([k, n]) => '<label class="pill piccola-pill' + ((b.cercaTipo || 'v') === k ? ' on' : '') + '"><input type="radio" name="cercaTipo" data-b="cercaTipo" value="' + k + '"' + ((b.cercaTipo || 'v') === k ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>' +
-    '<input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul><p class="tenue piccola">Il posto si aggiunge anche alla pagina della tappa, per tutti.</p></div>';
-  else h += '<p class="tenue">La ricerca di altri posti su Google Maps non è attiva.</p>';
-
+  if (ex.length) h += '<p class="ed-tappa">Altri posti</p><ul class="scegli-luoghi">' + ex.map(bottone).join('') + '</ul>';
+  if (PLACES_KEY) h += '<div class="cerca-posto"><p class="ed-tappa">Aggiungi da Google Maps</p><div class="scelta-completo" role="radiogroup" aria-label="Che cosa cerchi">' + Object.keys(TIPI_POSTO).map((k) => '<label class="pill piccola-pill' + (b.cercaTipo === k ? ' on' : '') + '"><input type="radio" name="cercaTipo" data-b="cercaTipo" value="' + k + '"' + (b.cercaTipo === k ? ' checked' : '') + '>' + TIPI_POSTO[k] + '</label>').join('') + '</div>' +
+    '<input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul><p class="tenue piccola">Il posto si aggiunge anche alla pagina della tappa, per tutti, con descrizione e foto da Wikipedia se ci sono.</p></div>';
   h += '<h3 class="ed-sez">Ordine</h3><div class="scelta-completo" role="radiogroup" aria-label="Chi decide l\'ordine">' +
     [['mano', 'Lo decido io'], ['auto', 'Lo calcola Google Maps']].map(([k, n]) => '<label class="pill' + (b.modo === k ? ' on' : '') + '"><input type="radio" name="modo" data-b="modo" value="' + k + '"' + (b.modo === k ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>';
   if (b.modo === 'auto') {
@@ -1029,7 +1198,7 @@ function vistaProponi(arg) {
     if (!usaMappa()) h += htmlSchema(b.sel.map(sostaDaChiave));
     const up = urlPercorso(b.sel.map(sostaDaChiave));
     if (up) h += '<p class="riga-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + 'Prova il percorso su Google Maps</a></p>';
-  } else h += '<p class="tenue">Ancora nessun luogo scelto.</p>';
+  } else h += '<p class="tenue">Ancora nessuna sosta scelta.</p>';
   h += '<p class="err" id="errProp" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaProposta">' + (b.editId ? 'Salva le modifiche' : 'Proponi') + '</button><a class="btn chiaro" href="#giorno/' + esc(data) + '">Annulla</a>' + (b.editId ? '<button class="btn pericolo" data-az="ritira">Ritira</button>' : '') + '</div></div></div>';
   return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data, dopo: () => montaMappa(cand) };
 }
@@ -1048,13 +1217,12 @@ function salvaProposta() {
   const b = BOZZA, err = $('#errProp');
   const mostra = (m) => { err.textContent = m; err.hidden = false; };
   if (!b.titolo.trim()) return mostra('Dai un titolo alla proposta.');
-  if (!b.sel.length) return mostra('Scegli almeno un luogo da visitare.');
+  if (!b.sel.length) return mostra('Scegli almeno una sosta.');
   if (!io().n) return mostra('Scrivi il tuo nome qui sopra: serve agli altri per sapere chi propone.');
   const id = b.editId || 'u' + nuovoId(), me = io();
-  grScrivi({
-    ['proposte/' + id]: { data: b.data, titolo: b.titolo.trim(), sotto: b.sotto.trim(), soste: b.sel.map(sostaDaChiave), modo: b.modo, autore: { id: me.id, n: me.n }, t: Date.now() },
-    ['voti/' + b.data + '/' + me.id]: id
-  });
+  const w = { ['proposte/' + id]: { data: b.data, titolo: b.titolo.trim(), sotto: b.sotto.trim(), soste: b.sel.map(sostaDaChiave), modo: b.modo, autore: b.autore || { id: me.id, n: me.n }, t: Date.now() } };
+  if (!b.editId) w['voti/' + b.data + '/' + me.id] = id;
+  grScrivi(w);
   const data = b.data; BOZZA = null; location.hash = '#giorno/' + data;
 }
 
@@ -1129,7 +1297,7 @@ async function montaMappa(cand) {
     const s = new google.maps.Marker({
       map: m, position: pos, title: x.t, zIndex: n ? 100 + n : 1,
       label: n ? { text: String(n), color: '#fff', fontWeight: '700', fontSize: '13px' } : null,
-      icon: { path: x.tipo === 'm' ? google.maps.SymbolPath.BACKWARD_CLOSED_ARROW : google.maps.SymbolPath.CIRCLE, scale: n ? (x.tipo === 'm' ? 7 : 13) : (x.tipo === 'm' ? 5 : 8), fillColor: n ? (x.tipo === 'm' ? '#c2410c' : colore) : '#ffffff', fillOpacity: 1, strokeColor: x.tipo === 'm' ? '#c2410c' : colore, strokeWeight: 2 }
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: n ? 13 : (x.tipo === 'v' ? 8 : 6), fillColor: n ? (COLORE_TIPO[x.tipo] || colore) : '#ffffff', fillOpacity: 1, strokeColor: COLORE_TIPO[x.tipo] || colore, strokeWeight: x.tipo === 'v' ? 2 : 3 }
     });
     s.addListener('click', () => { selezionaLuogo(x.k); disegna(); });
     MAPPA.segni.push(s);
@@ -1155,7 +1323,7 @@ function htmlImpostazioniGruppo() {
     h += '<p class="tenue" style="margin-top:10px">Uno solo crea il gruppo e manda il link d\'invito nel gruppo WhatsApp del viaggio.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
   }
   h += '<div class="azioni" style="margin-top:14px"><button class="btn chiaro piccolo" data-az="esciAccount">Esci dall\'account</button></div>';
-  if (proprietario()) h += '<p class="tenue" style="margin-top:10px">Identificativo del tuo account (serve a riconoscerti sui dispositivi nuovi): <span class="codice">' + esc(ACC.uid) + '</span></p>';
+  if (proprietario()) h += '<p class="tenue" style="margin-top:10px">' + (superadmin() ? '<b>Sei il superadmin:</b> puoi cambiare ed eliminare tutto, anche le voci dell\'app. ' : 'Questo account non è ancora superadmin: manda a Claude l\'identificativo qui sotto. ') + 'Identificativo del tuo account: <span class="codice">' + esc(ACC.uid) + '</span></p>';
   return h + '</section>';
 }
 function vistaGruppo(codice) {
@@ -1179,11 +1347,6 @@ async function entraNelGruppo(codice, nome) {
   if (nome) salvaNome(nome); else if (io().n) salvaNome(io().n);
   await grSincronizza(); location.hash = '#viaggio'; disegna();
 }
-function aggiungiPostoGruppo(tid, tipo, pid, n) {
-  if (Object.values(gruppo().posti || {}).some((p) => p && p.tappa === tid && p.pid === pid)) return;
-  const me = io();
-  grScrivi({ ['posti/' + nuovoId()]: { tappa: tid, tipo, pid, n: String(n || '').slice(0, 80), autore: { id: me.id, n: me.n }, t: Date.now() } });
-}
 async function azioneGruppo(az, el) {
   if (az === 'vota') {
     const d = el.dataset.data, pid = el.dataset.id, me = io().id;
@@ -1195,20 +1358,32 @@ async function azioneGruppo(az, el) {
   if (az === 'selLuogo') { selezionaLuogo(el.dataset.k); disegna(); return true; }
   if (az === 'su' || az === 'giu') { const s = BOZZA.sel, i = +el.dataset.i, j = az === 'su' ? i - 1 : i + 1; if (j >= 0 && j < s.length) { [s[i], s[j]] = [s[j], s[i]]; BOZZA.modo = 'mano'; BOZZA.msgOrdine = ''; } disegna(); return true; }
   if (az === 'calcolaOrdine') { el.disabled = true; el.textContent = 'Calcolo…'; await calcolaOrdine(); disegna(); return true; }
-  if (az === 'apriAgg') { AGG = { tappa: el.dataset.tappa, tipo: el.dataset.tipo }; disegna(); const i = $('#fCerca'); if (i) { i.focus(); i.scrollIntoView({ block: 'center' }); } return true; }
+  if (az === 'apriAgg') { AGG = { tappa: el.dataset.tappa, tipo: el.dataset.tipo, tipo0: el.dataset.tipo, fase: 'cerca' }; sessioneCerca = ''; disegna(); const i = $('#fCerca'); if (i) { i.focus(); i.scrollIntoView({ block: 'center' }); } return true; }
   if (az === 'chiudiAgg') { AGG = null; sessioneCerca = ''; disegna(); return true; }
   if (az === 'aggiungiPostoTappa') {
-    const fn = $('#fNome'); if (fn && fn.value.trim()) salvaNome(fn.value);
-    if (!io().n) { const e = $('#errAgg'); e.textContent = 'Scrivi il tuo nome: gli altri vedranno chi ha aggiunto il posto.'; e.hidden = false; return true; }
-    aggiungiPostoGruppo(AGG.tappa, AGG.tipo, el.dataset.pid, el.dataset.n);
-    AGG = null; sessioneCerca = ''; disegna(); return true;
+    const pid = el.dataset.pid, gia = postiDi(AGG.tappa).find((p) => p.pid === pid || somiglianza(p.n, el.dataset.n) >= 0.99);
+    if (gia) { const e = $('#errAgg'); e.textContent = '"' + gia.n + '" c\'è già in questa tappa.'; e.hidden = false; return true; }
+    Object.assign(AGG, { fase: 'scheda', pid, n: el.dataset.n, nG: el.dataset.n, nota: '', info: null });
+    sessioneCerca = ''; disegna(); cercaInfo(); return true;
   }
-  if (az === 'togliPosto') { grScrivi({ ['posti/' + el.dataset.id]: null }); disegna(); return true; }
+  if (az === 'salvaPosto') { salvaPosto(); return true; }
+  if (az === 'modPosto') {
+    const p = postoDa(el.dataset.tappa, el.dataset.id); if (!p) return true;
+    AGG = { tappa: p.tappa, tipo: p.tipo, tipo0: p.tipo, fase: 'scheda', id: p.id, base: !!p.base, pid: p.pid || '', n: p.n, nG: p.nG || '', d: p.d || '', nota: p.nota || '' };
+    disegna(); const f = $('#agg'); if (f) f.scrollIntoView({ block: 'center' }); return true;
+  }
+  if (az === 'delPosto') {
+    if (!el.dataset.conferma) { el.dataset.conferma = '1'; el.textContent = 'Conferma: elimina'; return true; }
+    const p = postoDa(el.dataset.tappa, el.dataset.id); if (!p) return true;
+    const me = io();
+    grScrivi({ ['posti/' + p.id]: p.base ? { cancellato: true, tappa: p.tappa, tipo: p.tipo, n: p.n, autore: { id: me.id, n: me.n }, mod: Date.now() } : null });
+    disegna(); return true;
+  }
   if (az === 'aggiungiPosto') {
     const tipo = BOZZA.cercaTipo || 'v', gg = CONT.giorni.find((x) => x.data === BOZZA.data);
-    if (io().n) aggiungiPostoGruppo(gg.tappe[0], tipo, el.dataset.pid, el.dataset.n);
-    const k = chiaveSosta({ t: el.dataset.n, pid: el.dataset.pid, cibo: tipo === 'm' });
-    if (BOZZA.extra.indexOf(k) < 0) BOZZA.extra.push(k);
+    if (!io().n) { const e = $('#errProp'); e.textContent = 'Scrivi il tuo nome qui sopra prima di aggiungere posti.'; e.hidden = false; return true; }
+    const tid = gg.tappe[0], id = aggiungiPostoGruppo(tid, tipo, el.dataset.pid, el.dataset.n);
+    const k = 'p|' + (postoDa(tid, id) ? tid : gg.tappe.find((x) => postoDa(x, id)) || tid) + '|' + id;
     if (BOZZA.sel.indexOf(k) < 0) BOZZA.sel.push(k);
     sessioneCerca = ''; gpPosto(el.dataset.pid).catch(() => null).then(() => disegnaSePossibile()); disegna(); return true;
   }
@@ -1369,7 +1544,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li id="' + k + '-' + esc(slug(x.t)) + '"><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : htmlDoveProvarlo(t, x)) + '</details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') + htmlDoveProvarlo(t, x) + '</details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });
@@ -1401,11 +1576,13 @@ function htmlMeteo(t) {
 function vistaTappa(arg) {
   const [id, ancora] = String(arg).split('/'); const t = tappa(id); if (!t) return vistaTappe();
   if (AGG && AGG.tappa !== id) AGG = null;
+  T_CORRENTE = t;
   let h = '<div' + stileCitta(t) + '><section class="fascia">' + (t.foto && t.foto.url ? '<img class="foto" crossorigin="anonymous" src="' + esc(t.foto.url) + '" alt="' + esc(t.foto.soggetto || t.nome) + '">' : '') + arco(suColore(t.colore), 210, 'sfondo') + '<div class="scritta"><h2 class="titolone">' + esc(t.nome) + '</h2><p>' + esc(t.quando) + (CONT.calendarioStimato ? ', data stimata' : '') + '</p></div></section>' + htmlMeteo(t);
   if (t.w) h += '<p class="wiki-citta">' + linkWiki(t.w, t.w2 ? t.w.it + ':' : '') + (t.w2 ? '<br>' + linkWiki(t.w2, t.w2.it + ':') : '') + '</p>';
-  h += htmlSegni(t, t.vedere, 'v', 'Cosa vedere', 'Visto').replace(/<\/ul><\/div>$/, '</ul>' + htmlPostiGruppo(t, 'v') + '</div>');
+  h += htmlLuoghi(t);
   h += htmlSegni(t, t.mangiare, 'm', 'Cosa mangiare', 'Assaggiato');
   h += htmlDoveMangiare(t);
+  h += htmlDoveDormire(t);
   h += '<h2 class="sez">' + arco(t.colore, 18) + 'Consigli pratici</h2><div class="pannello"><ul class="punti">' + t.consigli.map((c) => '<li>' + esc(c) + '</li>').join('') + '</ul></div>';
   const sit = voci('foto').filter((v) => v.tipo === 'situazione' && (v.dove || []).indexOf(t.id) >= 0).sort(perOrdine);
   if (sit.length && proprietario()) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
@@ -1825,7 +2002,7 @@ const timerCampo = {};
 function campoDi(el) { const k = el.dataset && el.dataset.campo; if (!k) return null; const i = k.indexOf('|'); return { k, sez: k.slice(0, i), id: k.slice(i + 1) }; }
 $('#vista').addEventListener('input', (e) => {
   if (e.target.id === 'fCerca') { clearTimeout(timerCerca); const v = e.target.value.trim(); timerCerca = setTimeout(() => cercaPosti(v), 350); return; }
-  bozzaDaCampo(e.target);
+  bozzaDaCampo(e.target); aggDaCampo(e.target);
   const c = campoDi(e.target); if (!c) return;
   const ta = e.target;
   clearTimeout(timerCampo[c.k]);
@@ -1839,6 +2016,7 @@ $('#vista').addEventListener('focusout', (e) => {
 });
 $('#vista').addEventListener('change', (e) => {
   if (bozzaDaCampo(e.target)) { disegna(); return; }
+  if (e.target.dataset && e.target.dataset.a) { aggDaCampo(e.target); return; }
   const sp = e.target.dataset && (e.target.dataset.simpos || e.target.dataset.simruolo);
   if (sp) {
     const i = sp.indexOf('|'), s = voce('simulatore', sp.slice(0, i)), x = sp.slice(i + 1), val = e.target.value;

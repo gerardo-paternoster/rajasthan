@@ -501,11 +501,25 @@ a.et.piatto { text-decoration: none; color: var(--inchiostro); }
 .posti-g li { padding: 8px 0; border-bottom: 1px solid var(--linea); font-size: 15.5px; line-height: 1.45; }
 .posti-g li:last-child { border-bottom: 0; }
 .cerca-posto.agg { margin: 10px 0 6px; }
-.luogo.cibo { border-style: dashed; }
-.luogo.cibo.on { border-style: solid; border-color: #c2410c; background: color-mix(in srgb, #c2410c 12%, var(--foglio)); }
-.luogo.cibo.on .num, .soste .num.cibo { background: #c2410c; border-color: #c2410c; }
-.ed-cibo { margin-top: 4px; }
-.ed-cibo summary { cursor: pointer; list-style: revert; }
+.luogo.t-m, .luogo.t-d { border-style: dashed; }
+.luogo.t-m.on, .luogo.t-d.on { border-style: solid; }
+.luogo.t-m.on { border-color: #c2410c; background: color-mix(in srgb, #c2410c 12%, var(--foglio)); }
+.luogo.t-d.on { border-color: #6d28d9; background: color-mix(in srgb, #6d28d9 12%, var(--foglio)); }
+.luogo.t-m.on .num, .soste .num.t-m { background: #c2410c; border-color: #c2410c; }
+.luogo.t-d.on .num, .soste .num.t-d { background: #6d28d9; border-color: #6d28d9; }
+.legenda { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13.5px; margin: 2px 0 6px; }
+.legenda .pt { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--citta); margin-left: 6px; }
+.legenda .pt.m { border-color: #c2410c; } .legenda .pt.d { border-color: #6d28d9; }
+.pannello-agg { margin: 12px 0 8px; padding: 12px 14px; border-radius: 14px; background: var(--calce); }
+.pannello-agg label:first-of-type { margin-top: 6px; }
+.anteprima { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--foglio); }
+.anteprima img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 10px; margin: 6px 0; }
+.riga-check { display: flex; align-items: center; gap: 10px; margin-top: 8px; color: var(--inchiostro); }
+.riga-check input { width: 22px; height: 22px; accent-color: var(--citta); }
+.comandi { margin-top: 6px; display: flex; gap: 16px; }
+.pericolo-t { color: var(--robbia); }
+.riassunto { font-size: 14.5px; color: var(--inchiostro); }
+.da-wiki { font-size: 15px; margin-top: 6px; }
 .piccola-et { padding: 1px 8px; font-size: 12px; vertical-align: 2px; }
 .piccola-pill { min-height: 40px; padding: 6px 12px; font-size: 14.5px; }
 .cerca-posto .scelta-completo { margin-bottom: 8px; }
