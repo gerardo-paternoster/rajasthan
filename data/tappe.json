@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-11-25",
+ "aggiornato": "2026-11-26",
  "partenza": "2026-12-20",
  "rientro": "2027-01-05",
  "calendarioStimato": false,
@@ -570,78 +570,6 @@
      ]
     }
    ],
-   "percorsi": [
-    {
-     "id": "delhi-ultima",
-     "giorni": [
-      "2027-01-04"
-     ],
-     "titolo": "Ultima sera a Delhi",
-     "sotto": "Cena moghul nei vicoli dei kebab, prima del volo della notte.",
-     "soste": [
-      {
-       "t": "Jama Masjid",
-       "ora": "19:00",
-       "dur": "1 h",
-       "nota": "I vicoli di Gali Kababian la sera."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "Ad Agra"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Ad Agra o lungo la strada"
-      },
-      "spuntino": {
-       "l": "jalebi-wala",
-       "c": "Jalebi calde"
-      },
-      "cena": {
-       "l": "karims",
-       "c": "Kebab e korma"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "delhi-veg",
-     "giorni": [
-      "2027-01-04"
-     ],
-     "titolo": "Chandni Chowk la sera",
-     "sotto": "Chaat e dolci vegetariani, poi in aeroporto.",
-     "soste": [
-      {
-       "t": "Chandni Chowk",
-       "ora": "18:30",
-       "dur": "1 h",
-       "nota": "Molti negozi chiudono, i banchi di cibo restano."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "Ad Agra"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Ad Agra o lungo la strada"
-      },
-      "spuntino": {
-       "l": "natraj-dahi-bhalle",
-       "c": "Dahi bhalle"
-      },
-      "cena": {
-       "l": "haldirams-cc",
-       "c": "Chaat e chole bhature"
-      }
-     },
-     "completo": "cena"
-    }
-   ],
    "w": {
     "it": "Delhi",
     "en": "Delhi"
@@ -898,7 +826,9 @@
      "id": "veg-crown",
      "n": "Veg Crown",
      "zona": "Dhigal Road",
-     "vicino": [],
+     "vicino": [
+      "Haveli dipinte di Mandawa"
+     ],
      "pasti": [
       "pranzo",
       "cena"
@@ -948,137 +878,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Gwala Rooftop Restaurant, Mandawa",
      "pid": "ChIJv-rsx69aEzkRwQjkIUYhaVo"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "mandawa-arrivo",
-     "giorni": [
-      "2026-12-21"
-     ],
-     "titolo": "Jhunjhunu e prime haveli",
-     "sotto": "Il tempio e il palazzo del vento lungo la strada, poi Mandawa al tramonto.",
-     "soste": [
-      {
-       "t": "Tempio di Rani Sati a Jhunjhunu",
-       "ora": "13:00",
-       "dur": "45 min",
-       "nota": "Scarpe all'ingresso."
-      },
-      {
-       "t": "Khetri Mahal a Jhunjhunu",
-       "ora": "14:00",
-       "dur": "45 min"
-      },
-      {
-       "t": "Haveli dipinte di Mandawa",
-       "ora": "16:00",
-       "dur": "1,5 h"
-      },
-      {
-       "t": "Castello di Mandawa",
-       "ora": "17:45",
-       "dur": "30 min",
-       "nota": "Tramonto dalle terrazze."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "In hotel a Delhi"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Dhaba lungo la strada"
-      },
-      "spuntino": {
-       "l": "paawana",
-       "c": "Chai nel bazar"
-      },
-      "cena": {
-       "l": "shekhawati-rooftop",
-       "c": "Ker sangri e kadhi"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "mandawa-veg",
-     "giorni": [
-      "2026-12-21"
-     ],
-     "titolo": "Mandawa con calma",
-     "sotto": "Solo haveli e terrazze, cena vegetariana.",
-     "soste": [
-      {
-       "t": "Haveli dipinte di Mandawa",
-       "ora": "15:30",
-       "dur": "2 h",
-       "nota": "Senza fretta, con un custode che apre i cortili."
-      },
-      {
-       "t": "Castello di Mandawa",
-       "ora": "17:45",
-       "dur": "30 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "In hotel a Delhi"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada"
-      },
-      "spuntino": {
-       "l": "paawana"
-      },
-      "cena": {
-       "l": "veg-crown",
-       "c": "Thali"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "mandawa-fatehpur",
-     "giorni": [
-      "2026-12-22"
-     ],
-     "titolo": "Mandawa all'alba e Fatehpur",
-     "sotto": "Le facciate con la luce bassa, poi la haveli restaurata.",
-     "soste": [
-      {
-       "t": "Haveli dipinte di Mandawa",
-       "ora": "8:00",
-       "dur": "1 h",
-       "nota": "Vicoli vuoti e luce radente."
-      },
-      {
-       "t": "Haveli di Nadine Le Prince a Fatehpur",
-       "ora": "10:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "paawana"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada per Deshnok"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Chai a Fatehpur"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Bikaner"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -1405,7 +1204,9 @@
      "id": "swarna-mahal",
      "n": "Swarna Mahal (Laxmi Niwas Palace)",
      "zona": "Complesso di Lalgarh",
-     "vicino": [],
+     "vicino": [
+      "Forte di Junagarh"
+     ],
      "pasti": [
       "cena"
      ],
@@ -1455,7 +1256,9 @@
      "id": "farishta",
      "n": "Farishta Garden and Cafe",
      "zona": "Sadul Ganj",
-     "vicino": [],
+     "vicino": [
+      "Forte di Junagarh"
+     ],
      "pasti": [
       "pranzo",
       "cena",
@@ -1485,128 +1288,6 @@
      "pid": "ChIJ2fDqx1PhPzkRtrOB6G0w83w",
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Thar Darbar, Bikaner"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "bikaner-deshnok",
-     "giorni": [
-      "2026-12-22"
-     ],
-     "titolo": "Topi e cammelli",
-     "sotto": "Karni Mata a Deshnok arrivando da Fatehpur, poi il centro dei cammelli.",
-     "soste": [
-      {
-       "t": "Tempio di Karni Mata a Deshnok",
-       "ora": "14:30",
-       "dur": "1 h",
-       "nota": "Calze vecchie da buttare."
-      },
-      {
-       "t": "Centro di ricerca sul cammello",
-       "ora": "16:30",
-       "dur": "1 h",
-       "nota": "Orari da verificare."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Mandawa"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada"
-      },
-      "spuntino": {
-       "l": "nrcc-latte",
-       "c": "Gelato al latte di cammello"
-      },
-      "cena": {
-       "l": "",
-       "c": "A casa della guida, se il gruppo la sceglie"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "bikaner-citta",
-     "giorni": [
-      "2026-12-22"
-     ],
-     "titolo": "Bhujia e cena in città",
-     "sotto": "Per chi non va a cena dalla guida: Deshnok, poi i vicoli della città vecchia.",
-     "soste": [
-      {
-       "t": "Tempio di Karni Mata a Deshnok",
-       "ora": "14:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Haveli Rampuria",
-       "ora": "17:00",
-       "dur": "1 h",
-       "nota": "A piedi nei vicoli, con la luce del tramonto."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Mandawa"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada"
-      },
-      "spuntino": {
-       "l": "bhikharam-chandmal",
-       "c": "Bhujia appena fatta"
-      },
-      "cena": {
-       "l": "tanvi-cafe"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "bikaner-classico",
-     "giorni": [
-      "2026-12-23"
-     ],
-     "titolo": "Junagarh presto, poi in strada",
-     "sotto": "Il forte all'apertura se c'è tempo, e il lago sacro di Kolayat.",
-     "soste": [
-      {
-       "t": "Forte di Junagarh",
-       "ora": "9:00",
-       "dur": "1,5 h",
-       "nota": "Solo se il coordinatore lo mette prima della partenza."
-      },
-      {
-       "t": "Kolayat",
-       "ora": "11:30",
-       "dur": "30 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "chhotu-motu-joshi",
-       "c": "Puri e jalebi"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada"
-      },
-      "spuntino": {
-       "l": "bhikharam-chandmal",
-       "c": "Bhujia per il viaggio"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Jaisalmer"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -2015,7 +1696,9 @@
      "id": "dal-pakwan",
      "n": "Dal pakwan (Mohit Pakwan Bhandar o Shri Hinglaj)",
      "zona": "Città bassa",
-     "vicino": [],
+     "vicino": [
+      "Forte di Jaisalmer"
+     ],
      "pasti": [
       "colazione"
      ],
@@ -2069,7 +1752,10 @@
      "id": "chandan-shree",
      "n": "Chandan Shree",
      "zona": "Città bassa",
-     "vicino": [],
+     "vicino": [
+      "Lago Gadisar",
+      "Forte di Jaisalmer"
+     ],
      "pasti": [
       "colazione",
       "pranzo"
@@ -2140,139 +1826,6 @@
       "Ker sangri",
       "Gatte ki sabzi"
      ]
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "jaisalmer-arrivo",
-     "giorni": [
-      "2026-12-23"
-     ],
-     "titolo": "Gru, cenotafi e città d'oro",
-     "sotto": "Khichan nel pomeriggio, Bada Bagh al tramonto, cena nel forte.",
-     "soste": [
-      {
-       "t": "Khichan e le gru",
-       "ora": "14:00",
-       "dur": "45 min",
-       "nota": "Di pomeriggio le gru sono meno."
-      },
-      {
-       "t": "Bada Bagh",
-       "ora": "17:15",
-       "dur": "45 min",
-       "nota": "Tramonto sui cenotafi."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Bikaner"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Phalodi o lungo la strada"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Chai lungo la strada"
-      },
-      "cena": {
-       "l": "trio",
-       "c": "Laal maas e ker sangri"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jaisalmer-deserto",
-     "giorni": [
-      "2026-12-24"
-     ],
-     "titolo": "Forte al mattino, dune al tramonto",
-     "sotto": "Templi e vicoli del forte, poi il deserto e la cena al campo.",
-     "soste": [
-      {
-       "t": "Templi jainisti nel forte",
-       "ora": "9:00",
-       "dur": "1 h",
-       "nota": "Solo al mattino per i non jainisti."
-      },
-      {
-       "t": "Forte di Jaisalmer",
-       "ora": "10:00",
-       "dur": "1,5 h"
-      },
-      {
-       "t": "Dune del Thar",
-       "ora": "15:30",
-       "nota": "Cammello o jeep, tramonto. La notte in tenda è da confermare."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "kuku"
-      },
-      "pranzo": {
-       "l": "chandan-shree",
-       "c": "Thali leggero"
-      },
-      "spuntino": {
-       "l": "dhanraj-bhatia",
-       "c": "Ghotua ladoo"
-      },
-      "cena": {
-       "l": "campo-thar"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jaisalmer-forte",
-     "giorni": [
-      "2026-12-24"
-     ],
-     "titolo": "Città d'oro, senza deserto",
-     "sotto": "Per chi resta in città: forte, haveli e il lago al tramonto.",
-     "soste": [
-      {
-       "t": "Templi jainisti nel forte",
-       "ora": "9:00",
-       "dur": "1 h"
-      },
-      {
-       "t": "Forte di Jaisalmer",
-       "ora": "10:00",
-       "dur": "1,5 h"
-      },
-      {
-       "t": "Patwon Ki Haveli",
-       "ora": "14:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Lago Gadisar",
-       "ora": "17:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "dal-pakwan"
-      },
-      "pranzo": {
-       "l": "chandan-shree",
-       "c": "Thali vegetariano"
-      },
-      "spuntino": {
-       "l": "kanchan-shree",
-       "c": "Lassi"
-      },
-      "cena": {
-       "l": "angaara"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -2737,7 +2290,9 @@
      "id": "gypsy",
      "n": "Gypsy",
      "zona": "Sardarpura, città nuova",
-     "vicino": [],
+     "vicino": [
+      "Torre dell'orologio e mercato Sardar"
+     ],
      "pasti": [
       "pranzo",
       "cena"
@@ -2773,7 +2328,9 @@
      "id": "baari",
      "n": "Baari",
      "zona": "Fort Road, Paota",
-     "vicino": [],
+     "vicino": [
+      "Forte di Mehrangarh"
+     ],
      "pasti": [
       "cena"
      ],
@@ -2783,143 +2340,6 @@
      "pid": "ChIJld8EDqaNQTkRtIBukUG8DL4",
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Baari restaurant, Jodhpur"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "jodhpur-strada",
-     "giorni": [
-      "2026-12-25"
-     ],
-     "titolo": "Pokhran, Osian e la torre dell'orologio",
-     "sotto": "Due soste nel deserto e la sera di Natale con vista sul forte.",
-     "soste": [
-      {
-       "t": "Forte di Pokhran",
-       "ora": "10:30",
-       "dur": "45 min"
-      },
-      {
-       "t": "Templi di Osian",
-       "ora": "14:00",
-       "dur": "1 h"
-      },
-      {
-       "t": "Torre dell'orologio e mercato Sardar",
-       "ora": "18:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jaisalmer"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada"
-      },
-      "spuntino": {
-       "l": "shahi-samosa",
-       "c": "Mirchi vada"
-      },
-      "cena": {
-       "l": "indique",
-       "c": "Laal maas col forte illuminato"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jodhpur-forte",
-     "giorni": [
-      "2026-12-26"
-     ],
-     "titolo": "Mehrangarh e città blu",
-     "sotto": "I vicoli blu presto, il forte al mattino, il pozzo a gradini nel pomeriggio.",
-     "soste": [
-      {
-       "t": "Città blu",
-       "ora": "8:00",
-       "dur": "1 h",
-       "nota": "Prima che arrivi il sole alto."
-      },
-      {
-       "t": "Forte di Mehrangarh",
-       "ora": "9:30",
-       "dur": "3 h"
-      },
-      {
-       "t": "Jaswant Thada",
-       "ora": "13:30",
-       "dur": "45 min"
-      },
-      {
-       "t": "Toorji Ka Jhalra",
-       "ora": "16:00",
-       "dur": "45 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "janta-sweet",
-       "c": "Pyaaz kachori"
-      },
-      "pranzo": {
-       "l": "cafe-mehran",
-       "c": "Lassi e paratha"
-      },
-      "spuntino": {
-       "l": "mishrilal",
-       "c": "Makhaniya lassi"
-      },
-      "cena": {
-       "l": "gopal-rooftop"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jodhpur-mercati",
-     "giorni": [
-      "2026-12-26"
-     ],
-     "titolo": "Street food alla torre",
-     "sotto": "Mercato e pozzo al mattino, il forte nel pomeriggio, cena leggera.",
-     "soste": [
-      {
-       "t": "Torre dell'orologio e mercato Sardar",
-       "ora": "10:00",
-       "dur": "2 h"
-      },
-      {
-       "t": "Toorji Ka Jhalra",
-       "ora": "12:30",
-       "dur": "45 min"
-      },
-      {
-       "t": "Forte di Mehrangarh",
-       "ora": "15:00",
-       "dur": "2 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "shahi-samosa",
-       "c": "Samosa e mirchi vada"
-      },
-      "pranzo": {
-       "l": "gypsy",
-       "c": "Thali illimitato"
-      },
-      "spuntino": {
-       "l": "mishrilal"
-      },
-      "cena": {
-       "l": "stepwell-cafe"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -3088,7 +2508,9 @@
      "id": "manvaar",
      "n": "Manvaar",
      "zona": "Ranakpur Road (Hotel Trishala Vilas)",
-     "vicino": [],
+     "vicino": [
+      "Tempio jainista di Adinath"
+     ],
      "pasti": [
       "colazione",
       "pranzo",
@@ -3104,52 +2526,6 @@
      "piatti": [
       "Thali vegetariano"
      ]
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "ranakpur-tempio",
-     "giorni": [
-      "2026-12-27"
-     ],
-     "titolo": "Ghanerao, pranzo jainista e tempio",
-     "sotto": "Il castello lungo la strada, pranzo al bhojanshala, poi il tempio che apre a mezzogiorno.",
-     "soste": [
-      {
-       "t": "Ghanerao",
-       "ora": "10:00",
-       "dur": "45 min"
-      },
-      {
-       "t": "Tempio jainista di Adinath",
-       "ora": "12:00",
-       "dur": "1,5 h",
-       "nota": "Niente cuoio, spalle e ginocchia coperte."
-      },
-      {
-       "t": "Templi di Neminath e Parshvanath",
-       "ora": "13:30",
-       "dur": "30 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jodhpur"
-      },
-      "pranzo": {
-       "l": "bhojanshala"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Frutta o chai lungo la strada"
-      },
-      "cena": {
-       "l": "",
-       "c": "Leggera, a Kumbhalgarh"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -3286,7 +2662,9 @@
      "id": "pangat",
      "n": "Pangat",
      "zona": "Beer Ki Bhagal, sulla strada del forte",
-     "vicino": [],
+     "vicino": [
+      "Forte di Kumbhalgarh"
+     ],
      "pasti": [
       "pranzo",
       "cena"
@@ -3305,7 +2683,10 @@
      "id": "swagat-kumbhalgarh",
      "n": "Swagat Restaurant",
      "zona": "Fort Road, prima del Club Mahindra",
-     "vicino": [],
+     "vicino": [
+      "Forte di Kumbhalgarh",
+      "Spettacolo di luci e suoni"
+     ],
      "pasti": [
       "colazione",
       "pranzo",
@@ -3340,88 +2721,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "1458 AD Kumbhalgarh Camp & Restaurant",
      "pid": "ChIJy1om-zciaDkRBcEmJBdCQPw"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "kumbhalgarh-sera",
-     "giorni": [
-      "2026-12-27"
-     ],
-     "titolo": "Mura al tramonto e spettacolo",
-     "sotto": "Dopo Ranakpur: un primo giro sui bastioni e le luci sul forte.",
-     "soste": [
-      {
-       "t": "Mura e templi del forte",
-       "ora": "16:30",
-       "dur": "1,5 h",
-       "nota": "Se si arriva in tempo."
-      },
-      {
-       "t": "Spettacolo di luci e suoni",
-       "ora": "18:30",
-       "dur": "45 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jodhpur"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Ranakpur"
-      },
-      "spuntino": {
-       "l": "1458ad",
-       "c": "Chai prima dello spettacolo"
-      },
-      "cena": {
-       "l": "swagat-kumbhalgarh",
-       "c": "Leggera"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "kumbhalgarh-forte",
-     "giorni": [
-      "2026-12-28"
-     ],
-     "titolo": "Il forte al mattino",
-     "sotto": "Badal Mahal e un tratto di mura prima di scendere verso Udaipur.",
-     "soste": [
-      {
-       "t": "Forte di Kumbhalgarh",
-       "ora": "9:00",
-       "dur": "2 h",
-       "nota": "Badal Mahal in cima."
-      },
-      {
-       "t": "Mura e templi del forte",
-       "ora": "11:00",
-       "dur": "45 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "In hotel"
-      },
-      "pranzo": {
-       "l": "pangat",
-       "c": "Thali del Mewar"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Frutta lungo la strada"
-      },
-      "cena": {
-       "l": "",
-       "c": "Leggera, a Udaipur"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -3856,7 +3155,9 @@
      "id": "natraj-udaipur",
      "n": "Natraj Dining Hall",
      "zona": "City Station Road, vicino alla stazione",
-     "vicino": [],
+     "vicino": [
+      "City Palace"
+     ],
      "pasti": [
       "pranzo",
       "cena"
@@ -3908,134 +3209,6 @@
      "pid": "ChIJQ86KUqDlZzkRPt10UozWnZo",
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "The Sky Lounge, Udaipur"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "udaipur-arrivo",
-     "giorni": [
-      "2026-12-28"
-     ],
-     "titolo": "Nagda e il lago al tramonto",
-     "sotto": "I templi scolpiti arrivando da Kumbhalgarh, poi il tramonto sul Pichola.",
-     "soste": [
-      {
-       "t": "Templi di Sas-Bahu a Nagda",
-       "ora": "13:00",
-       "dur": "45 min"
-      },
-      {
-       "t": "Ambrai Ghat",
-       "ora": "17:30",
-       "nota": "Tramonto sul lago."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Kumbhalgarh"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Kumbhalgarh o lungo la strada"
-      },
-      "spuntino": {
-       "l": "jheels"
-      },
-      "cena": {
-       "l": "sky-lounge"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "udaipur-palazzo",
-     "giorni": [
-      "2026-12-29"
-     ],
-     "titolo": "Palazzo e lago",
-     "sotto": "City Palace al mattino, barca nel pomeriggio, cena sul lago.",
-     "soste": [
-      {
-       "t": "Tempio di Jagdish",
-       "ora": "9:00",
-       "dur": "30 min"
-      },
-      {
-       "t": "City Palace",
-       "ora": "9:45",
-       "dur": "2,5 h"
-      },
-      {
-       "t": "Giro in barca sul lago Pichola",
-       "ora": "16:00",
-       "dur": "1 h"
-      },
-      {
-       "t": "Ambrai Ghat",
-       "ora": "18:00",
-       "nota": "Tramonto e poi cena."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "millets-of-mewar"
-      },
-      "pranzo": {
-       "l": "shreenath-dosa"
-      },
-      "spuntino": {
-       "l": "jheels"
-      },
-      "cena": {
-       "l": "ambrai"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "udaipur-lento",
-     "giorni": [
-      "2026-12-29"
-     ],
-     "titolo": "Udaipur con calma",
-     "sotto": "Haveli, tramonto dall'alto e danze la sera.",
-     "soste": [
-      {
-       "t": "Bagore Ki Haveli",
-       "ora": "11:00",
-       "dur": "1 h",
-       "nota": "Il museo di giorno."
-      },
-      {
-       "t": "Tramonto dall'alto",
-       "ora": "16:30",
-       "dur": "1,5 h",
-       "nota": "Funivia o Palazzo dei Monsoni."
-      },
-      {
-       "t": "Bagore Ki Haveli",
-       "ora": "19:00",
-       "dur": "1 h",
-       "nota": "Spettacolo di danze: arrivare prima."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "jheels"
-      },
-      "pranzo": {
-       "l": "natraj-udaipur",
-       "c": "Thali illimitato"
-      },
-      "spuntino": {
-       "l": "shreenath-dosa"
-      },
-      "cena": {
-       "l": "millets-of-mewar"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -4229,57 +3402,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Hotel Rawal Kothi Fort & Restro, Chittorgarh",
      "pid": "ChIJm4BzfQChaDkRCKUgUwIGO4E"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "chittor-forte",
-     "giorni": [
-      "2026-12-30"
-     ],
-     "titolo": "Le torri e i palazzi del forte",
-     "sotto": "Mezza giornata sull'altopiano, con pranzo dentro le mura.",
-     "soste": [
-      {
-       "t": "Palazzo di Rana Kumbha",
-       "ora": "10:00",
-       "dur": "45 min"
-      },
-      {
-       "t": "Torre della Vittoria",
-       "ora": "11:00",
-       "dur": "30 min"
-      },
-      {
-       "t": "Torre della Fama",
-       "ora": "11:45",
-       "dur": "20 min"
-      },
-      {
-       "t": "Palazzo di Padmini e Gaumukh",
-       "ora": "12:15",
-       "dur": "30 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Udaipur"
-      },
-      "pranzo": {
-       "l": "shri-barbarik",
-       "c": "Dal baati churma"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Chai"
-      },
-      "cena": {
-       "l": "",
-       "c": "Leggera, a Bundi"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -4515,115 +3637,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "The Blue Door, Bundi",
      "pid": "ChIJrZYBXoIJbzkRmGL75fPhbGU"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "bundi-sera",
-     "giorni": [
-      "2026-12-30"
-     ],
-     "titolo": "Lago e vicoli al tramonto",
-     "sotto": "Arrivo da Chittorgarh, passeggiata e cena leggera sotto il palazzo.",
-     "soste": [
-      {
-       "t": "Lago Nawal Sagar e città vecchia",
-       "ora": "17:00",
-       "dur": "1 h",
-       "nota": "Il palazzo si riflette nel lago."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Udaipur"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Chittorgarh"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Chai lungo la strada"
-      },
-      "cena": {
-       "l": "fort-on-plate",
-       "c": "Leggera"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "bundi-terrazza",
-     "giorni": [
-      "2026-12-30"
-     ],
-     "titolo": "Cena col palazzo illuminato",
-     "sotto": "Pranzo leggero a Chittorgarh e cena completa in terrazza.",
-     "soste": [
-      {
-       "t": "Lago Nawal Sagar e città vecchia",
-       "ora": "17:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Udaipur"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Leggero a Chittorgarh"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Chai lungo la strada"
-      },
-      "cena": {
-       "l": "morgan-place",
-       "c": "Con vista sul palazzo"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "bundi-palazzo",
-     "giorni": [
-      "2026-12-31"
-     ],
-     "titolo": "Palazzo, dipinti e pozzo",
-     "sotto": "La mattina a Bundi prima di partire per Ajmer.",
-     "soste": [
-      {
-       "t": "Garh Palace e Chitrashala",
-       "ora": "8:30",
-       "dur": "2 h"
-      },
-      {
-       "t": "Raniji ki Baori",
-       "ora": "10:45",
-       "dur": "30 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "fort-on-plate"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Lungo la strada per Ajmer"
-      },
-      "spuntino": {
-       "l": "",
-       "c": "Frutta o chai"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Pushkar, Capodanno"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -5015,7 +4028,10 @@
      "id": "pushkar-raj",
      "n": "Pushkar Raj",
      "zona": "Vicino al tempio sikh, Choti Basti",
-     "vicino": [],
+     "vicino": [
+      "Lago sacro di Pushkar",
+      "Tempio di Brahma"
+     ],
      "pasti": [
       "colazione",
       "pranzo",
@@ -5111,139 +4127,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Hotel Highway King Kishangarh",
      "pid": "ChIJM6iuAAD3azkRqSu7Jjctld4"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "pushkar-capodanno",
-     "giorni": [
-      "2026-12-31"
-     ],
-     "titolo": "Dargah, lago e Capodanno",
-     "sotto": "Ajmer nel primo pomeriggio, l'aarti sul lago e il cenone vegetariano.",
-     "soste": [
-      {
-       "t": "Dargah Sharif di Ajmer",
-       "ora": "13:30",
-       "dur": "1 h",
-       "nota": "Giovedì: grande calca."
-      },
-      {
-       "t": "Lago sacro di Pushkar",
-       "ora": "16:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Aarti serale sui ghat",
-       "ora": "18:00",
-       "dur": "45 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Bundi"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Leggero lungo la strada"
-      },
-      "spuntino": {
-       "l": "malpua-bancarelle",
-       "c": "Malpua calde"
-      },
-      "cena": {
-       "l": "raju-terrace",
-       "c": "Cenone di Capodanno, senza alcol"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "pushkar-biryani",
-     "giorni": [
-      "2026-12-31"
-     ],
-     "titolo": "Biryani al Dargah, malpua a Pushkar",
-     "sotto": "Pasto completo ad Ajmer, cena leggera tra i ghat.",
-     "soste": [
-      {
-       "t": "Dargah Sharif di Ajmer",
-       "ora": "13:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Lago sacro di Pushkar",
-       "ora": "16:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "Aarti serale sui ghat",
-       "ora": "18:00",
-       "dur": "45 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Bundi"
-      },
-      "pranzo": {
-       "l": "biryani-dargah"
-      },
-      "spuntino": {
-       "l": "sohan-halwa"
-      },
-      "cena": {
-       "l": "sunset-cafe",
-       "c": "Leggera, poi i festeggiamenti"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "pushkar-alto",
-     "giorni": [
-      "2027-01-01"
-     ],
-     "titolo": "Pushkar all'alba e Kishangarh",
-     "sotto": "Savitri per chi vuole l'alba, Brahma, poi la sosta sulla strada per Jaipur.",
-     "soste": [
-      {
-       "t": "Tempio di Savitri",
-       "ora": "7:00",
-       "dur": "1,5 h",
-       "nota": "Facoltativo: alba sul lago, salita a piedi o in funivia."
-      },
-      {
-       "t": "Tempio di Brahma",
-       "ora": "9:30",
-       "dur": "45 min"
-      },
-      {
-       "t": "Kishangarh",
-       "ora": "13:00",
-       "dur": "1 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "pushkar-raj",
-       "c": "Khasta kachori"
-      },
-      "pranzo": {
-       "l": "highway-king",
-       "c": "Thali sulla statale"
-      },
-      "spuntino": {
-       "l": "malpua-bancarelle"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Jaipur"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -5608,7 +4491,9 @@
      "id": "rawat",
      "n": "Rawat Mishthan Bhandar",
      "zona": "Station Road, Sindhi Camp",
-     "vicino": [],
+     "vicino": [
+      "Bazar della città rosa"
+     ],
      "pasti": [
       "colazione"
      ],
@@ -5626,7 +4511,9 @@
      "id": "lassiwala",
      "n": "Lassiwala",
      "zona": "MI Road",
-     "vicino": [],
+     "vicino": [
+      "Bazar della città rosa"
+     ],
      "pasti": [
       "colazione",
       "spuntino"
@@ -5645,7 +4532,10 @@
      "id": "gulab-ji",
      "n": "Gulab Ji Chaiwala",
      "zona": "MI Road",
-     "vicino": [],
+     "vicino": [
+      "Bazar della città rosa",
+      "Hawa Mahal"
+     ],
      "pasti": [
       "colazione",
       "spuntino"
@@ -5720,7 +4610,9 @@
      "id": "rajasthani-bhog",
      "n": "Rajasthani Bhog",
      "zona": "Bani Park",
-     "vicino": [],
+     "vicino": [
+      "Bazar della città rosa"
+     ],
      "pasti": [
       "pranzo",
       "cena"
@@ -5749,137 +4641,6 @@
      "pid": "ChIJm5d8BQCxbTkRij5I1TJxX1o",
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "RajRasa, Amer Road, Jaipur"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "jaipur-arrivo",
-     "giorni": [
-      "2027-01-01"
-     ],
-     "titolo": "Prima sera nella città rosa",
-     "sotto": "Bazar al tramonto e cena da LMB.",
-     "soste": [
-      {
-       "t": "Hawa Mahal",
-       "ora": "17:00",
-       "dur": "20 min",
-       "nota": "Da fuori, con la luce della sera."
-      },
-      {
-       "t": "Bazar della città rosa",
-       "ora": "17:30",
-       "dur": "1,5 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Pushkar"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Kishangarh"
-      },
-      "spuntino": {
-       "l": "gulab-ji",
-       "c": "Chai"
-      },
-      "cena": {
-       "l": "lmb",
-       "c": "Thali e dal baati churma"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "jaipur-amber",
-     "giorni": [
-      "2027-01-02"
-     ],
-     "titolo": "Amber presto e città rosa",
-     "sotto": "Il forte all'apertura, pranzo nelle sale reali, bazar al pomeriggio.",
-     "soste": [
-      {
-       "t": "Forte Amber",
-       "ora": "8:00",
-       "dur": "3 h"
-      },
-      {
-       "t": "Hawa Mahal",
-       "ora": "15:00",
-       "dur": "30 min"
-      },
-      {
-       "t": "Bazar della città rosa",
-       "ora": "15:30",
-       "dur": "2 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "gulab-ji",
-       "c": "Chai"
-      },
-      "pranzo": {
-       "l": "1135ad"
-      },
-      "spuntino": {
-       "l": "lmb",
-       "c": "Ghevar"
-      },
-      "cena": {
-       "l": "lmb",
-       "c": "Kachori e lassi"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "jaipur-citta",
-     "giorni": [
-      "2027-01-02"
-     ],
-     "titolo": "Osservatorio, palazzo e tramonto",
-     "sotto": "Hawa Mahal con la luce del mattino, Jantar Mantar e City Palace, Nahargarh al tramonto.",
-     "soste": [
-      {
-       "t": "Hawa Mahal",
-       "ora": "8:30",
-       "dur": "30 min"
-      },
-      {
-       "t": "Jantar Mantar",
-       "ora": "9:30",
-       "dur": "1 h"
-      },
-      {
-       "t": "City Palace",
-       "ora": "10:45",
-       "dur": "2 h"
-      },
-      {
-       "t": "Nahargarh",
-       "ora": "16:30",
-       "dur": "2 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "rawat",
-       "c": "Pyaaz kachori"
-      },
-      "pranzo": {
-       "l": "caffe-hawa-mahal"
-      },
-      "spuntino": {
-       "l": "lassiwala"
-      },
-      "cena": {
-       "l": "mahal-pink-city"
-      }
-     },
-     "completo": "cena"
     }
    ],
    "w": {
@@ -6076,56 +4837,6 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Chand Baori Restaurant, Abhaneri",
      "pid": "ChIJT7hNa8dxcjkRb9eF5xonzOM"
-    }
-   ],
-   "percorsi": [
-    {
-     "id": "fatehpur-sosta",
-     "giorni": [
-      "2027-01-03"
-     ],
-     "titolo": "Il pozzo di Abhaneri e la città moghul",
-     "sotto": "Chand Baori al mattino, Fatehpur Sikri con una guida autorizzata.",
-     "soste": [
-      {
-       "t": "Chand Baori ad Abhaneri",
-       "ora": "9:45",
-       "dur": "45 min"
-      },
-      {
-       "t": "Palazzi reali",
-       "ora": "13:00",
-       "dur": "1,5 h"
-      },
-      {
-       "t": "Jama Masjid e tomba di Salim Chishti",
-       "ora": "14:45",
-       "dur": "45 min"
-      },
-      {
-       "t": "Buland Darwaza",
-       "ora": "15:30",
-       "dur": "15 min"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jaipur"
-      },
-      "pranzo": {
-       "l": "goverdhan"
-      },
-      "spuntino": {
-       "l": "chand-baori-rest",
-       "c": "Chai"
-      },
-      "cena": {
-       "l": "",
-       "c": "Leggera, ad Agra"
-      }
-     },
-     "completo": "pranzo"
     }
    ],
    "w": {
@@ -6359,7 +5070,9 @@
      "id": "deviram",
      "n": "Deviram Sweets",
      "zona": "MG Road, Pratap Pura",
-     "vicino": [],
+     "vicino": [
+      "Forte di Agra"
+     ],
      "pasti": [
       "colazione"
      ],
@@ -6461,7 +5174,10 @@
      "id": "panchhi-petha",
      "n": "Panchhi Petha",
      "zona": "Più sedi in città",
-     "vicino": [],
+     "vicino": [
+      "Taj Mahal",
+      "Forte di Agra"
+     ],
      "pasti": [
       "spuntino"
      ],
@@ -6497,159 +5213,787 @@
      ]
     }
    ],
-   "percorsi": [
-    {
-     "id": "agra-sera",
-     "giorni": [
-      "2027-01-03"
-     ],
-     "titolo": "Il Taj da dietro",
-     "sotto": "Se si arriva prima del tramonto: Mehtab Bagh, poi street food.",
-     "soste": [
-      {
-       "t": "Mehtab Bagh",
-       "ora": "17:00",
-       "dur": "45 min",
-       "nota": "Chiude al tramonto: solo se si arriva in tempo."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jaipur"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "A Fatehpur Sikri"
-      },
-      "spuntino": {
-       "l": "panchhi-petha",
-       "c": "Petha"
-      },
-      "cena": {
-       "l": "mama-chicken",
-       "c": "Leggera"
-      }
-     },
-     "completo": "pranzo"
-    },
-    {
-     "id": "agra-cena",
-     "giorni": [
-      "2027-01-03"
-     ],
-     "titolo": "Cena moghul ad Agra",
-     "sotto": "Pranzo leggero a Fatehpur, cena completa vicino al Taj.",
-     "soste": [
-      {
-       "t": "Mehtab Bagh",
-       "ora": "17:00",
-       "dur": "45 min",
-       "nota": "Solo se si arriva in tempo."
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "",
-       "c": "A Jaipur"
-      },
-      "pranzo": {
-       "l": "",
-       "c": "Leggero a Fatehpur Sikri"
-      },
-      "spuntino": {
-       "l": "panchhi-petha",
-       "c": "Dalmoth"
-      },
-      "cena": {
-       "l": "pinch-of-spice"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "agra-taj",
-     "giorni": [
-      "2027-01-04"
-     ],
-     "titolo": "Taj all'alba e forte",
-     "sotto": "Il Taj all'apertura, il forte, poi la strada per Delhi.",
-     "soste": [
-      {
-       "t": "Taj Mahal",
-       "ora": "6:45",
-       "dur": "2,5 h",
-       "nota": "Biglietto aggiuntivo per il mausoleo. Nebbia possibile."
-      },
-      {
-       "t": "Forte di Agra",
-       "ora": "10:30",
-       "dur": "1,5 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "joneys",
-       "c": "Dopo il Taj"
-      },
-      "pranzo": {
-       "l": "shankara-vegis"
-      },
-      "spuntino": {
-       "l": "panchhi-petha",
-       "c": "Petha per il viaggio"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Delhi"
-      }
-     },
-     "completo": "cena"
-    },
-    {
-     "id": "agra-sapori",
-     "giorni": [
-      "2027-01-04"
-     ],
-     "titolo": "Taj e bedai",
-     "sotto": "Il Taj all'apertura, colazione di bedai, forte e pranzo con vista.",
-     "soste": [
-      {
-       "t": "Taj Mahal",
-       "ora": "6:45",
-       "dur": "2,5 h"
-      },
-      {
-       "t": "Forte di Agra",
-       "ora": "11:00",
-       "dur": "1,5 h"
-      }
-     ],
-     "pasti": {
-      "colazione": {
-       "l": "deviram",
-       "c": "Bedai e jalebi, dopo il Taj"
-      },
-      "pranzo": {
-       "l": "saniya-palace",
-       "c": "Con vista sul Taj"
-      },
-      "spuntino": {
-       "l": "panchhi-petha",
-       "c": "Dalmoth"
-      },
-      "cena": {
-       "l": "",
-       "c": "A Delhi"
-      }
-     },
-     "completo": "cena"
-    }
-   ],
    "w": {
     "it": "Agra",
     "en": "Agra"
    }
+  }
+ ],
+ "percorsi": [
+  {
+   "id": "mandawa-arrivo",
+   "data": "2026-12-21",
+   "titolo": "Jhunjhunu e prime haveli",
+   "sotto": "Il tempio e il palazzo del vento lungo la strada, poi Mandawa al tramonto.",
+   "soste": [
+    {
+     "tappa": "mandawa",
+     "t": "Tempio di Rani Sati a Jhunjhunu",
+     "ora": "13:00",
+     "dur": "45 min",
+     "nota": "Scarpe all'ingresso."
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Khetri Mahal a Jhunjhunu",
+     "ora": "14:00",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Haveli dipinte di Mandawa",
+     "ora": "16:00",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Castello di Mandawa",
+     "ora": "17:45",
+     "dur": "30 min",
+     "nota": "Tramonto dalle terrazze."
+    }
+   ]
+  },
+  {
+   "id": "mandawa-calma",
+   "data": "2026-12-21",
+   "titolo": "Solo Mandawa, con calma",
+   "sotto": "Niente soste a Jhunjhunu: più tempo per le haveli e le terrazze.",
+   "soste": [
+    {
+     "tappa": "mandawa",
+     "t": "Haveli dipinte di Mandawa",
+     "ora": "15:30",
+     "dur": "2 h",
+     "nota": "Senza fretta, con un custode che apre i cortili."
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Castello di Mandawa",
+     "ora": "17:45",
+     "dur": "30 min"
+    }
+   ]
+  },
+  {
+   "id": "g22-cammelli",
+   "data": "2026-12-22",
+   "titolo": "Fatehpur, topi e cammelli",
+   "sotto": "Le haveli col sole basso, Karni Mata a Deshnok, il centro dei cammelli.",
+   "soste": [
+    {
+     "tappa": "mandawa",
+     "t": "Haveli dipinte di Mandawa",
+     "ora": "8:00",
+     "dur": "1 h",
+     "nota": "Vicoli vuoti e luce radente."
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Haveli di Nadine Le Prince a Fatehpur",
+     "ora": "10:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "bikaner",
+     "t": "Tempio di Karni Mata a Deshnok",
+     "ora": "14:30",
+     "dur": "1 h",
+     "nota": "Calze vecchie da buttare."
+    },
+    {
+     "tappa": "bikaner",
+     "t": "Centro di ricerca sul cammello",
+     "ora": "16:30",
+     "dur": "1 h",
+     "nota": "Orari da verificare."
+    }
+   ]
+  },
+  {
+   "id": "g22-citta",
+   "data": "2026-12-22",
+   "titolo": "Fatehpur, Deshnok e la città vecchia",
+   "sotto": "Al posto dei cammelli, i vicoli di Bikaner al tramonto.",
+   "soste": [
+    {
+     "tappa": "mandawa",
+     "t": "Haveli dipinte di Mandawa",
+     "ora": "8:00",
+     "dur": "1 h",
+     "nota": "Vicoli vuoti e luce radente."
+    },
+    {
+     "tappa": "mandawa",
+     "t": "Haveli di Nadine Le Prince a Fatehpur",
+     "ora": "10:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "bikaner",
+     "t": "Tempio di Karni Mata a Deshnok",
+     "ora": "14:30",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "bikaner",
+     "t": "Haveli Rampuria",
+     "ora": "17:00",
+     "dur": "1 h",
+     "nota": "A piedi nei vicoli, con la luce del tramonto."
+    }
+   ]
+  },
+  {
+   "id": "g23-junagarh",
+   "data": "2026-12-23",
+   "titolo": "Junagarh, Kolayat, gru e cenotafi",
+   "sotto": "Il forte di Bikaner se c'è tempo, poi la lunga strada fino a Jaisalmer.",
+   "soste": [
+    {
+     "tappa": "bikaner",
+     "t": "Forte di Junagarh",
+     "ora": "9:00",
+     "dur": "1,5 h",
+     "nota": "Solo se il coordinatore lo mette prima della partenza."
+    },
+    {
+     "tappa": "bikaner",
+     "t": "Kolayat",
+     "ora": "11:30",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Khichan e le gru",
+     "ora": "14:00",
+     "dur": "45 min",
+     "nota": "Di pomeriggio le gru sono meno."
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Bada Bagh",
+     "ora": "17:15",
+     "dur": "45 min",
+     "nota": "Tramonto sui cenotafi."
+    }
+   ]
+  },
+  {
+   "id": "g23-gru",
+   "data": "2026-12-23",
+   "titolo": "Partenza presto per le gru",
+   "sotto": "Niente Junagarh: si arriva a Khichan prima, quando le gru sono ancora tante.",
+   "soste": [
+    {
+     "tappa": "bikaner",
+     "t": "Kolayat",
+     "ora": "9:30",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Khichan e le gru",
+     "ora": "12:30",
+     "dur": "45 min",
+     "nota": "Più gru che nel pomeriggio, ma il picco resta l'alba."
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Bada Bagh",
+     "ora": "17:15",
+     "dur": "45 min",
+     "nota": "Tramonto sui cenotafi."
+    }
+   ]
+  },
+  {
+   "id": "jaisalmer-deserto",
+   "data": "2026-12-24",
+   "titolo": "Forte al mattino, dune al tramonto",
+   "sotto": "Templi e vicoli del forte, poi il deserto e la cena al campo.",
+   "soste": [
+    {
+     "tappa": "jaisalmer",
+     "t": "Templi jainisti nel forte",
+     "ora": "9:00",
+     "dur": "1 h",
+     "nota": "Solo al mattino per i non jainisti."
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Forte di Jaisalmer",
+     "ora": "10:00",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Dune del Thar",
+     "ora": "15:30",
+     "nota": "Cammello o jeep, tramonto. La notte in tenda è da confermare."
+    }
+   ]
+  },
+  {
+   "id": "jaisalmer-forte",
+   "data": "2026-12-24",
+   "titolo": "Città d'oro, senza deserto",
+   "sotto": "Per chi resta in città: forte, haveli e il lago al tramonto.",
+   "soste": [
+    {
+     "tappa": "jaisalmer",
+     "t": "Templi jainisti nel forte",
+     "ora": "9:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Forte di Jaisalmer",
+     "ora": "10:00",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Patwon Ki Haveli",
+     "ora": "14:30",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jaisalmer",
+     "t": "Lago Gadisar",
+     "ora": "17:00",
+     "dur": "1 h"
+    }
+   ]
+  },
+  {
+   "id": "jodhpur-strada",
+   "data": "2026-12-25",
+   "titolo": "Pokhran, Osian e la torre dell'orologio",
+   "sotto": "Due soste lungo la strada e la sera di Natale sotto il forte.",
+   "soste": [
+    {
+     "tappa": "jodhpur",
+     "t": "Forte di Pokhran",
+     "ora": "10:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Templi di Osian",
+     "ora": "14:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Torre dell'orologio e mercato Sardar",
+     "ora": "18:00",
+     "dur": "1 h"
+    }
+   ]
+  },
+  {
+   "id": "jodhpur-forte",
+   "data": "2026-12-26",
+   "titolo": "Mehrangarh e città blu",
+   "sotto": "I vicoli blu presto, il forte al mattino, il pozzo a gradini nel pomeriggio.",
+   "soste": [
+    {
+     "tappa": "jodhpur",
+     "t": "Città blu",
+     "ora": "8:00",
+     "dur": "1 h",
+     "nota": "Prima che arrivi il sole alto."
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Forte di Mehrangarh",
+     "ora": "9:30",
+     "dur": "3 h"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Jaswant Thada",
+     "ora": "13:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Toorji Ka Jhalra",
+     "ora": "16:00",
+     "dur": "45 min"
+    }
+   ]
+  },
+  {
+   "id": "jodhpur-mercati",
+   "data": "2026-12-26",
+   "titolo": "Mercato, pozzo e forte",
+   "sotto": "Mercato e pozzo al mattino, il forte nel pomeriggio.",
+   "soste": [
+    {
+     "tappa": "jodhpur",
+     "t": "Torre dell'orologio e mercato Sardar",
+     "ora": "10:00",
+     "dur": "2 h"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Toorji Ka Jhalra",
+     "ora": "12:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "jodhpur",
+     "t": "Forte di Mehrangarh",
+     "ora": "15:00",
+     "dur": "2 h"
+    }
+   ]
+  },
+  {
+   "id": "g27-ranakpur",
+   "data": "2026-12-27",
+   "titolo": "Ghanerao, Ranakpur e le mura al tramonto",
+   "sotto": "Il castello lungo la strada, il tempio che apre a mezzogiorno, lo spettacolo sul forte.",
+   "soste": [
+    {
+     "tappa": "ranakpur",
+     "t": "Ghanerao",
+     "ora": "10:00",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "ranakpur",
+     "t": "Tempio jainista di Adinath",
+     "ora": "12:00",
+     "dur": "1,5 h",
+     "nota": "Niente cuoio, spalle e ginocchia coperte."
+    },
+    {
+     "tappa": "ranakpur",
+     "t": "Templi di Neminath e Parshvanath",
+     "ora": "13:30",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "kumbhalgarh",
+     "t": "Mura e templi del forte",
+     "ora": "16:30",
+     "dur": "1,5 h",
+     "nota": "Se si arriva in tempo."
+    },
+    {
+     "tappa": "kumbhalgarh",
+     "t": "Spettacolo di luci e suoni",
+     "ora": "18:30",
+     "dur": "45 min"
+    }
+   ]
+  },
+  {
+   "id": "g28-nagda",
+   "data": "2026-12-28",
+   "titolo": "Il forte al mattino, Nagda e il lago",
+   "sotto": "Badal Mahal e le mura, i templi scolpiti di Nagda, il tramonto sul Pichola.",
+   "soste": [
+    {
+     "tappa": "kumbhalgarh",
+     "t": "Forte di Kumbhalgarh",
+     "ora": "9:00",
+     "dur": "2 h",
+     "nota": "Badal Mahal in cima."
+    },
+    {
+     "tappa": "kumbhalgarh",
+     "t": "Mura e templi del forte",
+     "ora": "11:00",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Templi di Sas-Bahu a Nagda",
+     "ora": "13:00",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Ambrai Ghat",
+     "ora": "17:30",
+     "nota": "Tramonto sul lago."
+    }
+   ]
+  },
+  {
+   "id": "udaipur-palazzo",
+   "data": "2026-12-29",
+   "titolo": "Palazzo e lago",
+   "sotto": "City Palace al mattino, barca nel pomeriggio, tramonto all'Ambrai Ghat.",
+   "soste": [
+    {
+     "tappa": "udaipur",
+     "t": "Tempio di Jagdish",
+     "ora": "9:00",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "udaipur",
+     "t": "City Palace",
+     "ora": "9:45",
+     "dur": "2,5 h"
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Giro in barca sul lago Pichola",
+     "ora": "16:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Ambrai Ghat",
+     "ora": "18:00",
+     "nota": "Tramonto e poi cena."
+    }
+   ]
+  },
+  {
+   "id": "udaipur-lento",
+   "data": "2026-12-29",
+   "titolo": "Udaipur con calma",
+   "sotto": "Haveli, tramonto dall'alto e danze la sera.",
+   "soste": [
+    {
+     "tappa": "udaipur",
+     "t": "Bagore Ki Haveli",
+     "ora": "11:00",
+     "dur": "1 h",
+     "nota": "Il museo di giorno."
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Tramonto dall'alto",
+     "ora": "16:30",
+     "dur": "1,5 h",
+     "nota": "Funivia o Palazzo dei Monsoni."
+    },
+    {
+     "tappa": "udaipur",
+     "t": "Bagore Ki Haveli",
+     "ora": "19:00",
+     "dur": "1 h",
+     "nota": "Spettacolo di danze: arrivare prima."
+    }
+   ]
+  },
+  {
+   "id": "g30-chittor",
+   "data": "2026-12-30",
+   "titolo": "Le torri di Chittorgarh e il lago di Bundi",
+   "sotto": "Mezza giornata sull'altopiano del forte, la sera tra i vicoli azzurri.",
+   "soste": [
+    {
+     "tappa": "chittorgarh",
+     "t": "Palazzo di Rana Kumbha",
+     "ora": "10:00",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "chittorgarh",
+     "t": "Torre della Vittoria",
+     "ora": "11:00",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "chittorgarh",
+     "t": "Torre della Fama",
+     "ora": "11:45",
+     "dur": "20 min"
+    },
+    {
+     "tappa": "chittorgarh",
+     "t": "Palazzo di Padmini e Gaumukh",
+     "ora": "12:15",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "bundi",
+     "t": "Lago Nawal Sagar e città vecchia",
+     "ora": "17:00",
+     "dur": "1 h",
+     "nota": "Il palazzo si riflette nel lago."
+    }
+   ]
+  },
+  {
+   "id": "g31-capodanno",
+   "data": "2026-12-31",
+   "titolo": "Bundi al mattino, Capodanno a Pushkar",
+   "sotto": "Palazzo e pozzo di Bundi, il Dargah di Ajmer, l'aarti sul lago.",
+   "soste": [
+    {
+     "tappa": "bundi",
+     "t": "Garh Palace e Chitrashala",
+     "ora": "8:30",
+     "dur": "2 h"
+    },
+    {
+     "tappa": "bundi",
+     "t": "Raniji ki Baori",
+     "ora": "10:45",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Dargah Sharif di Ajmer",
+     "ora": "13:30",
+     "dur": "1 h",
+     "nota": "Giovedì: grande calca."
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Lago sacro di Pushkar",
+     "ora": "16:30",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Aarti serale sui ghat",
+     "ora": "18:00",
+     "dur": "45 min"
+    }
+   ]
+  },
+  {
+   "id": "g101-alba",
+   "data": "2027-01-01",
+   "titolo": "Pushkar all'alba, Kishangarh e Jaipur",
+   "sotto": "Savitri per chi vuole l'alba, la sosta di Kishangarh, la prima sera nella città rosa.",
+   "soste": [
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Tempio di Savitri",
+     "ora": "7:00",
+     "dur": "1,5 h",
+     "nota": "Facoltativo: alba sul lago, salita a piedi o in funivia."
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Tempio di Brahma",
+     "ora": "9:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Kishangarh",
+     "ora": "13:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Hawa Mahal",
+     "ora": "17:00",
+     "dur": "20 min",
+     "nota": "Da fuori, con la luce della sera."
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Bazar della città rosa",
+     "ora": "17:30",
+     "dur": "1,5 h"
+    }
+   ]
+  },
+  {
+   "id": "g101-calma",
+   "data": "2027-01-01",
+   "titolo": "Pushkar senza sveglia",
+   "sotto": "Brahma e il lago con calma, poi Kishangarh e i bazar di Jaipur.",
+   "soste": [
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Tempio di Brahma",
+     "ora": "9:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Lago sacro di Pushkar",
+     "ora": "10:30",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "ajmer-pushkar",
+     "t": "Kishangarh",
+     "ora": "13:00",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Hawa Mahal",
+     "ora": "17:00",
+     "dur": "20 min",
+     "nota": "Da fuori, con la luce della sera."
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Bazar della città rosa",
+     "ora": "17:30",
+     "dur": "1,5 h"
+    }
+   ]
+  },
+  {
+   "id": "jaipur-amber",
+   "data": "2027-01-02",
+   "titolo": "Amber presto e città rosa",
+   "sotto": "Il forte all'apertura, Hawa Mahal e bazar nel pomeriggio.",
+   "soste": [
+    {
+     "tappa": "jaipur",
+     "t": "Forte Amber",
+     "ora": "8:00",
+     "dur": "3 h"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Hawa Mahal",
+     "ora": "15:00",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Bazar della città rosa",
+     "ora": "15:30",
+     "dur": "2 h"
+    }
+   ]
+  },
+  {
+   "id": "jaipur-citta",
+   "data": "2027-01-02",
+   "titolo": "Osservatorio, palazzo e tramonto",
+   "sotto": "Hawa Mahal con la luce del mattino, Jantar Mantar e City Palace, Nahargarh al tramonto.",
+   "soste": [
+    {
+     "tappa": "jaipur",
+     "t": "Hawa Mahal",
+     "ora": "8:30",
+     "dur": "30 min"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Jantar Mantar",
+     "ora": "9:30",
+     "dur": "1 h"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "City Palace",
+     "ora": "10:45",
+     "dur": "2 h"
+    },
+    {
+     "tappa": "jaipur",
+     "t": "Nahargarh",
+     "ora": "16:30",
+     "dur": "2 h"
+    }
+   ]
+  },
+  {
+   "id": "g103-abhaneri",
+   "data": "2027-01-03",
+   "titolo": "Abhaneri, Fatehpur Sikri e il Taj da dietro",
+   "sotto": "Il pozzo a gradini, la città moghul, Mehtab Bagh se si arriva in tempo.",
+   "soste": [
+    {
+     "tappa": "fatehpur-sikri",
+     "t": "Chand Baori ad Abhaneri",
+     "ora": "9:45",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "fatehpur-sikri",
+     "t": "Palazzi reali",
+     "ora": "13:00",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "fatehpur-sikri",
+     "t": "Jama Masjid e tomba di Salim Chishti",
+     "ora": "14:45",
+     "dur": "45 min"
+    },
+    {
+     "tappa": "fatehpur-sikri",
+     "t": "Buland Darwaza",
+     "ora": "15:30",
+     "dur": "15 min"
+    },
+    {
+     "tappa": "agra",
+     "t": "Mehtab Bagh",
+     "ora": "17:00",
+     "dur": "45 min",
+     "nota": "Chiude al tramonto: solo se si arriva in tempo."
+    }
+   ]
+  },
+  {
+   "id": "g104-kebab",
+   "data": "2027-01-04",
+   "titolo": "Taj all'alba, kebab a Delhi",
+   "sotto": "Il Taj all'apertura, il forte, la strada per Delhi e i vicoli dei kebab.",
+   "soste": [
+    {
+     "tappa": "agra",
+     "t": "Taj Mahal",
+     "ora": "6:45",
+     "dur": "2,5 h",
+     "nota": "Biglietto aggiuntivo per il mausoleo. Nebbia possibile."
+    },
+    {
+     "tappa": "agra",
+     "t": "Forte di Agra",
+     "ora": "10:30",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "delhi",
+     "t": "Jama Masjid",
+     "ora": "19:00",
+     "dur": "1 h",
+     "nota": "I vicoli di Gali Kababian la sera."
+    }
+   ]
+  },
+  {
+   "id": "g104-chaat",
+   "data": "2027-01-04",
+   "titolo": "Taj all'alba, Chandni Chowk la sera",
+   "sotto": "Il Taj e il forte, poi chaat e dolci nel bazar prima dell'aeroporto.",
+   "soste": [
+    {
+     "tappa": "agra",
+     "t": "Taj Mahal",
+     "ora": "6:45",
+     "dur": "2,5 h",
+     "nota": "Biglietto aggiuntivo per il mausoleo. Nebbia possibile."
+    },
+    {
+     "tappa": "agra",
+     "t": "Forte di Agra",
+     "ora": "10:30",
+     "dur": "1,5 h"
+    },
+    {
+     "tappa": "delhi",
+     "t": "Chandni Chowk",
+     "ora": "18:30",
+     "dur": "1 h",
+     "nota": "Molti negozi chiudono, i banchi di cibo restano."
+    }
+   ]
   }
  ]
 }

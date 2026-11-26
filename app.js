@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-25.3';
+const VERSIONE = '2026-11-26.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -485,40 +485,42 @@ function htmlStatoSync() {
 }
 function mostraAvvisoMemoria() { const a = $('#avvisoMemoria'); if (a) a.hidden = false; }
 
-/* ---------- Account (Firebase Authentication, via REST) ---------- */
+/* ---------- Account (Firebase Authentication via REST, accesso col numero di telefono) ---------- */
 // Chiave API web di Firebase: non è un segreto, identifica solo il progetto.
 const FIREBASE_API_KEY = 'AIzaSyBkU8Dr_7L9hc_GlBO5f-2ynrsNEugd4cg';
 // Account di Gerry: su questi le sezioni personali (Liste, Foto, Diario) si attivano anche su un dispositivo nuovo.
 const PROPRIETARI = ['0nVrz5ha5XVtEXAaBAgfNfjrgL23'];
-const URL_AUTH = 'https://identitytoolkit.googleapis.com/v1/accounts:';
+const URL_AUTH = 'https://identitytoolkit.googleapis.com/v1/';
 let ACC = LS.get('rj.acc', null);
+let SMS = null;                         // { tel, sessione } dopo l'invio del codice
 const ERR_ACC = {
-  EMAIL_EXISTS: 'Esiste già un account con questa email: usa "Entra".',
-  INVALID_LOGIN_CREDENTIALS: 'Email o password non corrette.', INVALID_PASSWORD: 'Email o password non corrette.', EMAIL_NOT_FOUND: 'Email o password non corrette.',
-  INVALID_EMAIL: 'L\'email non sembra valida.', MISSING_PASSWORD: 'Scrivi la password.', MISSING_EMAIL: 'Scrivi l\'email.',
-  TOO_MANY_ATTEMPTS_TRY_LATER: 'Troppi tentativi: riprova tra qualche minuto.', USER_DISABLED: 'Questo account è stato disattivato.',
-  OPERATION_NOT_ALLOWED: 'Questo modo di accesso non è ancora attivo.'
+  INVALID_PHONE_NUMBER: 'Il numero non sembra valido: scrivilo col prefisso, per esempio +39 333 1234567.',
+  MISSING_PHONE_NUMBER: 'Scrivi il numero di telefono.',
+  INVALID_CODE: 'Codice sbagliato: controlla l\'SMS e riprova.', MISSING_CODE: 'Scrivi il codice arrivato via SMS.',
+  SESSION_EXPIRED: 'Il codice è scaduto: fattene mandare uno nuovo.', CODE_EXPIRED: 'Il codice è scaduto: fattene mandare uno nuovo.',
+  INVALID_SESSION_INFO: 'Il codice è scaduto: fattene mandare uno nuovo.',
+  QUOTA_EXCEEDED: 'Troppi SMS inviati oggi: riprova domani.', TOO_MANY_ATTEMPTS_TRY_LATER: 'Troppi tentativi: riprova tra qualche minuto.',
+  CAPTCHA_CHECK_FAILED: 'Il controllo anti-robot non è riuscito: riprova.', INVALID_APP_CREDENTIAL: 'Il controllo anti-robot non è riuscito: riprova.',
+  MISSING_RECAPTCHA_TOKEN: 'Il controllo anti-robot non è riuscito: riprova.',
+  USER_DISABLED: 'Questo account è stato disattivato.', OPERATION_NOT_ALLOWED: 'L\'accesso col telefono non è ancora attivo.',
+  REJECTED_CREDENTIAL: 'Questo numero è già usato da un altro account.', CREDENTIAL_TOO_OLD_LOGIN_AGAIN: 'Esci e rientra, poi riprova.'
 };
-function errAcc(m) {
-  m = String(m || ''); if (m.indexOf('WEAK_PASSWORD') === 0) return 'Password troppo corta: almeno 6 caratteri.';
-  return ERR_ACC[m.split(' ')[0]] || 'Accesso non riuscito (' + m + ').';
-}
+function errAcc(m) { m = String(m || ''); return ERR_ACC[m.split(' ')[0].split(':')[0]] || 'Accesso non riuscito (' + m + ').'; }
 async function chiamaAuth(metodo, corpo) {
   if (!FIREBASE_API_KEY) throw new Error('L\'accesso non è ancora attivo in questa versione dell\'app.');
-  const r = await fetch(URL_AUTH + metodo + '?key=' + FIREBASE_API_KEY, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) });
+  const r = await fetch(URL_AUTH + metodo + '?key=' + FIREBASE_API_KEY, corpo ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) } : {});
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(errAcc(j.error && j.error.message));
   return j;
 }
 function salvaAcc(j, metodo) {
   const prima = io().id;
-  ACC = { uid: j.localId, idToken: j.idToken, refreshToken: j.refreshToken, scad: Date.now() + (+j.expiresIn || 3600) * 1000, email: j.email || '', metodo };
+  ACC = { uid: j.localId, idToken: j.idToken, refreshToken: j.refreshToken, scad: Date.now() + (+j.expiresIn || 3600) * 1000, tel: j.phoneNumber || '', email: j.email || '', metodo };
   LS.set('rj.acc', ACC);
   if (PROPRIETARI.indexOf(ACC.uid) >= 0) LS.set('rj.proprietario', true);
   migraIdentita(prima, ACC.uid);
-  const x = io(); if (!x.n && j.displayName) { x.n = String(j.displayName).split(' ')[0].slice(0, 40); LS.set('rj.io', x); }
 }
-// Le adesioni date prima dell'accesso passano all'account.
+// Le scelte fatte prima dell'accesso passano all'account.
 function migraIdentita(da, a) {
   const x = io(); x.id = a; LS.set('rj.io', x);
   if (!da || da === a) return;
@@ -540,35 +542,44 @@ async function tokenAcc() {
   ACC = Object.assign({}, ACC, { idToken: j.id_token, refreshToken: j.refresh_token, scad: Date.now() + (+j.expires_in || 3600) * 1000 });
   LS.set('rj.acc', ACC); return ACC.idToken;
 }
-function esciAccount() { ACC = null; LS.del('rj.acc'); statoGr = { fase: 'fermo', errore: '', ultima: 0 }; try { if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect(); } catch (e) {} }
-async function accediConIdGoogle(credenziale) {
-  const j = await chiamaAuth('signInWithIdp', { postBody: 'id_token=' + credenziale + '&providerId=google.com', requestUri: location.origin + location.pathname, returnSecureToken: true, returnIdpCredential: true });
-  salvaAcc(j, 'google');
+function esciAccount() { ACC = null; SMS = null; LS.del('rj.acc'); statoGr = { fase: 'fermo', errore: '', ultima: 0 }; }
+
+// reCAPTCHA invisibile: Firebase lo richiede prima di mandare un SMS.
+let recaptchaId = null, recaptchaAttesa = null;
+function caricaRecaptcha() {
+  return new Promise((ok, ko) => {
+    if (window.grecaptcha && grecaptcha.render) return ok();
+    window.__recaptchaPronto = () => ok();
+    const s = document.createElement('script'); s.src = 'https://www.google.com/recaptcha/api.js?onload=__recaptchaPronto&render=explicit&hl=it';
+    s.onerror = () => ko(new Error('Rete non raggiungibile.')); document.head.appendChild(s);
+  });
 }
-// Pulsante "Accedi con Google" nel riquadro #gAcc, se presente nella vista.
-function montaGoogle() {
-  const el = $('#gAcc'); if (!el || !GOOGLE_CLIENT_ID || !FIREBASE_API_KEY || !navigator.onLine) return;
-  caricaGoogle().then(() => {
-    if (!(window.google && google.accounts && google.accounts.id) || !document.body.contains(el)) return;
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID, use_fedcm_for_prompt: true,
-      callback: async (r) => {
-        const err = $('#errAcc');
-        try { await accediConIdGoogle(r.credential); await dopoAccesso(); }
-        catch (e) { if (err) { err.textContent = e.message; err.hidden = false; } }
-      }
-    });
-    el.innerHTML = ''; google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', text: 'continue_with', locale: 'it', width: Math.min(320, el.clientWidth || 320) });
-  }).catch(() => {});
+async function tokenRecaptcha() {
+  const { recaptchaSiteKey } = await chiamaAuth('recaptchaParams');
+  await caricaRecaptcha();
+  let box = $('#rcBox'); if (!box) { box = document.createElement('div'); box.id = 'rcBox'; document.body.appendChild(box); }
+  return new Promise((ok, ko) => {
+    recaptchaAttesa = { ok, ko };
+    if (recaptchaId === null) recaptchaId = grecaptcha.render(box, { sitekey: recaptchaSiteKey, size: 'invisible', callback: (t) => { const a = recaptchaAttesa; recaptchaAttesa = null; if (a) a.ok(t); }, 'expired-callback': () => {}, 'error-callback': () => { const a = recaptchaAttesa; recaptchaAttesa = null; if (a) a.ko(new Error('Il controllo anti-robot non è riuscito: riprova.')); } });
+    else grecaptcha.reset(recaptchaId);
+    grecaptcha.execute(recaptchaId);
+  });
+}
+function normTel(v) {
+  let s = String(v || '').replace(/[\s.\-()/]/g, '');
+  if (s.startsWith('00')) s = '+' + s.slice(2);
+  if (!s.startsWith('+') && /^3\d{8,9}$/.test(s)) s = '+39' + s;   // cellulare italiano senza prefisso
+  return s;
 }
 function htmlAccesso(perche) {
   if (!FIREBASE_API_KEY) return '<p class="tenue">L\'accesso non è ancora attivo: aggiorna l\'app tra qualche giorno.</p>';
-  return '<div class="accesso"><p>' + esc(perche) + '</p><div id="gAcc" class="g-acc"></div><p class="oppure">oppure con email e password</p>' +
-    '<label>Email<input id="fEmail" type="email" autocomplete="email" autocapitalize="off" spellcheck="false"></label>' +
-    '<label>Password<input id="fPass" type="password" autocomplete="current-password" minlength="6"></label>' +
-    '<p class="err" id="errAcc" hidden></p><p class="tenue" id="msgAcc"></p>' +
-    '<div class="azioni larghe"><button class="btn" data-az="accEntra">Entra</button><button class="btn chiaro" data-az="accNuovo">Crea l\'account</button></div>' +
-    '<p><button class="link-btn" data-az="accReset">Password dimenticata?</button></p></div>';
+  let h = '<div class="accesso"><p>' + esc(perche) + '</p>';
+  if (!SMS) h += '<label>Numero di cellulare<input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+39 333 1234567"></label>' +
+    '<p class="tenue">Lo stesso di WhatsApp. Ti arriva un SMS con un codice; il numero non lo vedono gli altri.</p>' +
+    '<p class="err" id="errAcc" hidden></p><div class="azioni larghe"><button class="btn" data-az="accSms">Mandami il codice</button></div>';
+  else h += '<p>Codice mandato a <b>' + esc(SMS.tel) + '</b>.</p><label>Codice dell\'SMS<input id="fCodice" inputmode="numeric" autocomplete="one-time-code" maxlength="8"></label>' +
+    '<p class="err" id="errAcc" hidden></p><div class="azioni larghe"><button class="btn" data-az="accCodice">Entra</button><button class="btn chiaro" data-az="accAltro">Cambia numero</button></div>';
+  return h + '</div>';
 }
 // Dopo l'accesso: se c'è un invito in sospeso si entra nel gruppo, altrimenti si ridisegna.
 async function dopoAccesso() {
@@ -577,23 +588,30 @@ async function dopoAccesso() {
   await grSincronizza(); disegna();
 }
 async function azioneAccount(az, el) {
-  if (['accEntra', 'accNuovo', 'accReset'].indexOf(az) < 0) return false;
-  const err = $('#errAcc'), msg = $('#msgAcc'), email = ($('#fEmail').value || '').trim(), pass = $('#fPass').value || '';
-  err.hidden = true; msg.textContent = '';
+  if (['accSms', 'accCodice', 'accAltro'].indexOf(az) < 0) return false;
+  const err = $('#errAcc'); if (err) err.hidden = true;
   const fn = $('#fNome'); if (fn && fn.value.trim()) { const x = io(); x.n = fn.value.trim().slice(0, 40); LS.set('rj.io', x); }
+  if (az === 'accAltro') { SMS = null; disegna(); return true; }
   if (!navigator.onLine) { err.textContent = 'Serve la rete per entrare.'; err.hidden = false; return true; }
+  el.disabled = true;
   try {
-    if (az === 'accReset') {
-      if (!email) throw new Error('Scrivi la tua email qui sopra, poi premi di nuovo.');
-      await chiamaAuth('sendOobCode', { requestType: 'PASSWORD_RESET', email });
-      msg.textContent = 'Se l\'email ha un account, ti arriva un messaggio per scegliere una password nuova. Guarda anche nello spam.';
+    if (az === 'accSms') {
+      const tel = normTel($('#fTel').value);
+      if (!/^\+\d{8,15}$/.test(tel)) throw new Error(ERR_ACC.INVALID_PHONE_NUMBER);
+      const recaptchaToken = await tokenRecaptcha();
+      const j = await chiamaAuth('accounts:sendVerificationCode', { phoneNumber: tel, recaptchaToken });
+      SMS = { tel, sessione: j.sessionInfo }; disegna(); const c = $('#fCodice'); if (c) c.focus();
       return true;
     }
-    if (az === 'accNuovo' && pass.length < 6) throw new Error('Scegli una password di almeno 6 caratteri.');
-    el.disabled = true;
-    const j = await chiamaAuth(az === 'accNuovo' ? 'signUp' : 'signInWithPassword', { email, password: pass, returnSecureToken: true });
-    salvaAcc(j, 'email'); await dopoAccesso();
-  } catch (e) { err.textContent = e.message; err.hidden = false; el.disabled = false; }
+    const code = ($('#fCodice').value || '').replace(/\D/g, '');
+    if (!code) throw new Error(ERR_ACC.MISSING_CODE);
+    const corpo = { sessionInfo: SMS.sessione, code };
+    // Chi aveva già un account (Google o email) collega il numero allo stesso account: le scelte restano sue.
+    if (ACC) corpo.idToken = await tokenAcc().catch(() => '');
+    if (!corpo.idToken) delete corpo.idToken;
+    const j = await chiamaAuth('accounts:signInWithPhoneNumber', corpo);
+    SMS = null; salvaAcc(j, 'telefono'); await dopoAccesso();
+  } catch (e) { const er = $('#errAcc'); if (er) { er.textContent = e.message; er.hidden = false; } el.disabled = false; }
   return true;
 }
 
@@ -674,7 +692,7 @@ async function cercaPosti(testo) {
   if (!testo || testo.length < 3) { box.innerHTML = ''; return; }
   if (!navigator.onLine) { box.innerHTML = '<li class="tenue">Serve la rete per cercare su Google Maps.</li>'; return; }
   if (!sessioneCerca) sessioneCerca = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
-  const t = tappa(BOZZA.tappa);
+  const g = CONT.giorni.find((x) => x.data === BOZZA.data), t = tappa(g.tappe[0]);
   try {
     const j = await chiamaPlaces('places:autocomplete', 'suggestions.placePrediction.placeId,suggestions.placePrediction.structuredFormat', { input: testo, languageCode: 'it', regionCode: 'in', locationBias: vicinoA(t, 25000), sessionToken: sessioneCerca });
     const s = (j.suggestions || []).map((x) => x.placePrediction).filter(Boolean).slice(0, 6);
@@ -686,11 +704,10 @@ async function cercaPosti(testo) {
   } catch (e) { box.innerHTML = '<li class="err">' + esc(e.message) + '</li>'; }
 }
 
-/* ---------- Gruppo di viaggio: percorsi e adesioni (Firebase Realtime Database) ---------- */
+/* ---------- Gruppo di viaggio: percorsi e voti (Firebase Realtime Database) ---------- */
 // Indirizzo del database del gruppo (non è un segreto: i dati stanno sotto il codice del gruppo,
-// che non compare mai nel repository). Vuoto = le adesioni restano su questo dispositivo.
+// che non compare mai nel repository). Vuoto = i voti restano su questo dispositivo.
 const FIREBASE_DB = 'https://tutto-rajasthan-default-rtdb.europe-west1.firebasedatabase.app';
-const PASTI = [['colazione', 'Colazione'], ['pranzo', 'Pranzo'], ['spuntino', 'Spuntino'], ['cena', 'Cena']];
 let GR = LS.get('rj.gr', {});          // ultima copia del gruppo scaricata
 let coda = LS.get('rj.grCoda', {});    // scritture in attesa: percorso -> valore (null = cancella)
 let GRV = null;                        // copia + coda, ricalcolata quando serve
@@ -750,21 +767,20 @@ function salvaNome(n) {
   if (x.n) grScrivi({ ['persone/' + x.id]: { n: x.n, t: Date.now() } });
 }
 
-function percorsiDi(tid, data) {
-  const t = tappa(tid); if (!t) return [];
-  const base = (t.percorsi || []).filter((p) => !data || !p.giorni || p.giorni.indexOf(data) >= 0).map((p) => Object.assign({ tappa: tid }, p));
-  const prop = Object.entries(gruppo().proposte || {}).filter(([, p]) => p && p.tappa === tid).map(([k, p]) => Object.assign({}, p, { id: k, proposta: true }));
+// Percorsi di un giorno: quelli dell'app più le proposte del gruppo per quel giorno.
+function percorsiDelGiorno(data) {
+  const g = CONT.giorni.find((x) => x.data === data); if (!g) return [];
+  const base = (CONT.percorsi || []).filter((p) => p.data === data);
+  const prop = Object.entries(gruppo().proposte || {}).filter(([, p]) => p && (p.data ? p.data === data : g.tappe.indexOf(p.tappa) >= 0))
+    .map(([k, p]) => Object.assign({}, p, { id: k, proposta: true }));
   return base.concat(prop.sort((a, b) => (a.t || 0) - (b.t || 0)));
 }
-function aderenti(data, pid) { return Object.keys((((gruppo().adesioni || {})[data]) || {})[pid] || {}); }
+// Un voto a testa per giorno: voti/{data}/{persona} = id del percorso.
+function votoDi(data, chi) { return ((gruppo().voti || {})[data] || {})[chi || io().id] || ''; }
+function votanti(data, pid) { const v = (gruppo().voti || {})[data] || {}; return Object.keys(v).filter((k) => v[k] === pid); }
 function nomeDi(p) { if (p === io().id) return 'tu'; const x = (gruppo().persone || {})[p]; return x && x.n ? x.n : 'qualcuno'; }
-function locale(t, id) { return id ? (t.locali || []).find((l) => l.id === id) : null; }
 const TIPO_LOC = { completo: 'Pasto completo', leggero: 'Leggero', entrambi: 'Leggero o completo' };
 const NOME_PASTO = { colazione: 'Colazione', pranzo: 'Pranzo', cena: 'Cena', spuntino: 'Spuntino' };
-function adattoA(l, k, completo) {
-  if (k === completo) return l.tipo !== 'leggero' && l.pasti.indexOf(k) >= 0;
-  return l.tipo !== 'completo' && (l.pasti.indexOf(k) >= 0 || l.pasti.indexOf('spuntino') >= 0);
-}
 function urlWiki(lingua, titolo) { return 'https://' + lingua + '.wikipedia.org/w/index.php?search=' + encodeURIComponent(titolo) + '&go=Go'; }
 function linkWiki(w, prima) {
   if (!w) return '';
@@ -772,10 +788,14 @@ function linkWiki(w, prima) {
 }
 function urlMappa(q, pid) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + (pid ? '&query_place_id=' + encodeURIComponent(pid) : ''); }
 function linkMappa(q, testo, pid) { return q ? '<a class="mappa" href="' + esc(urlMappa(q, pid)) + '" target="_blank" rel="noopener">' + ICO.mappa + esc(testo || 'Apri in Google Maps') + '</a>' : ''; }
-function qSosta(t, nome) { const v = t.vedere.find((x) => x.t === nome); return v && v.q ? v.q : nome + ', ' + t.nome + ', India'; }
-function urlPercorso(t, soste) {
+
+// Una sosta è {tappa, t} (un luogo dell'app) oppure {t, pid} (un posto cercato su Google Maps).
+function vedereDi(s) { const t = s.tappa && tappa(s.tappa); return t ? t.vedere.find((x) => x.t === s.t) || null : null; }
+function qSosta(s) { if (s.pid) return s.t; const v = vedereDi(s), t = s.tappa && tappa(s.tappa); return v && v.q ? v.q : s.t + ', ' + (t ? t.nome : '') + ', India'; }
+function coordSosta(s) { if (s.pid) { const x = gp('p:' + s.pid); return x && x.c ? x.c : null; } const v = vedereDi(s); return v && v.c ? v.c : null; }
+function urlPercorso(soste) {
   const v = [];
-  (soste || []).forEach((s) => { const q = s.pid ? s.t : qSosta(t, s.t); if (!v.some((x) => x.q === q)) v.push({ q, pid: s.pid || '' }); });
+  (soste || []).forEach((s) => { const q = qSosta(s); if (!v.some((x) => x.q === q)) v.push({ q, pid: s.pid || '' }); });
   if (!v.length) return '';
   if (v.length === 1) return urlMappa(v[0].q, v[0].pid);
   const a = v[0], b = v[v.length - 1], m = v.slice(1, -1);
@@ -785,7 +805,6 @@ function urlPercorso(t, soste) {
   if (m.length) { u += '&waypoints=' + encodeURIComponent(m.map((x) => x.q).join('|')); if (m.every((x) => x.pid)) u += '&waypoint_place_ids=' + encodeURIComponent(m.map((x) => x.pid).join('|')); }
   return u;
 }
-function coordSosta(t, nome, pid) { if (pid) { const x = gp('p:' + pid); return x && x.c ? x.c : null; } const v = t.vedere.find((x) => x.t === nome); return v && v.c ? v.c : null; }
 function distanzaKm(a, b) {
   const r = Math.PI / 180, dLa = (b[0] - a[0]) * r, dLo = (b[1] - a[1]) * r;
   const h = Math.sin(dLa / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLo / 2) ** 2;
@@ -793,8 +812,8 @@ function distanzaKm(a, b) {
 }
 function fmtDist(km) { return km < 1 ? Math.max(100, Math.round(km * 10) * 100) + ' m' : (km < 20 ? km.toFixed(1).replace('.', ',') : Math.round(km)) + ' km'; }
 // Schema del percorso: punti numerati in proporzione, senza mappa sotto. Funziona offline.
-function htmlSchema(t, soste) {
-  const pt = (soste || []).map((s, i) => ({ n: i + 1, t: s.t, c: coordSosta(t, s.t, s.pid) })).filter((p) => p.c);
+function htmlSchema(soste) {
+  const pt = (soste || []).map((s, i) => ({ n: i + 1, t: s.t, c: coordSosta(s) })).filter((p) => p.c);
   if (pt.length < 2) return '';
   const k = Math.cos(pt[0].c[0] * Math.PI / 180);
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
@@ -806,7 +825,7 @@ function htmlSchema(t, soste) {
   pt.forEach((p) => { p.X = ox + (p.x - x0) * sc; p.Y = oy + (p.y - y0) * sc; });
   const kmPerUnit = 111.32; // gradi (già corretti per la latitudine) -> km
   const lato = (W - 2 * pad) / sc * kmPerUnit;
-  const passi = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50];
+  const passi = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200];
   const scala = passi.filter((v) => v <= lato / 3).pop() || passi[0];
   const ls = scala / kmPerUnit * sc;
   let g = '<svg class="schema" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Schema del percorso: ' + esc(pt.map((p) => p.n + ' ' + p.t).join(', ')) + '">';
@@ -824,13 +843,15 @@ function htmlSchema(t, soste) {
 function htmlLocale(l) {
   let h = '<li class="locale"><div class="loc-testa"><b>' + esc(l.n) + '</b><span class="prezzo" title="Prezzo indicativo">' + '₹'.repeat(l.prezzo || 1) + '</span></div>' + (htmlVoto(T_CORRENTE, l) ? '<p class="riga-voto">' + htmlVoto(T_CORRENTE, l) + '</p>' : '');
   h += '<p class="tenue">' + esc(l.zona) + '</p><p>' + esc(l.cosa) + '</p><span class="etichette"><span class="et">' + esc(TIPO_LOC[l.tipo] || '') + '</span>' + l.pasti.map((p) => '<span class="et">' + esc(NOME_PASTO[p]) + '</span>').join('') + (l.veg ? '<span class="et">Vegetariano</span>' : '') + '</span>';
+  if (l.vicino && l.vicino.length) h += '<p class="tenue nota">Vicino a: ' + esc(l.vicino.join(', ')) + '</p>';
   if (l.nota) h += '<p class="tenue nota">' + esc(l.nota) + '</p>';
   if (l.piatti && l.piatti.length) h += '<p class="piatti-qui"><span>Piatti tipici qui:</span> ' + l.piatti.map((p) => '<span class="et piatto">' + esc(p) + '</span>').join('') + '</p>';
   if (l.q) h += '<p>' + linkMappa(l.q, '', l.pid) + '</p>';
   return h + '</li>';
 }
+function localiVicini(t, titolo) { return (t.locali || []).filter((l) => l.vicino.indexOf(titolo) >= 0); }
 function htmlVicini(t, x) {
-  const v = (t.locali || []).filter((l) => l.vicino.indexOf(x.t) >= 0);
+  const v = localiVicini(t, x.t);
   if (!v.length) return '';
   return '<div class="vicini"><h4>Per mangiare qui vicino</h4><ul>' + v.map((l) => '<li><b>' + esc(l.n) + '</b> <span class="tenue">' + esc(TIPO_LOC[l.tipo].toLowerCase()) + ', ' + '₹'.repeat(l.prezzo || 1) + '</span> ' + htmlVoto(t, l) + '<br>' + esc(l.cosa) + (l.q ? '<br>' + linkMappa(l.q, 'Mappa', l.pid) : '') + '</li>').join('') + '</ul></div>';
 }
@@ -850,28 +871,29 @@ function htmlDoveMangiare(t) {
   return h + '<p class="tenue nota" style="padding-bottom:14px">₹ economico, ₹₹ medio, ₹₹₹ caro: indicativo. Nomi e orari vengono da guide e recensioni: verificarli sul posto.' + (PLACES_KEY ? ' Valutazioni (★ e numero di recensioni) da Google Maps.' : '') + '</p></div>';
 }
 
-function htmlPercorso(p, t, data) {
-  const me = io().id, ad = aderenti(data, p.id), mio = ad.indexOf(me) >= 0, mia = p.proposta && p.autore && p.autore.id === me;
-  let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + stileCitta(t) + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
+function htmlPercorso(p, data) {
+  const me = io().id, vv = votanti(data, p.id), mio = votoDi(data) === p.id, mia = p.proposta && p.autore && p.autore.id === me;
+  const t0 = tappa((p.soste || []).map((s) => s.tappa).find(Boolean) || '') || tappa((CONT.giorni.find((g) => g.data === data) || { tappe: [] }).tappe[0]);
+  let h = '<article class="percorso' + (mio ? ' mio' : '') + '"' + (t0 ? stileCitta(t0) : '') + '><header><h3>' + esc(p.titolo) + '</h3>' + (p.sotto ? '<p>' + esc(p.sotto) + '</p>' : '');
   if (p.proposta) h += '<p class="autore">Proposto da ' + esc(mia ? 'te' : (p.autore && p.autore.n) || 'qualcuno') + '</p>';
-  h += '</header>' + htmlSchema(t, p.soste) + '<ol class="soste">' + (p.soste || []).map((s, i) => {
-    const a = i ? coordSosta(t, p.soste[i - 1].t, p.soste[i - 1].pid) : null, b = coordSosta(t, s.t, s.pid), dist = a && b ? fmtDist(distanzaKm(a, b)) : '';
-    return '<li' + (s.pid && !gp('p:' + s.pid) ? ' data-posto="' + esc(s.pid) + '"' : '') + '><span class="ora">' + esc(s.ora || '') + '</span><div><b><span class="num">' + (i + 1) + '</span>' + esc(s.t) + '</b>' + (s.pid ? ' <a class="mappa piccola" href="' + esc(urlMappa(s.t, s.pid)) + '" target="_blank" rel="noopener" aria-label="' + esc(s.t) + ' su Google Maps">' + ICO.mappa + '</a>' : '') + (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (dist ? '<p class="tenue dist">A ' + dist + ' dalla sosta prima</p>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') + '</div></li>';
+  h += '</header>' + htmlSchema(p.soste) + '<ol class="soste">' + (p.soste || []).map((s, i) => {
+    const a = i ? coordSosta(p.soste[i - 1]) : null, b = coordSosta(s), dist = a && b ? fmtDist(distanzaKm(a, b)) : '';
+    const t = s.tappa && tappa(s.tappa), vic = t ? localiVicini(t, s.t) : [];
+    return '<li' + (s.pid && !gp('p:' + s.pid) ? ' data-posto="' + esc(s.pid) + '"' : '') + '><span class="ora">' + esc(s.ora || '') + '</span><div><b><span class="num">' + (i + 1) + '</span>' + esc(s.t) + '</b>' +
+      ' <a class="mappa piccola" href="' + esc(urlMappa(qSosta(s), s.pid)) + '" target="_blank" rel="noopener" aria-label="' + esc(s.t) + ' su Google Maps">' + ICO.mappa + '</a>' +
+      (s.dur ? ' <span class="tenue">' + esc(s.dur) + '</span>' : '') + (dist ? '<p class="tenue dist">A ' + dist + ' dalla sosta prima</p>' : '') + (s.nota ? '<p class="tenue">' + esc(s.nota) + '</p>' : '') +
+      (vic.length ? '<p class="mangia-qui"><span>Per mangiare qui:</span> ' + vic.map((l) => '<a href="' + esc(urlMappa(l.q || l.n, l.pid)) + '" target="_blank" rel="noopener">' + esc(l.n) + '</a>').join(', ') + '</p>' : '') + '</div></li>';
   }).join('') + '</ol>';
-  const up = urlPercorso(t, p.soste);
+  const up = urlPercorso(p.soste);
   if (up) h += '<p class="riga-mappa percorso-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + ((p.soste || []).length > 1 ? 'Il percorso su Google Maps' : 'Apri in Google Maps') + '</a></p>';
-  h += '<dl class="pasti">' + PASTI.map(([k, n]) => {
-    const m = (p.pasti || {})[k] || {}, l = locale(t, m.l), c = p.completo === k;
-    return '<div' + (c ? ' class="completo"' : '') + '><dt>' + n + (c ? '<span class="et">completo</span>' : '') + '</dt><dd>' + (l ? '<b>' + esc(l.n) + '</b>' + (htmlVoto(t, l) ? '<br>' + htmlVoto(t, l) : '') : '') + (m.c ? (l ? '<br>' : '') + esc(m.c) : '') + (!l && !m.c ? '<span class="tenue">Libero</span>' : '') + '</dd></div>';
-  }).join('') + '</dl>';
-  h += '<footer><button class="btn' + (mio ? '' : ' chiaro') + ' piccolo" data-az="aderisci" data-data="' + esc(data) + '" data-id="' + esc(p.id) + '" aria-pressed="' + mio + '">' + (mio ? 'Ci sto ✓' : 'Ci sto') + '</button>';
-  h += '<span class="chi">' + (ad.length ? esc((s => s.charAt(0).toUpperCase() + s.slice(1))(ad.map(nomeDi).join(', '))) : 'Ancora nessuno') + '</span>';
-  h += '<a class="link" href="#proponi/' + esc(data) + '/' + esc(t.id) + '/' + esc(p.id) + '">' + (mia ? 'Modifica' : 'Copia e cambia') + '</a></footer></article>';
+  h += '<footer><button class="btn' + (mio ? '' : ' chiaro') + ' piccolo" data-az="vota" data-data="' + esc(data) + '" data-id="' + esc(p.id) + '" aria-pressed="' + mio + '">' + (mio ? 'Votato ✓' : 'Voto questo') + '</button>';
+  h += '<span class="chi">' + (vv.length ? vv.length + (vv.length === 1 ? ' voto: ' : ' voti: ') + esc(vv.map(nomeDi).join(', ')) : 'Nessun voto') + '</span>';
+  h += '<a class="link" href="#proponi/' + esc(data) + '/' + esc(p.id) + '">' + (mia ? 'Modifica' : 'Copia e cambia') + '</a></footer></article>';
   return h;
 }
 function htmlAvvisoGruppo() {
-  if (!FIREBASE_DB) return '<p class="avviso-gr">Per ora le adesioni restano su questo dispositivo: il voto con i compagni si attiva appena il database del gruppo è pronto.</p>';
-  if (!codiceGruppo()) return '<p class="avviso-gr">Le adesioni restano su questo dispositivo. Per vedere quelle dei compagni <a href="#impostazioni">entra nel gruppo</a> o apri il link d\'invito.</p>';
+  if (!FIREBASE_DB) return '<p class="avviso-gr">Per ora il voto resta su questo dispositivo.</p>';
+  if (!codiceGruppo()) return '<p class="avviso-gr">Il tuo voto resta su questo dispositivo. Per votare coi compagni <a href="#impostazioni">entra nel gruppo</a> o apri il link d\'invito.</p>';
   if (statoGr.fase === 'errore') return '<p class="avviso-gr err">' + esc(statoGr.errore) + '</p>';
   return '';
 }
@@ -882,104 +904,189 @@ function htmlNome() {
 
 function vistaGiorno(data) {
   const g = CONT.giorni.find((x) => x.data === data); if (!g) return vistaViaggio();
-  let h = '<p class="tenue intro-giorno">' + (g.nota ? esc(g.nota) + '.<br>' : '') + 'Scegli con "Ci sto": chi aderisce allo stesso percorso va insieme. Un solo pasto completo al giorno, a pranzo o a cena.</p>';
+  let h = '<p class="tenue intro-giorno">' + (g.nota ? esc(g.nota) + '.<br>' : '') + 'Un voto a testa per giorno: tocca "Voto questo" sul percorso che preferisci. Chiunque può proporne uno nuovo.</p>';
   h += htmlAvvisoGruppo() + htmlNome();
-  if (!g.tappe.length) h += '<div class="pannello vuoto"><h3>Giorno di viaggio</h3><p class="tenue">Niente percorsi per oggi.</p></div>';
-  g.tappe.forEach((tid) => {
-    const t = tappa(tid); if (!t) return;
-    const lista = percorsiDi(tid, data).map((p, i) => ({ p, i, n: aderenti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
-    h += '<h2 class="sez"' + stileCitta(t) + '>' + arco(t.colore, 18) + esc(t.nome) + '</h2>';
-    h += lista.map((x) => htmlPercorso(x.p, t, data)).join('');
-    h += '<div class="azioni larghe"><a class="chip" href="#proponi/' + esc(data) + '/' + esc(tid) + '">' + ICO.piu + 'Proponi un percorso</a><a class="chip" href="#tappa/' + esc(tid) + '">Cosa vedere e dove mangiare</a></div>';
-  });
-  h += '<p class="pie">' + (CONT.calendarioStimato ? 'Calendario stimato: gli orari dei percorsi vanno adattati al programma del coordinatore e ai tempi del gruppo.' : 'Orari indicativi: si adattano ai trasferimenti e a quello che il gruppo decide col coordinatore.') + '</p>';
+  if (!g.tappe.length) return { titolo: fmtGiorno.format(dataDa(data)), html: h + '<div class="pannello vuoto"><h3>Giorno di viaggio</h3><p class="tenue">Niente percorsi per oggi.</p></div>', indietro: '#viaggio' };
+  const lista = percorsiDelGiorno(data).map((p, i) => ({ p, i, n: votanti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
+  h += '<p class="tappe-giorno">' + g.tappe.map((tid) => { const t = tappa(tid); return t ? '<a class="chip"' + stileCitta(t) + ' href="#tappa/' + esc(tid) + '">' + arco(t.colore, 16) + esc(t.nome) + '</a>' : ''; }).join('') + '</p>';
+  h += lista.map((x) => htmlPercorso(x.p, data)).join('');
+  h += '<div class="azioni larghe"><a class="chip" href="#proponi/' + esc(data) + '">' + ICO.piu + 'Proponi un percorso</a></div>';
+  h += '<p class="pie">Orari indicativi: si adattano ai trasferimenti e a quello che il gruppo decide col coordinatore. Dove mangiare è indicato sotto ogni sosta.</p>';
   return { titolo: fmtGiorno.format(dataDa(data)), html: h, indietro: '#viaggio' };
 }
 
-function nuovaBozza(chiave, data, t, srcId) {
-  const src = srcId ? percorsiDi(t.id).find((p) => p.id === srcId) : null;
+/* ---------- Editor della proposta: luoghi su mappa, ordine a mano o calcolato ---------- */
+// Chiave di un luogo: "v|tappa|titolo" per i luoghi dell'app, "g|place_id|nome" per i posti di Google.
+function chiaveSosta(s) { return s.pid ? 'g|' + s.pid + '|' + s.t : 'v|' + s.tappa + '|' + s.t; }
+function sostaDaChiave(k) { const [tipo, a, b] = k.split('|'); return tipo === 'g' ? { t: b, pid: a } : { tappa: a, t: b }; }
+function nuovaBozza(chiave, data, srcId) {
+  const src = srcId ? percorsiDelGiorno(data).find((p) => p.id === srcId) : null;
   const mia = src && src.proposta && src.autore && src.autore.id === io().id;
-  const b = { chiave, data, tappa: t.id, editId: mia ? src.id : '', titolo: src ? (mia ? src.titolo : src.titolo + ' (variante)') : '', sotto: src ? src.sotto || '' : '', soste: {}, extra: [], completo: src ? src.completo : 'cena', pasti: {} };
-  (src ? src.soste || [] : []).forEach((s) => {
-    if (t.vedere.some((x) => x.t === s.t)) b.soste[s.t] = { on: true, ora: s.ora || '', dur: s.dur || '', nota: s.nota || '' };
-    else b.extra.push({ t: s.t, pid: s.pid || '', ora: s.ora || '' });
-  });
-  PASTI.forEach(([k]) => { const m = src && src.pasti && src.pasti[k]; b.pasti[k] = { l: m ? m.l || '' : '', c: m ? m.c || '' : '' }; });
-  return b;
+  const sel = src ? (src.soste || []).filter((s) => s.pid || vedereDi(s)).map(chiaveSosta) : [];
+  return { chiave, data, editId: mia ? src.id : '', titolo: src ? (mia ? src.titolo : src.titolo + ' (variante)') : '', sotto: src ? src.sotto || '' : '', sel, extra: sel.filter((k) => k[0] === 'g'), modo: src && src.modo === 'auto' ? 'auto' : 'mano', partenza: sel[0] || '', msgOrdine: '' };
+}
+function candidatiBozza(b) {
+  const g = CONT.giorni.find((x) => x.data === b.data), out = [];
+  g.tappe.forEach((tid) => { const t = tappa(tid); if (t) t.vedere.forEach((v) => out.push({ k: 'v|' + tid + '|' + v.t, t: v.t, tappa: t, c: v.c })); });
+  b.extra.forEach((k) => { const s = sostaDaChiave(k), x = gp('p:' + s.pid); out.push({ k, t: s.t, pid: s.pid, c: x && x.c ? x.c : null }); });
+  return out;
 }
 function vistaProponi(arg) {
-  const [data, tid, srcId] = arg.split('/'); const t = tappa(tid);
-  if (!t || !CONT.giorni.some((g) => g.data === data)) return vistaViaggio();
-  if (!BOZZA || BOZZA.chiave !== arg) BOZZA = nuovaBozza(arg, data, t, srcId);
-  const b = BOZZA;
-  let h = '<div' + stileCitta(t) + '><p class="tenue intro-giorno">' + esc(t.nome) + ', ' + esc(fmtLungo.format(dataDa(data))) + '. La proposta la vedono tutti i compagni del gruppo.</p>' + htmlNome();
+  const [data, srcId] = arg.split('/'); const g = CONT.giorni.find((x) => x.data === data);
+  if (!g || !g.tappe.length) return vistaViaggio();
+  if (!BOZZA || BOZZA.chiave !== arg) BOZZA = nuovaBozza(arg, data, srcId);
+  const b = BOZZA, t0 = tappa(g.tappe[0]), cand = candidatiBozza(b);
+  let h = '<div' + stileCitta(t0) + '><p class="tenue intro-giorno">' + esc(fmtLungo.format(dataDa(data))) + ': ' + esc(g.titolo) + '. La proposta la vedono e la votano tutti i compagni del gruppo.</p>' + htmlNome();
   h += '<div class="pannello pieno editor"><label>Titolo<input data-b="titolo" maxlength="60" value="' + esc(b.titolo) + '" placeholder="Es. Mattina al forte, sera sul lago"></label>';
   h += '<label>In due parole<textarea data-b="sotto" rows="2" maxlength="200">' + esc(b.sotto) + '</textarea></label>';
-  h += '<h3 class="ed-sez">Cosa vedere</h3><p class="tenue">Spunta le soste e indica l\'ora, se vuoi.</p><ul class="scegli-soste">';
-  t.vedere.forEach((x, i) => { const s = b.soste[x.t] || {}; h += '<li><label class="riga"><input type="checkbox" data-bs="' + i + '"' + (s.on ? ' checked' : '') + '><span>' + esc(x.t) + '</span></label><input type="time" data-bo="' + i + '" value="' + esc(s.ora || '') + '" aria-label="Ora per ' + esc(x.t) + '"></li>'; });
-  h += '</ul><h3 class="ed-sez">Altri posti da Google Maps</h3>';
-  if (b.extra.length) h += '<ul class="scegli-soste extra">' + b.extra.map((x, i) => '<li><span class="riga">' + ICO.mappa + esc(x.t) + (x.pid ? '' : ' <span class="tenue">(senza posizione)</span>') + '</span><input type="time" data-bx="' + i + '" value="' + esc(x.ora || '') + '" aria-label="Ora per ' + esc(x.t) + '"><button class="link-btn" data-az="togliPosto" data-i="' + i + '">Togli</button></li>').join('') + '</ul>';
-  if (PLACES_KEY) h += '<p class="tenue">Cerca un mercato, un caffè, un tempio: lo aggiungi con la posizione giusta.</p><div class="cerca-posto"><input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul></div>';
-  else h += '<p class="tenue">La ricerca su Google Maps si attiva a breve.</p>';
-  h += '<h3 class="ed-sez">Pasti</h3><p class="tenue">Il pasto completo è uno solo: gli altri restano leggeri.</p><div class="scelta-completo" role="radiogroup" aria-label="Pasto completo">' +
-    ['pranzo', 'cena'].map((k) => '<label class="pill' + (b.completo === k ? ' on' : '') + '"><input type="radio" name="completo" data-b="completo" value="' + k + '"' + (b.completo === k ? ' checked' : '') + '>Completo a ' + k + '</label>').join('') + '</div>';
-  PASTI.forEach(([k, n]) => {
-    const m = b.pasti[k], ok = (t.locali || []).filter((l) => adattoA(l, k, b.completo));
-    if (m.l && !ok.some((l) => l.id === m.l)) m.l = '';
-    h += '<div class="pasto-ed"><label>' + n + (b.completo === k ? ' (completo)' : '') + '<select data-bp="' + k + '"><option value="">Libero o da decidere</option>' + ok.map((l) => '<option value="' + esc(l.id) + '"' + (m.l === l.id ? ' selected' : '') + '>' + esc(l.n) + '</option>').join('') + '</select></label>';
-    h += '<input data-bc="' + k + '" maxlength="80" value="' + esc(m.c) + '" placeholder="Cosa (facoltativo)" aria-label="Cosa mangiare a ' + n.toLowerCase() + '"></div>';
+  h += '<h3 class="ed-sez">Luoghi da visitare</h3><p class="tenue">' + (usaMappa() ? 'Tocca i luoghi sulla mappa o nell\'elenco, nell\'ordine in cui vuoi visitarli.' : 'Tocca i luoghi nell\'ordine in cui vuoi visitarli.') + '</p>';
+  if (usaMappa()) h += '<div id="mappaPosto" class="mappa-ed"></div>';
+  g.tappe.forEach((tid) => {
+    const t = tappa(tid); if (!t) return;
+    if (g.tappe.length > 1) h += '<p class="ed-tappa">' + esc(t.nome) + '</p>';
+    h += '<ul class="scegli-luoghi">' + t.vedere.map((v) => { const k = 'v|' + tid + '|' + v.t, n = b.sel.indexOf(k) + 1; return '<li><button class="luogo' + (n ? ' on' : '') + '" data-az="selLuogo" data-k="' + esc(k) + '" aria-pressed="' + !!n + '"><span class="num">' + (n || '') + '</span>' + esc(v.t) + '</button></li>'; }).join('') + '</ul>';
   });
+  if (b.extra.length) h += '<p class="ed-tappa">Da Google Maps</p><ul class="scegli-luoghi">' + b.extra.map((k) => { const s = sostaDaChiave(k), n = b.sel.indexOf(k) + 1; return '<li><button class="luogo' + (n ? ' on' : '') + '" data-az="selLuogo" data-k="' + esc(k) + '" aria-pressed="' + !!n + '"><span class="num">' + (n || '') + '</span>' + esc(s.t) + '</button></li>'; }).join('') + '</ul>';
+  if (PLACES_KEY) h += '<div class="cerca-posto"><input id="fCerca" type="search" maxlength="80" placeholder="Cerca un altro posto su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul></div>';
+  else h += '<p class="tenue">La ricerca di altri posti su Google Maps si attiva a breve.</p>';
+
+  h += '<h3 class="ed-sez">Ordine</h3><div class="scelta-completo" role="radiogroup" aria-label="Chi decide l\'ordine">' +
+    [['mano', 'Lo decido io'], ['auto', 'Lo calcola Google Maps']].map(([k, n]) => '<label class="pill' + (b.modo === k ? ' on' : '') + '"><input type="radio" name="modo" data-b="modo" value="' + k + '"' + (b.modo === k ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>';
+  if (b.modo === 'auto') {
+    if (b.sel.indexOf(b.partenza) < 0) b.partenza = b.sel[0] || '';
+    h += '<label>Si parte da<select data-b="partenza">' + b.sel.map((k) => '<option value="' + esc(k) + '"' + (k === b.partenza ? ' selected' : '') + '>' + esc(sostaDaChiave(k).t) + '</option>').join('') + '</select></label>';
+    h += '<div class="azioni"><button class="btn chiaro piccolo" data-az="calcolaOrdine"' + (b.sel.length < 3 ? ' disabled' : '') + '>Calcola l\'ordine</button></div>';
+  }
+  if (b.msgOrdine) h += '<p class="tenue">' + esc(b.msgOrdine) + '</p>';
+  if (b.sel.length) {
+    h += '<ol class="ordine-ed">' + b.sel.map((k, i) => '<li><span class="num">' + (i + 1) + '</span><span class="nome">' + esc(sostaDaChiave(k).t) + '</span><button class="icona" data-az="su" data-i="' + i + '" aria-label="Sposta prima"' + (i ? '' : ' disabled') + '>↑</button><button class="icona" data-az="giu" data-i="' + i + '" aria-label="Sposta dopo"' + (i < b.sel.length - 1 ? '' : ' disabled') + '>↓</button><button class="icona" data-az="selLuogo" data-k="' + esc(k) + '" aria-label="Togli">✕</button></li>').join('') + '</ol>';
+    if (!usaMappa()) h += htmlSchema(b.sel.map(sostaDaChiave));
+    const up = urlPercorso(b.sel.map(sostaDaChiave));
+    if (up) h += '<p class="riga-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + 'Prova il percorso su Google Maps</a></p>';
+  } else h += '<p class="tenue">Ancora nessun luogo scelto.</p>';
   h += '<p class="err" id="errProp" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaProposta">' + (b.editId ? 'Salva le modifiche' : 'Proponi') + '</button><a class="btn chiaro" href="#giorno/' + esc(data) + '">Annulla</a>' + (b.editId ? '<button class="btn pericolo" data-az="ritira">Ritira</button>' : '') + '</div></div></div>';
-  return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data };
+  return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data, dopo: () => montaMappa(cand) };
 }
 function bozzaDaCampo(el) {
-  if (!BOZZA || !el.dataset) return false;
-  const t = tappa(BOZZA.tappa), d = el.dataset;
-  if (d.b) { BOZZA[d.b] = el.value; return d.b === 'completo'; }
-  if (d.bs != null || d.bo != null) {
-    const x = t.vedere[+(d.bs != null ? d.bs : d.bo)]; if (!x) return false;
-    const s = BOZZA.soste[x.t] || (BOZZA.soste[x.t] = { on: false, ora: '' });
-    if (d.bs != null) s.on = el.checked; else { s.ora = el.value; if (el.value) { s.on = true; const c = $('[data-bs="' + d.bo + '"]'); if (c) c.checked = true; } }
-    return false;
-  }
-  if (d.bx != null) { const x = BOZZA.extra[+d.bx]; if (x) x.ora = el.value; return false; }
-  if (d.bp) { BOZZA.pasti[d.bp].l = el.value; return false; }
-  if (d.bc) { BOZZA.pasti[d.bc].c = el.value; return false; }
-  return false;
+  if (!BOZZA || !el.dataset || !el.dataset.b) return false;
+  BOZZA[el.dataset.b] = el.value;
+  if (el.dataset.b === 'modo') BOZZA.msgOrdine = '';
+  return el.dataset.b === 'modo';
+}
+function selezionaLuogo(k) {
+  const b = BOZZA, i = b.sel.indexOf(k);
+  if (i >= 0) b.sel.splice(i, 1); else b.sel.push(k);
+  b.msgOrdine = '';
 }
 function salvaProposta() {
-  const b = BOZZA, t = tappa(b.tappa), err = $('#errProp');
+  const b = BOZZA, err = $('#errProp');
   const mostra = (m) => { err.textContent = m; err.hidden = false; };
-  const soste = t.vedere.map((x, i) => ({ x, i, s: b.soste[x.t] })).filter((o) => o.s && o.s.on).map((o) => {
-    const r = { t: o.x.t, _i: o.i }; if (o.s.ora) r.ora = o.s.ora; if (o.s.dur) r.dur = o.s.dur; if (o.s.nota) r.nota = o.s.nota; return r;
-  });
-  b.extra.forEach((x, i) => { const r = { t: x.t, _i: 100 + i }; if (x.pid) r.pid = x.pid; if (x.ora) r.ora = x.ora; soste.push(r); });
-  soste.sort((a, c) => (a.ora || '99') .localeCompare(c.ora || '99') || a._i - c._i); soste.forEach((s) => { delete s._i; if (!s.ora) delete s.ora; });
   if (!b.titolo.trim()) return mostra('Dai un titolo alla proposta.');
-  if (!soste.length) return mostra('Scegli almeno una cosa da vedere.');
+  if (!b.sel.length) return mostra('Scegli almeno un luogo da visitare.');
   if (!io().n) return mostra('Scrivi il tuo nome qui sopra: serve agli altri per sapere chi propone.');
-  const pasti = {}; PASTI.forEach(([k]) => { const m = b.pasti[k]; if (m.l || m.c.trim()) pasti[k] = Object.assign({}, m.l ? { l: m.l } : {}, m.c.trim() ? { c: m.c.trim() } : {}); });
   const id = b.editId || 'u' + nuovoId(), me = io();
   grScrivi({
-    ['proposte/' + id]: { tappa: b.tappa, titolo: b.titolo.trim(), sotto: b.sotto.trim(), soste, pasti, completo: b.completo, autore: { id: me.id, n: me.n }, t: Date.now() },
-    ['adesioni/' + b.data + '/' + id + '/' + me.id]: Date.now()
+    ['proposte/' + id]: { data: b.data, titolo: b.titolo.trim(), sotto: b.sotto.trim(), soste: b.sel.map(sostaDaChiave), modo: b.modo, autore: { id: me.id, n: me.n }, t: Date.now() },
+    ['voti/' + b.data + '/' + me.id]: id
   });
   const data = b.data; BOZZA = null; location.hash = '#giorno/' + data;
 }
 
+// Ordine calcolato: Google Routes API sulle strade (giro che torna alla partenza), altrimenti in linea d'aria sul telefono.
+function ordineLocale(pt) {
+  // pt[0] è la partenza; percorso aperto più corto: tutte le permutazioni fino a 8 luoghi, poi il più vicino.
+  const resto = pt.slice(1), d = (a, b) => (a.c && b.c ? distanzaKm(a.c, b.c) : 0);
+  if (resto.length <= 7) {
+    let best = null, bestL = Infinity;
+    const perm = (arr, l) => { if (!arr.length) { const tot = l.reduce((s, x, i) => s + d(i ? l[i - 1] : pt[0], x), 0); if (tot < bestL) { bestL = tot; best = l.slice(); } return; } arr.forEach((x, i) => perm(arr.slice(0, i).concat(arr.slice(i + 1)), l.concat([x]))); };
+    perm(resto, []); return [pt[0]].concat(best);
+  }
+  const out = [pt[0]], left = resto.slice();
+  while (left.length) { const u = out[out.length - 1]; left.sort((a, b) => d(u, a) - d(u, b)); out.push(left.shift()); }
+  return out;
+}
+function puntoRoutes(p) { return p.pid ? { placeId: p.pid } : { location: { latLng: { latitude: p.c[0], longitude: p.c[1] } } }; }
+async function calcolaOrdine() {
+  const b = BOZZA, cand = candidatiBozza(b), byK = {}; cand.forEach((x) => { byK[x.k] = x; });
+  const pt = [b.partenza].concat(b.sel.filter((k) => k !== b.partenza)).map((k) => byK[k] || Object.assign({ k }, sostaDaChiave(k)));
+  if (pt.some((p) => !p.c && !p.pid)) { b.msgOrdine = 'Manca la posizione di qualche luogo: metti l\'ordine a mano.'; return; }
+  if (PLACES_KEY && navigator.onLine && pt.length <= 27) {
+    try {
+      const r = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': PLACES_KEY, 'X-Goog-FieldMask': 'routes.optimizedIntermediateWaypointIndex' },
+        body: JSON.stringify({ origin: puntoRoutes(pt[0]), destination: puntoRoutes(pt[0]), intermediates: pt.slice(1).map(puntoRoutes), travelMode: 'DRIVE', optimizeWaypointOrder: true, languageCode: 'it' })
+      });
+      const j = await r.json();
+      const ix = r.ok && j.routes && j.routes[0] && j.routes[0].optimizedIntermediateWaypointIndex;
+      if (ix && ix.length === pt.length - 1) { b.sel = [pt[0].k].concat(ix.map((i) => pt[i + 1].k)); b.msgOrdine = 'Ordine calcolato da Google Maps sulle strade, partendo da ' + pt[0].t + '.'; return; }
+    } catch (e) {}
+  }
+  if (pt.some((p) => !p.c)) { b.msgOrdine = 'Senza rete non conosco la posizione dei posti di Google: metti l\'ordine a mano.'; return; }
+  b.sel = ordineLocale(pt).map((p) => p.k);
+  b.msgOrdine = 'Ordine calcolato sul telefono, in linea d\'aria' + (PLACES_KEY ? ' (Google Maps non ha risposto)' : '') + ': controllalo.';
+}
+
+// Mappa Google (Maps JavaScript API) con i luoghi del giorno. Una sola mappa per sessione, spostata tra un disegno e l'altro.
+let MAPPA = null, mapsAttesa = null;
+function usaMappa() { return !!(PLACES_KEY && navigator.onLine); }
+function caricaMaps() {
+  if (window.google && google.maps && google.maps.Map) return Promise.resolve();
+  if (mapsAttesa) return mapsAttesa;
+  mapsAttesa = new Promise((ok, ko) => {
+    window.__mapsPronta = () => ok();
+    const s = document.createElement('script');
+    s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(PLACES_KEY) + '&v=weekly&language=it&region=IN&loading=async&callback=__mapsPronta';
+    s.onerror = () => { mapsAttesa = null; ko(new Error('Mappa non disponibile.')); };
+    document.head.appendChild(s);
+  });
+  return mapsAttesa;
+}
+async function montaMappa(cand) {
+  const box = $('#mappaPosto'); if (!box) return;
+  try { await caricaMaps(); } catch (e) { box.innerHTML = '<p class="tenue">La mappa non si è caricata: scegli dall\'elenco.</p>'; return; }
+  if (!document.body.contains(box)) return;
+  if (!MAPPA) {
+    const el = document.createElement('div'); el.className = 'mappa-g';
+    MAPPA = { el, map: new google.maps.Map(el, { center: { lat: 26.9, lng: 75.8 }, zoom: 12, disableDefaultUI: true, zoomControl: true, gestureHandling: 'cooperative', clickableIcons: false }), segni: [], linea: null, giorno: '' };
+  }
+  box.appendChild(MAPPA.el);
+  const b = BOZZA, m = MAPPA.map;
+  // posizioni mancanti dei posti di Google
+  for (const x of cand) if (!x.c && x.pid) { const p = await gpPosto(x.pid).catch(() => null); if (p && p.c) x.c = p.c; }
+  MAPPA.segni.forEach((s) => s.setMap(null)); MAPPA.segni = [];
+  if (MAPPA.linea) MAPPA.linea.setMap(null);
+  const colore = getComputedStyle(box).getPropertyValue('--citta').trim() || '#24306b';
+  const bounds = new google.maps.LatLngBounds();
+  cand.filter((x) => x.c).forEach((x) => {
+    const n = b.sel.indexOf(x.k) + 1, pos = { lat: x.c[0], lng: x.c[1] };
+    bounds.extend(pos);
+    const s = new google.maps.Marker({
+      map: m, position: pos, title: x.t, zIndex: n ? 100 + n : 1,
+      label: n ? { text: String(n), color: '#fff', fontWeight: '700', fontSize: '13px' } : null,
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: n ? 13 : 8, fillColor: n ? colore : '#ffffff', fillOpacity: 1, strokeColor: colore, strokeWeight: 2 }
+    });
+    s.addListener('click', () => { selezionaLuogo(x.k); disegna(); });
+    MAPPA.segni.push(s);
+  });
+  const path = b.sel.map((k) => cand.find((x) => x.k === k)).filter((x) => x && x.c).map((x) => ({ lat: x.c[0], lng: x.c[1] }));
+  if (path.length > 1) MAPPA.linea = new google.maps.Polyline({ map: m, path, strokeColor: colore, strokeOpacity: 0.7, strokeWeight: 3 });
+  if (MAPPA.giorno !== b.chiave && !bounds.isEmpty()) { m.fitBounds(bounds, 30); MAPPA.giorno = b.chiave; }
+}
+
 function htmlImpostazioniGruppo() {
   let h = '<h2 class="sez">Gruppo di viaggio</h2><section class="pannello pieno">';
-  h += '<p>I percorsi di ogni giorno si scelgono insieme: ognuno dice "Ci sto" e può proporne di nuovi.</p>';
+  h += '<p>I percorsi di ogni giorno si scelgono insieme: un voto a testa per giorno, e ognuno può proporne di nuovi.</p>';
   h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><div class="azioni"><button class="btn chiaro piccolo" data-az="salvaNome">Salva il nome</button></div>';
   if (!FIREBASE_DB) return h + '<p class="tenue" style="margin-top:14px">Il voto con i compagni non è ancora attivo.</p></section>';
-  if (!ACC) return h + '<div style="margin-top:18px">' + htmlAccesso('Per creare il gruppo o entrarci serve un accesso: così le tue scelte ti seguono su telefono e computer.') + '</div></section>';
-  h += '<p style="margin-top:16px">Accesso ' + (ACC.metodo === 'google' ? 'con Google' : 'con email') + (ACC.email ? ': <b>' + esc(ACC.email) + '</b>' : '') + '.</p>';
+  if (!ACC) return h + '<div style="margin-top:18px">' + htmlAccesso('Per creare il gruppo o entrarci serve il tuo numero di cellulare: così il voto ti segue anche se cambi telefono.') + '</div></section>';
+  h += '<p style="margin-top:16px">Accesso ' + (ACC.tel ? 'col numero <b>' + esc(ACC.tel) + '</b>' : ACC.metodo === 'google' ? 'con Google' : 'con email') + '.</p>';
+  if (!ACC.tel) h += '<div style="margin-top:10px">' + htmlAccesso('Collega il tuo numero di cellulare: dal prossimo accesso basterà quello.') + '</div>';
   if (codiceGruppo()) {
     h += '<p style="margin-top:10px"><b>Sei in un gruppo.</b> ' + (statoGr.fase === 'errore' ? '<span class="err">' + esc(statoGr.errore) + '</span>' : statoGr.ultima ? 'Aggiornato il ' + esc(fmtOra.format(new Date(statoGr.ultima))) + '.' : '') + (Object.keys(coda).length ? ' Modifiche in attesa di invio.' : '') + '</p>';
     h += '<div class="azioni"><button class="btn piccolo" data-az="invita">Invita i compagni</button><button class="btn chiaro piccolo" data-az="grAggiorna">Aggiorna</button><button class="btn pericolo piccolo" data-az="esciGruppo">Esci dal gruppo</button></div><p class="tenue" id="msgGruppo"></p>';
-    h += '<p class="tenue" style="margin-top:10px">Chi ha il link d\'invito può entrare nel gruppo: mandalo solo ai compagni di viaggio. Ognuno può cambiare solo le proprie adesioni e proposte.</p>';
+    h += '<p class="tenue" style="margin-top:10px">Chi ha il link d\'invito può entrare nel gruppo: mandalo solo nel gruppo WhatsApp del viaggio. Ognuno può cambiare solo il proprio voto e le proprie proposte.</p>';
   } else {
-    h += '<p class="tenue" style="margin-top:10px">Uno solo crea il gruppo e manda il link d\'invito agli altri, per esempio su WhatsApp.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
+    h += '<p class="tenue" style="margin-top:10px">Uno solo crea il gruppo e manda il link d\'invito nel gruppo WhatsApp del viaggio.</p><div class="azioni"><button class="btn piccolo" data-az="creaGruppo">Crea il gruppo</button></div><p class="err" id="errGruppo" hidden></p>';
   }
   h += '<div class="azioni" style="margin-top:14px"><button class="btn chiaro piccolo" data-az="esciAccount">Esci dall\'account</button></div>';
   if (proprietario()) h += '<p class="tenue" style="margin-top:10px">Identificativo del tuo account (serve a riconoscerti sui dispositivi nuovi): <span class="codice">' + esc(ACC.uid) + '</span></p>';
@@ -987,19 +1094,18 @@ function htmlImpostazioniGruppo() {
 }
 function vistaGruppo(codice) {
   let h = '';
-  const dopo = () => montaGoogle();
   if (!/^[a-z2-9]{16,40}$/.test(codice || '')) h = '<div class="pannello vuoto"><h3>Link d\'invito non valido</h3><p class="tenue">Chiedi di nuovo il link a chi ha creato il gruppo.</p></div>';
   else if (codice === codiceGruppo() && ACC) h = '<div class="pannello vuoto"><h3>Sei già in questo gruppo</h3><p><a class="chip" href="#viaggio">Vai al viaggio</a></p></div>';
   else {
-    h = '<div class="pannello pieno"><h3>Ti hanno invitato nel gruppo di viaggio</h3><p>Entrando vedi i percorsi di ogni giorno, chi aderisce a cosa, e puoi proporre i tuoi. Gli altri vedranno il tuo nome, le tue adesioni e le tue proposte.</p>';
+    h = '<div class="pannello pieno"><h3>Ti hanno invitato nel gruppo di viaggio</h3><p>Entrando vedi i percorsi di ogni giorno, voti quello che preferisci e puoi proporne di tuoi. Gli altri vedranno il tuo nome, i tuoi voti e le tue proposte, non il tuo numero.</p>';
     if (codiceGruppo() && codiceGruppo() !== codice) h += '<p class="err">Sei già in un altro gruppo: entrando lasci quello.</p>';
     if (!FIREBASE_DB) h += '<p class="err">Questa versione dell\'app non ha ancora il gruppo: aggiornala dalle impostazioni e riapri il link.</p>';
     h += '<label>Il tuo nome<input id="fNome" maxlength="40" value="' + esc(io().n) + '" autocomplete="given-name"></label><p class="err" id="errGruppo" hidden></p>';
     if (ACC) h += '<div class="azioni larghe"><button class="btn" data-az="entra" data-codice="' + esc(codice) + '">Entra nel gruppo</button></div>';
-    else { LS.set('rj.invito', codice); h += '<div style="margin-top:16px">' + htmlAccesso('Per entrare serve un accesso: con lo stesso account ritrovi le tue scelte su telefono e computer.') + '</div>'; }
+    else { LS.set('rj.invito', codice); h += '<div style="margin-top:16px">' + htmlAccesso('Per entrare basta il tuo numero di cellulare.') + '</div>'; }
     h += '<p class="tenue" style="margin-top:12px"><a href="privacy.html">Informativa sulla privacy</a></p></div>';
   }
-  return { titolo: 'Gruppo di viaggio', html: h, indietro: '#viaggio', dopo };
+  return { titolo: 'Gruppo di viaggio', html: h, indietro: '#viaggio' };
 }
 async function entraNelGruppo(codice, nome) {
   if (codiceGruppo() !== codice) { GR = {}; LS.set('rj.gr', GR); }
@@ -1008,18 +1114,27 @@ async function entraNelGruppo(codice, nome) {
   await grSincronizza(); location.hash = '#viaggio'; disegna();
 }
 async function azioneGruppo(az, el) {
-  if (az === 'aderisci') {
-    const d = el.dataset.data, pid = el.dataset.id, me = io().id, mio = aderenti(d, pid).indexOf(me) >= 0;
-    grScrivi({ ['adesioni/' + d + '/' + pid + '/' + me]: mio ? null : Date.now() });
+  if (az === 'vota') {
+    const d = el.dataset.data, pid = el.dataset.id, me = io().id;
+    grScrivi({ ['voti/' + d + '/' + me]: votoDi(d) === pid ? null : pid });
     disegna(); return true;
   }
   if (az === 'salvaNome') { salvaNome($('#fNome').value); disegna(); return true; }
   if (az === 'salvaProposta') { salvaProposta(); return true; }
-  if (az === 'aggiungiPosto') { if (!BOZZA.extra.some((x) => x.pid === el.dataset.pid)) BOZZA.extra.push({ t: el.dataset.n, pid: el.dataset.pid, ora: '' }); sessioneCerca = ''; disegna(); const c = $('#fCerca'); if (c) c.focus(); return true; }
-  if (az === 'togliPosto') { BOZZA.extra.splice(+el.dataset.i, 1); disegna(); return true; }
+  if (az === 'selLuogo') { selezionaLuogo(el.dataset.k); disegna(); return true; }
+  if (az === 'su' || az === 'giu') { const s = BOZZA.sel, i = +el.dataset.i, j = az === 'su' ? i - 1 : i + 1; if (j >= 0 && j < s.length) { [s[i], s[j]] = [s[j], s[i]]; BOZZA.modo = 'mano'; BOZZA.msgOrdine = ''; } disegna(); return true; }
+  if (az === 'calcolaOrdine') { el.disabled = true; el.textContent = 'Calcolo…'; await calcolaOrdine(); disegna(); return true; }
+  if (az === 'aggiungiPosto') {
+    const k = 'g|' + el.dataset.pid + '|' + String(el.dataset.n).replace(/\|/g, ' ');
+    if (BOZZA.extra.indexOf(k) < 0) BOZZA.extra.push(k);
+    if (BOZZA.sel.indexOf(k) < 0) BOZZA.sel.push(k);
+    sessioneCerca = ''; gpPosto(el.dataset.pid).catch(() => null).then(() => disegnaSePossibile()); disegna(); return true;
+  }
   if (az === 'ritira') {
     if (!el.dataset.conferma) { el.dataset.conferma = '1'; el.textContent = 'Conferma: ritira'; return true; }
-    const data = BOZZA.data; grScrivi({ ['proposte/' + BOZZA.editId]: null }); BOZZA = null; location.hash = '#giorno/' + data; return true;
+    const data = BOZZA.data, id = BOZZA.editId, w = { ['proposte/' + id]: null };
+    Object.entries((gruppo().voti || {})[data] || {}).forEach(([chi, v]) => { if (v === id && chi === io().id) w['voti/' + data + '/' + chi] = null; });
+    grScrivi(w); BOZZA = null; location.hash = '#giorno/' + data; return true;
   }
   if (az === 'creaGruppo' || az === 'entra') {
     const n = $('#fNome').value.trim(), err = $('#errGruppo');
@@ -1033,9 +1148,9 @@ async function azioneGruppo(az, el) {
   if (az === 'esciAccount') { esciAccount(); disegna(); return true; }
   if (az === 'invita') {
     const link = location.origin + location.pathname + '#gruppo/' + codiceGruppo(), msg = $('#msgGruppo');
-    const testo = 'Per scegliere insieme i percorsi del Rajasthan, apri questo link nell\'app Tutto Rajasthan:';
+    const testo = 'Per votare insieme i percorsi del Rajasthan, apri questo link nell\'app Tutto Rajasthan:';
     try { if (navigator.share) { await navigator.share({ title: 'Tutto Rajasthan, gruppo di viaggio', text: testo, url: link }); return true; } } catch (x) { if (x && x.name === 'AbortError') return true; }
-    try { await navigator.clipboard.writeText(testo + ' ' + link); msg.textContent = 'Link copiato: incollalo nella chat del gruppo.'; } catch (x) { msg.textContent = link; }
+    try { await navigator.clipboard.writeText(testo + ' ' + link); msg.textContent = 'Link copiato: incollalo nel gruppo WhatsApp.'; } catch (x) { msg.textContent = link; }
     return true;
   }
   if (az === 'grAggiorna') { await grSincronizza(); disegna(); return true; }
@@ -1046,7 +1161,6 @@ async function azioneGruppo(az, el) {
   return false;
 }
 
-/* ---------- Viste ---------- */
 let rotta = { nome: 'viaggio', arg: '' };
 let disegnoRimandato = false;
 function leggiRotta() {
@@ -1113,7 +1227,7 @@ function vistaViaggio() {
     h += '<li' + cl + stileCitta(t0) + '><span class="perla">' + (i + 1) + '</span><div class="cosa"><span class="quando">' + esc(fmtLungo.format(dataDa(g.data))) + '</span><h3>' + esc(g.titolo) + '</h3>';
     if (g.nota) h += '<p class="tenue">' + esc(g.nota) + '</p>';
     h += '<div class="azioni">' + g.tappe.map((id) => { const t = tappa(id); return t ? '<a class="chip citta" href="#tappa/' + esc(id) + '"' + stileCitta(t) + '>' + esc(t.nome) + '</a>' : ''; }).join('');
-    if (g.tappe.length) { const n = g.tappe.reduce((a, id) => a + percorsiDi(id, g.data).filter((p) => aderenti(g.data, p.id).indexOf(io().id) >= 0).length, 0); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Ci sto' : 'Percorsi') + '</a>'; }
+    if (g.tappe.length) { const n = votoDi(g.data); h += '<a class="chip' + (n ? ' scritto' : '') + '" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + (n ? 'Votato' : 'Percorsi') + '</a>'; }
     if (proprietario()) h += '<a class="chip' + (d && d.testo ? ' scritto' : '') + '" href="#diario/' + esc(g.data) + '" aria-label="Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '">' + ICO.penna + (d && d.testo ? 'Scritto' : 'Diario') + '</a>';
     h += '</div></div>';
     h += '</li>';
@@ -1212,7 +1326,7 @@ function vistaTappa(id) {
   const sit = voci('foto').filter((v) => v.tipo === 'situazione' && (v.dove || []).indexOf(t.id) >= 0).sort(perOrdine);
   if (sit.length && proprietario()) h += '<h2 class="sez">' + arco(t.colore, 18) + 'Fotografia qui</h2><div class="pannello rimandi">' + sit.map((v) => '<a href="#foto/s/' + esc(v.id) + '"><div><h3>' + esc(v.titolo) + '</h3><p class="tenue">' + esc(v.sotto || '') + '</p></div>' + ICO.freccia + '</a>').join('') + '</div>';
   const gg = giorniDi(t.id);
-  if (gg.length && (t.percorsi || []).length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + 'Percorsi del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
+  if (gg.length) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#giorno/' + esc(g.data) + '">' + ICO.bussola + 'Percorsi del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
   if (gg.length && proprietario()) h += '<div class="azioni larghe">' + gg.map((g) => '<a class="chip" href="#diario/' + esc(g.data) + '">' + ICO.penna + 'Diario del ' + esc(fmtBreve.format(dataDa(g.data))) + '</a>').join('') + '</div>';
   let pie = METEO ? 'Meteo di Open-Meteo, aggiornato il ' + esc(fmtOra.format(new Date(METEO.t))) + '. ' : '';
   if (t.foto && t.foto.url) pie += 'Foto: ' + esc(t.foto.soggetto || '') + ', di ' + esc(t.foto.autore) + ', <a href="' + esc(t.foto.pagina) + '" target="_blank" rel="noopener">' + esc(t.foto.licenza) + ', Wikimedia Commons</a>.';
@@ -1575,7 +1689,6 @@ function vistaImpostazioni() {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
       if (GOOGLE_CLIENT_ID && modo !== 'github' && navigator.onLine) caricaGoogle().catch(() => {});
-      montaGoogle();
       const el = $('#infoMemoria');
       if (!memoriaOk) { el.textContent = 'La memoria del dispositivo non è disponibile.'; return; }
       if (navigator.storage && navigator.storage.persisted) navigator.storage.persisted().then((p) => { el.textContent = p ? 'Memoria protetta: il sistema non cancellerà i dati per fare spazio.' : 'Memoria non protetta: installa l\'app sulla schermata Home per proteggerla.'; });
