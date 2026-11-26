@@ -488,3 +488,24 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .wiki a { font-weight: 600; text-decoration: underline; padding: 6px 0; }
 .riga-wiki { margin: 2px 0 0; }
 .wiki-citta { margin: 4px 0 14px; line-height: 1.9; }
+
+/* ---------- Link tra voci, posti del gruppo, posti per mangiare nei percorsi ---------- */
+.nome-loc { font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+a.et.piatto { text-decoration: none; color: var(--inchiostro); }
+.locale .nota a, .soste b a, .mangia-qui a { text-decoration: underline; text-underline-offset: 2px; }
+.evidenza { animation: evidenza 2.2s ease-out; border-radius: 10px; }
+@keyframes evidenza { 0%, 40% { background: color-mix(in srgb, var(--calendula) 30%, transparent); } 100% { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .evidenza { animation: none; outline: 3px solid var(--calendula); } }
+.agg-tit { font-size: 14px; font-weight: 700; color: var(--tenue); margin: 14px 0 4px; }
+.posti-g { list-style: none; padding: 0; margin: 0 0 6px; }
+.posti-g li { padding: 8px 0; border-bottom: 1px solid var(--linea); font-size: 15.5px; line-height: 1.45; }
+.posti-g li:last-child { border-bottom: 0; }
+.cerca-posto.agg { margin: 10px 0 6px; }
+.luogo.cibo { border-style: dashed; }
+.luogo.cibo.on { border-style: solid; border-color: #c2410c; background: color-mix(in srgb, #c2410c 12%, var(--foglio)); }
+.luogo.cibo.on .num, .soste .num.cibo { background: #c2410c; border-color: #c2410c; }
+.ed-cibo { margin-top: 4px; }
+.ed-cibo summary { cursor: pointer; list-style: revert; }
+.piccola-et { padding: 1px 8px; font-size: 12px; vertical-align: 2px; }
+.piccola-pill { min-height: 40px; padding: 6px 12px; font-size: 14.5px; }
+.cerca-posto .scelta-completo { margin-bottom: 8px; }
