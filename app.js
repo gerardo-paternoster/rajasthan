@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-26.1';
+const VERSIONE = '2026-11-26.2';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -628,7 +628,7 @@ function aggiornaModoOspite() {
 
 /* ---------- Google Places (API New, via REST): valutazioni, posizioni, ricerca dei posti ---------- */
 // Chiave limitata a Places API (New) e al dominio dell'app. Vuota = niente valutazioni né ricerca.
-const PLACES_KEY = '';
+const PLACES_KEY = 'AIzaSyDSZS0KLCb47CP52WmQ4V8fSF2Sp0dZhrU';
 const URL_PLACES = 'https://places.googleapis.com/v1/';
 let GP = LS.get('rj.gp', {});
 const GP_DURATA = 30 * 864e5; // i dati di Google si tengono al massimo 30 giorni
