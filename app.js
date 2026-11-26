@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-26.3';
+const VERSIONE = '2026-11-27.1';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -788,7 +788,10 @@ const NOME_PASTO = { colazione: 'Colazione', pranzo: 'Pranzo', cena: 'Cena', spu
 function urlWiki(lingua, titolo) { return 'https://' + lingua + '.wikipedia.org/w/index.php?search=' + encodeURIComponent(titolo) + '&go=Go'; }
 function linkWiki(w, prima) {
   if (!w) return '';
-  return '<span class="wiki">' + ICO.libro + (prima ? esc(prima) + ' ' : '') + 'Wikipedia: <a href="' + esc(urlWiki('it', w.it)) + '" target="_blank" rel="noopener" lang="it">italiano</a>, <a href="' + esc(urlWiki('en', w.en)) + '" target="_blank" rel="noopener" lang="en">inglese</a></span>';
+  const l = [];
+  if (w.it) l.push('<a href="' + esc(urlWiki('it', w.it)) + '" target="_blank" rel="noopener" lang="it">italiano</a>');
+  if (w.en) l.push('<a href="' + esc(urlWiki('en', w.en)) + '" target="_blank" rel="noopener" lang="en">inglese</a>');
+  return '<span class="wiki">' + ICO.libro + (prima ? esc(prima) + ' ' : '') + 'Wikipedia: ' + l.join(', ') + '</span>';
 }
 function urlMappa(q, pid) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) + (pid ? '&query_place_id=' + encodeURIComponent(pid) : ''); }
 function linkMappa(q, testo, pid) { return q ? '<a class="mappa" href="' + esc(urlMappa(q, pid)) + '" target="_blank" rel="noopener">' + ICO.mappa + esc(testo || 'Apri in Google Maps') + '</a>' : ''; }
@@ -1254,7 +1257,7 @@ function vistaTappe() {
 const PICCANTE = ['Non piccante', 'Poco piccante', 'Piccante', 'Molto piccante'];
 function htmlEtichette(x) {
   if (x.piccante == null && x.veg == null) return '';
-  let h = '<span class="etichette">';
+  let h = '<span class="etichette">' + (x.top ? '<span class="et top">★ Da non perdere</span>' : '');
   if (x.piccante != null) h += '<span class="et pic p' + x.piccante + '"><i></i><i></i><i></i>' + PICCANTE[x.piccante] + '</span>';
   if (x.veg != null) h += '<span class="et">' + (x.veg ? 'Vegetariano' : 'Con carne') + '</span>';
   return h + '</span>';
@@ -1271,6 +1274,7 @@ function urlFotoVoci() {
   return [...u];
 }
 async function scaricaFotoVoci(msg) {
+  msg = msg || { set textContent(v) {} };
   if (!('caches' in window)) { msg.textContent = 'Questo browser non permette di salvare le foto.'; return; }
   if (!navigator.onLine) { msg.textContent = 'Serve la connessione: riprova quando sei online.'; return; }
   const cache = await caches.open('rajasthan-foto'), lista = urlFotoVoci();
@@ -1290,7 +1294,7 @@ function htmlSegni(t, lista, k, titolo, etichetta) {
     h += '<li><button class="spunta' + (on ? ' on' : '') + '" data-az="segno" data-id="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + esc(etichetta + ': ' + x.t) + '"></button>';
     const testa = '<h3>' + esc(x.t) + '</h3>' + (x.d ? '<p>' + esc(x.d) + '</p>' : '') + htmlEtichette(x);
     if (x.x && x.x.length) {
-      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (k === 'v' && x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : htmlDoveProvarlo(t, x)) + '</details>';
+      h += '<details class="dett"><summary><div>' + testa + '</div>' + ICO.giu + '</summary>' + htmlFotoVoce(x) + '<dl>' + x.x.map((r) => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl>' + (k === 'v' && x.q ? '<p class="riga-mappa">' + linkMappa(x.q) + '</p>' : '') + (x.w ? '<p class="riga-wiki">' + linkWiki(x.w) + '</p>' : '') + (k === 'v' ? htmlVicini(t, x) : htmlDoveProvarlo(t, x)) + '</details>';
     } else h += '<div>' + testa + '</div>';
     h += '</li>';
   });
@@ -1688,7 +1692,7 @@ function vistaImpostazioni() {
   h += '<p>' + (versioneNuova ? '<b>È pronta una versione nuova.</b>' : 'Versione ' + esc(VERSIONE) + '.') + '</p><div class="azioni" style="margin:10px 0 14px"><button class="btn' + (versioneNuova ? '' : ' chiaro') + '" data-az="aggiornaApp">Aggiorna l\'app</button>' + (installa ? '<button class="btn chiaro" data-az="installa">Installa sul dispositivo</button>' : '') + '</div><p class="tenue" id="msgApp"></p>';
   h += '<p class="tenue" id="infoMemoria"></p><p class="tenue" style="margin-top:8px">Contenuti aggiornati al ' + esc(fmtBreve.format(dataDa(CONT.aggiornato))) + ' ' + dataDa(CONT.aggiornato).getFullYear() + '. Il pulsante scarica subito l\'ultima versione; i tuoi dati non vengono toccati.</p>';
   h += '<p class="tenue" style="margin-top:8px">Meteo e qualità dell\'aria: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="text-decoration:underline">Open-Meteo</a>' + (METEO ? ', aggiornati il ' + esc(fmtOra.format(new Date(METEO.t))) : ', non ancora scaricati') + '.</p><div class="azioni"><button class="btn chiaro" data-az="meteo">Aggiorna il meteo</button></div>' +
-    '<p class="tenue" style="margin-top:14px">Le foto di luoghi e piatti si scaricano quando apri un dettaglio. Per averle tutte anche offline (circa 3 MB) scaricale prima di partire, col Wi-Fi.</p><div class="azioni"><button class="btn chiaro" data-az="fotoVoci">Scarica tutte le foto</button></div><p class="tenue" id="msgFoto"></p></section><p class="pie"><a href="privacy.html">Informativa sulla privacy</a></p>';
+    '<p class="tenue" style="margin-top:14px">Le foto di luoghi e piatti (circa 3 MB) si scaricano da sole a ogni avvio, se manca qualcosa, e poi si vedono anche offline. Se il telefono è in risparmio dati le scarichi da qui.</p><div class="azioni"><button class="btn chiaro" data-az="fotoVoci">Controlla e scarica le foto</button></div><p class="tenue" id="msgFoto"></p></section><p class="pie"><a href="privacy.html">Informativa sulla privacy</a></p>';
   return {
     titolo: 'Impostazioni', html: h, indietro: '#viaggio', dopo() {
       // Lo script di Google va caricato prima del tocco: una finestra di accesso aperta in ritardo verrebbe bloccata.
@@ -1881,6 +1885,7 @@ setInterval(() => { if (document.visibilityState === 'visible') grSincronizza();
   sincronizza(true);
   aggiornaMeteo(false);
   controllaVersione();
-  scaricaFoto();
+  // All'avvio si scaricano le foto mancanti (testate, luoghi e piatti), una alla volta, senza bloccare l'app.
+  scaricaFoto().then(() => { const c = navigator.connection; if (!(c && c.saveData)) setTimeout(() => scaricaFotoVoci(), 4000); });
   grSincronizza();
 })();

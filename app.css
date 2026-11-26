@@ -469,6 +469,7 @@ body.ospite .tab a[data-tab="liste"], body.ospite .tab a[data-tab="foto"], body.
 .riga-voto { margin-top: 2px; }
 .piatti-qui { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .piatti-qui > span:first-child { font-size: 14px; font-weight: 600; color: var(--tenue); }
+.et.top { border-color: var(--calendula); color: var(--inchiostro); background: color-mix(in srgb, var(--calendula) 22%, transparent); }
 .et.piatto { border-color: var(--calendula); background: color-mix(in srgb, var(--calendula) 16%, transparent); }
 .mappa.piccola { min-height: 0; vertical-align: -3px; }
 .mappa.piccola svg { width: 18px; height: 18px; }

@@ -1,5 +1,5 @@
 {
- "aggiornato": "2026-11-26",
+ "aggiornato": "2026-11-27",
  "partenza": "2026-12-20",
  "rientro": "2027-01-05",
  "calendarioStimato": false,
@@ -318,7 +318,7 @@
    "mangiare": [
     {
      "t": "Paratha ripiene",
-     "d": "In Paranthe Wali Gali, il vicolo delle paratha di Chandni Chowk, attivo dall'Ottocento. Meglio al mattino.",
+     "d": "Pane integrale ripieno, cotto nel ghee in padella.",
      "piccante": 1,
      "veg": true,
      "x": [
@@ -335,6 +335,11 @@
        "Nei locali storici del vicolo, come Pandit Gaya Prasad Shiv Charan."
       ]
      ],
+     "w": {
+      "en": "Paratha",
+      "it": "Paratha"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Triangle_paratha_%28cropped%29.JPG/500px-Triangle_paratha_%28cropped%29.JPG",
       "autore": "Nithyasrm",
@@ -344,7 +349,7 @@
     },
     {
      "t": "Chaat e jalebi",
-     "d": "Dahi bhalle, golgappe e jalebi caldi nei banchi storici della via principale.",
+     "d": "Gli spuntini di strada agrodolci di Delhi e le spirali fritte nello sciroppo.",
      "piccante": 2,
      "veg": true,
      "x": [
@@ -357,14 +362,18 @@
        "Spirali di pastella fritte e immerse nello sciroppo, croccanti fuori e succose dentro, da mangiare bollenti."
       ],
       [
-       "Dove",
-       "Natraj Dahi Bhalla, aperto dal 1940, per dahi bhalle e aloo tikki; Old Famous Jalebi Wala, del 1884, all'angolo di Dariba Kalan."
-      ],
-      [
        "Attenzione",
        "I golgappe con l'acqua del banco sono il rischio igienico più alto: meglio saltarli."
+      ],
+      [
+       "Dove",
+       "Natraj Dahi Bhalla, aperto dal 1940, per dahi bhalle e aloo tikki; Old Famous Jalebi Wala, del 1884, all'angolo di Dariba Kalan."
       ]
      ],
+     "w": {
+      "en": "Chaat"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Jalebi_making_process_at_Old_and_famous_Jalebiwala_shop_at_Chandni_Chowk%2C_DelhiIMG_20150401_135811.jpg/500px-Jalebi_making_process_at_Old_and_famous_Jalebiwala_shop_at_Chandni_Chowk%2C_DelhiIMG_20150401_135811.jpg",
       "autore": "Sumita Roy Dutta",
@@ -374,8 +383,8 @@
      }
     },
     {
-     "t": "Kebab e cucina moghul",
-     "d": "Nei vicoli attorno alla Jama Masjid (Gali Kababian, Matia Mahal). È cibo da sera, dopo le 19.",
+     "t": "Cucina moghul",
+     "d": "Kebab, curry di carne e pane del tandoor: la cucina delle corti moghul.",
      "piccante": 2,
      "veg": false,
      "x": [
@@ -389,9 +398,20 @@
       ],
       [
        "Dove",
-       "Karim's, nel vicolo di fronte alla porta 1 della Jama Masjid, aperto da più di cento anni."
+       "Karim's, nel vicolo di fronte alla porta 1 della Jama Masjid, aperto da più di cento anni. Nei vicoli di Gali Kababian e Matia Mahal è cibo da sera, dopo le 19."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Mughlai cuisine"
+     },
+     "top": true,
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Murgh_Musallam_Steamed.JPG/500px-Murgh_Musallam_Steamed.JPG",
+      "autore": "Miansari66",
+      "licenza": "CC0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Murgh_Musallam_Steamed.JPG",
+      "nota": "Murgh musallam"
+     }
     },
     {
      "t": "Chole bhature",
@@ -404,14 +424,17 @@
        "Curry di ceci speziato e acidulo con un pane fritto che si gonfia come un pallone. Colazione pesante, da camionisti."
       ],
       [
-       "Dove",
-       "Sita Ram Diwan Chand a Paharganj, che fa solo questo piatto."
-      ],
-      [
        "Quando",
        "La mattina: molti banchi finiscono prima di pranzo."
+      ],
+      [
+       "Dove",
+       "Sita Ram Diwan Chand a Paharganj, che fa solo questo piatto."
       ]
      ],
+     "w": {
+      "en": "Chole bhature"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Chole_Bhature_from_Nagpur.JPG/500px-Chole_Bhature_from_Nagpur.JPG",
       "autore": "Dheerajk88",
@@ -542,7 +565,7 @@
      "q": "Karim's, Jama Masjid, Delhi",
      "pid": "ChIJyy_Vxxj9DDkRPXF11X7EfT0",
      "piatti": [
-      "Kebab e cucina moghul"
+      "Cucina moghul"
      ]
     },
     {
@@ -733,19 +756,38 @@
    "mangiare": [
     {
      "t": "Ker sangri",
-     "d": "Il piatto del deserto: bacche e baccelli secchi saltati con spezie.",
+     "d": "Bacche e baccelli selvatici del deserto, seccati e saltati con spezie: aspro e terroso.",
      "piccante": 2,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Ker (bacche) e sangri (baccelli) di piante del deserto, seccati e cucinati con peperoncino, amchur e olio di senape. Asprigno e piccante."
+       "Bacche di cappero del deserto (ker) e baccelli di un albero locale (sangri), essiccati e cotti con spezie e olio di senape. Sapore asprigno e amarognolo."
       ],
       [
-       "Con cosa",
-       "Con roti di miglio o chapati."
+       "Da sapere",
+       "Esiste solo nel Rajasthan del deserto: le piante crescono nel Thar e si raccolgono una volta l'anno. È il piatto più \"del luogo\" del viaggio."
+      ],
+      [
+       "Come si mangia",
+       "Con il pane di miglio (bajra roti)."
+      ],
+      [
+       "Dove",
+       "Shekhawati Rooftop, a Mandawa."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Capparis decidua",
+      "it": "Capparis decidua"
+     },
+     "top": true,
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ker_Sangri.jpg/500px-Ker_Sangri.jpg",
+      "autore": "AKSHRAJJODHA",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Ker_Sangri.jpg"
+     }
     },
     {
      "t": "Kadhi",
@@ -760,8 +802,15 @@
       [
        "Come si mangia",
        "Col riso (kadhi chawal) o con i roti. Cucina di casa, si trova facilmente nei locali piccoli."
+      ],
+      [
+       "Dove",
+       "Shekhawati Rooftop, col riso (kadhi chawal)."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Kadhi"
+     }
     },
     {
      "t": "Bajre ki roti e chutney d'aglio",
@@ -777,7 +826,11 @@
        "Da sapere",
        "La lehsun ki chutney è fortissima: assaggiarla prima con la punta del pane."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Pearl millet",
+      "it": "Pennisetum glaucum"
+     }
     }
    ],
    "consigli": [
@@ -1048,7 +1101,7 @@
    "mangiare": [
     {
      "t": "Bikaneri bhujia",
-     "d": "Lo snack croccante e speziato di farina di legumi per cui la città è famosa. Da comprare sfuso nelle botteghe storiche.",
+     "d": "Lo snack croccante e speziato di farina di legumi per cui Bikaner è famosa.",
      "piccante": 2,
      "veg": true,
      "x": [
@@ -1065,6 +1118,10 @@
        "Bhikharam Chandmal vicino a Kote Gate, o al Bhujia Bazar lì vicino. Si compra sfuso, a peso: si viaggia bene e dura settimane."
       ]
      ],
+     "w": {
+      "en": "Bikaneri bhujia"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Shop_selling_Bikaneri_bhujia_in_Jaipur.jpg/500px-Shop_selling_Bikaneri_bhujia_in_Jaipur.jpg",
       "autore": "Nagarjun Kandukuru",
@@ -1075,7 +1132,7 @@
     },
     {
      "t": "Rasgulla e dolci al latte",
-     "d": "",
+     "d": "Palline spugnose di formaggio fresco nello sciroppo.",
      "piccante": 0,
      "veg": true,
      "x": [
@@ -1088,6 +1145,9 @@
        "Chhotu Motu Joshi, sulla Station Road, bottega di oltre un secolo: anche per kachori e jalebi la mattina."
       ]
      ],
+     "w": {
+      "en": "Rasgulla"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Bengali_Sponge_Roshogolla_in_date_palm_jaggery_syrup.jpg/500px-Bengali_Sponge_Roshogolla_in_date_palm_jaggery_syrup.jpg",
       "autore": "Prianxi",
@@ -1098,7 +1158,7 @@
     },
     {
      "t": "Kachori",
-     "d": "Al mattino.",
+     "d": "Fagottino fritto ripieno di lenticchie speziate, a colazione.",
      "piccante": 2,
      "veg": true,
      "x": [
@@ -1109,8 +1169,15 @@
       [
        "Quando",
        "Colazione o merenda, appena fritte."
+      ],
+      [
+       "Dove",
+       "Chhotu Motu Joshi, sulla Station Road, la mattina."
       ]
      ],
+     "w": {
+      "en": "Kachori"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Rajasthani_Raj_Kachori.jpg/500px-Rajasthani_Raj_Kachori.jpg",
       "autore": "Jaipuriamanasi",
@@ -1539,8 +1606,39 @@
    ],
    "mangiare": [
     {
+     "t": "Ker sangri",
+     "d": "Bacche e baccelli selvatici del deserto, seccati e saltati con spezie: aspro e terroso.",
+     "piccante": 2,
+     "veg": true,
+     "x": [
+      [
+       "Com'è",
+       "Bacche di cappero del deserto (ker) e baccelli di un albero locale (sangri), essiccati e cotti con spezie e olio di senape. Sapore asprigno e amarognolo."
+      ],
+      [
+       "Da sapere",
+       "Esiste solo nel Rajasthan del deserto: le piante crescono nel Thar e si raccolgono una volta l'anno. È il piatto più \"del luogo\" del viaggio."
+      ],
+      [
+       "Come si mangia",
+       "Con il pane di miglio (bajra roti)."
+      ]
+     ],
+     "w": {
+      "en": "Capparis decidua",
+      "it": "Capparis decidua"
+     },
+     "top": true,
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ker_Sangri.jpg/500px-Ker_Sangri.jpg",
+      "autore": "AKSHRAJJODHA",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Ker_Sangri.jpg"
+     }
+    },
+    {
      "t": "Dal baati churma",
-     "d": "Palline di pane cotte al forno, lenticchie e un dolce sbriciolato di grano, burro chiarificato e zucchero.",
+     "d": "Palline di pane cotte sulla brace, lenticchie e un dolce sbriciolato di grano, ghee e zucchero.",
      "piccante": 1,
      "veg": true,
      "x": [
@@ -1557,6 +1655,10 @@
        "È molto sostanzioso: dopo, niente cena."
       ]
      ],
+     "w": {
+      "en": "Dal baati"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DalBati.jpg/500px-DalBati.jpg",
       "autore": "Niranjan.gohane",
@@ -1565,34 +1667,8 @@
      }
     },
     {
-     "t": "Ker sangri",
-     "d": "Bacche e fagiolini selvatici del deserto saltati con spezie: aspro e terroso.",
-     "piccante": 2,
-     "veg": true,
-     "x": [
-      [
-       "Com'è",
-       "Bacche di cappero del deserto (ker) e baccelli di un albero locale (sangri), essiccati e cotti con spezie e olio di senape. Sapore asprigno e amarognolo."
-      ],
-      [
-       "Da sapere",
-       "Esiste solo qui: le piante crescono nel Thar e si raccolgono una volta l'anno. È il piatto più \"del luogo\" del viaggio."
-      ],
-      [
-       "Come si mangia",
-       "Con il pane di miglio (bajra roti)."
-      ]
-     ],
-     "f": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ker_Sangri.jpg/500px-Ker_Sangri.jpg",
-      "autore": "AKSHRAJJODHA",
-      "licenza": "CC BY-SA 4.0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:Ker_Sangri.jpg"
-     }
-    },
-    {
      "t": "Gatte ki sabzi",
-     "d": "Gnocchetti di farina di ceci in salsa di yogurt.",
+     "d": "Gnocchetti di farina di ceci in salsa di yogurt speziata.",
      "piccante": 2,
      "veg": true,
      "x": [
@@ -1605,28 +1681,16 @@
        "Con riso o roti."
       ]
      ],
+     "w": {
+      "en": "Gatte ki sabzi"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg/500px-Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg",
       "autore": "Kanikatwl",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg"
      }
-    },
-    {
-     "t": "Cena al campo",
-     "d": "Di solito un buffet rajasthano con musica e danze.",
-     "piccante": 1,
-     "veg": true,
-     "x": [
-      [
-       "Cosa aspettarsi",
-       "Di solito un buffet con dal, sabzi, baati, roti cotti sul momento e un dolce, attorno al fuoco con musica."
-      ],
-      [
-       "Da sapere",
-       "Cibo cotto per molti: scegli i piatti caldi appena portati. Porta acqua tua."
-      ]
-     ]
     },
     {
      "t": "Ghotua ladoo",
@@ -1643,6 +1707,9 @@
        "Dhanraj Ranmal Bhatia, al Bhatia Market: bottega di famiglia da generazioni, famosa anche per i peperoncini fritti (mirchi bhajiya)."
       ]
      ],
+     "w": {
+      "en": "Laddu"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Laddu_Sweet.JPG/500px-Laddu_Sweet.JPG",
       "autore": "Nandhinikandhasamy",
@@ -1800,7 +1867,6 @@
      "prezzo": 2,
      "nota": "Di solito compreso nell'escursione: da chiedere al coordinatore.",
      "piatti": [
-      "Cena al campo",
       "Dal baati churma"
      ]
     },
@@ -2062,7 +2128,7 @@
    "mangiare": [
     {
      "t": "Mirchi vada",
-     "d": "Peperoncino verde ripieno di patate speziate e fritto in pastella. Snack del pomeriggio, piccante.",
+     "d": "Peperoncino verde ripieno di patate speziate, fritto in pastella.",
      "piccante": 3,
      "veg": true,
      "x": [
@@ -2079,6 +2145,10 @@
        "Janta Sweet Home o Shahi Samosa, vicino alla torre dell'orologio."
       ]
      ],
+     "w": {
+      "en": "Mirchi bada"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mirchi_Bada_from_Jodhpur_1.jpg/500px-Mirchi_Bada_from_Jodhpur_1.jpg",
       "autore": "Pyaaz Kachori",
@@ -2088,19 +2158,27 @@
     },
     {
      "t": "Pyaaz kachori",
-     "d": "Salato, ripieno di cipolla.",
+     "d": "Kachori sfogliata ripiena di cipolla speziata: la colazione di Jodhpur e Jaipur.",
      "piccante": 2,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Kachori ripiena di cipolla stufata con spezie, sfogliata e friabile. A Jodhpur è la colazione."
+       "Kachori grande e friabile ripiena di cipolla stufata con spezie, servita con chutney di tamarindo e di menta."
+      ],
+      [
+       "Quando",
+       "La mattina presto, quando esce dalla friggitrice."
       ],
       [
        "Dove",
-       "Janta Sweet Home, la mattina presto, quando escono dalla friggitrice."
+       "Janta Sweet Home, vicino alla torre dell'orologio: a Jodhpur è nata."
       ]
      ],
+     "w": {
+      "en": "Pyaaz kachori"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Rajasthani_Pyaz_ki_Kachori.JPG/500px-Rajasthani_Pyaz_ki_Kachori.JPG",
       "autore": "Mdsmds0",
@@ -2122,11 +2200,14 @@
        "Dove",
        "Janta Sweet Home. Una basta per due."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Mawa kachori"
+     }
     },
     {
      "t": "Makhaniya lassi",
-     "d": "Lassi denso allo zafferano, vicino alla torre dell'orologio.",
+     "d": "Lassi densissimo allo zafferano, quasi da mangiare col cucchiaio.",
      "piccante": 0,
      "veg": true,
      "x": [
@@ -2135,14 +2216,19 @@
        "Lassi densissimo, quasi da mangiare col cucchiaio, con zafferano e cardamomo e uno strato di panna sopra."
       ],
       [
-       "Dove",
-       "Shri Mishrilal, al mercato Sardar vicino alla torre dell'orologio: lo fanno da più di cent'anni."
-      ],
-      [
        "Attenzione",
        "Latticino: solo in posti molto frequentati come questo."
+      ],
+      [
+       "Dove",
+       "Shri Mishrilal, al mercato Sardar vicino alla torre dell'orologio: lo fanno da più di cent'anni."
       ]
      ],
+     "w": {
+      "en": "Lassi",
+      "it": "Lassi"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Kulhad_lassi_1.jpg/500px-Kulhad_lassi_1.jpg",
       "autore": "Lillottama",
@@ -2441,25 +2527,29 @@
    ],
    "mangiare": [
     {
-     "t": "Thali vegetariano",
-     "d": "Tappa di passaggio: pranzo semplice nei locali lungo la strada o nella mensa del tempio.",
+     "t": "Thali rajasthano",
+     "d": "Il pasto completo su un vassoio: tante ciotoline, rabboccate finché non dici basta.",
      "piccante": 1,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Un vassoio con tante ciotoline: dal, due o tre verdure, yogurt, riso, pane, sottaceti e un dolce. Spesso si riempie di nuovo finché non dici basta."
+       "Un vassoio con dal, due o tre verdure (spesso gatte e ker sangri), kadhi, yogurt, roti o baati, riso, sottaceti e un dolce come il churma. Si riempie di nuovo finché non dici basta."
       ],
       [
-       "Da sapere",
-       "Vicino ai templi jainisti la cucina è spesso senza cipolla, aglio e tuberi, per non uccidere le piccole creature del terreno."
+       "Qui",
+       "Al bhojanshala del tempio e vicino ai templi jainisti la cucina è senza cipolla, aglio e tuberi, per non uccidere le piccole creature del terreno."
       ]
      ],
+     "w": {
+      "en": "Thali",
+      "it": "Thali"
+     },
      "f": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Rajasthani_Thali_at_Rajdhani.jpg/500px-Rajasthani_Thali_at_Rajdhani.jpg",
-      "autore": "Manasi nafde",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/The_delicious_Rajasthani_food.png/500px-The_delicious_Rajasthani_food.png",
+      "autore": "Master Sahil Gaikwad",
       "licenza": "CC BY-SA 4.0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:Rajasthani_Thali_at_Rajdhani.jpg"
+      "pagina": "https://commons.wikimedia.org/wiki/File:The_delicious_Rajasthani_food.png"
      }
     }
    ],
@@ -2501,7 +2591,7 @@
      "q": "Ranakpur Jain Temple",
      "pid": "ChIJFar6og4gaDkRekQU69i2KoY",
      "piatti": [
-      "Thali vegetariano"
+      "Thali rajasthano"
      ]
     },
     {
@@ -2524,7 +2614,7 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Manvaar Vegetarian Restaurant, Ranakpur",
      "piatti": [
-      "Thali vegetariano"
+      "Thali rajasthano"
      ]
     }
    ],
@@ -2625,20 +2715,30 @@
    ],
    "mangiare": [
     {
-     "t": "Thali del Mewar",
-     "d": "Il pasto completo della regione: dal, sabzi, roti, riso e un dolce.",
+     "t": "Thali rajasthano",
+     "d": "Il pasto completo su un vassoio: tante ciotoline, rabboccate finché non dici basta.",
      "piccante": 1,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Un vassoio con piccole porzioni di tutto, rabboccate a richiesta. D'inverno a volte compare il roti di mais (makki)."
+       "Un vassoio con dal, due o tre verdure (spesso gatte e ker sangri), kadhi, yogurt, roti o baati, riso, sottaceti e un dolce come il churma. Si riempie di nuovo finché non dici basta."
       ],
       [
-       "Dove",
-       "Nei ristoranti lungo la strada del forte e negli hotel: qui non c'è un paese vero e proprio."
+       "Qui",
+       "È il thali del Mewar: d'inverno a volte compare il roti di mais (makki). Si mangia negli hotel e nei ristoranti sulla strada del forte."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Thali",
+      "it": "Thali"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/The_delicious_Rajasthani_food.png/500px-The_delicious_Rajasthani_food.png",
+      "autore": "Master Sahil Gaikwad",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:The_delicious_Rajasthani_food.png"
+     }
     }
    ],
    "consigli": [
@@ -2676,7 +2776,7 @@
      "q": "Pangat, Kumbhalgarh",
      "pid": "ChIJIY-F-hwjaDkRjijFozwjKZY",
      "piatti": [
-      "Thali del Mewar"
+      "Thali rajasthano"
      ]
     },
     {
@@ -2699,7 +2799,7 @@
      "q": "Swagat Restaurant, Kumbhalgarh",
      "pid": "ChIJwa4H8cQjaDkRdHi0JoP5edU",
      "piatti": [
-      "Thali del Mewar"
+      "Thali rajasthano"
      ]
     },
     {
@@ -2961,66 +3061,28 @@
    "mangiare": [
     {
      "t": "Thali rajasthano",
-     "d": "In una terrazza sul lago.",
+     "d": "Il pasto completo su un vassoio: tante ciotoline, rabboccate finché non dici basta.",
      "piccante": 1,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Il pasto completo della regione su un unico vassoio: dal, gatte, ker sangri o altra verdura, kadhi (salsa di yogurt), baati o roti, riso, churma."
+       "Un vassoio con dal, due o tre verdure (spesso gatte e ker sangri), kadhi, yogurt, roti o baati, riso, sottaceti e un dolce come il churma. Si riempie di nuovo finché non dici basta."
       ],
       [
        "Dove",
-       "Sulle terrazze vicino al lago, o al ristorante del museo del City Palace."
+       "Sulle terrazze vicino al lago, o al ristorante del museo del City Palace. Se non hai ancora assaggiato dal baati e gatte, qui sono nel thali."
       ]
      ],
+     "w": {
+      "en": "Thali",
+      "it": "Thali"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/The_delicious_Rajasthani_food.png/500px-The_delicious_Rajasthani_food.png",
       "autore": "Master Sahil Gaikwad",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:The_delicious_Rajasthani_food.png"
-     }
-    },
-    {
-     "t": "Dal baati churma e gatte ki sabzi",
-     "d": "",
-     "piccante": 1,
-     "veg": true,
-     "x": [
-      [
-       "Com'è",
-       "Gli stessi piatti di Jaisalmer: se non li hai assaggiati nel deserto, Udaipur è un buon posto per farlo con calma."
-      ]
-     ],
-     "f": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DalBati.jpg/500px-DalBati.jpg",
-      "autore": "Niranjan.gohane",
-      "licenza": "CC BY-SA 4.0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:DalBati.jpg",
-      "nota": "Dal baati"
-     }
-    },
-    {
-     "t": "Kachori",
-     "d": "Al mattino nella città vecchia.",
-     "piccante": 2,
-     "veg": true,
-     "x": [
-      [
-       "Com'è",
-       "Kachori di lenticchie servite con un curry piccante versato sopra: la versione di Udaipur è più umida di quella di Jodhpur."
-      ],
-      [
-       "Quando",
-       "Colazione, nei banchetti della città vecchia."
-      ]
-     ],
-     "f": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Rajasthani_Raj_Kachori.jpg/500px-Rajasthani_Raj_Kachori.jpg",
-      "autore": "Jaipuriamanasi",
-      "licenza": "CC BY-SA 4.0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:Rajasthani_Raj_Kachori.jpg",
-      "nota": "Raj kachori farcita"
      }
     },
     {
@@ -3037,7 +3099,10 @@
        "Da sapere",
        "Era il piatto delle corti rajput: lo si trova nei ristoranti più curati, non per strada."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Safed maas"
+     }
     }
    ],
    "consigli": [
@@ -3169,8 +3234,7 @@
      "nota": "Non è in centro storico: tuk-tuk.",
      "q": "Natraj Dining Hall, Udaipur",
      "piatti": [
-      "Thali rajasthano",
-      "Dal baati churma e gatte ki sabzi"
+      "Thali rajasthano"
      ]
     },
     {
@@ -3330,19 +3394,37 @@
    "mangiare": [
     {
      "t": "Dal baati churma",
-     "d": "Il piatto simbolo del Rajasthan, qui servito anche dentro il forte.",
+     "d": "Palline di pane cotte sulla brace, lenticchie e un dolce sbriciolato di grano, ghee e zucchero.",
      "piccante": 1,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Palle di pane cotte sulla brace (baati), spezzate e annegate nel ghee, con dal di lenticchie e churma, un dolce di briciole con zucchero e ghee."
+       "Il piatto simbolo del Rajasthan, nato per il deserto: le baati sono palline dure di pane cotte sulla brace e intinte nel ghee; si spezzano nel dal, la zuppa di lenticchie; il churma è un dolce di grano sbriciolato con ghee e zucchero."
+      ],
+      [
+       "Come si mangia",
+       "Si sbriciolano le baati nel dal con le mani. Il churma si alterna o si mangia alla fine."
+      ],
+      [
+       "Da sapere",
+       "È molto sostanzioso: dopo, niente cena."
       ],
       [
        "Dove",
-       "Al ristorante Shri Barbarik, dentro il forte, è il piatto più ordinato."
+       "Shri Barbarik, dentro il forte: è il piatto più ordinato."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Dal baati"
+     },
+     "top": true,
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DalBati.jpg/500px-DalBati.jpg",
+      "autore": "Niranjan.gohane",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:DalBati.jpg"
+     }
     }
    ],
    "consigli": [
@@ -3527,19 +3609,33 @@
    "mangiare": [
     {
      "t": "Gatte ki sabzi",
-     "d": "Gnocchetti di farina di ceci in curry di yogurt.",
+     "d": "Gnocchetti di farina di ceci in salsa di yogurt speziata.",
      "piccante": 2,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Rotolini di farina di ceci bolliti e tagliati, poi cotti in un sugo di yogurt speziato. Piatto rajasthano da tutti i giorni."
+       "Gnocchetti di farina di ceci bolliti e poi cotti in una salsa di yogurt speziata. Inventato per il deserto, dove le verdure fresche erano rare."
+      ],
+      [
+       "Come si mangia",
+       "Con riso o roti."
       ],
       [
        "Dove",
-       "A Bundi si mangia soprattutto sulle terrazze dei guesthouse davanti al palazzo."
+       "Sulle terrazze dei guesthouse davanti al palazzo."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Gatte ki sabzi"
+     },
+     "top": true,
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg/500px-Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg",
+      "autore": "Kanikatwl",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg"
+     }
     }
    ],
    "consigli": [
@@ -3844,7 +3940,7 @@
    "mangiare": [
     {
      "t": "Malpua",
-     "d": "Frittelle dolci immerse nello sciroppo, la specialità di Pushkar. Da mangiare la sera.",
+     "d": "Frittelle dolci immerse nello sciroppo, la specialità di Pushkar.",
      "piccante": 0,
      "veg": true,
      "x": [
@@ -3857,6 +3953,10 @@
        "A Pushkar se ne vendono migliaia al giorno: le botteghe le friggono di continuo sulla strada principale."
       ]
      ],
+     "w": {
+      "en": "Malpua"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Malpoa_pitha.jpg/500px-Malpoa_pitha.jpg",
       "autore": "Ferdous",
@@ -3866,42 +3966,59 @@
      }
     },
     {
-     "t": "Thali vegetariano",
-     "d": "Pushkar è interamente vegetariana: niente carne, uova e alcol.",
+     "t": "Thali rajasthano",
+     "d": "Il pasto completo su un vassoio: tante ciotoline, rabboccate finché non dici basta.",
      "piccante": 1,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Come altrove, ma qui obbligatoriamente vegetariano e senza uova: Pushkar è città sacra."
+       "Un vassoio con dal, due o tre verdure (spesso gatte e ker sangri), kadhi, yogurt, roti o baati, riso, sottaceti e un dolce come il churma. Si riempie di nuovo finché non dici basta."
       ],
       [
-       "Dove",
-       "Molti ristoranti sui tetti con vista sul lago."
+       "Qui",
+       "Pushkar è città sacra: tutto vegetariano, senza uova e senza alcol. Molti ristoranti sui tetti con vista sul lago."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Thali",
+      "it": "Thali"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/The_delicious_Rajasthani_food.png/500px-The_delicious_Rajasthani_food.png",
+      "autore": "Master Sahil Gaikwad",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:The_delicious_Rajasthani_food.png"
+     }
     },
     {
-     "t": "Lassi e kachori",
-     "d": "Molti caffè sui tetti.",
-     "piccante": 1,
+     "t": "Lassi nel kulhad",
+     "d": "Lassi servito nel bicchiere di terracotta che si butta dopo l'uso.",
+     "piccante": 0,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Lassi in bicchiere di terracotta, spesso con banana o zafferano; kachori la mattina nei banchetti attorno al bazar."
+       "Lassi denso, a volte con zafferano o banana, nel kulhad di coccio: dà un leggero sapore di terra."
       ],
       [
        "Attenzione",
-       "Per il lassi, solo posti con molto giro."
+       "Latticino: solo in posti con molto giro."
+      ],
+      [
+       "Dove",
+       "Nei caffè sui tetti e nei banchi del bazar."
       ]
      ],
+     "w": {
+      "en": "Lassi",
+      "it": "Lassi"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Kulhad_lassi.jpg/500px-Kulhad_lassi.jpg",
       "autore": "Dollyastha",
       "licenza": "CC BY-SA 4.0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:Kulhad_lassi.jpg",
-      "nota": "Lassi nel kulhad"
+      "pagina": "https://commons.wikimedia.org/wiki/File:Kulhad_lassi.jpg"
      }
     },
     {
@@ -3919,6 +4036,9 @@
        "Lo vendono le botteghe attorno al Dargah: i pellegrini lo portano a casa. Si conserva bene, buono da regalare."
       ]
      ],
+     "w": {
+      "en": "Sohan halwa"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Sohan_Halwa.JPG/500px-Sohan_Halwa.JPG",
       "autore": "Miansari66",
@@ -4003,7 +4123,7 @@
      "nota": "Pushkar è tutta vegetariana: niente carne, uova, alcol.",
      "q": "Out of the Blue, Pushkar",
      "piatti": [
-      "Thali vegetariano"
+      "Thali rajasthano"
      ]
     },
     {
@@ -4043,8 +4163,8 @@
      "veg": true,
      "q": "Pushkar Raj Restaurant, Pushkar",
      "piatti": [
-      "Lassi e kachori",
-      "Thali vegetariano"
+      "Lassi nel kulhad",
+      "Thali rajasthano"
      ]
     },
     {
@@ -4106,7 +4226,7 @@
      "nota": "Trovato tra i più votati su Google Maps: da verificare sul posto.",
      "q": "Raju Terrace Garden Restaurant, Pushkar",
      "piatti": [
-      "Thali vegetariano"
+      "Thali rajasthano"
      ]
     },
     {
@@ -4350,7 +4470,7 @@
    "mangiare": [
     {
      "t": "Laal maas",
-     "d": "Curry di montone rosso fuoco con peperoncini Mathania. È il piatto più piccante del viaggio.",
+     "d": "Curry di montone rosso fuoco con peperoncini Mathania: il piatto più piccante del viaggio.",
      "piccante": 3,
      "veg": false,
      "x": [
@@ -4367,6 +4487,10 @@
        "Handi, sulla MI Road, è il nome che torna più spesso."
       ]
      ],
+     "w": {
+      "en": "Laal maas"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Laal-Maans.jpg/500px-Laal-Maans.jpg",
       "autore": "Hamzaghanchi",
@@ -4376,30 +4500,37 @@
     },
     {
      "t": "Pyaaz kachori",
-     "d": "Al mattino.",
+     "d": "Kachori sfogliata ripiena di cipolla speziata: la colazione di Jodhpur e Jaipur.",
      "piccante": 2,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "La kachori alla cipolla, più grande e friabile di quella di Jodhpur."
+       "Kachori grande e friabile ripiena di cipolla stufata con spezie, servita con chutney di tamarindo e di menta."
+      ],
+      [
+       "Quando",
+       "La mattina presto, quando esce dalla friggitrice."
       ],
       [
        "Dove",
-       "Rawat Mishthan Bhandar, vicino alla stazione: ne friggono migliaia ogni giorno."
+       "Rawat Mishthan Bhandar, vicino alla stazione: più grande e friabile di quella di Jodhpur, ne friggono migliaia al giorno."
       ]
      ],
+     "w": {
+      "en": "Pyaaz kachori"
+     },
+     "top": true,
      "f": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Jodhpuri_Kanda%28Pyaaz%29_Kachori_inside_stuffing.jpg/500px-Jodhpuri_Kanda%28Pyaaz%29_Kachori_inside_stuffing.jpg",
-      "autore": "PabIoChocobar",
-      "licenza": "CC0",
-      "pagina": "https://commons.wikimedia.org/wiki/File:Jodhpuri_Kanda%28Pyaaz%29_Kachori_inside_stuffing.jpg",
-      "nota": "Il ripieno di cipolla speziata"
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Rajasthani_Pyaz_ki_Kachori.JPG/500px-Rajasthani_Pyaz_ki_Kachori.JPG",
+      "autore": "Mdsmds0",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rajasthani_Pyaz_ki_Kachori.JPG"
      }
     },
     {
      "t": "Ghevar",
-     "d": "Dolce a nido d'ape, tipico della città.",
+     "d": "Dolce a nido d'ape imbevuto di sciroppo, tipico di Jaipur.",
      "piccante": 0,
      "veg": true,
      "x": [
@@ -4416,6 +4547,9 @@
        "Laxmi Mishthan Bhandar (LMB) a Johari Bazar, famoso anche per il thali."
       ]
      ],
+     "w": {
+      "en": "Ghevar"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Ghevar_with_Malai_Topping.jpg/500px-Ghevar_with_Malai_Topping.jpg",
       "autore": "Pradeep717",
@@ -4424,20 +4558,28 @@
      }
     },
     {
-     "t": "Lassi in terracotta",
-     "d": "Servito in bicchieri di coccio.",
+     "t": "Lassi nel kulhad",
+     "d": "Lassi servito nel bicchiere di terracotta che si butta dopo l'uso.",
      "piccante": 0,
      "veg": true,
      "x": [
       [
        "Com'è",
-       "Lassi denso servito nel kulhar, il bicchiere di terracotta che si butta dopo l'uso: dà un leggero sapore di terra."
+       "Lassi denso, a volte con zafferano o banana, nel kulhad di coccio: dà un leggero sapore di terra."
+      ],
+      [
+       "Attenzione",
+       "Latticino: solo in posti con molto giro."
       ],
       [
        "Dove",
        "Lassiwala sulla MI Road. Ci sono più botteghe con nomi simili una accanto all'altra: l'originale è Kishan Lal Govind Narain Agarwal."
       ]
      ],
+     "w": {
+      "en": "Lassi",
+      "it": "Lassi"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Kulhad_lassi.jpg/500px-Kulhad_lassi.jpg",
       "autore": "Dollyastha",
@@ -4525,7 +4667,7 @@
      "nota": "Ci sono più botteghe con lo stesso nome; chiude nel pomeriggio.",
      "q": "Lassiwala, MI Road, Jaipur",
      "piatti": [
-      "Lassi in terracotta"
+      "Lassi nel kulhad"
      ]
     },
     {
@@ -4965,14 +5107,18 @@
        "Cubetti di zucca bianca candita, traslucidi e dolcissimi, in tante versioni: allo zafferano, al cocco, alla rosa, al paan."
       ],
       [
-       "Dove",
-       "Panchhi Petha, dal 1926, è il nome storico: ci sono molte imitazioni con nomi quasi uguali."
-      ],
-      [
        "Da sapere",
        "Si conserva qualche giorno, buono da portare a casa."
+      ],
+      [
+       "Dove",
+       "Panchhi Petha, dal 1926, è il nome storico: ci sono molte imitazioni con nomi quasi uguali."
       ]
      ],
+     "w": {
+      "en": "Petha"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Petha_kesari.JPG/500px-Petha_kesari.JPG",
       "autore": "PJ.wikilovesfood",
@@ -4982,19 +5128,27 @@
     },
     {
      "t": "Cucina moghul",
-     "d": "Kebab, biryani, korma.",
+     "d": "Kebab, curry di carne e pane del tandoor: la cucina delle corti moghul.",
      "piccante": 2,
      "veg": false,
      "x": [
       [
        "Com'è",
-       "Biryani, korma, kebab: la stessa cucina di corte di Old Delhi, nata qui quando Agra era la capitale."
+       "La cucina della corte moghul: carne marinata e cotta alla brace, curry ricchi di spezie e frutta secca, pane cotto nel forno tandoor."
       ],
       [
-       "Da sapere",
-       "Molti ristoranti per turisti vicino al Taj sono cari e mediocri: meglio chiedere al coordinatore."
+       "Cosa ordinare",
+       "Seekh kebab di montone, burra (costolette alla brace), nihari (stufato di carne cotto tutta la notte) e korma."
+      ],
+      [
+       "Qui",
+       "Agra fu la capitale moghul: biryani, korma e kebab. Molti ristoranti per turisti vicino al Taj sono cari e mediocri."
       ]
      ],
+     "w": {
+      "en": "Mughlai cuisine"
+     },
+     "top": true,
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Murgh_Musallam_Steamed.JPG/500px-Murgh_Musallam_Steamed.JPG",
       "autore": "Miansari66",
@@ -5005,7 +5159,7 @@
     },
     {
      "t": "Bedai e jalebi",
-     "d": "La colazione locale: pane fritto con curry di patate, poi jalebi.",
+     "d": "La colazione di Agra: pane fritto con curry di patate, poi jalebi.",
      "piccante": 2,
      "veg": true,
      "x": [
@@ -5014,14 +5168,17 @@
        "Bedai: pane fritto e gonfio, ripieno di lenticchie, servito con un curry di patate piccante. Poi jalebi per chiudere sul dolce."
       ],
       [
-       "Dove",
-       "Deviram Sweets, una istituzione dal 1965."
-      ],
-      [
        "Quando",
        "Solo la mattina: finiscono entro la tarda mattinata. Perfetto dopo il Taj all'alba."
+      ],
+      [
+       "Dove",
+       "Deviram Sweets, una istituzione dal 1965."
       ]
      ],
+     "w": {
+      "en": "Bedmi puri"
+     },
      "f": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Bedai_and_Sabzi.JPG/500px-Bedai_and_Sabzi.JPG",
       "autore": "Ravi Talwar",
@@ -5043,7 +5200,10 @@
        "Dove",
        "Nelle botteghe di petha, venduto in scatole."
       ]
-     ]
+     ],
+     "w": {
+      "en": "Dalmoth"
+     }
     }
    ],
    "consigli": [
