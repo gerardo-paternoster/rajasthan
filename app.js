@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-26.2';
+const VERSIONE = '2026-11-26.3';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -544,8 +544,10 @@ async function tokenAcc() {
 }
 function esciAccount() { ACC = null; SMS = null; LS.del('rj.acc'); statoGr = { fase: 'fermo', errore: '', ultima: 0 }; }
 
-// reCAPTCHA invisibile: Firebase lo richiede prima di mandare un SMS.
+// reCAPTCHA invisibile: Firebase lo richiede prima di mandare un SMS. Il bollino di Google è nascosto (c'è la dicitura nel modulo)
+// e il widget si toglie appena l'SMS è partito; per un nuovo invio se ne crea uno nuovo.
 let recaptchaId = null, recaptchaAttesa = null;
+function togliRecaptcha() { const b = $('#rcBox'); if (b) b.remove(); recaptchaId = null; }
 function caricaRecaptcha() {
   return new Promise((ok, ko) => {
     if (window.grecaptcha && grecaptcha.render) return ok();
@@ -561,8 +563,9 @@ async function tokenRecaptcha() {
   return new Promise((ok, ko) => {
     recaptchaAttesa = { ok, ko };
     if (recaptchaId === null) recaptchaId = grecaptcha.render(box, { sitekey: recaptchaSiteKey, size: 'invisible', callback: (t) => { const a = recaptchaAttesa; recaptchaAttesa = null; if (a) a.ok(t); }, 'expired-callback': () => {}, 'error-callback': () => { const a = recaptchaAttesa; recaptchaAttesa = null; if (a) a.ko(new Error('Il controllo anti-robot non è riuscito: riprova.')); } });
-    else grecaptcha.reset(recaptchaId);
     grecaptcha.execute(recaptchaId);
+    // se la verifica con le immagini viene chiusa senza risposta, dopo 2 minuti si sblocca il pulsante
+    setTimeout(() => { const x = recaptchaAttesa; if (x) { recaptchaAttesa = null; x.ko(new Error('Controllo anti-robot non completato: riprova.')); } }, 120000);
   });
 }
 function normTel(v) {
@@ -576,6 +579,7 @@ function htmlAccesso(perche) {
   let h = '<div class="accesso"><p>' + esc(perche) + '</p>';
   if (!SMS) h += '<label>Numero di cellulare<input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="+39 333 1234567"></label>' +
     '<p class="tenue">Lo stesso di WhatsApp. Ti arriva un SMS con un codice; il numero non lo vedono gli altri.</p>' +
+    '<p class="tenue piccola">Protetto da reCAPTCHA di Google: valgono le <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">norme sulla privacy</a> e i <a href="https://policies.google.com/terms" target="_blank" rel="noopener">termini di servizio</a> di Google.</p>' +
     '<p class="err" id="errAcc" hidden></p><div class="azioni larghe"><button class="btn" data-az="accSms">Mandami il codice</button></div>';
   else h += '<p>Codice mandato a <b>' + esc(SMS.tel) + '</b>.</p><label>Codice dell\'SMS<input id="fCodice" inputmode="numeric" autocomplete="one-time-code" maxlength="8"></label>' +
     '<p class="err" id="errAcc" hidden></p><div class="azioni larghe"><button class="btn" data-az="accCodice">Entra</button><button class="btn chiaro" data-az="accAltro">Cambia numero</button></div>';
@@ -600,7 +604,7 @@ async function azioneAccount(az, el) {
       if (!/^\+\d{8,15}$/.test(tel)) throw new Error(ERR_ACC.INVALID_PHONE_NUMBER);
       const recaptchaToken = await tokenRecaptcha();
       const j = await chiamaAuth('accounts:sendVerificationCode', { phoneNumber: tel, recaptchaToken });
-      SMS = { tel, sessione: j.sessionInfo }; disegna(); const c = $('#fCodice'); if (c) c.focus();
+      SMS = { tel, sessione: j.sessionInfo }; togliRecaptcha(); disegna(); const c = $('#fCodice'); if (c) c.focus();
       return true;
     }
     const code = ($('#fCodice').value || '').replace(/\D/g, '');
@@ -611,7 +615,7 @@ async function azioneAccount(az, el) {
     if (!corpo.idToken) delete corpo.idToken;
     const j = await chiamaAuth('accounts:signInWithPhoneNumber', corpo);
     SMS = null; salvaAcc(j, 'telefono'); await dopoAccesso();
-  } catch (e) { const er = $('#errAcc'); if (er) { er.textContent = e.message; er.hidden = false; } el.disabled = false; }
+  } catch (e) { togliRecaptcha(); const er = $('#errAcc'); if (er) { er.textContent = e.message; er.hidden = false; } el.disabled = false; }
   return true;
 }
 
@@ -909,7 +913,7 @@ function vistaGiorno(data) {
   if (!g.tappe.length) return { titolo: fmtGiorno.format(dataDa(data)), html: h + '<div class="pannello vuoto"><h3>Giorno di viaggio</h3><p class="tenue">Niente percorsi per oggi.</p></div>', indietro: '#viaggio' };
   const lista = percorsiDelGiorno(data).map((p, i) => ({ p, i, n: votanti(data, p.id).length })).sort((a, b) => b.n - a.n || a.i - b.i);
   h += '<p class="tappe-giorno">' + g.tappe.map((tid) => { const t = tappa(tid); return t ? '<a class="chip"' + stileCitta(t) + ' href="#tappa/' + esc(tid) + '">' + arco(t.colore, 16) + esc(t.nome) + '</a>' : ''; }).join('') + '</p>';
-  h += lista.map((x) => htmlPercorso(x.p, data)).join('');
+  h += lista.length ? lista.map((x) => htmlPercorso(x.p, data)).join('') : '<div class="pannello vuoto"><h3>Ancora nessuna proposta</h3><p class="tenue">Scegli i luoghi da visitare e proponi il primo percorso della giornata: gli altri lo potranno votare.</p></div>';
   h += '<div class="azioni larghe"><a class="chip" href="#proponi/' + esc(data) + '">' + ICO.piu + 'Proponi un percorso</a></div>';
   h += '<p class="pie">Orari indicativi: si adattano ai trasferimenti e a quello che il gruppo decide col coordinatore. Dove mangiare è indicato sotto ogni sosta.</p>';
   return { titolo: fmtGiorno.format(dataDa(data)), html: h, indietro: '#viaggio' };

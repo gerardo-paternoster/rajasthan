@@ -414,6 +414,8 @@ dialog h2 { font: 400 26px/1.2 var(--display); }
 .mangia-qui span { font-weight: 700; color: var(--tenue); }
 .mangia-qui a { text-decoration: underline; }
 #rcBox { position: fixed; bottom: 0; right: 0; z-index: 50; }
+.grecaptcha-badge { visibility: hidden !important; }
+.piccola { font-size: 13px; }
 .editor label:first-child { margin-top: 0; }
 .ed-sez { font: 700 17px/1.3 var(--testo); margin: 22px 0 2px; }
 .scelta-completo { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 4px; }
