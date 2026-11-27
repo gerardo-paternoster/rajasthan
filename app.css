@@ -527,3 +527,4 @@ a.et.piatto { text-decoration: none; color: var(--inchiostro); }
 .ricerca-mappa { margin-top: 8px; }
 .ricerca-mappa .scelto { margin: 8px 0; padding: 10px 12px; border-radius: 12px; background: var(--foglio); }
 .link-btn svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
+.ris-mappa .sugg.on { border-color: var(--citta); background: color-mix(in srgb, var(--citta) 12%, var(--foglio)); }

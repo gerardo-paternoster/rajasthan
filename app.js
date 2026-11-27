@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-27.4';
+const VERSIONE = '2026-11-27.5';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -718,7 +718,8 @@ async function cercaPosti(testo) {
     let j;
     try { j = await chiamaPlaces('places:autocomplete', campi, corpo); }
     catch (e) { delete corpo.includedPrimaryTypes; j = await chiamaPlaces('places:autocomplete', campi, corpo); } // tipo non accettato: si cerca senza
-    const s = (j.suggestions || []).map((x) => x.placePrediction).filter(Boolean).slice(0, 6);
+    const s = (j.suggestions || []).map((x) => x.placePrediction).filter(Boolean)
+      .sort((a, b) => (a.distanceMeters == null ? 1e9 : a.distanceMeters) - (b.distanceMeters == null ? 1e9 : b.distanceMeters)).slice(0, 6);
     if ($('#fCerca') && $('#fCerca').value !== testo) return;
     box.innerHTML = s.length ? s.map((p) => {
       const n = p.structuredFormat && p.structuredFormat.mainText ? p.structuredFormat.mainText.text : '', d = p.structuredFormat && p.structuredFormat.secondaryText ? p.structuredFormat.secondaryText.text : '';
@@ -737,7 +738,7 @@ function htmlRicercaMappa() {
   if (RM.msg) h += '<p class="tenue">' + esc(RM.msg) + '</p>';
   const x = RM.ris.find((r) => r.pid === RM.scelto);
   if (x) h += '<div class="scelto"><b>' + esc(x.n) + '</b><br><span class="tenue">' + esc(x.ind || '') + '</span><div class="azioni"><button class="btn piccolo" data-az="' + cx.az + '" data-pid="' + esc(x.pid) + '" data-n="' + esc(x.n) + '">Scegli questo</button></div></div>';
-  else if (RM.ris.length) h += '<p class="tenue">' + RM.ris.length + ' risultati: tocca un segno sulla mappa.</p>';
+  if (RM.ris.length) h += '<p class="tenue">' + RM.ris.length + ' risultati, dal più vicino al centro di ' + esc(cx.tappa.nome) + ': tocca un segno o un nome.</p><ul class="suggerimenti ris-mappa">' + RM.ris.map((r) => '<li><button class="sugg' + (r.pid === RM.scelto ? ' on' : '') + '" data-az="sceltaRM" data-pid="' + esc(r.pid) + '"><b>' + esc(r.n) + '</b><span class="tenue">' + esc(fmtDist(r.km)) + (r.ind ? ' · ' + esc(r.ind) : '') + '</span></button></li>').join('') + '</ul>';
   return h + '<div class="azioni"><button class="link-btn" data-az="chiudiRM">Chiudi la mappa</button></div></div>';
 }
 async function cercaSuMappa(q) {
@@ -749,7 +750,7 @@ async function cercaSuMappa(q) {
     let j;
     try { j = await chiamaPlaces('places:searchText', 'places.id,places.displayName,places.formattedAddress,places.location', corpo); }
     catch (e) { delete corpo.includedType; j = await chiamaPlaces('places:searchText', 'places.id,places.displayName,places.formattedAddress,places.location', corpo); }
-    RM.ris = (j.places || []).filter((p) => p.location).map((p) => ({ pid: p.id, n: p.displayName ? p.displayName.text : '', ind: p.formattedAddress || '', c: [p.location.latitude, p.location.longitude] }));
+    RM.ris = (j.places || []).filter((p) => p.location).map((p) => { const c = [p.location.latitude, p.location.longitude]; return { pid: p.id, n: p.displayName ? p.displayName.text : '', ind: p.formattedAddress || '', c, km: distanzaKm([cx.tappa.lat, cx.tappa.lon], c) }; }).sort((a, b) => a.km - b.km);
     RM.msg = RM.ris.length ? '' : 'Nessun risultato: prova a scrivere qualcosa nella ricerca e riapri la mappa.';
   } catch (e) { RM.msg = e.message; }
   disegnaSePossibile();
@@ -1423,6 +1424,7 @@ async function azioneGruppo(az, el) {
   if (az === 'chiudiAgg') { AGG = null; RM = null; sessioneCerca = ''; disegna(); return true; }
   if (az === 'apriRM') { const i = $('#fCerca'); cercaSuMappa(i ? i.value.trim() : ''); return true; }
   if (az === 'chiudiRM') { RM = null; disegna(); return true; }
+  if (az === 'sceltaRM') { RM.scelto = el.dataset.pid; disegna(); const sc = $('.ricerca-mappa .scelto'); if (sc) sc.scrollIntoView({ block: 'center' }); return true; }
   if (az === 'aggiungiPostoTappa') {
     const pid = el.dataset.pid, gia = postiDi(AGG.tappa).find((p) => p.pid === pid || somiglianza(p.n, el.dataset.n) >= 0.99);
     if (gia) { const e = $('#errAgg'); e.textContent = '"' + gia.n + '" c\'è già in questa tappa.'; e.hidden = false; return true; }
@@ -1570,7 +1572,7 @@ function vistaTappe() {
 const PICCANTE = ['Non piccante', 'Poco piccante', 'Piccante', 'Molto piccante'];
 function htmlEtichette(x) {
   if (x.piccante == null && x.veg == null) return '';
-  let h = '<span class="etichette">' + (x.top ? (x.perche && x.perche.length ? x.perche.map((m, i) => '<span class="et top">' + (i ? '' : '★ ') + esc(m) + '</span>').join('') : '<span class="et top">★ Da non perdere</span>') : '');
+  let h = '<span class="etichette">' + (x.top ? (x.perche && x.perche.length ? x.perche.map((m) => '<span class="et top">' + esc(m) + '</span>').join('') : '<span class="et top">Da non perdere</span>') : '');
   if (x.piccante != null) h += '<span class="et pic p' + x.piccante + '"><i></i><i></i><i></i>' + PICCANTE[x.piccante] + '</span>';
   if (x.veg != null) h += '<span class="et">' + (x.veg ? 'Vegetariano' : 'Con carne') + '</span>';
   return h + '</span>';
