@@ -6,7 +6,7 @@
    - Meteo: Open-Meteo quando c'è rete, altrimenti le medie del periodo. */
 
 // A ogni pubblicazione cambiare insieme questo valore e quello in versione.json.
-const VERSIONE = '2026-11-27.3';
+const VERSIONE = '2026-11-27.4';
 // Identificativo dell'app presso Google (non è un segreto). Se è vuoto, l'opzione Google Drive resta nascosta.
 const GOOGLE_CLIENT_ID = '777574645730-brthmdcpkc3i0196vqqfbkqk3dicc8dt.apps.googleusercontent.com';
 const CARTELLA_DRIVE = 'Tutto Rajasthan - dati';
@@ -697,22 +697,82 @@ async function caricaDatiGoogle() {
 }
 // Ricerca dei posti nell'editor (Autocomplete New).
 let sessioneCerca = '', timerCerca = null;
+// Contesto della ricerca: nella pagina di una tappa (aggiunta di un posto) o nell'editor della proposta.
+const TIPI_GOOGLE = { v: null, m: ['restaurant', 'cafe', 'bakery', 'meal_takeaway', 'dessert_shop'], d: ['lodging'] };
+const CERCA_DEFAULT = { v: 'cosa vedere', m: 'ristoranti', d: 'hotel e haveli' };
+function contestoCerca() {
+  if (rotta.nome === 'tappa' && AGG) return { tappa: tappa(AGG.tappa), tipo: AGG.tipo0, az: 'aggiungiPostoTappa' };
+  if (rotta.nome === 'proponi' && BOZZA) { const g = CONT.giorni.find((x) => x.data === BOZZA.data); return { tappa: tappa(BOZZA.cercaTappa || g.tappe[0]), tipo: BOZZA.cercaTipo || 'v', az: 'aggiungiPosto' }; }
+  return null;
+}
 async function cercaPosti(testo) {
   const box = $('#suggerimenti'); if (!box) return;
   if (!testo || testo.length < 3) { box.innerHTML = ''; return; }
   if (!navigator.onLine) { box.innerHTML = '<li class="tenue">Serve la rete per cercare su Google Maps.</li>'; return; }
+  const cx = contestoCerca(); if (!cx) return;
   if (!sessioneCerca) sessioneCerca = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
-  const perTappa = rotta.nome === 'tappa' && AGG, g = perTappa ? null : CONT.giorni.find((x) => x.data === BOZZA.data), t = perTappa ? tappa(AGG.tappa) : tappa(g.tappe[0]);
-  const az = perTappa ? 'aggiungiPostoTappa' : 'aggiungiPosto';
+  const corpo = { input: testo, languageCode: 'it', regionCode: 'in', locationBias: vicinoA(cx.tappa, 20000), origin: { latitude: cx.tappa.lat, longitude: cx.tappa.lon }, sessionToken: sessioneCerca };
+  if (TIPI_GOOGLE[cx.tipo]) corpo.includedPrimaryTypes = TIPI_GOOGLE[cx.tipo];
+  const campi = 'suggestions.placePrediction.placeId,suggestions.placePrediction.structuredFormat,suggestions.placePrediction.distanceMeters';
   try {
-    const j = await chiamaPlaces('places:autocomplete', 'suggestions.placePrediction.placeId,suggestions.placePrediction.structuredFormat', { input: testo, languageCode: 'it', regionCode: 'in', locationBias: vicinoA(t, 25000), sessionToken: sessioneCerca });
+    let j;
+    try { j = await chiamaPlaces('places:autocomplete', campi, corpo); }
+    catch (e) { delete corpo.includedPrimaryTypes; j = await chiamaPlaces('places:autocomplete', campi, corpo); } // tipo non accettato: si cerca senza
     const s = (j.suggestions || []).map((x) => x.placePrediction).filter(Boolean).slice(0, 6);
     if ($('#fCerca') && $('#fCerca').value !== testo) return;
     box.innerHTML = s.length ? s.map((p) => {
       const n = p.structuredFormat && p.structuredFormat.mainText ? p.structuredFormat.mainText.text : '', d = p.structuredFormat && p.structuredFormat.secondaryText ? p.structuredFormat.secondaryText.text : '';
-      return '<li><button class="sugg" data-az="' + az + '" data-pid="' + esc(p.placeId) + '" data-n="' + esc(n) + '"><b>' + esc(n) + '</b><span class="tenue">' + esc(d) + '</span></button></li>';
+      const km = p.distanceMeters != null ? fmtDist(p.distanceMeters / 1000) + ' da ' + cx.tappa.nome : '';
+      return '<li><button class="sugg" data-az="' + cx.az + '" data-pid="' + esc(p.placeId) + '" data-n="' + esc(n) + '"><b>' + esc(n) + '</b><span class="tenue">' + esc([d, km].filter(Boolean).join(' · ')) + '</span></button></li>';
     }).join('') : '<li class="tenue">Nessun posto trovato.</li>';
   } catch (e) { box.innerHTML = '<li class="err">' + esc(e.message) + '</li>'; }
+}
+// Ricerca sulla mappa (Text Search): i risultati come segni, si tocca e si sceglie.
+let RM = null; // { chiave, q, ris: [{pid, n, ind, c}], scelto, msg }
+function chiaveRM() { const cx = contestoCerca(); return cx ? cx.tappa.id + '|' + cx.tipo + '|' + rotta.nome : ''; }
+function htmlRicercaMappa() {
+  const cx = contestoCerca(); if (!cx || !PLACES_KEY) return '';
+  if (!RM || RM.chiave !== chiaveRM()) return '<div class="azioni"><button class="link-btn" data-az="apriRM">' + ICO.mappa + 'Cerca sulla mappa di ' + esc(cx.tappa.nome) + '</button></div>';
+  let h = '<div class="ricerca-mappa"><div id="mappaRM" class="mappa-ed"></div>';
+  if (RM.msg) h += '<p class="tenue">' + esc(RM.msg) + '</p>';
+  const x = RM.ris.find((r) => r.pid === RM.scelto);
+  if (x) h += '<div class="scelto"><b>' + esc(x.n) + '</b><br><span class="tenue">' + esc(x.ind || '') + '</span><div class="azioni"><button class="btn piccolo" data-az="' + cx.az + '" data-pid="' + esc(x.pid) + '" data-n="' + esc(x.n) + '">Scegli questo</button></div></div>';
+  else if (RM.ris.length) h += '<p class="tenue">' + RM.ris.length + ' risultati: tocca un segno sulla mappa.</p>';
+  return h + '<div class="azioni"><button class="link-btn" data-az="chiudiRM">Chiudi la mappa</button></div></div>';
+}
+async function cercaSuMappa(q) {
+  const cx = contestoCerca(); if (!cx) return;
+  RM = { chiave: chiaveRM(), q, ris: [], scelto: '', msg: 'Cerco…' }; disegnaSePossibile();
+  const corpo = { textQuery: (q || CERCA_DEFAULT[cx.tipo]) + ' ' + cx.tappa.nome, languageCode: 'it', regionCode: 'in', maxResultCount: 20, locationBias: vicinoA(cx.tappa, 15000) };
+  if (TIPI_GOOGLE[cx.tipo]) corpo.includedType = TIPI_GOOGLE[cx.tipo][0];
+  try {
+    let j;
+    try { j = await chiamaPlaces('places:searchText', 'places.id,places.displayName,places.formattedAddress,places.location', corpo); }
+    catch (e) { delete corpo.includedType; j = await chiamaPlaces('places:searchText', 'places.id,places.displayName,places.formattedAddress,places.location', corpo); }
+    RM.ris = (j.places || []).filter((p) => p.location).map((p) => ({ pid: p.id, n: p.displayName ? p.displayName.text : '', ind: p.formattedAddress || '', c: [p.location.latitude, p.location.longitude] }));
+    RM.msg = RM.ris.length ? '' : 'Nessun risultato: prova a scrivere qualcosa nella ricerca e riapri la mappa.';
+  } catch (e) { RM.msg = e.message; }
+  disegnaSePossibile();
+}
+let MAPPA_RM = null;
+async function montaRicercaMappa() {
+  const box = $('#mappaRM'); if (!box || !RM) return;
+  try { await caricaMaps(); } catch (e) { box.innerHTML = '<p class="tenue">La mappa non si è caricata.</p>'; return; }
+  if (!document.body.contains(box)) return;
+  const cx = contestoCerca(); if (!cx) return;
+  if (!MAPPA_RM) { const el = document.createElement('div'); el.className = 'mappa-g'; MAPPA_RM = { el, map: new google.maps.Map(el, { center: { lat: cx.tappa.lat, lng: cx.tappa.lon }, zoom: 13, disableDefaultUI: true, zoomControl: true, gestureHandling: 'cooperative', clickableIcons: false }), segni: [], vista: '' }; }
+  box.appendChild(MAPPA_RM.el);
+  MAPPA_RM.segni.forEach((x) => x.setMap(null)); MAPPA_RM.segni = [];
+  const col = COLORE_TIPO[cx.tipo] || getComputedStyle(box).getPropertyValue('--citta').trim() || '#24306b';
+  const bounds = new google.maps.LatLngBounds();
+  RM.ris.forEach((r) => {
+    const on = r.pid === RM.scelto, pos = { lat: r.c[0], lng: r.c[1] }; bounds.extend(pos);
+    const m = new google.maps.Marker({ map: MAPPA_RM.map, position: pos, title: r.n, zIndex: on ? 10 : 1, icon: { path: google.maps.SymbolPath.CIRCLE, scale: on ? 11 : 7, fillColor: on ? col : '#ffffff', fillOpacity: 1, strokeColor: col, strokeWeight: 3 } });
+    m.addListener('click', () => { RM.scelto = r.pid; disegna(); });
+    MAPPA_RM.segni.push(m);
+  });
+  const vista = RM.chiave + '|' + RM.q + '|' + RM.ris.length;
+  if (MAPPA_RM.vista !== vista) { if (!bounds.isEmpty()) MAPPA_RM.map.fitBounds(bounds, 30); else MAPPA_RM.map.setCenter({ lat: cx.tappa.lat, lng: cx.tappa.lon }); MAPPA_RM.vista = vista; }
 }
 
 /* ---------- Gruppo di viaggio: percorsi e voti (Firebase Realtime Database) ---------- */
@@ -992,7 +1052,7 @@ function htmlAggiungi(t, tipo) {
   const a = AGG;
   let h = '<div class="pannello-agg" id="agg">';
   if (a.fase === 'cerca') {
-    h += '<p><b>' + etich + '</b></p><input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul>';
+    h += '<p><b>' + etich + '</b> <span class="tenue">a ' + esc(t.nome) + '</span></p><input id="fCerca" type="search" maxlength="80" placeholder="' + { v: 'Monumento, tempio, mercato…', m: 'Ristorante, caffè, dolci…', d: 'Hotel, haveli, guesthouse…' }[tipo] + '" autocomplete="off" aria-label="' + etich + '"' + (RM && RM.q ? ' value="' + esc(RM.q) + '"' : '') + '><ul id="suggerimenti" class="suggerimenti"></ul>' + htmlRicercaMappa();
   } else {
     h += '<p><b>' + (a.id ? 'Modifica' : 'Nuovo posto') + '</b>' + (a.nG && a.nG !== a.n ? ' <span class="tenue">(su Google: ' + esc(a.nG) + ')</span>' : '') + '</p>';
     h += '<label>Nome<input data-a="n" maxlength="80" value="' + esc(a.n) + '"></label>';
@@ -1184,7 +1244,8 @@ function vistaProponi(arg) {
   const ex = cand.filter((x) => !x.gruppo);
   if (ex.length) h += '<p class="ed-tappa">Altri posti</p><ul class="scegli-luoghi">' + ex.map(bottone).join('') + '</ul>';
   if (PLACES_KEY) h += '<div class="cerca-posto"><p class="ed-tappa">Aggiungi da Google Maps</p><div class="scelta-completo" role="radiogroup" aria-label="Che cosa cerchi">' + Object.keys(TIPI_POSTO).map((k) => '<label class="pill piccola-pill' + (b.cercaTipo === k ? ' on' : '') + '"><input type="radio" name="cercaTipo" data-b="cercaTipo" value="' + k + '"' + (b.cercaTipo === k ? ' checked' : '') + '>' + TIPI_POSTO[k] + '</label>').join('') + '</div>' +
-    '<input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul><p class="tenue piccola">Il posto si aggiunge anche alla pagina della tappa, per tutti, con descrizione e foto da Wikipedia se ci sono.</p></div>';
+    (g.tappe.length > 1 ? '<label>Dove<select data-b="cercaTappa">' + g.tappe.map((x) => '<option value="' + esc(x) + '"' + ((b.cercaTappa || g.tappe[0]) === x ? ' selected' : '') + '>' + esc(tappa(x).nome) + '</option>').join('') + '</select></label>' : '') +
+    '<input id="fCerca" type="search" maxlength="80" placeholder="Cerca su Google Maps" autocomplete="off" aria-label="Cerca un posto su Google Maps"><ul id="suggerimenti" class="suggerimenti"></ul>' + htmlRicercaMappa() + '<p class="tenue piccola">Il posto si aggiunge anche alla pagina della tappa, per tutti, con descrizione e foto da Wikipedia se ci sono.</p></div>';
   h += '<h3 class="ed-sez">Ordine</h3><div class="scelta-completo" role="radiogroup" aria-label="Chi decide l\'ordine">' +
     [['mano', 'Lo decido io'], ['auto', 'Lo calcola Google Maps']].map(([k, n]) => '<label class="pill' + (b.modo === k ? ' on' : '') + '"><input type="radio" name="modo" data-b="modo" value="' + k + '"' + (b.modo === k ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>';
   if (b.modo === 'auto') {
@@ -1200,13 +1261,13 @@ function vistaProponi(arg) {
     if (up) h += '<p class="riga-mappa"><a class="mappa" href="' + esc(up) + '" target="_blank" rel="noopener">' + ICO.mappa + 'Prova il percorso su Google Maps</a></p>';
   } else h += '<p class="tenue">Ancora nessuna sosta scelta.</p>';
   h += '<p class="err" id="errProp" hidden></p><div class="azioni larghe"><button class="btn" data-az="salvaProposta">' + (b.editId ? 'Salva le modifiche' : 'Proponi') + '</button><a class="btn chiaro" href="#giorno/' + esc(data) + '">Annulla</a>' + (b.editId ? '<button class="btn pericolo" data-az="ritira">Ritira</button>' : '') + '</div></div></div>';
-  return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data, dopo: () => montaMappa(cand) };
+  return { titolo: b.editId ? 'Modifica la proposta' : 'Nuova proposta', html: h, indietro: '#giorno/' + data, dopo: () => { montaMappa(cand); montaRicercaMappa(); } };
 }
 function bozzaDaCampo(el) {
   if (!BOZZA || !el.dataset || !el.dataset.b) return false;
   BOZZA[el.dataset.b] = el.value;
   if (el.dataset.b === 'modo') BOZZA.msgOrdine = '';
-  return el.dataset.b === 'modo' || el.dataset.b === 'cercaTipo';
+  return el.dataset.b === 'modo' || el.dataset.b === 'cercaTipo' || el.dataset.b === 'cercaTappa';
 }
 function selezionaLuogo(k) {
   const b = BOZZA, i = b.sel.indexOf(k);
@@ -1359,11 +1420,13 @@ async function azioneGruppo(az, el) {
   if (az === 'su' || az === 'giu') { const s = BOZZA.sel, i = +el.dataset.i, j = az === 'su' ? i - 1 : i + 1; if (j >= 0 && j < s.length) { [s[i], s[j]] = [s[j], s[i]]; BOZZA.modo = 'mano'; BOZZA.msgOrdine = ''; } disegna(); return true; }
   if (az === 'calcolaOrdine') { el.disabled = true; el.textContent = 'Calcolo…'; await calcolaOrdine(); disegna(); return true; }
   if (az === 'apriAgg') { AGG = { tappa: el.dataset.tappa, tipo: el.dataset.tipo, tipo0: el.dataset.tipo, fase: 'cerca' }; sessioneCerca = ''; disegna(); const i = $('#fCerca'); if (i) { i.focus(); i.scrollIntoView({ block: 'center' }); } return true; }
-  if (az === 'chiudiAgg') { AGG = null; sessioneCerca = ''; disegna(); return true; }
+  if (az === 'chiudiAgg') { AGG = null; RM = null; sessioneCerca = ''; disegna(); return true; }
+  if (az === 'apriRM') { const i = $('#fCerca'); cercaSuMappa(i ? i.value.trim() : ''); return true; }
+  if (az === 'chiudiRM') { RM = null; disegna(); return true; }
   if (az === 'aggiungiPostoTappa') {
     const pid = el.dataset.pid, gia = postiDi(AGG.tappa).find((p) => p.pid === pid || somiglianza(p.n, el.dataset.n) >= 0.99);
     if (gia) { const e = $('#errAgg'); e.textContent = '"' + gia.n + '" c\'è già in questa tappa.'; e.hidden = false; return true; }
-    Object.assign(AGG, { fase: 'scheda', pid, n: el.dataset.n, nG: el.dataset.n, nota: '', info: null });
+    Object.assign(AGG, { fase: 'scheda', pid, n: el.dataset.n, nG: el.dataset.n, nota: '', info: null }); RM = null;
     sessioneCerca = ''; disegna(); cercaInfo(); return true;
   }
   if (az === 'salvaPosto') { salvaPosto(); return true; }
@@ -1382,10 +1445,10 @@ async function azioneGruppo(az, el) {
   if (az === 'aggiungiPosto') {
     const tipo = BOZZA.cercaTipo || 'v', gg = CONT.giorni.find((x) => x.data === BOZZA.data);
     if (!io().n) { const e = $('#errProp'); e.textContent = 'Scrivi il tuo nome qui sopra prima di aggiungere posti.'; e.hidden = false; return true; }
-    const tid = gg.tappe[0], id = aggiungiPostoGruppo(tid, tipo, el.dataset.pid, el.dataset.n);
+    const tid = BOZZA.cercaTappa || gg.tappe[0], id = aggiungiPostoGruppo(tid, tipo, el.dataset.pid, el.dataset.n);
     const k = 'p|' + (postoDa(tid, id) ? tid : gg.tappe.find((x) => postoDa(x, id)) || tid) + '|' + id;
     if (BOZZA.sel.indexOf(k) < 0) BOZZA.sel.push(k);
-    sessioneCerca = ''; gpPosto(el.dataset.pid).catch(() => null).then(() => disegnaSePossibile()); disegna(); return true;
+    sessioneCerca = ''; RM = null; gpPosto(el.dataset.pid).catch(() => null).then(() => disegnaSePossibile()); disegna(); return true;
   }
   if (az === 'ritira') {
     if (!el.dataset.conferma) { el.dataset.conferma = '1'; el.textContent = 'Conferma: ritira'; return true; }
@@ -1507,7 +1570,7 @@ function vistaTappe() {
 const PICCANTE = ['Non piccante', 'Poco piccante', 'Piccante', 'Molto piccante'];
 function htmlEtichette(x) {
   if (x.piccante == null && x.veg == null) return '';
-  let h = '<span class="etichette">' + (x.top ? '<span class="et top">★ Da non perdere</span>' : '');
+  let h = '<span class="etichette">' + (x.top ? (x.perche && x.perche.length ? x.perche.map((m, i) => '<span class="et top">' + (i ? '' : '★ ') + esc(m) + '</span>').join('') : '<span class="et top">★ Da non perdere</span>') : '');
   if (x.piccante != null) h += '<span class="et pic p' + x.piccante + '"><i></i><i></i><i></i>' + PICCANTE[x.piccante] + '</span>';
   if (x.veg != null) h += '<span class="et">' + (x.veg ? 'Vegetariano' : 'Con carne') + '</span>';
   return h + '</span>';
@@ -1595,6 +1658,7 @@ function vistaTappa(arg) {
   h += '</div>';
   return {
     titolo: t.nome, html: h, indietro: '#tappe', dopo() {
+      montaRicercaMappa();
       if (ancora) setTimeout(() => {
         const el = document.getElementById(ancora); if (!el) return;
         const d = el.querySelector('details'); if (d) d.open = true;

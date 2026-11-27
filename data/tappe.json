@@ -279,6 +279,12 @@
      "w": {
       "it": "Jama Masjid (Delhi)",
       "en": "Jama Masjid, Delhi"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Jama_Masjid_-_In_the_Noon.jpg/500px-Jama_Masjid_-_In_the_Noon.jpg",
+      "autore": "Bikashrd",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Jama_Masjid_-_In_the_Noon.jpg"
      }
     },
     {
@@ -345,7 +351,11 @@
       "autore": "Nithyasrm",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Triangle_paratha_%28cropped%29.JPG"
-     }
+     },
+     "perche": [
+      "Un vicolo solo per loro",
+      "Old Delhi"
+     ]
     },
     {
      "t": "Chaat e jalebi",
@@ -380,7 +390,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Jalebi_making_process_at_Old_and_famous_Jalebiwala_shop_at_Chandni_Chowk%2C_DelhiIMG_20150401_135811.jpg",
       "nota": "Jalebi fritte al momento a Chandni Chowk"
-     }
+     },
+     "perche": [
+      "Re dello street food",
+      "Agrodolce e piccante"
+     ]
     },
     {
      "t": "Cucina moghul",
@@ -411,7 +425,11 @@
       "licenza": "CC0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Murgh_Musallam_Steamed.JPG",
       "nota": "Murgh musallam"
-     }
+     },
+     "perche": [
+      "Ricette di corte",
+      "Kebab di Old Delhi"
+     ]
     },
     {
      "t": "Chole bhature",
@@ -787,7 +805,11 @@
       "autore": "AKSHRAJJODHA",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Ker_Sangri.jpg"
-     }
+     },
+     "perche": [
+      "Esiste solo nel deserto",
+      "Raccolto selvatico"
+     ]
     },
     {
      "t": "Kadhi",
@@ -973,6 +995,12 @@
      "w": {
       "it": "Forte di Junagarh",
       "en": "Junagarh Fort"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/India_Bikaner_Junagarh_Fort.jpg/500px-India_Bikaner_Junagarh_Fort.jpg",
+      "autore": "Flicka",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:India_Bikaner_Junagarh_Fort.jpg"
      }
     },
     {
@@ -1128,7 +1156,11 @@
       "licenza": "CC BY 2.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Shop_selling_Bikaneri_bhujia_in_Jaipur.jpg",
       "nota": "Un negozio di bhujia (a Jaipur)"
-     }
+     },
+     "perche": [
+      "Nato a Bikaner",
+      "Marchio protetto (IG)"
+     ]
     },
     {
      "t": "Rasgulla e dolci al latte",
@@ -1401,6 +1433,12 @@
      "w": {
       "it": "Forte di Jaisalmer",
       "en": "Jaisalmer Fort"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Jaisalmer_forteresse.jpg/500px-Jaisalmer_forteresse.jpg",
+      "autore": "Gérard Janot",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Jaisalmer_forteresse.jpg"
      }
     },
     {
@@ -1634,7 +1672,11 @@
       "autore": "AKSHRAJJODHA",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Ker_Sangri.jpg"
-     }
+     },
+     "perche": [
+      "Esiste solo nel deserto",
+      "Raccolto selvatico"
+     ]
     },
     {
      "t": "Dal baati churma",
@@ -1664,7 +1706,10 @@
       "autore": "Niranjan.gohane",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:DalBati.jpg"
-     }
+     },
+     "perche": [
+      "Piatto simbolo del Rajasthan"
+     ]
     },
     {
      "t": "Gatte ki sabzi",
@@ -1690,7 +1735,11 @@
       "autore": "Kanikatwl",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg"
-     }
+     },
+     "perche": [
+      "Il curry senza verdure",
+      "Cucina del deserto"
+     ]
     },
     {
      "t": "Ghotua ladoo",
@@ -1938,6 +1987,12 @@
      "w": {
       "it": "Forte di Mehrangarh",
       "en": "Mehrangarh"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Mehrangarh_Fort_sanhita.jpg/500px-Mehrangarh_Fort_sanhita.jpg",
+      "autore": "Sanhitasinha",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Mehrangarh_Fort_sanhita.jpg"
      }
     },
     {
@@ -2154,7 +2209,11 @@
       "autore": "Pyaaz Kachori",
       "licenza": "CC0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Mirchi_Bada_from_Jodhpur_1.jpg"
-     }
+     },
+     "perche": [
+      "Nato a Jodhpur",
+      "Molto piccante"
+     ]
     },
     {
      "t": "Pyaaz kachori",
@@ -2184,7 +2243,10 @@
       "autore": "Mdsmds0",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Rajasthani_Pyaz_ki_Kachori.JPG"
-     }
+     },
+     "perche": [
+      "Colazione di Jodhpur e Jaipur"
+     ]
     },
     {
      "t": "Mawa kachori",
@@ -2235,7 +2297,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Kulhad_lassi_1.jpg",
       "nota": "Foto indicativa: lassi nel kulhad"
-     }
+     },
+     "perche": [
+      "Specialità di Jodhpur",
+      "Allo zafferano"
+     ]
     }
    ],
    "consigli": [
@@ -2472,6 +2538,12 @@
      "w": {
       "it": "Tempio di Ranakpur",
       "en": "Ranakpur Jain Temple"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Jain_Temple_Ranakpur.jpg/500px-Jain_Temple_Ranakpur.jpg",
+      "autore": "Ingo Mehling",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Jain_Temple_Ranakpur.jpg"
      }
     },
     {
@@ -2687,6 +2759,13 @@
      "w": {
       "it": "Forte Kumbhalgarh",
       "en": "Kumbhalgarh"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kumbhalgarh_055.jpg/500px-Kumbhalgarh_055.jpg",
+      "autore": "Rajesh Kapoor",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Kumbhalgarh_055.jpg",
+      "nota": "La stessa foto della testata"
      }
     },
     {
@@ -2863,6 +2942,12 @@
      "w": {
       "it": "City Palace (Udaipur)",
       "en": "City Palace, Udaipur"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Udaipur_City_Palace.jpg/500px-Udaipur_City_Palace.jpg",
+      "autore": "Henrik Bennetsen",
+      "licenza": "CC BY-SA 2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Udaipur_City_Palace.jpg"
      }
     },
     {
@@ -3424,7 +3509,10 @@
       "autore": "Niranjan.gohane",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:DalBati.jpg"
-     }
+     },
+     "perche": [
+      "Piatto simbolo del Rajasthan"
+     ]
     }
    ],
    "consigli": [
@@ -3551,6 +3639,13 @@
      "w": {
       "it": "Bundi",
       "en": "Taragarh Fort, Bundi"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg/500px-Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg",
+      "autore": "Eklavya Yadav",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Garh_Palace_and_Taragarh_Fort%2C_Bundi_2011-12-26_EK_II.jpg",
+      "nota": "La stessa foto della testata"
      }
     },
     {
@@ -3635,7 +3730,11 @@
       "autore": "Kanikatwl",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Gatte_ki_sabzi_served_with_aamras_and_garlic_chutney.jpg"
-     }
+     },
+     "perche": [
+      "Il curry senza verdure",
+      "Cucina del deserto"
+     ]
     }
    ],
    "consigli": [
@@ -3808,6 +3907,12 @@
      "w": {
       "it": "Lago di Pushkar",
       "en": "Pushkar Lake"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Evening_lights_by_the_Pushkar_Lake%2C_Pushkar.jpg/500px-Evening_lights_by_the_Pushkar_Lake%2C_Pushkar.jpg",
+      "autore": "Felipe Skroski",
+      "licenza": "CC BY 2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Evening_lights_by_the_Pushkar_Lake%2C_Pushkar.jpg"
      }
     },
     {
@@ -3963,7 +4068,11 @@
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Malpoa_pitha.jpg",
       "nota": "Foto indicativa: malpua in versione bengalese"
-     }
+     },
+     "perche": [
+      "Specialità di Pushkar",
+      "Fritte al momento"
+     ]
     },
     {
      "t": "Thali rajasthano",
@@ -4330,6 +4439,12 @@
      "w": {
       "it": "Hawa Mahal",
       "en": "Hawa Mahal"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg/500px-East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg",
+      "autore": "Chainwit.",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg"
      }
     },
     {
@@ -4496,7 +4611,11 @@
       "autore": "Hamzaghanchi",
       "licenza": "CC BY-SA 3.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Laal-Maans.jpg"
-     }
+     },
+     "perche": [
+      "Il più piccante del viaggio",
+      "Cucina dei Rajput"
+     ]
     },
     {
      "t": "Pyaaz kachori",
@@ -4526,7 +4645,10 @@
       "autore": "Mdsmds0",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Rajasthani_Pyaz_ki_Kachori.JPG"
-     }
+     },
+     "perche": [
+      "Colazione di Jodhpur e Jaipur"
+     ]
     },
     {
      "t": "Ghevar",
@@ -4855,6 +4977,12 @@
      "w": {
       "it": "Buland Darwaza",
       "en": "Buland Darwaza"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Fatehput_Sikiri_Buland_Darwaza_gate_2010.jpg/500px-Fatehput_Sikiri_Buland_Darwaza_gate_2010.jpg",
+      "autore": "Marcin Białek",
+      "licenza": "CC BY-SA 3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Fatehput_Sikiri_Buland_Darwaza_gate_2010.jpg"
      }
     },
     {
@@ -5025,6 +5153,12 @@
      "w": {
       "it": "Taj Mahal",
       "en": "Taj Mahal"
+     },
+     "f": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/500px-Taj_Mahal_%28Edited%29.jpeg",
+      "autore": "Yann, modificata da Jim Carter",
+      "licenza": "CC BY-SA 4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Taj_Mahal_%28Edited%29.jpeg"
      }
     },
     {
@@ -5124,7 +5258,11 @@
       "autore": "PJ.wikilovesfood",
       "licenza": "CC BY-SA 4.0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Petha_kesari.JPG"
-     }
+     },
+     "perche": [
+      "Simbolo di Agra",
+      "Da portare a casa"
+     ]
     },
     {
      "t": "Cucina moghul",
@@ -5155,7 +5293,11 @@
       "licenza": "CC0",
       "pagina": "https://commons.wikimedia.org/wiki/File:Murgh_Musallam_Steamed.JPG",
       "nota": "Murgh musallam"
-     }
+     },
+     "perche": [
+      "Ricette di corte",
+      "Kebab di Old Delhi"
+     ]
     },
     {
      "t": "Bedai e jalebi",

@@ -523,3 +523,7 @@ a.et.piatto { text-decoration: none; color: var(--inchiostro); }
 .piccola-et { padding: 1px 8px; font-size: 12px; vertical-align: 2px; }
 .piccola-pill { min-height: 40px; padding: 6px 12px; font-size: 14.5px; }
 .cerca-posto .scelta-completo { margin-bottom: 8px; }
+
+.ricerca-mappa { margin-top: 8px; }
+.ricerca-mappa .scelto { margin: 8px 0; padding: 10px 12px; border-radius: 12px; background: var(--foglio); }
+.link-btn svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
